@@ -1,6 +1,6 @@
 export type Locale = "en" | "ar";
 
-export const content = {
+export const content: Record<Locale, any> = {
   en: {
     nav: { home: "Homepage", booking: "Booking", contact: "Contact Us", cta: "Contact us →" },
     hero: {
@@ -50,4 +50,4 @@ export const content = {
     },
     toggle: { en: "EN", ar: "AR" },
   },
-} as const;
+};

@@ -3,10 +3,6 @@ import Stripe from "stripe";
 
 export const runtime = "nodejs";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: "2025-12-15.clover",
-});
-
 type Locale = "en" | "ar";
 
 type ReqBody = {
@@ -17,14 +13,14 @@ type ReqBody = {
 
 /**
  * DISPLAY currency: JOD (what user sees)
- * CHARGE currency: USD (what Stripe actually charges until JOD is enabled)
+ * CHARGE currency: USD (what Stripe charges until JOD is enabled)
  */
 
 // What you want users to pay (displayed) per person in JOD
 const PRICE_PER_PERSON_JOD = 20.0;
 
 // Set a fixed rate you control: USD per 1 JOD
-// Example: 1 JOD = 1.41 USD (illustrative). Replace with your chosen rate.
+// Example: 1 JOD = 1.41 USD. Replace with your chosen rate.
 const USD_PER_JOD = 1.41;
 
 // Stripe needs integer cents for USD
@@ -49,6 +45,17 @@ function format2(n: number) {
   return n.toFixed(2);
 }
 
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    // Throwing here makes the failure obvious during Vercel build/runtime
+    throw new Error("Missing STRIPE_SECRET_KEY environment variable.");
+  }
+
+  // ✅ Upgraded: remove apiVersion override (avoids invalid/preview versions breaking deploys)
+  return new Stripe(key);
+}
+
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as Partial<ReqBody>;
@@ -61,7 +68,14 @@ export async function POST(req: Request) {
       return Response.json({ error: "Missing booking data." }, { status: 400 });
     }
 
-    const origin = req.headers.get("origin") ?? "http://localhost:3000";
+    // Vercel-safe origin fallback:
+    // - Prefer Origin header
+    // - Else use configured public URL
+    // - Else last-resort localhost for local dev
+    const origin =
+      req.headers.get("origin") ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      "http://localhost:3000";
 
     const successUrl = new URL("/success", origin);
     successUrl.searchParams.set("lang", locale);
@@ -77,6 +91,8 @@ export async function POST(req: Request) {
     const totalJod = PRICE_PER_PERSON_JOD * qty;
     const totalUsd = unitAmountUsd * qty;
 
+    const stripe = getStripe();
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       ui_mode: "hosted",
@@ -84,6 +100,7 @@ export async function POST(req: Request) {
       // CHARGE currency (Stripe)
       currency: "usd",
 
+      // Stripe’s allowed locales are limited; casting is okay since we only send "en" or "ar"
       locale: locale as unknown as Stripe.Checkout.SessionCreateParams.Locale,
 
       line_items: [
@@ -92,7 +109,6 @@ export async function POST(req: Request) {
             currency: "usd",
             product_data: {
               name: locale === "ar" ? "زُوّار – رحلة تذوّق" : "ZOWAR Food Scavenger Hunt",
-              // You can show the display price in the description (optional)
               description:
                 locale === "ar"
                   ? `رحلة تذوّق ذاتية الإرشاد — ${date} — السعر: ${format3(

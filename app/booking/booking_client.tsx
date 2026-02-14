@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -33,8 +33,7 @@ const copy = {
   },
   ar: {
     title: "الحجز",
-    subtitle:
-      "اختر تاريخ التجربة. بعد الدفع ستصلك رسالة تأكيد + رابط الدخول إلى البوابة.",
+    subtitle: "اختر تاريخ التجربة. بعد الدفع ستصلك رسالة تأكيد + رابط الدخول إلى البوابة.",
     nextStepsTitle: "الخطوات التالية",
     nextSteps: [
       "إتمام الدفع",
@@ -62,7 +61,6 @@ function daysInMonth(year: number, monthIndex0: number) {
   return new Date(year, monthIndex0 + 1, 0).getDate();
 }
 function firstDayOfMonth(year: number, monthIndex0: number) {
-  // 0 = Sunday
   return new Date(year, monthIndex0, 1).getDay();
 }
 function pad2(n: number) {
@@ -82,7 +80,6 @@ function formatMonth(locale: Locale, year: number, monthIndex0: number) {
     return `${year}-${pad2(monthIndex0 + 1)}`;
   }
 }
-
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
 }
@@ -90,7 +87,7 @@ function clamp(n: number, min: number, max: number) {
 /** ---------- Product thumbnail (checkout item) ---------- */
 function ProductIcon() {
   return (
-    <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-white/10 bg-white/5">
+    <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-black/10 bg-white">
       <Image
         src="/images/booking/item.webp"
         alt="ZOWAR Experience"
@@ -102,7 +99,7 @@ function ProductIcon() {
   );
 }
 
-/** ---------- Calendar component styled like ref 1 ---------- */
+/** ---------- Calendar component ---------- */
 function CalendarPicker({
   locale,
   value,
@@ -143,10 +140,10 @@ function CalendarPicker({
 
   const dim = daysInMonth(year, month);
   const first = firstDayOfMonth(year, month); // 0 Sunday
-  const blanks = (first + 6) % 7; // Monday-first like your reference
+  const blanks = (first + 6) % 7; // Monday-first
 
   const weekLabels = isAr
-    ? ["ن", "ث", "ر", "خ", "ج", "س", "ح"] // Mon..Sun (approx)
+    ? ["ن", "ث", "ر", "خ", "ج", "س", "ح"]
     : ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
   function prevMonth() {
@@ -165,7 +162,6 @@ function CalendarPicker({
     } else setMonth(m);
   }
 
-  // Availability rule (v1): today and future are available
   function isAvailable(iso: string) {
     const d = new Date(iso + "T00:00:00");
     if (Number.isNaN(d.getTime())) return false;
@@ -176,25 +172,24 @@ function CalendarPicker({
   const selectedIso = value;
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-      {/* Header */}
+    <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
       <div className="flex items-center justify-between">
         <button
           onClick={prevMonth}
-          className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10"
+          className="rounded-xl border border-black/10 bg-white px-3 py-2 text-sm hover:bg-black/[0.03]"
           aria-label="Previous month"
           type="button"
         >
           {isAr ? "›" : "‹"}
         </button>
 
-        <div className="text-sm font-semibold tracking-tight">
+        <div className="text-sm font-semibold tracking-tight text-neutral-900">
           {formatMonth(locale, year, month)}
         </div>
 
         <button
           onClick={nextMonth}
-          className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10"
+          className="rounded-xl border border-black/10 bg-white px-3 py-2 text-sm hover:bg-black/[0.03]"
           aria-label="Next month"
           type="button"
         >
@@ -202,8 +197,7 @@ function CalendarPicker({
         </button>
       </div>
 
-      {/* Week labels */}
-      <div className="mt-4 grid grid-cols-7 gap-2 text-xs text-white/50">
+      <div className="mt-4 grid grid-cols-7 gap-2 text-xs text-neutral-500">
         {weekLabels.map((w) => (
           <div key={w} className="text-center">
             {w}
@@ -211,7 +205,6 @@ function CalendarPicker({
         ))}
       </div>
 
-      {/* Days grid (minimal style) */}
       <div className="mt-3 grid grid-cols-7 gap-2">
         {Array.from({ length: blanks }).map((_, i) => (
           <div key={`b-${i}`} />
@@ -225,21 +218,11 @@ function CalendarPicker({
           const isSelected = iso === selectedIso;
           const isToday = iso === todayIso;
 
-          // Styles to match your reference:
-          // - Most dates faded
-          // - Available dates bold
-          // - Only "today" has a subtle bubble
-          // - Selected date turns orange
-          const base =
-            "h-10 w-full rounded-2xl text-center text-sm transition select-none";
-
-          const faded = "text-white/35";
-          const availableText = "text-white/85 font-semibold hover:text-white";
-
-          const todayBubble = isToday && !isSelected ? "bg-white/10" : "bg-transparent";
-          const selectedBubble =
-            isSelected ? "bg-orange-500 text-neutral-950 font-semibold" : "";
-
+          const base = "h-10 w-full rounded-2xl text-center text-sm transition select-none";
+          const faded = "text-neutral-400";
+          const availableText = "text-neutral-900 font-semibold hover:bg-black/[0.03]";
+          const todayBubble = isToday && !isSelected ? "bg-black/[0.04]" : "bg-transparent";
+          const selectedBubble = isSelected ? "bg-[#ff8936] text-neutral-950 font-semibold" : "";
           const disabled = !available ? "cursor-not-allowed" : "cursor-pointer";
 
           return (
@@ -251,11 +234,7 @@ function CalendarPicker({
               className={[
                 base,
                 disabled,
-                isSelected
-                  ? selectedBubble
-                  : available
-                    ? `${availableText} ${todayBubble}`
-                    : faded,
+                isSelected ? selectedBubble : available ? `${availableText} ${todayBubble}` : faded,
               ].join(" ")}
               aria-pressed={isSelected}
             >
@@ -269,15 +248,16 @@ function CalendarPicker({
 }
 
 export default function BookingClient({ locale }: { locale: Locale }) {
-  const sp = useSearchParams();
-  const langQP = (sp.get("lang") ?? "").toLowerCase();
-
-  const effectiveLocale: Locale =
-    langQP.startsWith("ar") ? "ar" : locale === "ar" ? "ar" : "en";
-
+  const effectiveLocale: Locale = locale === "ar" ? "ar" : "en";
   const isAr = effectiveLocale === "ar";
   const t = copy[effectiveLocale];
-  // default = tomorrow
+
+  // ✅ preserve lang across nav
+  const langParam = `lang=${effectiveLocale}`;
+  const toggleHref = `/booking?lang=${isAr ? "en" : "ar"}`;
+  const homeHref = `/?${langParam}`;
+  const portalHref = `/portal?${langParam}`;
+
   const [date, setDate] = React.useState<string>(() => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
@@ -290,14 +270,11 @@ export default function BookingClient({ locale }: { locale: Locale }) {
   const [code, setCode] = React.useState("");
   const [discount, setDiscount] = React.useState<number>(0);
 
-  // Price display (keep consistent with /api/checkout)
   const pricePerPerson = 25; // JOD
-  const rawSubtotal = Math.max(1, qty) * pricePerPerson;
-  const subtotal = rawSubtotal;
+  const subtotal = Math.max(1, qty) * pricePerPerson;
   const total = clamp(subtotal - discount, 0, 999999);
 
   function applyCode() {
-    // simple v1 demo — replace with real validation later
     const normalized = code.trim().toLowerCase();
     if (!normalized) return setDiscount(0);
 
@@ -313,7 +290,7 @@ export default function BookingClient({ locale }: { locale: Locale }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          locale,
+          locale: effectiveLocale,
           date,
           qty: Math.max(1, qty),
           discountCode: code.trim() || undefined,
@@ -329,89 +306,79 @@ export default function BookingClient({ locale }: { locale: Locale }) {
     }
   }
 
+  const pageBg =
+    "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(255,137,54,0.18),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
+
+  const glassCard =
+    "rounded-[28px] border border-black/10 bg-white/80 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.08)]";
+
+  const subtleBtn =
+    "rounded-xl border border-black/10 bg-white px-3 py-2 text-sm hover:bg-black/[0.03]";
+
   return (
-    <main
-  className="min-h-screen text-white"
-  style={{ backgroundColor: "#3F4351" }}
->
-
+    <main dir={isAr ? "rtl" : "ltr"} className={pageBg}>
       <div className="mx-auto max-w-6xl px-6 py-10">
-      {/* Top bar */}
-<div className="flex flex-wrap items-start justify-between gap-4">
-  {/* Logo + title */}
-  <div className="flex items-start gap-4">
- <Link
-  href="/"
-  aria-label="Go to home"
-  className="mt-1 inline-flex"
->
-  <Image
-    src="/logo.png"
-    alt="ZOWAR logo"
-    width={72}
-    height={72}
-    priority
-    className="opacity-95 transition-transform duration-200 ease-out hover:opacity-100 hover:-translate-y-[2px] hover:rotate-[-1deg] hover:scale-[1.02]"
-  />
-</Link>
+        {/* Top bar */}
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <Link href={homeHref} aria-label="Go to home" className="mt-1 inline-flex">
+              <Image
+                src="/logo.png"
+                alt="ZOWAR logo"
+                width={72}
+                height={72}
+                priority
+                className="opacity-95 transition-transform duration-200 ease-out hover:opacity-100 hover:-translate-y-[2px] hover:rotate-[-1deg] hover:scale-[1.02]"
+              />
+            </Link>
 
-    <div>
-      <h1 className="text-3xl font-semibold tracking-tight">{t.title}</h1>
-      <p className="mt-2 max-w-2xl text-white/70">{t.subtitle}</p>
-    </div>
-  </div>
+            <div>
+              <h1 className="text-3xl font-semibold tracking-tight">{t.title}</h1>
+              <p className="mt-2 max-w-2xl text-neutral-600">{t.subtitle}</p>
 
-  {/* Actions */}
-  <div className="flex gap-2">
-    <a
-      href={`/booking?lang=${isAr ? "en" : "ar"}`}
-      className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10"
-    >
-      {t.toggle}
-    </a>
-    <a
-      href="/"
-      className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm hover:bg-white/10"
-    >
-      {isAr ? "الرئيسية" : "Home"}
-    </a>
-  </div>
-</div>
+              {/* Optional: quick portal shortcut */}
+              <div className="mt-3">
+                <Link href={portalHref} className="text-sm font-medium text-neutral-800 underline decoration-black/20 hover:decoration-black/40">
+                  {isAr ? "الذهاب إلى البوابة" : "Go to Portal"}
+                </Link>
+              </div>
+            </div>
+          </div>
 
-        {/* Two-column layout */}
+          <div className="flex gap-2">
+            <Link href={toggleHref} className={subtleBtn}>
+              {t.toggle}
+            </Link>
+            <Link href={homeHref} className={subtleBtn}>
+              {isAr ? "الرئيسية" : "Home"}
+            </Link>
+          </div>
+        </div>
+
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          {/* LEFT: patterned panel + next steps + calendar */}
-          <section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-6">
-            {/* “fun background” like ref 2 (abstract shapes) */}
-           <div
-  aria-hidden="true"
-  className="pointer-events-none absolute inset-0 opacity-100"
-  style={{
-    backgroundImage:
-      "url(/images/booking/bg-left.png), radial-gradient(600px 400px at 15% 35%, rgba(255,165,0,0.20), transparent 55%)",
-    backgroundSize: "cover, auto",
-    backgroundPosition: "center, center",
-    backgroundRepeat: "no-repeat, no-repeat",
-  }}
-/>
-            {/* soft pattern overlay */}
-   <div className="pointer-events-none absolute inset-0">
-  <Image
-    src="/images/booking/bg-left.webp"
-    alt=""
-    fill
-    className="object-cover opacity-90"
-    priority
-  />
-</div>
+          <section className={`${glassCard} relative overflow-hidden p-6`}>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 opacity-100"
+              style={{
+                backgroundImage:
+                  "radial-gradient(600px 400px at 15% 35%, rgba(255,165,0,0.20), transparent 55%)",
+                backgroundSize: "auto",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
+            <div className="pointer-events-none absolute inset-0 opacity-[0.10]">
+              <Image src="/images/booking/bg-left.webp" alt="" fill className="object-cover" priority />
+            </div>
 
             <div className="relative">
-              <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
+              <div className="rounded-2xl border border-black/10 bg-white/80 p-4">
                 <div className="text-sm font-semibold">{t.nextStepsTitle}</div>
-                <ul className="mt-3 grid gap-2 text-sm text-white/75">
+                <ul className="mt-3 grid gap-2 text-sm text-neutral-700">
                   {t.nextSteps.map((s, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="mt-[6px] inline-block h-2 w-2 rounded-full bg-orange-400" />
+                      <span className="mt-[6px] inline-block h-2 w-2 rounded-full bg-[#ff8936]" />
                       <span>{s}</span>
                     </li>
                   ))}
@@ -422,51 +389,45 @@ export default function BookingClient({ locale }: { locale: Locale }) {
                 <div className="flex items-end justify-between gap-4">
                   <div>
                     <div className="text-base font-semibold">{t.chooseDate}</div>
-                    <div className="mt-1 text-sm text-white/70">{t.hint}</div>
+                    <div className="mt-1 text-sm text-neutral-600">{t.hint}</div>
                   </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-neutral-950/40 px-3 py-2 text-sm">
+                  <div className="rounded-2xl border border-black/10 bg-white/80 px-3 py-2 text-sm text-neutral-700">
                     {date}
                   </div>
                 </div>
 
                 <div className="mt-4">
-                  <CalendarPicker locale={locale} value={date} onChange={setDate} />
+                  <CalendarPicker locale={effectiveLocale} value={date} onChange={setDate} />
                 </div>
 
                 <div className="mt-6 grid gap-2">
-                  <label className="text-sm text-white/70">{t.qty}</label>
+                  <label className="text-sm text-neutral-600">{t.qty}</label>
                   <input
                     type="number"
                     min={1}
                     value={qty}
                     onChange={(e) => setQty(Number(e.target.value))}
-                    className="w-full rounded-2xl border border-white/10 bg-neutral-900 px-4 py-3 text-white outline-none focus:border-orange-400/60"
+                    className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-neutral-900 outline-none focus:border-[#ff8936]/60"
                   />
-                  <p className="text-xs text-white/50">
-                    {isAr ? "السعر للشخص" : "Price per person"}: {pricePerPerson}{" "}
-                    {isAr ? "د.أ" : "JOD"}
+                  <p className="text-xs text-neutral-500">
+                    {isAr ? "السعر للشخص" : "Price per person"}: {pricePerPerson} {isAr ? "د.أ" : "JOD"}
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* RIGHT: order summary (like ref 1) */}
-          <aside className="rounded-[28px] border border-white/10 bg-white/5 p-6">
+          <aside className={`${glassCard} p-6`}>
             <div className="text-base font-semibold">{t.summary}</div>
 
-            {/* line item */}
-            <div className="mt-5 flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-neutral-900 p-4">
+            <div className="mt-5 flex items-center justify-between gap-4 rounded-2xl border border-black/10 bg-white p-4">
               <div className="flex items-center gap-3">
                 <ProductIcon />
                 <div>
-                  <div className="text-sm font-semibold">
-                    {isAr ? "تجربة ZOWAR" : "ZOWAR Experience"}
-                  </div>
-                  <div className="text-xs text-white/60">
-                    {isAr ? "تاريخ" : "Date"}: {date} • {isAr ? "عدد" : "Qty"}:{" "}
-                    {Math.max(1, qty)}
+                  <div className="text-sm font-semibold">{isAr ? "تجربة ZOWAR" : "ZOWAR Experience"}</div>
+                  <div className="text-xs text-neutral-500">
+                    {isAr ? "تاريخ" : "Date"}: {date} • {isAr ? "عدد" : "Qty"}: {Math.max(1, qty)}
                   </div>
                 </div>
               </div>
@@ -475,26 +436,24 @@ export default function BookingClient({ locale }: { locale: Locale }) {
               </div>
             </div>
 
-            {/* discount */}
             <div className="mt-4 flex gap-2">
               <input
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder={t.discount}
-                className="flex-1 rounded-2xl border border-white/10 bg-neutral-900 px-4 py-3 text-sm text-white outline-none focus:border-orange-400/60"
+                className="flex-1 rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-neutral-900 outline-none focus:border-[#ff8936]/60"
               />
               <button
                 type="button"
                 onClick={applyCode}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm hover:bg-white/10"
+                className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm hover:bg-black/[0.03]"
               >
                 {t.apply}
               </button>
             </div>
 
-            {/* totals */}
-            <div className="mt-6 grid gap-2 rounded-2xl border border-white/10 bg-neutral-900 p-4 text-sm">
-              <div className="flex items-center justify-between text-white/75">
+            <div className="mt-6 grid gap-2 rounded-2xl border border-black/10 bg-white p-4 text-sm">
+              <div className="flex items-center justify-between text-neutral-600">
                 <span>{t.subtotal}</span>
                 <span>
                   {subtotal} {t.currency}
@@ -502,7 +461,7 @@ export default function BookingClient({ locale }: { locale: Locale }) {
               </div>
 
               {discount > 0 && (
-                <div className="flex items-center justify-between text-white/75">
+                <div className="flex items-center justify-between text-neutral-600">
                   <span>{isAr ? "خصم" : "Discount"}</span>
                   <span>
                     -{discount} {t.currency}
@@ -518,19 +477,16 @@ export default function BookingClient({ locale }: { locale: Locale }) {
               </div>
             </div>
 
-            {/* pay */}
             <button
               onClick={startCheckout}
               disabled={loading}
-              className="mt-6 w-full rounded-2xl bg-orange-500 px-5 py-4 font-semibold text-neutral-950 hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-6 w-full rounded-2xl bg-[#ff8936] px-5 py-4 font-semibold text-neutral-950 hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? t.loading : t.pay}
             </button>
 
-            <p className="mt-3 text-xs text-white/50">
-              {isAr
-                ? "المعاملات آمنة ومشفّرة."
-                : "All transactions are secure and encrypted."}
+            <p className="mt-3 text-xs text-neutral-500">
+              {isAr ? "المعاملات آمنة ومشفّرة." : "All transactions are secure and encrypted."}
             </p>
           </aside>
         </div>

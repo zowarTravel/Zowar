@@ -2,6 +2,7 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import type { Locale } from "./riddlecontent";
 import { readProgress, type PortalProgress } from "./progress";
 
@@ -14,30 +15,29 @@ type PuzzleProps = {
   onSolved?: () => void;
 };
 
-const LoadingCard = ({ locale }: { locale: Locale }) => (
-  <div className="rounded-3xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">
-    {locale === "ar" ? "جارٍ تحميل اللغز…" : "Loading puzzle…"}
-  </div>
-);
+function LoadingCard({ locale }: { locale: Locale }) {
+  const isAr = locale === "ar";
+  return (
+    <div className="rounded-3xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">
+      {isAr ? "جارٍ تحميل اللغز…" : "Loading puzzle…"}
+    </div>
+  );
+}
 
 /* ------------------------------------------------------------------ */
-/* Turbopack-safe dynamic imports (STATIC PATHS ONLY)                  */
-/* IMPORTANT: Robust resolver to avoid [object Object] crashes         */
+/* Turbopack-safe resolver                                              */
 /* ------------------------------------------------------------------ */
 
 function resolveComponent(mod: any, fallbackName?: string) {
-  // Turbopack may return:
-  // - Component
-  // - { default: Component }
-  // - { default: { default: Component } }
-  // - module namespace object
-
   const DD = mod?.default?.default;
   const D = mod?.default;
   const Named = fallbackName ? mod?.[fallbackName] : undefined;
-
   return DD ?? D ?? Named ?? mod;
 }
+
+/* ------------------------------------------------------------------ */
+/* Dynamic imports (STATIC PATHS ONLY)                                  */
+/* ------------------------------------------------------------------ */
 
 const PuzzleR1 = dynamic(
   () => import("./puzzle_r1").then((m) => resolveComponent(m, "PuzzleR1")),
@@ -74,8 +74,8 @@ const PROGRESS_KEY = "zowar_progress_v1";
 export default function PortalFlow({ locale }: { locale: Locale }) {
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
   const isAr = safeLocale === "ar";
+  const toggleHref = isAr ? "/portal?lang=en" : "/portal?lang=ar";
 
-  // ✅ Hydration-safe initial state (server/client match)
   const [progress, setProgress] = React.useState<PortalProgress>(() => ({
     r1: false,
     r2: false,
@@ -84,11 +84,8 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
     r5: false,
   }));
 
-
-  // ✅ Always start on R1 when entering the portal
   const [activeRound, setActiveRound] = React.useState<Round>("r1");
 
-  // ✅ Delay-reveal for "Next" CTAs (lets the puzzle glow/celebrate first)
   const [showNextR1, setShowNextR1] = React.useState(false);
   const [showNextR2, setShowNextR2] = React.useState(false);
   const [showNextR3, setShowNextR3] = React.useState(false);
@@ -100,9 +97,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
   const t4Ref = React.useRef<number | null>(null);
 
   React.useEffect(() => {
-    // ✅ Sync progress from localStorage after mount
     setProgress(readProgress());
-
     return () => {
       if (t1Ref.current) window.clearTimeout(t1Ref.current);
       if (t2Ref.current) window.clearTimeout(t2Ref.current);
@@ -111,7 +106,6 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
     };
   }, []);
 
-  /* Cross-tab sync */
   React.useEffect(() => {
     function onStorage(e: StorageEvent) {
       if (e.key === PROGRESS_KEY) setProgress(readProgress());
@@ -120,16 +114,13 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  /* Keep CTA state consistent on refresh / returning */
   React.useEffect(() => setShowNextR1(progress.r1), [progress.r1]);
   React.useEffect(() => setShowNextR2(progress.r2), [progress.r2]);
   React.useEffect(() => setShowNextR3(progress.r3), [progress.r3]);
   React.useEffect(() => setShowNextR4(progress.r4), [progress.r4]);
 
-  /* Solved handlers */
   const onR1Solved = React.useCallback(() => {
     setProgress((p) => (p.r1 ? p : { ...p, r1: true }));
-
     setShowNextR1(false);
     if (t1Ref.current) window.clearTimeout(t1Ref.current);
     t1Ref.current = window.setTimeout(() => setShowNextR1(true), 750);
@@ -137,25 +128,20 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
 
   const onR2Solved = React.useCallback(() => {
     setProgress((p) => (p.r2 ? p : { ...p, r2: true }));
-
     setShowNextR2(false);
     if (t2Ref.current) window.clearTimeout(t2Ref.current);
     t2Ref.current = window.setTimeout(() => setShowNextR2(true), 750);
   }, []);
 
   const onR3Solved = React.useCallback(() => {
-    // 🔥 This is what enables the R4 button
     setProgress((p) => (p.r3 ? p : { ...p, r3: true }));
-
     setShowNextR3(false);
     if (t3Ref.current) window.clearTimeout(t3Ref.current);
     t3Ref.current = window.setTimeout(() => setShowNextR3(true), 750);
   }, []);
 
   const onR4Solved = React.useCallback(() => {
-    // 🔥 Enables the R5 button
     setProgress((p) => (p.r4 ? p : { ...p, r4: true }));
-
     setShowNextR4(false);
     if (t4Ref.current) window.clearTimeout(t4Ref.current);
     t4Ref.current = window.setTimeout(() => setShowNextR4(true), 750);
@@ -170,8 +156,23 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
   const shine =
     "pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full";
 
+  const topBtn =
+    "inline-flex h-11 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 text-sm font-semibold text-neutral-900 shadow-sm hover:bg-neutral-50 active:scale-[0.99]";
+
   return (
     <div className="space-y-6">
+      {/* Sticky top controls */}
+      <div className="sticky top-0 z-20 -mx-4 border-b border-neutral-100 bg-white/85 px-4 pb-3 pt-2 backdrop-blur">
+        <div className="flex items-center justify-between gap-3">
+          <Link href="/" className={topBtn}>
+            {isAr ? "الرئيسية" : "Home"}
+          </Link>
+          <Link href={toggleHref} className={topBtn}>
+            {isAr ? "EN" : "AR"}
+          </Link>
+        </div>
+      </div>
+
       {/* Progress header + manual round buttons */}
       <div className="rounded-2xl border border-neutral-200 bg-white p-4">
         <div className="flex items-center justify-between gap-4">
@@ -201,7 +202,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
               disabled={!progress.r1}
               className={`rounded-full px-3 py-1 ${
                 !progress.r1
-                  ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
                   : activeRound === "r2"
                   ? "bg-neutral-900 text-white"
                   : "bg-neutral-100 text-neutral-700"
@@ -216,7 +217,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
               disabled={!progress.r2}
               className={`rounded-full px-3 py-1 ${
                 !progress.r2
-                  ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
                   : activeRound === "r3"
                   ? "bg-neutral-900 text-white"
                   : "bg-neutral-100 text-neutral-700"
@@ -231,7 +232,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
               disabled={!progress.r3}
               className={`rounded-full px-3 py-1 ${
                 !progress.r3
-                  ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
                   : activeRound === "r4"
                   ? "bg-neutral-900 text-white"
                   : "bg-neutral-100 text-neutral-700"
@@ -246,7 +247,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
               disabled={!progress.r4}
               className={`rounded-full px-3 py-1 ${
                 !progress.r4
-                  ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
                   : activeRound === "r5"
                   ? "bg-neutral-900 text-white"
                   : "bg-neutral-100 text-neutral-700"
@@ -258,11 +259,9 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
         </div>
       </div>
 
-      {/* Round 1 */}
       {activeRound === "r1" && (
         <div>
           <PuzzleR1 locale={safeLocale} onSolved={onR1Solved} />
-
           {progress.r1 && showNextR1 && (
             <div className="mt-4">
               <button type="button" onClick={() => setActiveRound("r2")} className={nextBtn}>
@@ -274,7 +273,6 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
         </div>
       )}
 
-      {/* Round 2 */}
       {activeRound === "r2" && (
         <div>
           {progress.r1 ? (
@@ -284,7 +282,6 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
               {isAr ? "الجولة ٢ مقفلة." : "Round 2 is locked."}
             </div>
           )}
-
           {progress.r2 && showNextR2 && (
             <div className="mt-4">
               <button type="button" onClick={() => setActiveRound("r3")} className={nextBtn}>
@@ -296,7 +293,6 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
         </div>
       )}
 
-      {/* Round 3 */}
       {activeRound === "r3" && (
         <div>
           {progress.r2 ? (
@@ -306,7 +302,6 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
               {isAr ? "الجولة ٣ مقفلة." : "Round 3 is locked."}
             </div>
           )}
-
           {progress.r3 && showNextR3 && (
             <div className="mt-4">
               <button type="button" onClick={() => setActiveRound("r4")} className={nextBtn}>
@@ -318,7 +313,6 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
         </div>
       )}
 
-      {/* Round 4 */}
       {activeRound === "r4" && (
         <div>
           {progress.r3 ? (
@@ -328,7 +322,6 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
               {isAr ? "الجولة ٤ مقفلة." : "Round 4 is locked."}
             </div>
           )}
-
           {progress.r4 && showNextR4 && (
             <div className="mt-4">
               <button type="button" onClick={() => setActiveRound("r5")} className={nextBtn}>
@@ -340,7 +333,6 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
         </div>
       )}
 
-      {/* Round 5 */}
       {activeRound === "r5" && (
         <div>
           {progress.r4 ? (

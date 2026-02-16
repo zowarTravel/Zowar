@@ -2,8 +2,7 @@
 
 import React from "react";
 import { useSearchParams } from "next/navigation";
-
-type Locale = "en" | "ar";
+import type { Locale } from "./riddlecontent";
 
 const copy = {
   en: {

@@ -204,6 +204,10 @@ export default function Home() {
     []
   );
 
+  /* -------------------- MOBILE CTA (sticky) -------------------- */
+  const stickyCtaHref = "/booking";
+  const stickyCtaLabel = isAr ? "احجز التجربة" : "Book the Experience";
+
   return (
     <main
       dir={isAr ? "rtl" : "ltr"}
@@ -216,7 +220,7 @@ export default function Home() {
             {/* Logo */}
             <a
               href="#home"
-              className="group flex items-center gap-3 rounded-xl px-2 py-1 transition hover:bg-white/10"
+              className="group flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-white/10"
             >
               <div className="relative h-10 w-10 md:h-11 md:w-11">
                 <Image
@@ -257,8 +261,9 @@ export default function Home() {
                   triggerFlash("lang");
                   setLocale(locale === "en" ? "ar" : "en");
                 }}
-                className="flash-orange relative overflow-hidden rounded-full border border-white/25 px-3 py-2 text-xs sm:text-sm font-semibold"
+                className="flash-orange relative overflow-hidden rounded-full border border-white/25 px-4 py-3 text-xs sm:text-sm font-semibold"
                 data-flash={flashLang}
+                aria-label={locale === "en" ? "Switch to Arabic" : "Switch to English"}
               >
                 {locale === "en" ? t.toggle.ar : t.toggle.en}
               </button>
@@ -271,7 +276,7 @@ export default function Home() {
                     triggerFlash("menu");
                     setMenuOpen((s) => !s);
                   }}
-                  className="flash-orange relative overflow-hidden rounded-full border border-white/25 px-3 py-2 text-xs sm:text-sm font-semibold"
+                  className="flash-orange relative overflow-hidden rounded-full border border-white/25 px-4 py-3 text-xs sm:text-sm font-semibold"
                   data-flash={flashMenu}
                   aria-haspopup="menu"
                   aria-expanded={menuOpen}
@@ -297,7 +302,7 @@ export default function Home() {
                   <div
                     role="menu"
                     className={[
-                      "absolute z-50 mt-2 w-60 overflow-hidden rounded-2xl border border-white/10 bg-black/70 backdrop-blur-md shadow-xl text-white",
+                      "absolute z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-white/10 bg-black/70 backdrop-blur-md shadow-xl text-white",
                       isAr ? "left-0" : "right-0",
                     ].join(" ")}
                   >
@@ -305,7 +310,7 @@ export default function Home() {
                       role="menuitem"
                       href="#about"
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-3 text-sm hover:bg-white/10 transition"
+                      className="block px-4 py-4 text-sm hover:bg-white/10 transition"
                     >
                       {isAr ? "اعرف أكثر" : "Learn more"}
                     </a>
@@ -313,7 +318,7 @@ export default function Home() {
                       role="menuitem"
                       href="/booking"
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-3 text-sm hover:bg-white/10 transition"
+                      className="block px-4 py-4 text-sm hover:bg-white/10 transition"
                     >
                       {isAr ? "احجز الآن" : "Book now"}
                     </a>
@@ -322,7 +327,7 @@ export default function Home() {
                       role="menuitem"
                       href="/collaborate"
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-3 text-sm hover:bg-white/10 transition"
+                      className="block px-4 py-4 text-sm hover:bg-white/10 transition"
                     >
                       {isAr ? "تعاون معنا" : "Collaborate with us"}
                     </a>
@@ -330,7 +335,7 @@ export default function Home() {
                       role="menuitem"
                       href="/portal"
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-3 text-sm hover:bg-white/10 transition"
+                      className="block px-4 py-4 text-sm hover:bg-white/10 transition"
                     >
                       {isAr ? "بوابة الألغاز 🔒" : "Puzzle Portal 🔒"}
                     </a>
@@ -343,7 +348,10 @@ export default function Home() {
       </header>
 
       {/* ==================== HERO ==================== */}
-      <section id="home" className="relative min-h-[92vh] w-full overflow-hidden">
+      <section
+        id="home"
+        className="relative w-full overflow-hidden min-h-[78vh] sm:min-h-[86vh]"
+      >
         {/* Background crossfade */}
         {heroMedia.map((m, i) => {
           const active = i === heroIndex;
@@ -371,65 +379,64 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/35 to-black/70" />
 
         {/* Content */}
-        <div className="relative z-10 mx-auto flex min-h-[92vh] max-w-7xl items-center px-6 pt-28 pb-16">
+        <div className="relative z-10 mx-auto flex min-h-[78vh] sm:min-h-[86vh] max-w-7xl items-center px-6 pt-24 pb-10">
           <div className="w-full text-center">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-orange-300 drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-orange-300 drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
               {isAr ? "حلّ. تذوّق. اكتشف عمّان" : "Solve. Taste. Discover Amman"}
             </h1>
 
-            <p className="mx-auto mt-5 max-w-3xl text-base sm:text-lg text-white/90">
+            <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-lg text-white/90">
               {isAr
                 ? "تجربة مدينة ذاتية الإرشاد حيث تحل الألغاز، وتتذوّق لقمات أيقونية، وتكتشف عمّان على وتيرتك."
                 : "A self-guided city experience where you solve puzzles, taste iconic bites, and discover Amman at your own pace."}
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
                 href="/booking"
-                className="inline-flex items-center justify-center rounded-full bg-orange-300 text-black px-10 py-4 text-sm font-bold tracking-wide transition hover:bg-orange-200"
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-orange-300 text-black px-10 py-4 text-sm font-bold tracking-wide transition hover:bg-orange-200"
               >
                 {isAr ? "احجز التجربة" : "Book the Experience"}
               </a>
 
               <a
                 href="#about"
-                className="inline-flex items-center justify-center rounded-full border border-white/60 bg-white/10 px-10 py-4 text-sm font-bold tracking-wide text-white transition hover:bg-white/20 hover:border-white"
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-white/60 bg-white/10 px-10 py-4 text-sm font-bold tracking-wide text-white transition hover:bg-white/20 hover:border-white"
               >
                 {isAr ? "اعرف أكثر" : "Learn More"}
               </a>
             </div>
 
-            <p className="mt-6 text-xs text-white/70">
-              Payment currency currently:{" "}
-              <span className="font-semibold text-white">{currency}</span>.{" "}
-              {currency === "USD"
-                ? "Once Stripe supports JOD on your account, we’ll switch to JOD."
-                : null}
-            </p>
+            {/* NOTE: Removed the crossed-out hero pills + payment currency line */}
+            {/* Keeping currency state in code in case you want it later */}
+            <span className="sr-only">Currency: {currency}</span>
           </div>
         </div>
       </section>
 
-      {/* ==================== INSERT: HOW IT WORKS + SNAPSHOT ROW (from your image) ==================== */}
-      <section className="bg-[#fff3e8] py-16">
+      {/* ==================== HOW IT WORKS ==================== */}
+      <section className="bg-[#fff3e8] py-14 sm:py-16">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-center text-3xl md:text-4xl font-bold">
             {isAr ? "كيف تعمل التجربة" : "How It Works"}
           </h2>
 
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
               {
+                icon: "🎟️",
                 n: "1",
                 title: isAr ? "احجز" : "Book",
                 body: isAr ? "اختر التاريخ وافتح البوابة" : "Choose your date & unlock the portal",
               },
               {
+                icon: "🧩",
                 n: "2",
                 title: isAr ? "حلّ" : "Solve",
                 body: isAr ? "اتبع الإشارات عبر المدينة" : "Follow clues through the city",
               },
               {
+                icon: "🍢",
                 n: "3",
                 title: isAr ? "تذوّق" : "Taste",
                 body: isAr ? "استمتع بقمات أيقونية" : "Enjoy iconic bites along the way",
@@ -437,21 +444,39 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.n}
-                className="rounded-3xl bg-white/90 border border-black/5 shadow-sm px-8 py-7 text-center transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-lg"
+                className="rounded-3xl bg-white/95 border border-black/5 shadow-sm px-7 py-7 text-left transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-lg"
               >
-                <div className="text-orange-500 font-extrabold text-3xl">{c.n}</div>
-                <div className="mt-3 font-bold">{c.title}</div>
-                <div className="mt-2 text-sm text-neutral-600">{c.body}</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-2xl">{c.icon}</div>
+                  <div className="text-orange-500 font-extrabold text-2xl">{c.n}</div>
+                </div>
+                <div className="mt-4 font-bold text-lg">{c.title}</div>
+                <div className="mt-2 text-sm text-neutral-600 leading-relaxed">{c.body}</div>
+
+                <div className="mt-5 h-px bg-black/5" />
+                <div className="mt-4 text-xs text-neutral-500">
+                  {c.n === "1"
+                    ? isAr
+                      ? "بعد الحجز ستظهر بوابة الألغاز."
+                      : "After booking, your Puzzle Portal unlocks."
+                    : c.n === "2"
+                    ? isAr
+                      ? "ستحصل على تلميحات عند الحاجة."
+                      : "Hints are available if you get stuck."
+                    : isAr
+                    ? "النهاية بإطلالة + لقمة مميزة."
+                    : "Finish with a view + a final bite."}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Snapshot tiles row (adds Local partner stops next to 4–5 tastings) */}
-      <section className="py-12">
+      {/* ==================== SNAPSHOT ROW (kept) ==================== */}
+      <section className="py-10 sm:py-12 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             {[
               { icon: "⏱️", label: isAr ? "٢–٣ ساعات" : "2–3 hrs" },
               { icon: "🚶", label: isAr ? "٢–٣ كم" : "2–3 km" },
@@ -463,7 +488,7 @@ export default function Home() {
             ].map((x) => (
               <div
                 key={x.label}
-                className="min-w-[140px] rounded-2xl bg-neutral-100 px-6 py-4 text-center"
+                className="min-w-[150px] rounded-2xl bg-neutral-100 border border-black/5 px-6 py-4 text-center"
               >
                 <div className="text-xl">{x.icon}</div>
                 <div className="mt-2 text-xs font-semibold text-neutral-800">{x.label}</div>
@@ -474,8 +499,8 @@ export default function Home() {
       </section>
 
       {/* ==================== LEARN MORE / ABOUT (animated tab section) ==================== */}
-      <section id="about" className="mt-16 lg:mt-24 px-6 max-w-7xl mx-auto">
-        <div className="flex flex-wrap items-center justify-center gap-10 text-sm text-neutral-700">
+      <section id="about" className="mt-14 lg:mt-24 px-6 max-w-7xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-neutral-700">
           {aboutTabs.map((tab) => {
             const active = tab.key === activeAboutKey;
             const labelText = isAr ? tab.label.ar : tab.label.en;
@@ -566,14 +591,14 @@ export default function Home() {
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             <a
               href="mailto:hello@zowar.com"
-              className="inline-flex items-center justify-center rounded-full bg-orange-500 text-white px-6 py-3 text-sm font-semibold transition hover:bg-orange-400"
+              className="inline-flex items-center justify-center rounded-full bg-orange-500 text-white px-6 py-4 text-sm font-semibold transition hover:bg-orange-400"
             >
               {isAr ? "راسلنا" : "Email us"}
             </a>
 
             <a
               href="/booking"
-              className="inline-flex items-center justify-center rounded-full border border-orange-500 text-orange-500 px-6 py-3 text-sm font-semibold transition hover:bg-orange-50"
+              className="inline-flex items-center justify-center rounded-full border border-orange-500 text-orange-500 px-6 py-4 text-sm font-semibold transition hover:bg-orange-50"
             >
               {isAr ? "اذهب للحجز" : "Go to booking"}
             </a>
@@ -583,7 +608,8 @@ export default function Home() {
 
       {/* ==================== FOOTER ==================== */}
       <footer className="bg-black text-white">
-        <div className="max-w-7xl mx-auto px-6 py-14">
+        {/* extra bottom padding so sticky CTA doesn't cover footer on mobile */}
+        <div className="max-w-7xl mx-auto px-6 py-14 pb-28 md:pb-14">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
             <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-10">
               <div>
@@ -742,6 +768,24 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* ==================== STICKY MOBILE CTA (COLOR MATCHES HERO) ==================== */}
+      <div className="fixed bottom-0 left-0 right-0 z-[60] md:hidden">
+        <div className="mx-auto max-w-7xl px-5 pb-4">
+          <div className="rounded-2xl border border-white/10 bg-black/35 backdrop-blur-md shadow-xl p-3">
+            <a
+              href={stickyCtaHref}
+              className="inline-flex w-full items-center justify-center rounded-xl bg-orange-300 text-black py-4 text-sm font-extrabold tracking-wide transition active:scale-[0.99] hover:bg-orange-200"
+              aria-label={stickyCtaLabel}
+            >
+              {stickyCtaLabel}
+              <span className="ml-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-black/10">
+                →
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
 
       {/* ==================== GLOBAL STYLES ==================== */}
       <style jsx global>{`

@@ -9,6 +9,9 @@ type ReqBody = {
   date: string;
   qty: number;
   locale?: Locale;
+
+  // ✅ Optional promo code (used for FREE bypass)
+  code?: string;
 };
 
 /**
@@ -48,12 +51,14 @@ function format2(n: number) {
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
-    // Throwing here makes the failure obvious during Vercel build/runtime
     throw new Error("Missing STRIPE_SECRET_KEY environment variable.");
   }
-
-  // ✅ Upgraded: remove apiVersion override (avoids invalid/preview versions breaking deploys)
+  // ✅ No apiVersion override
   return new Stripe(key);
+}
+
+function normalizeCode(x: unknown) {
+  return String(x ?? "").trim().toLowerCase();
 }
 
 export async function POST(req: Request) {
@@ -64,14 +69,29 @@ export async function POST(req: Request) {
     const qty = Number(body?.qty ?? 0);
     const locale = safeLocale(body?.locale);
 
+    // ✅ promo code from client
+    const submittedCode = normalizeCode(body?.code);
+
+    // ✅ normalize env code BEFORE using/logging it
+    const FREE_CODE = normalizeCode(process.env.FREE_BOOKING_CODE);
+
+    // Debug logs (safe)
+    console.log("[checkout] submittedCode =", submittedCode);
+    console.log("[checkout] FREE_BOOKING_CODE =", process.env.FREE_BOOKING_CODE);
+    console.log("[checkout] FREE_CODE(normalized) =", FREE_CODE);
+
     if (!date || !Number.isFinite(qty) || qty < 1) {
       return Response.json({ error: "Missing booking data." }, { status: 400 });
     }
 
-    // Vercel-safe origin fallback:
-    // - Prefer Origin header
-    // - Else use configured public URL
-    // - Else last-resort localhost for local dev
+    // ✅ FREE BYPASS (no Stripe)
+    // Put this in .env.local:
+    // FREE_BOOKING_CODE=ZOWARFREE
+    if (FREE_CODE && submittedCode && submittedCode === FREE_CODE) {
+      return Response.json({ free: true }, { status: 200 });
+    }
+
+    // Origin fallback (works outside Vercel too)
     const origin =
       req.headers.get("origin") ||
       process.env.NEXT_PUBLIC_SITE_URL ||
@@ -118,8 +138,7 @@ export async function POST(req: Request) {
                       PRICE_PER_PERSON_JOD
                     )} JOD per person`,
             },
-            // USD cents
-            unit_amount: unitAmountUsdCents,
+            unit_amount: unitAmountUsdCents, // USD cents
           },
           quantity: qty,
         },
@@ -132,6 +151,10 @@ export async function POST(req: Request) {
         date,
         qty: String(qty),
         lang: locale,
+
+        // Debugging / traceability
+        promo_code_entered: submittedCode || "",
+        promo_free_enabled: "false",
 
         // What user sees
         display_currency: "jod",
@@ -151,9 +174,6 @@ export async function POST(req: Request) {
     return Response.json({ url: session.url }, { status: 200 });
   } catch (err: any) {
     console.error("Stripe checkout error:", err?.message ?? err);
-    return Response.json(
-      { error: err?.message || "Checkout failed." },
-      { status: 500 }
-    );
+    return Response.json({ error: err?.message || "Checkout failed." }, { status: 500 });
   }
 }

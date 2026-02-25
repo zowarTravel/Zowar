@@ -270,7 +270,7 @@ export default function BookingClient({ locale }: { locale: Locale }) {
   const [code, setCode] = React.useState("");
   const [discount, setDiscount] = React.useState<number>(0);
 
-  const pricePerPerson = 25; // JOD
+  const pricePerPerson = 25; // JOD (UI only)
   const subtotal = Math.max(1, qty) * pricePerPerson;
   const total = clamp(subtotal - discount, 0, 999999);
 
@@ -286,6 +286,7 @@ export default function BookingClient({ locale }: { locale: Locale }) {
   async function startCheckout() {
     try {
       setLoading(true);
+
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -293,13 +294,30 @@ export default function BookingClient({ locale }: { locale: Locale }) {
           locale: effectiveLocale,
           date,
           qty: Math.max(1, qty),
-          discountCode: code.trim() || undefined,
+
+          // ✅ IMPORTANT: server expects `code`
+          code: code.trim() || undefined,
         }),
       });
 
-      const data = (await res.json()) as { url?: string; error?: string };
-      if (!res.ok || !data.url) throw new Error(data.error || "Checkout failed");
-      window.location.href = data.url;
+      const data = (await res.json()) as { url?: string; free?: boolean; error?: string };
+
+      if (!res.ok) throw new Error(data.error || "Checkout failed");
+
+      // ✅ Free promo path (skips Stripe): unlock + go to portal
+      if (data.free) {
+        localStorage.setItem("zowar_unlocked", "1");
+        window.location.href = `/portal?lang=${effectiveLocale}`;
+        return;
+      }
+
+      // ✅ Normal Stripe redirect
+      if (data.url) {
+        window.location.href = data.url;
+        return;
+      }
+
+      throw new Error("Checkout failed");
     } catch (e: any) {
       alert(e?.message ?? "Something went wrong.");
       setLoading(false);
@@ -338,7 +356,10 @@ export default function BookingClient({ locale }: { locale: Locale }) {
 
               {/* Optional: quick portal shortcut */}
               <div className="mt-3">
-                <Link href={portalHref} className="text-sm font-medium text-neutral-800 underline decoration-black/20 hover:decoration-black/40">
+                <Link
+                  href={portalHref}
+                  className="text-sm font-medium text-neutral-800 underline decoration-black/20 hover:decoration-black/40"
+                >
                   {isAr ? "الذهاب إلى البوابة" : "Go to Portal"}
                 </Link>
               </div>

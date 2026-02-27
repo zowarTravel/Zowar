@@ -1,19 +1,17 @@
 @import "tailwindcss";
 
-/* Zowar defaults: dark theme */
+/* ===== ZOWAR DESIGN TOKENS ===== */
 :root {
   --background: #0b0b0b;
   --foreground: #ffffff;
+
+  /* 🔥 Zowar Brand Orange */
+  --zowar-orange: #f97316;
+  --zowar-orange-soft: rgba(249, 115, 22, 0.15);
+  --zowar-orange-glow: rgba(249, 115, 22, 0.35);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-/* If you want to support light mode later, flip these */
+/* Optional light mode fallback */
 @media (prefers-color-scheme: light) {
   :root {
     --background: #ffffff;
@@ -32,10 +30,75 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
-/* --- your existing animation --- */
+@layer utilities {
+  .bg-z-orange { background-color: var(--zowar-orange); }
+  .bg-z-orange-soft { background-color: var(--zowar-orange-soft); }
+  .border-z-orange { border-color: var(--zowar-orange); }
+  .glow-z-orange {
+    box-shadow: 0 0 0 1px var(--zowar-orange-soft), 0 0 30px var(--zowar-orange-glow);
+  }
+  .z-orange { color: var(--zowar-orange);}
+  .z-orange-important { color: var(--zowar-orange) !important; } 
+}
+
+/* ===== Animation ===== */
 @keyframes letterHop {
   0% { transform: translateY(0); opacity: 1; }
   30% { transform: translateY(-6px); opacity: 0.9; }
   60% { transform: translateY(2px); opacity: 1; }
   100% { transform: translateY(0); }
+}
+/* ===== Zowar: Orange Flash Button (works with glass/backdrop) ===== */
+.flash-orange {
+  position: relative;
+  overflow: hidden;
+  transition: color 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.flash-orange::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--zowar-orange);
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 220ms ease, transform 220ms ease;
+  z-index: 0; /* ✅ keep it above the button background */
+}
+
+.flash-orange > * {
+  position: relative;
+  z-index: 1; /* ✅ keep text/icons above the orange layer */
+}
+
+.flash-orange:hover {
+  border-color: var(--zowar-orange);
+  color: #111;
+}
+
+.flash-orange:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Click pulse */
+.flash-orange[data-flash]::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  background: var(--zowar-orange-soft);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.flash-orange[data-flash][data-flash]::after {
+  animation: orangePulse 520ms ease-out;
+}
+
+@keyframes orangePulse {
+  0% { opacity: 0; transform: scale(0.98); }
+  35% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.02); }
 }

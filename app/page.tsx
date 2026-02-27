@@ -34,6 +34,12 @@ export default function Home() {
   const isAr = locale === "ar";
   const fontClass = isAr ? tajawal.className : fredoka.className;
 
+  // ✅ keep lang across pages
+  const aboutHref = `/about?lang=${isAr ? "ar" : "en"}`;
+  const bookingHref = `/booking?lang=${isAr ? "ar" : "en"}`;
+  const portalHref = `/portal?lang=${isAr ? "ar" : "en"}`;
+  const collaborateHref = `/collaborate?lang=${isAr ? "ar" : "en"}`;
+
   /* -------------------- PRICING DISPLAY ONLY -------------------- */
   const DEFAULT_CURRENCY: Currency = "USD";
   const [currency] = useState<Currency>(DEFAULT_CURRENCY);
@@ -62,13 +68,10 @@ export default function Home() {
     if (which === "lang") setFlashLang((x) => x + 1);
   }
 
-  /* -------------------- HERO BACKGROUND MEDIA (uses your existing files) -------------------- */
+  /* -------------------- HERO BACKGROUND MEDIA -------------------- */
   const heroMedia = useMemo(
     () => [
-      {
-        src: "/images/street-food.jpg",
-        alt: { en: "Amman street food", ar: "طعام شارع في عمّان" },
-      },
+      { src: "/images/street-food.jpg", alt: { en: "Amman street food", ar: "طعام شارع في عمّان" } },
       { src: "/images/spices.jpg", alt: { en: "Spices", ar: "بهارات" } },
       { src: "/images/desserts.jpg", alt: { en: "Desserts", ar: "حلويات" } },
     ],
@@ -78,13 +81,11 @@ export default function Home() {
   const [heroIndex, setHeroIndex] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setHeroIndex((i) => (i + 1) % heroMedia.length);
-    }, 4500);
+    const id = setInterval(() => setHeroIndex((i) => (i + 1) % heroMedia.length), 4500);
     return () => clearInterval(id);
   }, [heroMedia.length]);
 
-  /* -------------------- ABOUT TABS (animated flip labels + unique images) -------------------- */
+  /* -------------------- ABOUT TABS -------------------- */
   const aboutTabs = useMemo(
     () =>
       [
@@ -121,7 +122,7 @@ export default function Home() {
           title: { en: "Moments Worth Keeping", ar: "لحظات تستحق أن تُحفظ" },
           body: {
             en: "Each stop is a small story—photos, laughs, and a finale with a view. Perfect for couples, friends, and visitors.",
-            ar: "كل محطة قصة صغيرة — صور وضحكات ونهاية بإطلالة. مثالية للأصدقاء والزوار والثنائيات.",
+            ar: "كل محطة قصة صغيرة — صور وضحكات ونهاية بإطلالة. مثالية للأصدقاء والزوار.",
           },
           imageSrc: "/images/about/moments.jpg",
           imageAlt: { en: "Friends enjoying a rooftop view", ar: "أصدقاء يستمتعون بإطلالة" },
@@ -170,7 +171,7 @@ export default function Home() {
             {label}
           </span>
           <span
-            className="block absolute inset-0 text-orange-500"
+            className="block absolute inset-0 z-orange"
             style={{ transform: "rotateX(180deg)", backfaceVisibility: "hidden" }}
           >
             {flip}
@@ -205,22 +206,24 @@ export default function Home() {
   );
 
   /* -------------------- MOBILE CTA (sticky) -------------------- */
-  const stickyCtaHref = "/booking";
+  const stickyCtaHref = bookingHref;
   const stickyCtaLabel = isAr ? "احجز التجربة" : "Book the Experience";
 
+  // ✅ match booking/collaborate background tone
+  const pageBg =
+    "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(249,115,22,0.16),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
+
   return (
-    <main
-      dir={isAr ? "rtl" : "ltr"}
-      className={`min-h-screen bg-white text-neutral-900 ${fontClass}`}
-    >
+    <main dir={isAr ? "rtl" : "ltr"} className={`${pageBg} ${fontClass}`}>
       {/* ==================== NAV ==================== */}
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="mx-auto max-w-7xl px-5">
-          <nav className="mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/25 backdrop-blur-md px-4 py-3 text-white shadow-sm">
-            {/* Logo */}
+          <nav className="mt-4 flex items-center justify-between rounded-2xl border border-black/10 bg-white/70 backdrop-blur-md px-4 py-3 text-neutral-900 shadow-sm">
+            {/* Logo -> home (hover anim like booking) */}
             <a
-              href="#home"
-              className="group flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-white/10"
+              href={isAr ? "/?lang=ar" : "/?lang=en"}
+              className="group flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-black/[0.03]"
+              aria-label="Go to home"
             >
               <div className="relative h-10 w-10 md:h-11 md:w-11">
                 <Image
@@ -228,26 +231,27 @@ export default function Home() {
                   alt="ZOWAR logo"
                   fill
                   sizes="44px"
-                  className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.06] group-hover:-translate-y-[1px]"
+                  className="object-contain opacity-95 transition-transform duration-200 ease-out group-hover:opacity-100 group-hover:-translate-y-[2px] group-hover:rotate-[-1deg] group-hover:scale-[1.02]"
                 />
               </div>
-              <span className="hidden sm:inline text-sm font-semibold tracking-wide">
-                ZOWAR
-              </span>
+              <span className="hidden sm:inline text-sm font-semibold tracking-wide">ZOWAR</span>
             </a>
 
             {/* Center links (desktop) */}
             <div className="hidden md:flex items-center gap-8 text-sm">
-              <a className="hover:text-orange-300 transition" href="#home">
+              <a className="hover:z-orange transition" href="#home">
                 {isAr ? "الرئيسية" : "Home"}
               </a>
-              <a className="hover:text-orange-300 transition" href="#about">
+              <a className="hover:z-orange transition" href="#about">
                 {isAr ? "اعرف أكثر" : "Learn More"}
               </a>
-              <a className="hover:text-orange-300 transition" href="/booking">
+              <a className="hover:z-orange transition" href={aboutHref}>
+                {isAr ? "عن زوّار" : "About Zowar"}
+              </a>
+              <a className="hover:z-orange transition" href={bookingHref}>
                 {isAr ? "احجز الآن" : "Book Now"}
               </a>
-              <a className="hover:text-orange-300 transition" href="#contact">
+              <a className="hover:z-orange transition" href="#contact">
                 {isAr ? "تواصل" : "Contact"}
               </a>
             </div>
@@ -261,11 +265,11 @@ export default function Home() {
                   triggerFlash("lang");
                   setLocale(locale === "en" ? "ar" : "en");
                 }}
-                className="flash-orange relative overflow-hidden rounded-full border border-white/25 px-4 py-3 text-xs sm:text-sm font-semibold"
+                className="flash-orange relative rounded-full border border-black/10 bg-white/80 px-4 py-3 text-xs sm:text-sm font-semibold"
                 data-flash={flashLang}
                 aria-label={locale === "en" ? "Switch to Arabic" : "Switch to English"}
               >
-                {locale === "en" ? t.toggle.ar : t.toggle.en}
+                <span>{locale === "en" ? t.toggle.ar : t.toggle.en}</span>
               </button>
 
               <div className="relative" ref={menuRef}>
@@ -276,20 +280,14 @@ export default function Home() {
                     triggerFlash("menu");
                     setMenuOpen((s) => !s);
                   }}
-                  className="flash-orange relative overflow-hidden rounded-full border border-white/25 px-4 py-3 text-xs sm:text-sm font-semibold"
+                  className="flash-orange relative rounded-full border border-black/10 bg-white/80 px-4 py-3 text-xs sm:text-sm font-semibold"
                   data-flash={flashMenu}
                   aria-haspopup="menu"
                   aria-expanded={menuOpen}
                 >
                   <span className="inline-flex items-center gap-2">
                     {isAr ? "القائمة" : "Menu"}
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      className="opacity-90"
-                    >
+                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" className="opacity-80">
                       <path
                         fill="currentColor"
                         d="M4 7h16v2H4V7Zm0 8h16v2H4v-2Zm0-4h16v2H4v-2Z"
@@ -302,7 +300,7 @@ export default function Home() {
                   <div
                     role="menu"
                     className={[
-                      "absolute z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-white/10 bg-black/70 backdrop-blur-md shadow-xl text-white",
+                      "absolute z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-black/10 bg-white/90 backdrop-blur-md shadow-xl text-neutral-900",
                       isAr ? "left-0" : "right-0",
                     ].join(" ")}
                   >
@@ -310,32 +308,44 @@ export default function Home() {
                       role="menuitem"
                       href="#about"
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-4 text-sm hover:bg-white/10 transition"
+                      className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
                       {isAr ? "اعرف أكثر" : "Learn more"}
                     </a>
+
                     <a
                       role="menuitem"
-                      href="/booking"
+                      href={aboutHref}
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-4 text-sm hover:bg-white/10 transition"
+                      className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
+                    >
+                      {isAr ? "عن زوّار" : "About Zowar"}
+                    </a>
+
+                    <a
+                      role="menuitem"
+                      href={bookingHref}
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
                       {isAr ? "احجز الآن" : "Book now"}
                     </a>
-                    <div className="h-px bg-white/10" />
+
+                    <div className="h-px bg-black/10" />
+
                     <a
                       role="menuitem"
-                      href="/collaborate"
+                      href={collaborateHref}
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-4 text-sm hover:bg-white/10 transition"
+                      className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
                       {isAr ? "تعاون معنا" : "Collaborate with us"}
                     </a>
                     <a
                       role="menuitem"
-                      href="/portal"
+                      href={portalHref}
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-4 text-sm hover:bg-white/10 transition"
+                      className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
                       {isAr ? "بوابة الألغاز 🔒" : "Puzzle Portal 🔒"}
                     </a>
@@ -348,10 +358,7 @@ export default function Home() {
       </header>
 
       {/* ==================== HERO ==================== */}
-      <section
-        id="home"
-        className="relative w-full overflow-hidden min-h-[78vh] sm:min-h-[86vh]"
-      >
+      <section id="home" className="relative w-full overflow-hidden min-h-[78vh] sm:min-h-[86vh]">
         {/* Background crossfade */}
         {heroMedia.map((m, i) => {
           const active = i === heroIndex;
@@ -381,8 +388,17 @@ export default function Home() {
         {/* Content */}
         <div className="relative z-10 mx-auto flex min-h-[78vh] sm:min-h-[86vh] max-w-7xl items-center px-6 pt-24 pb-10">
           <div className="w-full text-center">
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-orange-300 drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
-              {isAr ? "حلّ. تذوّق. اكتشف عمّان" : "Solve. Taste. Discover Amman"}
+            {/* ✅ Premium partial-orange treatment using YOUR utilities (z-orange) */}
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
+              {isAr ? (
+                <span className="z-orange">حلّ. تذوّق. اكتشف</span>
+              ) : (
+                <>
+                  <span className="z-orange">Solve.</span>{" "}
+                  <span className="z-orange">Taste.</span>{" "}
+                  <span className="z-orange">Discover</span> Amman
+                </>
+              )}
             </h1>
 
             <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-lg text-white/90">
@@ -393,8 +409,8 @@ export default function Home() {
 
             <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
-                href="/booking"
-                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-orange-300 text-black px-10 py-4 text-sm font-bold tracking-wide transition hover:bg-orange-200"
+                href={bookingHref}
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-z-orange text-neutral-950 px-10 py-4 text-sm font-extrabold tracking-wide transition hover:opacity-95"
               >
                 {isAr ? "احجز التجربة" : "Book the Experience"}
               </a>
@@ -407,8 +423,6 @@ export default function Home() {
               </a>
             </div>
 
-            {/* NOTE: Removed the crossed-out hero pills + payment currency line */}
-            {/* Keeping currency state in code in case you want it later */}
             <span className="sr-only">Currency: {currency}</span>
           </div>
         </div>
@@ -417,9 +431,7 @@ export default function Home() {
       {/* ==================== HOW IT WORKS ==================== */}
       <section className="bg-[#fff3e8] py-14 sm:py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-center text-3xl md:text-4xl font-bold">
-            {isAr ? "كيف تعمل التجربة" : "How It Works"}
-          </h2>
+          <h2 className="text-center text-3xl md:text-4xl font-bold">{isAr ? "كيف تعمل التجربة" : "How It Works"}</h2>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
@@ -448,7 +460,8 @@ export default function Home() {
               >
                 <div className="flex items-center justify-between">
                   <div className="text-2xl">{c.icon}</div>
-                  <div className="text-orange-500 font-extrabold text-2xl">{c.n}</div>
+                  {/* ✅ your utility */}
+                  <div className="z-orange font-extrabold text-2xl">{c.n}</div>
                 </div>
                 <div className="mt-4 font-bold text-lg">{c.title}</div>
                 <div className="mt-2 text-sm text-neutral-600 leading-relaxed">{c.body}</div>
@@ -473,8 +486,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== SNAPSHOT ROW (kept) ==================== */}
-      <section className="py-10 sm:py-12 bg-white">
+      {/* ==================== SNAPSHOT ROW ==================== */}
+      <section className="py-10 sm:py-12 bg-transparent">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-wrap items-center justify-center gap-3">
             {[
@@ -488,7 +501,7 @@ export default function Home() {
             ].map((x) => (
               <div
                 key={x.label}
-                className="min-w-[150px] rounded-2xl bg-neutral-100 border border-black/5 px-6 py-4 text-center"
+                className="min-w-[150px] rounded-2xl bg-white/80 border border-black/5 px-6 py-4 text-center shadow-sm"
               >
                 <div className="text-xl">{x.icon}</div>
                 <div className="mt-2 text-xs font-semibold text-neutral-800">{x.label}</div>
@@ -498,7 +511,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== LEARN MORE / ABOUT (animated tab section) ==================== */}
+      {/* ==================== LEARN MORE / ABOUT ==================== */}
       <section id="about" className="mt-14 lg:mt-24 px-6 max-w-7xl mx-auto">
         <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-neutral-700">
           {aboutTabs.map((tab) => {
@@ -520,7 +533,7 @@ export default function Home() {
                 <TabLabel label={labelText} flip={flipText} active={active} />
                 <span
                   className={[
-                    "absolute left-1/2 -bottom-[1px] h-[2px] rounded-full bg-orange-500 transition-all",
+                    "absolute left-1/2 -bottom-[1px] h-[2px] rounded-full bg-z-orange transition-all",
                     active
                       ? "w-28 -translate-x-1/2 opacity-100"
                       : "w-16 -translate-x-1/2 opacity-40 group-hover:opacity-70",
@@ -531,7 +544,7 @@ export default function Home() {
           })}
         </div>
 
-        <div className="mt-8 rounded-3xl border border-neutral-200 bg-white p-8 md:p-10 shadow-sm">
+        <div className="mt-8 rounded-3xl border border-black/10 bg-white/80 backdrop-blur-xl p-8 md:p-10 shadow-[0_18px_60px_rgba(0,0,0,0.08)]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div className="rounded-3xl overflow-hidden bg-neutral-100">
               <img
@@ -542,8 +555,8 @@ export default function Home() {
             </div>
 
             <div className={isAr ? "text-right" : "text-left"}>
-              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100">
-                <span className="text-lg">◎</span>
+              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/[0.03] border border-black/10">
+                <span className="text-lg z-orange">◎</span>
               </div>
 
               <h3 className="text-2xl md:text-3xl font-medium">
@@ -557,11 +570,11 @@ export default function Home() {
               {activeAbout.showCTA ? (
                 <div className="mt-8">
                   <a
-                    href="/booking"
-                    className="inline-flex items-center gap-3 rounded-full bg-orange-500 text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition"
+                    href={bookingHref}
+                    className="inline-flex items-center gap-3 rounded-full bg-z-orange text-neutral-950 px-6 py-3 text-sm font-extrabold hover:opacity-95 transition"
                   >
                     {isAr ? "احجز الآن" : "Book now"}
-                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-white/25">
+                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-black/10">
                       →
                     </span>
                   </a>
@@ -580,10 +593,8 @@ export default function Home() {
 
       {/* ==================== CONTACT ==================== */}
       <section id="contact" className="px-6 max-w-7xl mx-auto py-16">
-        <div className="rounded-3xl border border-neutral-200 bg-white p-8 md:p-10 shadow-sm">
-          <h3 className="text-2xl md:text-3xl font-bold">
-            {isAr ? "تواصل معنا" : "Contact"}
-          </h3>
+        <div className="rounded-3xl border border-black/10 bg-white/80 backdrop-blur-xl p-8 md:p-10 shadow-[0_18px_60px_rgba(0,0,0,0.08)]">
+          <h3 className="text-2xl md:text-3xl font-bold">{isAr ? "تواصل معنا" : "Contact"}</h3>
           <p className="mt-3 text-neutral-600">
             {isAr ? "هل لديك أسئلة أو ترتيبات خاصة؟" : "Questions or special accommodations?"}
           </p>
@@ -591,14 +602,14 @@ export default function Home() {
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             <a
               href="mailto:hello@zowar.com"
-              className="inline-flex items-center justify-center rounded-full bg-orange-500 text-white px-6 py-4 text-sm font-semibold transition hover:bg-orange-400"
+              className="inline-flex items-center justify-center rounded-full bg-z-orange text-neutral-950 px-6 py-4 text-sm font-extrabold transition hover:opacity-95"
             >
               {isAr ? "راسلنا" : "Email us"}
             </a>
 
             <a
-              href="/booking"
-              className="inline-flex items-center justify-center rounded-full border border-orange-500 text-orange-500 px-6 py-4 text-sm font-semibold transition hover:bg-orange-50"
+              href={bookingHref}
+              className="inline-flex items-center justify-center rounded-full border border-z-orange px-6 py-4 text-sm font-semibold transition hover:bg-black/[0.03] z-orange"
             >
               {isAr ? "اذهب للحجز" : "Go to booking"}
             </a>
@@ -608,7 +619,6 @@ export default function Home() {
 
       {/* ==================== FOOTER ==================== */}
       <footer className="bg-black text-white">
-        {/* extra bottom padding so sticky CTA doesn't cover footer on mobile */}
         <div className="max-w-7xl mx-auto px-6 py-14 pb-28 md:pb-14">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
             <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-10">
@@ -617,21 +627,21 @@ export default function Home() {
                   <span className="text-xs uppercase tracking-[0.22em] text-white/60">
                     {isAr ? footer.explore.ar : footer.explore.en}
                   </span>
-                  <span className="h-[2px] w-12 bg-orange-400/70" />
+                  <span className="h-[2px] w-12 bg-z-orange/70" />
                 </div>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li>
-                    <a className="hover:text-orange-300 transition" href="#about">
+                    <a className="hover:text-white transition z-orange" href={aboutHref}>
                       {isAr ? footer.links.about.ar : footer.links.about.en}
                     </a>
                   </li>
                   <li>
-                    <a className="hover:text-orange-300 transition" href="/booking">
+                    <a className="hover:text-white transition z-orange" href={bookingHref}>
                       {isAr ? footer.links.hunts.ar : footer.links.hunts.en}
                     </a>
                   </li>
                   <li>
-                    <a className="hover:text-orange-300 transition" href="#">
+                    <a className="hover:text-white/90 transition" href="#">
                       {isAr ? footer.links.testimonials.ar : footer.links.testimonials.en}
                     </a>
                   </li>
@@ -643,21 +653,21 @@ export default function Home() {
                   <span className="text-xs uppercase tracking-[0.22em] text-white/60">
                     {isAr ? footer.support.ar : footer.support.en}
                   </span>
-                  <span className="h-[2px] w-12 bg-orange-400/70" />
+                  <span className="h-[2px] w-12 bg-z-orange/70" />
                 </div>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li>
-                    <a className="hover:text-orange-300 transition" href="#">
+                    <a className="hover:text-white/90 transition" href="#">
                       {isAr ? footer.links.faq.ar : footer.links.faq.en}
                     </a>
                   </li>
                   <li>
-                    <a className="hover:text-orange-300 transition" href="#contact">
+                    <a className="hover:text-white/90 transition" href="#contact">
                       {isAr ? footer.links.contact.ar : footer.links.contact.en}
                     </a>
                   </li>
                   <li>
-                    <a className="hover:text-orange-300 transition" href="#">
+                    <a className="hover:text-white/90 transition" href="#">
                       {isAr ? footer.links.privacy.ar : footer.links.privacy.en}
                     </a>
                   </li>
@@ -669,21 +679,21 @@ export default function Home() {
                   <span className="text-xs uppercase tracking-[0.22em] text-white/60">
                     {isAr ? footer.connect.ar : footer.connect.en}
                   </span>
-                  <span className="h-[2px] w-12 bg-orange-400/70" />
+                  <span className="h-[2px] w-12 bg-z-orange/70" />
                 </div>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li>
-                    <a className="hover:text-orange-300 transition" href="#">
+                    <a className="hover:text-white/90 transition" href="#">
                       {isAr ? footer.links.blog.ar : footer.links.blog.en}
                     </a>
                   </li>
                   <li>
-                    <a className="hover:text-orange-300 transition" href="#">
+                    <a className="hover:text-white/90 transition" href="#">
                       {isAr ? footer.links.newsletter.ar : footer.links.newsletter.en}
                     </a>
                   </li>
                   <li>
-                    <a className="hover:text-orange-300 transition" href="/collaborate">
+                    <a className="hover:text-white/90 transition" href={collaborateHref}>
                       {isAr ? footer.links.partnerships.ar : footer.links.partnerships.en}
                     </a>
                   </li>
@@ -691,21 +701,17 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right with orange vertical line + socials */}
             <div className="md:col-span-4 flex md:justify-end">
               <div className="flex items-stretch gap-8">
-                <div className="hidden md:block w-px bg-orange-400/35" />
+                <div className="hidden md:block w-px bg-z-orange/35" />
 
                 <div className={isAr ? "text-right" : "text-left"}>
-                  <div className="text-sm font-semibold">
-                    {isAr ? footer.rightTitle.ar : footer.rightTitle.en}
-                  </div>
+                  <div className="text-sm font-semibold">{isAr ? footer.rightTitle.ar : footer.rightTitle.en}</div>
 
                   <div className="mt-4 flex items-center gap-4">
-                    {/* Facebook */}
                     <a
                       href="#"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 hover:border-orange-300 hover:text-orange-300 transition"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 hover:border-z-orange hover:text-white transition"
                       aria-label="Facebook"
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
@@ -716,10 +722,9 @@ export default function Home() {
                       </svg>
                     </a>
 
-                    {/* Instagram */}
                     <a
                       href="#"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 hover:border-orange-300 hover:text-orange-300 transition"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 hover:border-z-orange hover:text-white transition"
                       aria-label="Instagram"
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
@@ -730,10 +735,9 @@ export default function Home() {
                       </svg>
                     </a>
 
-                    {/* TikTok */}
                     <a
                       href="#"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 hover:border-orange-300 hover:text-orange-300 transition"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 hover:border-z-orange hover:text-white transition"
                       aria-label="TikTok"
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
@@ -757,11 +761,11 @@ export default function Home() {
           <div className="mt-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-white/60">
             <span>{t.sections.footerCity}</span>
             <div className="flex items-center gap-4">
-              <a href="#" className="hover:text-orange-300 transition">
+              <a href="#" className="hover:text-white transition">
                 {isAr ? footer.terms.ar : footer.terms.en}
               </a>
               <span className="opacity-30">|</span>
-              <a href="#" className="hover:text-orange-300 transition">
+              <a href="#" className="hover:text-white transition">
                 {isAr ? footer.links.privacy.ar : footer.links.privacy.en}
               </a>
             </div>
@@ -769,13 +773,13 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* ==================== STICKY MOBILE CTA (COLOR MATCHES HERO) ==================== */}
+      {/* ==================== STICKY MOBILE CTA ==================== */}
       <div className="fixed bottom-0 left-0 right-0 z-[60] md:hidden">
         <div className="mx-auto max-w-7xl px-5 pb-4">
-          <div className="rounded-2xl border border-white/10 bg-black/35 backdrop-blur-md shadow-xl p-3">
+          <div className="rounded-2xl border border-black/10 bg-white/70 backdrop-blur-md shadow-xl p-3">
             <a
               href={stickyCtaHref}
-              className="inline-flex w-full items-center justify-center rounded-xl bg-orange-300 text-black py-4 text-sm font-extrabold tracking-wide transition active:scale-[0.99] hover:bg-orange-200"
+              className="inline-flex w-full items-center justify-center rounded-xl bg-z-orange text-neutral-950 py-4 text-sm font-extrabold tracking-wide transition active:scale-[0.99] hover:opacity-95"
               aria-label={stickyCtaLabel}
             >
               {stickyCtaLabel}
@@ -788,60 +792,7 @@ export default function Home() {
       </div>
 
       {/* ==================== GLOBAL STYLES ==================== */}
-      <style jsx global>{`
-        /* Flash orange effect used by Menu + Language buttons */
-        .flash-orange {
-          transition: color 220ms ease, border-color 220ms ease;
-        }
-        .flash-orange::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: rgba(249, 115, 22, 0.95);
-          opacity: 0;
-          transform: scale(0.98);
-          transition: opacity 220ms ease, transform 220ms ease;
-          z-index: -1;
-        }
-        .flash-orange:hover {
-          border-color: rgba(251, 146, 60, 0.95);
-          color: #111;
-        }
-        .flash-orange:hover::before {
-          opacity: 1;
-          transform: scale(1);
-        }
-        .flash-orange[data-flash] {
-          position: relative;
-          z-index: 0;
-        }
-        .flash-orange[data-flash]::after {
-          content: "";
-          position: absolute;
-          inset: -2px;
-          border-radius: 9999px;
-          background: rgba(249, 115, 22, 0.25);
-          opacity: 0;
-          pointer-events: none;
-        }
-        .flash-orange[data-flash][data-flash]::after {
-          animation: orangePulse 520ms ease-out;
-        }
-        @keyframes orangePulse {
-          0% {
-            opacity: 0;
-            transform: scale(0.98);
-          }
-          35% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          100% {
-            opacity: 0;
-            transform: scale(1.02);
-          }
-        }
-      `}</style>
+      {/* ✅ REMOVE the old inline flash-orange CSS (it was overriding your globals + hiding orange with z-index:-1) */}
     </main>
   );
 }

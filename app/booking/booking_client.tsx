@@ -33,11 +33,14 @@ const copy = {
     subtotal: "Subtotal",
     total: "Total",
     pay: "Proceed to Payment",
-    loading: "Redirecting to Stripe…",
+    loading: "Redirecting…",
     toggle: "AR",
     currency: "JOD",
     home: "Home",
     portal: "Go to Portal",
+    codeApplied: "Code applied",
+    freeCodeApplied: "Free booking code applied",
+    discountLabel: "Discount",
   },
   ar: {
     title: "الحجز",
@@ -59,11 +62,14 @@ const copy = {
     subtotal: "المجموع الفرعي",
     total: "الإجمالي",
     pay: "الانتقال للدفع",
-    loading: "جاري التحويل إلى Stripe…",
+    loading: "جاري التحويل…",
     toggle: "EN",
     currency: "د.أ",
     home: "الرئيسية",
     portal: "الذهاب إلى البوابة",
+    codeApplied: "تم تطبيق الكود",
+    freeCodeApplied: "تم تطبيق كود الحجز المجاني",
+    discountLabel: "الخصم",
   },
 } as const;
 
@@ -97,16 +103,29 @@ export default function BookingClient({ locale }: BookingClientProps) {
   const [code, setCode] = React.useState("");
   const [discount, setDiscount] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
+  const [codeMessage, setCodeMessage] = React.useState("");
 
-  const pricePerPerson = 25;
+  // Must match backend PRICE_PER_PERSON_JOD
+  const pricePerPerson = 20;
   const subtotal = Math.max(1, qty) * pricePerPerson;
   const total = clamp(subtotal - discount, 0, 999999);
 
   function applyCode() {
     const normalized = code.trim().toLowerCase();
-    if (normalized === "zowar10") setDiscount(10);
-    else if (normalized === "zowar5") setDiscount(5);
-    else setDiscount(0);
+
+    if (normalized === "zowar10") {
+      setDiscount(10);
+      setCodeMessage(t.codeApplied);
+    } else if (normalized === "zowar5") {
+      setDiscount(5);
+      setCodeMessage(t.codeApplied);
+    } else if (normalized === "zowarfree") {
+      setDiscount(total);
+      setCodeMessage(t.freeCodeApplied);
+    } else {
+      setDiscount(0);
+      setCodeMessage("");
+    }
   }
 
   async function startCheckout() {
@@ -126,20 +145,11 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
       const data = await res.json();
 
-      if (!res.ok) throw new Error(data.error || "Checkout failed");
-
-      if (data.free) {
-        localStorage.setItem("zowar_unlocked", "1");
-        window.location.href = portalHref;
-        return;
+      if (!res.ok || !data?.url) {
+        throw new Error(data?.error || "Checkout failed");
       }
 
-      if (data.url) {
-        window.location.href = data.url;
-        return;
-      }
-
-      throw new Error("Checkout failed");
+      window.location.href = data.url;
     } catch (e: any) {
       alert(e?.message ?? "Something went wrong.");
       setLoading(false);
@@ -157,12 +167,14 @@ export default function BookingClient({ locale }: BookingClientProps) {
   const subtleBtn =
     "rounded-xl border border-black/10 bg-white px-3 py-2 text-sm hover:bg-black/[0.03]";
 
+  const inputClass =
+    "mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-z-orange";
+
   /* ---------------- Render ---------------- */
 
   return (
     <main dir={isAr ? "rtl" : "ltr"} className={pageBg}>
       <div className="mx-auto max-w-6xl px-6 py-10">
-        {/* Top bar */}
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-start gap-4">
             <Link href={homeHref} aria-label="Go to home" className="mt-1 inline-flex">
@@ -201,15 +213,13 @@ export default function BookingClient({ locale }: BookingClientProps) {
           </div>
         </div>
 
-        {/* Layout */}
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          {/* Left */}
           <section className={`${glassCard} p-6`}>
             <div className="text-base font-semibold">{t.nextStepsTitle}</div>
             <ul className="mt-4 space-y-2 text-sm text-neutral-700">
               {t.nextSteps.map((step, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="mt-1 h-2 w-2 rounded-full bg-[#ff8936]" />
+                  <span className="bg-z-orange mt-1 h-2 w-2 rounded-full" />
                   {step}
                 </li>
               ))}
@@ -221,7 +231,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3"
+                className={inputClass}
               />
             </div>
 
@@ -232,12 +242,35 @@ export default function BookingClient({ locale }: BookingClientProps) {
                 min={1}
                 value={qty}
                 onChange={(e) => setQty(Number(e.target.value))}
-                className="mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3"
+                className={inputClass}
               />
+            </div>
+
+            <div className="mt-6">
+              <label className="text-sm text-neutral-600">{t.discount}</label>
+              <div className="mt-2 flex gap-2">
+                <input
+                  type="text"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  placeholder={isAr ? "أدخل الكود" : "Enter code"}
+                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-z-orange"
+                />
+                <button
+                  type="button"
+                  onClick={applyCode}
+                  className="border-z-orange text-z-orange hover:bg-z-orange-soft rounded-2xl border px-4 py-3 text-sm font-medium transition"
+                >
+                  {t.apply}
+                </button>
+              </div>
+
+              {codeMessage ? (
+                <p className="text-z-orange mt-2 text-sm font-medium">{codeMessage}</p>
+              ) : null}
             </div>
           </section>
 
-          {/* Right */}
           <aside className={`${glassCard} p-6`}>
             <div className="text-base font-semibold">{t.summary}</div>
 
@@ -251,16 +284,16 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
               {discount > 0 && (
                 <div className="flex justify-between">
-                  <span>Discount</span>
+                  <span>{t.discountLabel}</span>
                   <span>
                     -{discount} {t.currency}
                   </span>
                 </div>
               )}
 
-              <div className="flex justify-between font-semibold text-base">
+              <div className="flex justify-between border-t border-black/10 pt-3 text-base font-semibold">
                 <span>{t.total}</span>
-                <span>
+                <span className="text-z-orange">
                   {total} {t.currency}
                 </span>
               </div>
@@ -269,7 +302,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
             <button
               onClick={startCheckout}
               disabled={loading}
-              className="mt-6 w-full rounded-2xl bg-[#ff8936] px-5 py-4 font-semibold text-neutral-950 hover:opacity-95 disabled:opacity-60"
+              className="bg-z-orange glow-z-orange mt-6 w-full rounded-2xl px-5 py-4 font-semibold text-neutral-950 transition hover:opacity-95 disabled:opacity-60"
             >
               {loading ? t.loading : t.pay}
             </button>

@@ -134,6 +134,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
       });
 
       const data = await res.json();
+      console.log("checkout response", data);
 
       /* ---------- FREE CODE PATH ---------- */
 
@@ -261,7 +262,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
                   type="text"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  placeholder="ZOWARFREE"
+                  placeholder="ENTER PROMO"
                   className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none focus:border-z-orange"
                 />
 

@@ -9,24 +9,11 @@ type ReqBody = {
   date: string;
   qty: number;
   locale?: Locale;
-
-  // ✅ Optional promo code (used for FREE bypass)
   code?: string;
 };
 
-/**
- * DISPLAY currency: JOD (what user sees)
- * CHARGE currency: USD (what Stripe charges until JOD is enabled)
- */
-
-// What you want users to pay (displayed) per person in JOD
 const PRICE_PER_PERSON_JOD = 20.0;
-
-// Set a fixed rate you control: USD per 1 JOD
-// Example: 1 JOD = 1.41 USD. Replace with your chosen rate.
 const USD_PER_JOD = 1.41;
-
-// Stripe needs integer cents for USD
 const USD_CENTS = 100;
 
 function safeLocale(x: unknown): Locale {
@@ -34,16 +21,14 @@ function safeLocale(x: unknown): Locale {
 }
 
 function toUsdCentsFromJod(jodAmount: number) {
-  // Convert JOD -> USD -> cents
   const usd = jodAmount * USD_PER_JOD;
   return Math.round(usd * USD_CENTS);
 }
 
-// Optional: nice formatting for metadata
 function format3(n: number) {
-  // 20 -> "20.000" style
   return n.toFixed(3);
 }
+
 function format2(n: number) {
   return n.toFixed(2);
 }
@@ -53,7 +38,6 @@ function getStripe() {
   if (!key) {
     throw new Error("Missing STRIPE_SECRET_KEY environment variable.");
   }
-  // ✅ No apiVersion override
   return new Stripe(key);
 }
 
@@ -68,30 +52,22 @@ export async function POST(req: Request) {
     const date = String(body?.date ?? "").trim();
     const qty = Number(body?.qty ?? 0);
     const locale = safeLocale(body?.locale);
-
-    // ✅ promo code from client
     const submittedCode = normalizeCode(body?.code);
+    const freeCode = normalizeCode(process.env.FREE_BOOKING_CODE);
 
-    // ✅ normalize env code BEFORE using/logging it
-    const FREE_CODE = normalizeCode(process.env.FREE_BOOKING_CODE);
-
-    // Debug logs (safe)
-    console.log("[checkout] submittedCode =", submittedCode);
-    console.log("[checkout] FREE_BOOKING_CODE =", process.env.FREE_BOOKING_CODE);
-    console.log("[checkout] FREE_CODE(normalized) =", FREE_CODE);
+    console.log("[checkout] incoming", {
+      date,
+      qty,
+      locale,
+      submittedCode,
+      freeCode,
+      freeMatch: !!freeCode && !!submittedCode && submittedCode === freeCode,
+    });
 
     if (!date || !Number.isFinite(qty) || qty < 1) {
       return Response.json({ error: "Missing booking data." }, { status: 400 });
     }
 
-    // ✅ FREE BYPASS (no Stripe)
-    // Put this in .env.local:
-    // FREE_BOOKING_CODE=ZOWARFREE
-    if (FREE_CODE && submittedCode && submittedCode === FREE_CODE) {
-      return Response.json({ free: true }, { status: 200 });
-    }
-
-    // Origin fallback (works outside Vercel too)
     const origin =
       req.headers.get("origin") ||
       process.env.NEXT_PUBLIC_SITE_URL ||
@@ -103,24 +79,38 @@ export async function POST(req: Request) {
     const cancelUrl = new URL("/booking", origin);
     cancelUrl.searchParams.set("lang", locale);
 
-    // Charge per person in USD cents (derived from JOD display amount)
-    const unitAmountUsdCents = toUsdCentsFromJod(PRICE_PER_PERSON_JOD);
+    // FREE BYPASS
+    if (freeCode && submittedCode && submittedCode === freeCode) {
+      successUrl.searchParams.set("free", "1");
 
-    // For metadata clarity
+      console.log("[checkout] FREE BRANCH HIT", {
+        redirect: successUrl.toString(),
+      });
+
+      return Response.json(
+        {
+          url: successUrl.toString(),
+          free: true,
+          debug: "FREE_BRANCH_HIT",
+        },
+        { status: 200 }
+      );
+    }
+
+    const unitAmountUsdCents = toUsdCentsFromJod(PRICE_PER_PERSON_JOD);
     const unitAmountUsd = unitAmountUsdCents / 100;
     const totalJod = PRICE_PER_PERSON_JOD * qty;
     const totalUsd = unitAmountUsd * qty;
 
+    console.log("[checkout] before stripe init");
     const stripe = getStripe();
+
+    console.log("[checkout] before stripe session create");
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       ui_mode: "hosted",
-
-      // CHARGE currency (Stripe)
       currency: "usd",
-
-      // Stripe’s allowed locales are limited; casting is okay since we only send "en" or "ar"
       locale: locale as unknown as Stripe.Checkout.SessionCreateParams.Locale,
 
       line_items: [
@@ -138,7 +128,7 @@ export async function POST(req: Request) {
                       PRICE_PER_PERSON_JOD
                     )} JOD per person`,
             },
-            unit_amount: unitAmountUsdCents, // USD cents
+            unit_amount: unitAmountUsdCents,
           },
           quantity: qty,
         },
@@ -151,29 +141,32 @@ export async function POST(req: Request) {
         date,
         qty: String(qty),
         lang: locale,
-
-        // Debugging / traceability
         promo_code_entered: submittedCode || "",
         promo_free_enabled: "false",
-
-        // What user sees
         display_currency: "jod",
         display_unit_amount: format3(PRICE_PER_PERSON_JOD),
         display_total_amount: format3(totalJod),
-
-        // What Stripe charges
         charge_currency: "usd",
         charge_unit_amount: format2(unitAmountUsd),
         charge_total_amount: format2(totalUsd),
-
-        // Your chosen conversion rate
         usd_per_jod: String(USD_PER_JOD),
       },
     });
 
+    console.log("[checkout] stripe session created", { url: session.url });
+
     return Response.json({ url: session.url }, { status: 200 });
   } catch (err: any) {
-    console.error("Stripe checkout error:", err?.message ?? err);
-    return Response.json({ error: err?.message || "Checkout failed." }, { status: 500 });
+    console.error("Stripe checkout error FULL:", err);
+
+    return Response.json(
+      {
+        error: err?.message || "Checkout failed.",
+        type: err?.type || null,
+        code: err?.code || null,
+        rawType: err?.rawType || null,
+      },
+      { status: 500 }
+    );
   }
 }

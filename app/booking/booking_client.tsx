@@ -25,7 +25,6 @@ const copy = {
       "Arrive and start solving",
     ],
     chooseDate: "Choose a date",
-    hint: "Pick the day you want to start the experience.",
     qty: "Guests",
     discount: "Discount code",
     apply: "Apply",
@@ -38,9 +37,7 @@ const copy = {
     currency: "JOD",
     home: "Home",
     portal: "Go to Portal",
-    codeApplied: "Code applied",
     freeCodeApplied: "Free booking code applied",
-    discountLabel: "Discount",
   },
   ar: {
     title: "الحجز",
@@ -54,7 +51,6 @@ const copy = {
       "الوصول والبدء بحل الألغاز",
     ],
     chooseDate: "اختر التاريخ",
-    hint: "اختر اليوم الذي تريد بدء التجربة فيه.",
     qty: "عدد الأشخاص",
     discount: "كود خصم",
     apply: "تطبيق",
@@ -67,9 +63,7 @@ const copy = {
     currency: "د.أ",
     home: "الرئيسية",
     portal: "الذهاب إلى البوابة",
-    codeApplied: "تم تطبيق الكود",
     freeCodeApplied: "تم تطبيق كود الحجز المجاني",
-    discountLabel: "الخصم",
   },
 } as const;
 
@@ -93,33 +87,27 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
   /* ---------------- State ---------------- */
 
-  const [date, setDate] = React.useState<string>(() => {
+  const [date, setDate] = React.useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
     return d.toISOString().slice(0, 10);
   });
 
-  const [qty, setQty] = React.useState<number>(2);
+  const [qty, setQty] = React.useState(2);
   const [code, setCode] = React.useState("");
   const [discount, setDiscount] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [codeMessage, setCodeMessage] = React.useState("");
 
-  // Must match backend PRICE_PER_PERSON_JOD
   const pricePerPerson = 20;
+
   const subtotal = Math.max(1, qty) * pricePerPerson;
   const total = clamp(subtotal - discount, 0, 999999);
 
   function applyCode() {
     const normalized = code.trim().toLowerCase();
 
-    if (normalized === "zowar10") {
-      setDiscount(10);
-      setCodeMessage(t.codeApplied);
-    } else if (normalized === "zowar5") {
-      setDiscount(5);
-      setCodeMessage(t.codeApplied);
-    } else if (normalized === "zowarfree") {
+    if (normalized === "zowarfree") {
       setDiscount(total);
       setCodeMessage(t.freeCodeApplied);
     } else {
@@ -127,6 +115,8 @@ export default function BookingClient({ locale }: BookingClientProps) {
       setCodeMessage("");
     }
   }
+
+  /* ---------------- Checkout ---------------- */
 
   async function startCheckout() {
     try {
@@ -144,6 +134,15 @@ export default function BookingClient({ locale }: BookingClientProps) {
       });
 
       const data = await res.json();
+
+      /* ---------- FREE CODE PATH ---------- */
+
+      if (res.ok && data?.free) {
+        window.location.href = `/success?${langParam}`;
+        return;
+      }
+
+      /* ---------- NORMAL STRIPE PATH ---------- */
 
       if (!res.ok || !data?.url) {
         throw new Error(data?.error || "Checkout failed");
@@ -175,21 +174,22 @@ export default function BookingClient({ locale }: BookingClientProps) {
   return (
     <main dir={isAr ? "rtl" : "ltr"} className={pageBg}>
       <div className="mx-auto max-w-6xl px-6 py-10">
+        {/* Header */}
+
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-start gap-4">
-            <Link href={homeHref} aria-label="Go to home" className="mt-1 inline-flex">
+            <Link href={homeHref} className="mt-1 inline-flex">
               <Image
                 src="/logo.png"
                 alt="ZOWAR logo"
                 width={72}
                 height={72}
                 priority
-                className="opacity-95 transition-transform duration-200 ease-out hover:opacity-100 hover:-translate-y-[2px] hover:rotate-[-1deg] hover:scale-[1.02]"
               />
             </Link>
 
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight">{t.title}</h1>
+              <h1 className="text-3xl font-semibold">{t.title}</h1>
               <p className="mt-2 max-w-2xl text-neutral-600">{t.subtitle}</p>
 
               <div className="mt-3">
@@ -213,9 +213,14 @@ export default function BookingClient({ locale }: BookingClientProps) {
           </div>
         </div>
 
+        {/* Layout */}
+
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          {/* Left Card */}
+
           <section className={`${glassCard} p-6`}>
             <div className="text-base font-semibold">{t.nextStepsTitle}</div>
+
             <ul className="mt-4 space-y-2 text-sm text-neutral-700">
               {t.nextSteps.map((step, i) => (
                 <li key={i} className="flex items-start gap-2">
@@ -227,6 +232,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
             <div className="mt-6">
               <label className="text-sm text-neutral-600">{t.chooseDate}</label>
+
               <input
                 type="date"
                 value={date}
@@ -237,6 +243,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
             <div className="mt-6">
               <label className="text-sm text-neutral-600">{t.qty}</label>
+
               <input
                 type="number"
                 min={1}
@@ -248,28 +255,34 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
             <div className="mt-6">
               <label className="text-sm text-neutral-600">{t.discount}</label>
+
               <div className="mt-2 flex gap-2">
                 <input
                   type="text"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  placeholder={isAr ? "أدخل الكود" : "Enter code"}
-                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-z-orange"
+                  placeholder="ZOWARFREE"
+                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none focus:border-z-orange"
                 />
+
                 <button
                   type="button"
                   onClick={applyCode}
-                  className="border-z-orange text-z-orange hover:bg-z-orange-soft rounded-2xl border px-4 py-3 text-sm font-medium transition"
+                  className="border-z-orange text-z-orange hover:bg-z-orange-soft rounded-2xl border px-4 py-3 text-sm font-medium"
                 >
                   {t.apply}
                 </button>
               </div>
 
-              {codeMessage ? (
-                <p className="text-z-orange mt-2 text-sm font-medium">{codeMessage}</p>
-              ) : null}
+              {codeMessage && (
+                <p className="text-z-orange mt-2 text-sm font-medium">
+                  {codeMessage}
+                </p>
+              )}
             </div>
           </section>
+
+          {/* Order Summary */}
 
           <aside className={`${glassCard} p-6`}>
             <div className="text-base font-semibold">{t.summary}</div>
@@ -284,7 +297,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
               {discount > 0 && (
                 <div className="flex justify-between">
-                  <span>{t.discountLabel}</span>
+                  <span>Discount</span>
                   <span>
                     -{discount} {t.currency}
                   </span>
@@ -293,6 +306,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
               <div className="flex justify-between border-t border-black/10 pt-3 text-base font-semibold">
                 <span>{t.total}</span>
+
                 <span className="text-z-orange">
                   {total} {t.currency}
                 </span>
@@ -302,7 +316,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
             <button
               onClick={startCheckout}
               disabled={loading}
-              className="bg-z-orange glow-z-orange mt-6 w-full rounded-2xl px-5 py-4 font-semibold text-neutral-950 transition hover:opacity-95 disabled:opacity-60"
+              className="bg-z-orange glow-z-orange mt-6 w-full rounded-2xl px-5 py-4 font-semibold text-neutral-950 disabled:opacity-60"
             >
               {loading ? t.loading : t.pay}
             </button>

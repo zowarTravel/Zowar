@@ -35,8 +35,8 @@ type Props = {
 
 type Spark = {
   id: string;
-  x: number; // %
-  y: number; // %
+  x: number;
+  y: number;
 };
 
 export default function PuzzleR5({ locale, onSolved }: Props) {
@@ -53,27 +53,21 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
   const [order, setOrder] = React.useState<number[]>(() => shuffled(total));
   const [selected, setSelected] = React.useState<number | null>(null);
 
-  // locked[i] === true means slot i currently contains correct piece
   const [locked, setLocked] = React.useState<boolean[]>(() =>
     Array.from({ length: total }, () => false)
   );
 
-  // snap pulse when a tile becomes newly correct
   const prevLockedRef = React.useRef<boolean[]>(Array.from({ length: total }, () => false));
   const [snapPulse, setSnapPulse] = React.useState<number[]>(() =>
     Array.from({ length: total }, () => 0)
   );
 
-  // Hint mode: show green/red feedback for correct/incorrect tiles
   const [showHint, setShowHint] = React.useState(false);
-
   const [solved, setSolved] = React.useState(false);
 
-  // mergeAfterSolve: keeps glass tiles for a moment before collapsing into seamless image
   const [merged, setMerged] = React.useState(false);
   const mergeTimerRef = React.useRef<number | null>(null);
 
-  // subtle sparks on solve
   const [sparks, setSparks] = React.useState<Spark[]>([]);
   const sparkTimerRef = React.useRef<number | null>(null);
 
@@ -81,7 +75,6 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
 
   /* -------------------- EFFECTS -------------------- */
 
-  // Update locked + snap pulses
   React.useEffect(() => {
     const nextLocked = order.map((pieceId, slotIndex) => pieceId === slotIndex);
 
@@ -106,7 +99,6 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order, solved]);
 
-  // Fire solved once + sparks + schedule merge
   React.useEffect(() => {
     if (!solved || solvedOnceRef.current) return;
     solvedOnceRef.current = true;
@@ -114,7 +106,6 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     setRoundSolved("r5");
     onSolved?.();
 
-    // sparks
     const count = 16;
     setSparks(
       Array.from({ length: count }, (_, i) => ({
@@ -127,7 +118,6 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     if (sparkTimerRef.current) window.clearTimeout(sparkTimerRef.current);
     sparkTimerRef.current = window.setTimeout(() => setSparks([]), 900);
 
-    // merge after 600ms
     setMerged(false);
     if (mergeTimerRef.current) window.clearTimeout(mergeTimerRef.current);
     mergeTimerRef.current = window.setTimeout(() => setMerged(true), 600);
@@ -195,7 +185,8 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     t.ui?.progressLabel?.[safeLocale] ?? (isAr ? "القطع المثبّتة:" : "Locked pieces:");
 
   const success: string =
-    t.success?.[safeLocale] ?? (isAr ? "نعم! اكتملت الصورة بالكامل! ✨" : "Yes! You completed the image! ✨");
+    t.success?.[safeLocale] ??
+    (isAr ? "نعم! اكتملت الصورة بالكامل! ✨" : "Yes! You completed the image! ✨");
 
   const finalCTA: string =
     safeLocale === "en"
@@ -207,23 +198,24 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
   /* -------------------- STYLES -------------------- */
 
   const card =
-    "rounded-3xl border border-white/15 bg-white/10 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.25)]";
-  const orangeGlow =
-    "shadow-[0_0_0_1px_rgba(255,137,54,0.28),0_20px_60px_rgba(255,137,54,0.10)]";
+    "rounded-3xl border border-black/10 " +
+    "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))] " +
+    "shadow-[0_16px_50px_rgba(0,0,0,0.10)]";
 
   const btn =
-    "rounded-2xl px-4 py-2 text-sm font-medium transition active:scale-[0.99] border border-white/15 bg-white/10 hover:bg-white/15 disabled:opacity-50 disabled:cursor-not-allowed";
-  const btnOrange =
-    "rounded-2xl px-4 py-2 text-sm font-semibold transition active:scale-[0.99] border border-white/15 bg-[#ff8936]/20 hover:bg-[#ff8936]/25";
+    "rounded-2xl px-4 py-2 text-sm font-medium transition active:scale-[0.99] " +
+    "border border-black/10 bg-white text-neutral-900 shadow-sm hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed";
 
-  // While solving: tiles have gap + rounded frames.
-  // After merge: gap collapses to 0 and corners/borders disappear -> seamless.
+  const btnOrange =
+    "rounded-2xl px-4 py-2 text-sm font-semibold transition active:scale-[0.99] " +
+    "border border-z-orange bg-z-orange-soft text-neutral-900 glow-z-orange";
+
   const shouldMerge = solved && merged;
   const gap = shouldMerge ? 0 : grid >= 4 ? 10 : 12;
   const pad = shouldMerge ? 0 : 14;
 
   return (
-    <div dir={isAr ? "rtl" : "ltr"} className="mx-auto w-full max-w-5xl px-4 py-10">
+    <div dir={isAr ? "rtl" : "ltr"} className="mx-auto w-full max-w-5xl px-4 py-8 sm:py-10">
       <style>{`
         @keyframes zowar-snap {
           0%   { transform: scale(1); }
@@ -237,13 +229,16 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
         }
       `}</style>
 
-      <div className={`${card} ${orangeGlow} p-5 sm:p-6`}>
+      <div className={`${card} p-5 sm:p-6`}>
+        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
+        <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white blur-3xl opacity-30" />
+
         {/* Header */}
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div className="relative flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-wider opacity-80">{kicker}</div>
-            <h1 className="mt-1 text-2xl sm:text-3xl font-semibold">{title}</h1>
-            <p className="mt-2 text-sm opacity-90 leading-relaxed">{prompt}</p>
+            <div className="text-xs uppercase tracking-wider text-neutral-500">{kicker}</div>
+            <h1 className="mt-1 text-2xl font-semibold text-neutral-950 sm:text-3xl">{title}</h1>
+            <p className="mt-2 text-sm leading-relaxed text-neutral-700">{prompt}</p>
           </div>
 
           <div className="flex items-center gap-2 pt-2 sm:pt-0">
@@ -256,20 +251,28 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
           </div>
         </div>
 
+        {showHint && !solved ? (
+          <div className="mt-4 rounded-2xl border border-black/8 bg-[#fffaf4] p-4 text-sm text-neutral-700">
+            {isAr
+              ? "القطع الصحيحة تظهر بإطار أخضر، والقطع غير الصحيحة بإطار أحمر. بدّل بين قطعتين في كل مرة."
+              : "Correct pieces show a green outline, and incorrect pieces show a red outline. Swap two pieces at a time."}
+          </div>
+        ) : null}
+
         {/* Board */}
         <div className="mt-6">
           <div className="relative mx-auto w-full max-w-[720px]">
             <div
               className={[
-                "relative aspect-square overflow-hidden border border-white/15",
-                shouldMerge ? "rounded-3xl bg-black/10" : "rounded-[28px] bg-black/20",
+                "relative aspect-square overflow-hidden border border-black/10 bg-white",
+                shouldMerge ? "rounded-3xl" : "rounded-[28px]",
               ].join(" ")}
-              style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.06)" }}
+              style={{ boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.04)" }}
             >
-              {/* Soft sheen */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/20" />
+              {!shouldMerge ? (
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.20),rgba(255,255,255,0)),linear-gradient(0deg,rgba(0,0,0,0.06),rgba(0,0,0,0))]" />
+              ) : null}
 
-              {/* Grid */}
               <div
                 className="absolute inset-0 grid transition-all duration-500 ease-out"
                 style={{
@@ -292,7 +295,6 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                   const pulseKey = snapPulse[slotIndex];
                   const shouldPulse = Boolean(pulseKey) && isCorrect && !shouldMerge;
 
-                  // Hint overlays: correct -> green, incorrect -> red
                   const showHintOverlay = showHint && !solved;
                   const hintRing = showHintOverlay
                     ? isCorrect
@@ -316,9 +318,13 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                         "group relative overflow-hidden transition-transform duration-150 ease-out focus:outline-none",
                         shouldMerge
                           ? "rounded-none border-0 bg-transparent shadow-none"
-                          : "rounded-2xl border border-white/20 bg-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.25)]",
+                          : "rounded-2xl border border-black/10 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.10)]",
                         solved ? "cursor-default" : "cursor-pointer",
-                        isSelected && !solved ? "ring-2 ring-[#ff8936] scale-[0.985]" : !solved ? "hover:-translate-y-[1px]" : "",
+                        isSelected && !solved
+                          ? "scale-[0.985] ring-2 ring-z-orange glow-z-orange"
+                          : !solved
+                          ? "hover:-translate-y-[1px]"
+                          : "",
                         hintRing,
                       ].join(" ")}
                       style={{
@@ -326,37 +332,33 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                       }}
                       aria-label={isAr ? `قطعة ${slotIndex + 1}` : `Tile ${slotIndex + 1}`}
                     >
-                      {/* Image crop */}
                       <div
                         className="absolute inset-0"
                         style={{
                           backgroundImage: canShowImage ? `url(${imageSrc})` : undefined,
                           backgroundSize: `${grid * 100}% ${grid * 100}%`,
                           backgroundPosition: `${bgPosX}% ${bgPosY}%`,
-                          opacity: solved ? 1 : 0.96,
-                          transform: isSelected ? "scale(1.02)" : "scale(1.0)",
+                          opacity: solved ? 1 : 0.98,
+                          transform: isSelected ? "scale(1.02)" : "scale(1)",
                           transition: "transform 160ms ease, opacity 300ms ease",
                         }}
                       />
 
-                      {/* Liquid glass layers (disabled after merge for seamless image) */}
                       {!shouldMerge ? (
                         <>
-                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/18 via-transparent to-black/20" />
-                          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-white/5" />
                           <div
                             className="pointer-events-none absolute inset-0"
                             style={{
                               boxShadow:
-                                "inset 0 0 0 1px rgba(255,255,255,0.10), inset 0 1px 0 rgba(255,255,255,0.08)",
+                                "inset 0 0 0 1px rgba(255,255,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08)",
                             }}
                           />
-                          {/* Hint tint always visible */}
-                          {showHintOverlay ? <div className={`pointer-events-none absolute inset-0 ${hintTint}`} /> : null}
-                          {/* Correct tint (subtle) */}
-                          {isCorrect ? <div className="pointer-events-none absolute inset-0 bg-emerald-400/10" /> : null}
-                          {/* tiny playful sparkle on hover */}
-                          <div className="pointer-events-none absolute -right-6 -top-6 h-14 w-14 rounded-full bg-white/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                          {showHintOverlay ? (
+                            <div className={`pointer-events-none absolute inset-0 ${hintTint}`} />
+                          ) : null}
+                          {isCorrect ? (
+                            <div className="pointer-events-none absolute inset-0 bg-emerald-400/10" />
+                          ) : null}
                         </>
                       ) : null}
                     </button>
@@ -364,7 +366,6 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                 })}
               </div>
 
-              {/* Subtle spark confetti on solve */}
               {sparks.length ? (
                 <div className="pointer-events-none absolute inset-0">
                   {sparks.map((s) => (
@@ -374,9 +375,9 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                       style={{
                         left: `${s.x}%`,
                         top: `${s.y}%`,
-                        background: "rgba(255,255,255,0.75)",
+                        background: "rgba(255,255,255,0.85)",
                         boxShadow:
-                          "0 0 0 1px rgba(255,137,54,0.25), 0 10px 24px rgba(255,137,54,0.12)",
+                          "0 0 0 1px rgba(249,115,22,0.20), 0 10px 24px rgba(249,115,22,0.12)",
                         animation: "zowar-spark 820ms ease-out forwards",
                       }}
                     />
@@ -384,29 +385,22 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                 </div>
               ) : null}
 
-              {/* Solved overlay label */}
               {solved ? (
-                <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
-                  <div className="rounded-2xl border border-white/20 bg-black/30 px-4 py-2 backdrop-blur-xl">
-                    <div className="text-center">
-                      <div className="text-sm font-semibold text-emerald-200">{success}</div>
-                    </div>
+                <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center px-3">
+                  <div className="rounded-2xl border border-emerald-200 bg-white/95 px-4 py-2 shadow-sm">
+                    <div className="text-center text-sm font-semibold text-emerald-700">{success}</div>
                   </div>
                 </div>
               ) : null}
             </div>
 
-            {/* Status row */}
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-sm opacity-90">
+              <div className="text-sm text-neutral-700">
                 {solved ? (
-                  <span className="font-semibold text-emerald-300">{finalCTA}</span>
+                  <span className="font-semibold text-emerald-700">{finalCTA}</span>
                 ) : (
                   <span>
-                    {uiProgressLabel}{" "}
-                    <span className="font-semibold">
-                      {correctCount}/{total}
-                    </span>
+                    {uiProgressLabel} <span className="font-semibold">{correctCount}/{total}</span>
                   </span>
                 )}
               </div>
@@ -415,7 +409,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
             </div>
 
             {!canShowImage ? (
-              <div className="mt-3 text-xs text-amber-200/90">
+              <div className="mt-3 text-xs text-amber-700">
                 {isAr ? "ملاحظة: لم يتم العثور على imageSrc في riddle5." : "Note: riddle5.imageSrc is missing."}
               </div>
             ) : null}

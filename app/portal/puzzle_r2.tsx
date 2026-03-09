@@ -117,17 +117,14 @@ export default function PuzzleR2({
   const inputRefs = React.useRef<Record<string, HTMLInputElement | null>>({});
   const solvedOnceRef = React.useRef(false);
 
+  const [showHint, setShowHint] = React.useState(false);
   const [showCluesMobile, setShowCluesMobile] = React.useState(false);
   const gridRef = React.useRef<HTMLDivElement | null>(null);
 
-  // scroll container so labels move with horizontal scroll
   const scrollerRef = React.useRef<HTMLDivElement | null>(null);
   const overlayRef = React.useRef<HTMLDivElement | null>(null);
-
-  // refs for first cells, so we can measure positions
   const startCellRefs = React.useRef<Record<number, HTMLDivElement | null>>({});
 
-  // computed label positions
   const [labelPos, setLabelPos] = React.useState<
     { row: number; num: number; x: number; y: number }[]
   >([]);
@@ -274,7 +271,6 @@ export default function PuzzleR2({
     window.setTimeout(() => inputRefs.current[k]?.focus(), 80);
   }
 
-  // ✅ Compute number label positions relative to overlay
   const recomputeLabels = React.useCallback(() => {
     const overlay = overlayRef.current;
     const scroller = scrollerRef.current;
@@ -290,13 +286,12 @@ export default function PuzzleR2({
       const cellRect = el.getBoundingClientRect();
       const cellSize = cellRect.width;
 
-      // place number just outside the start cell (left for EN, right for AR)
-      const gap = Math.max(5, Math.round(cellSize * 0.18));
+      const gap = Math.max(6, Math.round(cellSize * 0.2));
       const x = isAr
-        ? (cellRect.right - overlayRect.left) + gap
-        : (cellRect.left - overlayRect.left) - gap;
+        ? cellRect.right - overlayRect.left + gap
+        : cellRect.left - overlayRect.left - gap;
 
-      const y = (cellRect.top - overlayRect.top) + cellRect.height / 2;
+      const y = cellRect.top - overlayRect.top + cellRect.height / 2;
 
       out.push({ row: r, num: words[r].num, x, y });
     }
@@ -304,7 +299,6 @@ export default function PuzzleR2({
     setLabelPos(out);
   }, [isAr, words]);
 
-  // run after layout / resize / scroll
   React.useEffect(() => {
     recomputeLabels();
     const onResize = () => recomputeLabels();
@@ -323,7 +317,6 @@ export default function PuzzleR2({
     return () => window.removeEventListener("resize", onResize);
   }, [recomputeLabels]);
 
-  // also after first paint when refs are set
   React.useEffect(() => {
     const t = window.setTimeout(() => recomputeLabels(), 50);
     return () => window.clearTimeout(t);
@@ -348,34 +341,58 @@ export default function PuzzleR2({
   return (
     <div
       className={[
-        "overflow-x-hidden relative rounded-3xl bg-gradient-to-b from-neutral-50 to-white p-5 sm:p-6 shadow-sm transition-all pb-24 sm:pb-6",
+        "relative overflow-x-hidden rounded-3xl",
+        "bg-[linear-gradient(180deg,#fafaf9_0%,#ffffff_100%)]",
+        "p-5 pb-20 shadow-sm transition-all sm:p-6 sm:pb-6",
         cardGlow,
       ].join(" ")}
     >
-      {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-xl">
-          <h2 className="text-xl font-semibold">{t.title[safeLocale]}</h2>
+          <h2 className="text-xl font-semibold text-neutral-950">{t.title[safeLocale]}</h2>
           <p className="mt-1 text-neutral-700">{t.prompt[safeLocale]}</p>
         </div>
 
-        <div className="hidden sm:flex gap-2">
+        <div className="flex flex-wrap gap-2 sm:justify-end">
           <button
-            onClick={check}
-            className="rounded-2xl bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+            type="button"
+            onClick={() => setShowHint((v) => !v)}
+            className="rounded-2xl border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50"
           >
-            {t.ui.check[safeLocale]}
+            {showHint
+              ? safeLocale === "en"
+                ? "Hide hint"
+                : "إخفاء التلميح"
+              : safeLocale === "en"
+              ? "Show hint"
+              : "إظهار التلميح"}
           </button>
-          <button
-            onClick={reset}
-            className="rounded-2xl border border-neutral-300 bg-white px-4 py-2 text-sm font-medium hover:bg-neutral-50"
-          >
-            {t.ui.reset[safeLocale]}
-          </button>
+
+          <div className="hidden gap-2 sm:flex">
+            <button
+              onClick={check}
+              className="rounded-2xl bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+            >
+              {t.ui.check[safeLocale]}
+            </button>
+            <button
+              onClick={reset}
+              className="rounded-2xl border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50"
+            >
+              {t.ui.reset[safeLocale]}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Status */}
+      {showHint && (
+        <div className="mt-4 rounded-2xl border border-black/8 bg-[#fffaf4] p-4 text-sm text-neutral-700">
+          {safeLocale === "en"
+            ? "Use the clues to complete each row. When a row is right, the crossing center letters reveal the hidden word."
+            : "استخدم التلميحات لإكمال كل سطر. عندما يكون السطر صحيحًا، تكشف الحروف الوسطية عن الكلمة المخفية."}
+        </div>
+      )}
+
       <div className="mt-4 space-y-3">
         {status === "correct" && (
           <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-green-800">
@@ -389,36 +406,31 @@ export default function PuzzleR2({
         )}
       </div>
 
-      {/* Mobile: clues button */}
       <div className="mt-4 sm:hidden">
         <button
           type="button"
           onClick={() => setShowCluesMobile(true)}
-          className="w-full rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-left text-sm font-semibold"
+          className="w-full rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-left text-sm font-semibold text-neutral-900 shadow-sm"
         >
           {isAr ? "عرض التلميحات" : "View clues"}
         </button>
       </div>
 
-      {/* Grid */}
       <div className="mt-6 flex justify-center">
         <div className="w-full">
           <div
             ref={gridRef}
-            className="rounded-3xl bg-[radial-gradient(circle_at_20%_10%,rgba(251,146,60,0.10),transparent_45%),radial-gradient(circle_at_80%_90%,rgba(59,130,246,0.08),transparent_45%)] p-4 sm:p-6"
+            className="rounded-3xl border border-black/5 bg-[radial-gradient(circle_at_20%_10%,rgba(249,115,22,0.08),transparent_45%),radial-gradient(circle_at_80%_90%,rgba(59,130,246,0.06),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.96),rgba(255,255,255,0.90))] p-4 sm:p-6"
           >
-            {/* scroller contains overlay so labels move with scroll */}
             <div ref={scrollerRef} className="relative w-full overflow-x-auto">
-              {/* overlay for numbers (NOT clipped by cell overflow rules) */}
               <div ref={overlayRef} className="pointer-events-none absolute inset-0 z-10">
                 {labelPos.map((p) => (
                   <div
                     key={`lbl-${p.row}`}
-                    className="absolute -translate-y-1/2 text-[10px] font-bold text-neutral-600"
+                    className="absolute -translate-y-1/2 text-[11px] font-bold text-neutral-700"
                     style={{
                       left: p.x,
                       top: p.y,
-                      // anchor to left side for ltr and right side for rtl
                       transform: `translate(${isAr ? "0%" : "-100%"}, -50%)`,
                     }}
                   >
@@ -431,12 +443,12 @@ export default function PuzzleR2({
                 <div
                   className="inline-grid"
                   style={{
-                    ["--cell" as any]: "clamp(20px, 5.6vw, 32px)",
-                    ["--gap" as any]: "clamp(4px, 0.95vw, 6px)",
+                    ["--cell" as any]: "clamp(26px, 7vw, 36px)",
+                    ["--gap" as any]: "clamp(4px, 1vw, 6px)",
                     gap: "var(--gap)",
                     gridTemplateColumns: `repeat(${layout.cols}, var(--cell))`,
                     direction: isAr ? "rtl" : "ltr",
-                    padding: "2px 18px", // space for outside numbers
+                    padding: "4px 22px",
                   }}
                 >
                   {Array.from({ length: ROWS }).flatMap((_, r) =>
@@ -462,9 +474,9 @@ export default function PuzzleR2({
                       const shouldGlow = isCenter && allSolved && glowStep > r;
 
                       const baseBox = rowGood
-                        ? "border-green-200 bg-green-50/60"
+                        ? "border-green-200 bg-green-50/70"
                         : rowBad
-                        ? "border-red-200 bg-red-50/60"
+                        ? "border-red-200 bg-red-50/70"
                         : "border-neutral-300 bg-white";
 
                       const animateGlow = shouldGlow
@@ -474,7 +486,7 @@ export default function PuzzleR2({
                       const k = keyFor(r, globalC);
 
                       const displayValue =
-                        checked && isCenter && rowGood ? (centerWord[r] ?? "") : (values[k] ?? "");
+                        checked && isCenter && rowGood ? centerWord[r] ?? "" : values[k] ?? "";
 
                       const textTint =
                         checked && isCenter
@@ -492,7 +504,7 @@ export default function PuzzleR2({
                             if (isStartCell) startCellRefs.current[r] = el;
                           }}
                           className={[
-                            "relative overflow-hidden rounded-2xl border transition-all duration-300",
+                            "relative overflow-hidden rounded-xl border transition-all duration-300",
                             baseBox,
                             animateGlow,
                           ].join(" ")}
@@ -534,7 +546,7 @@ export default function PuzzleR2({
                             maxLength={1}
                             className={[
                               "h-full w-full bg-transparent text-center font-extrabold outline-none focus:ring-2 focus:ring-neutral-900",
-                              "text-[clamp(12px,3.6vw,16px)]",
+                              "text-[clamp(14px,3.8vw,18px)]",
                               !isAr ? "uppercase" : "",
                               textTint,
                             ].join(" ")}
@@ -557,9 +569,8 @@ export default function PuzzleR2({
         </div>
       </div>
 
-      {/* Mobile clues bottom sheet */}
       {showCluesMobile && (
-        <div className="lg:hidden fixed inset-0 z-40">
+        <div className="fixed inset-0 z-40 lg:hidden">
           <button
             className="absolute inset-0 bg-black/30"
             aria-label={isAr ? "إغلاق" : "Close"}
@@ -567,9 +578,9 @@ export default function PuzzleR2({
           />
           <div className="absolute bottom-0 left-0 right-0 max-h-[75vh] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-xl">
             <div className="mb-3 flex items-center justify-between">
-              <div className="text-sm font-semibold">{isAr ? "التلميحات" : "Clues"}</div>
+              <div className="text-sm font-semibold text-neutral-950">{isAr ? "التلميحات" : "Clues"}</div>
               <button
-                className="rounded-xl border border-neutral-200 px-3 py-2 text-sm font-semibold"
+                className="rounded-xl border border-neutral-200 px-3 py-2 text-sm font-semibold text-neutral-900"
                 onClick={closeCluesAndReturnToGrid}
               >
                 {isAr ? "إغلاق" : "Close"}
@@ -600,7 +611,7 @@ export default function PuzzleR2({
                   <button
                     type="button"
                     onClick={() => solveRow(idx, true)}
-                    className="shrink-0 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold hover:bg-neutral-100"
+                    className="shrink-0 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 hover:bg-neutral-100"
                   >
                     {isAr ? "حل السطر" : "Solve row"}
                   </button>
@@ -611,9 +622,8 @@ export default function PuzzleR2({
         </div>
       )}
 
-      {/* Sticky bottom action bar (mobile) */}
       <div className="sm:hidden">
-        <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-neutral-200 bg-white/92 backdrop-blur">
+        <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-neutral-200 bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
           <div className="mx-auto max-w-3xl px-4 py-3">
             <div className="flex items-center gap-2">
               <button
@@ -625,7 +635,7 @@ export default function PuzzleR2({
 
               <button
                 onClick={reset}
-                className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold hover:bg-neutral-50"
+                className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50"
               >
                 {t.ui.reset[safeLocale]}
               </button>
@@ -633,7 +643,7 @@ export default function PuzzleR2({
               <button
                 type="button"
                 onClick={() => setShowCluesMobile(true)}
-                className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold hover:bg-neutral-50"
+                className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50"
               >
                 {isAr ? "تلميحات" : "Clues"}
               </button>

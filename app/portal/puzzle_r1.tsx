@@ -141,12 +141,12 @@ export default function PuzzleR1({
 
   const cardGlow =
     status === "correct"
-      ? "ring-2 ring-green-500/35 shadow-[0_0_70px_rgba(34,197,94,0.20)]"
+      ? "ring-2 ring-green-500/35 shadow-[0_0_50px_rgba(34,197,94,0.14)]"
       : status === "wrong"
       ? "ring-2 ring-red-500/25"
       : status === "close"
-      ? "ring-2 ring-orange-500/25"
-      : "ring-1 ring-white/10";
+      ? "ring-2 ring-orange-500/25 shadow-[0_0_40px_rgba(249,115,22,0.10)]"
+      : "ring-1 ring-black/8";
 
   const successPulse =
     status === "correct"
@@ -159,20 +159,24 @@ export default function PuzzleR1({
 
   return (
     <div dir={isAr ? "rtl" : "ltr"} className="w-full">
-      <div className="relative mx-auto mt-8 max-w-2xl">
-        {/* Glow blobs (liquid glass vibe) */}
-        <div className="pointer-events-none absolute -top-10 left-[-30px] h-48 w-48 rounded-full bg-amber-200/35 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-10 right-[-30px] h-56 w-56 rounded-full bg-sky-200/35 blur-3xl" />
+      <div className="relative mx-auto mt-8 max-w-2xl px-1 sm:px-0">
+        {/* Softer background glow accents */}
+        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
+        <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white blur-3xl opacity-30" />
 
         <section
           className={[
-            "relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-5 backdrop-blur-xl",
-            "shadow-[0_20px_70px_rgba(0,0,0,0.12)]",
+            "relative overflow-hidden rounded-3xl border border-black/10",
+            "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))]",
+            "p-5 sm:p-6",
+            "shadow-[0_16px_50px_rgba(0,0,0,0.10)]",
             cardGlow,
             successPulse,
           ].join(" ")}
         >
-          {/* Sparkles (subtle) */}
+          {/* subtle top sheen */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.45),rgba(255,255,255,0))]" />
+
           {showSparkles && (
             <div className="pointer-events-none absolute inset-0">
               <span className="sparkle s1" />
@@ -182,23 +186,24 @@ export default function PuzzleR1({
             </div>
           )}
 
-          {/* Header row */}
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="text-xl font-semibold text-neutral-900">{t.title[safeLocale]}</h2>
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
+                {t.title[safeLocale]}
+              </h2>
               <p className="mt-1 text-sm text-neutral-700">
                 {isAr ? "أجب عن اللغز لفتح الجولة التالية." : "Answer the riddle to unlock the next round."}
               </p>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 sm:justify-end">
               <button
                 type="button"
                 onClick={() => {
                   setShowHint((v) => !v);
                   setShowAnswer(false);
                 }}
-                className="rounded-xl border border-white/30 bg-white/10 px-3 py-2 text-sm text-neutral-900 hover:bg-white/15"
+                className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:bg-neutral-50"
               >
                 {showHint ? t.ui.hideHint[safeLocale] : t.ui.showHint[safeLocale]}
               </button>
@@ -207,7 +212,7 @@ export default function PuzzleR1({
                 <button
                   type="button"
                   onClick={() => setShowAnswer((v) => !v)}
-                  className="rounded-xl border border-white/30 bg-white/10 px-3 py-2 text-sm text-neutral-900 hover:bg-white/15"
+                  className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:bg-neutral-50"
                 >
                   {showAnswer ? t.ui.hideAnswer[safeLocale] : t.ui.showAnswer[safeLocale]}
                 </button>
@@ -215,29 +220,28 @@ export default function PuzzleR1({
             </div>
           </div>
 
-          {/* Prompt */}
-          <div className="mt-5 rounded-2xl border border-white/20 bg-white/10 p-4 text-neutral-900">
-            <p className="whitespace-pre-line leading-relaxed">{t.prompt[safeLocale]}</p>
+          <div className="relative mt-5 rounded-2xl border border-black/8 bg-white/80 p-4 sm:p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+            <p className="whitespace-pre-line text-base leading-8 text-neutral-900">
+              {t.prompt[safeLocale]}
+            </p>
           </div>
 
-          {/* Hint / Answer */}
           {showHint && (
-            <div className="mt-4 rounded-2xl border border-white/20 bg-white/10 p-4 text-sm text-neutral-800">
-              <div className="font-semibold text-neutral-900">{isAr ? "التلميح" : "Hint"}</div>
-              <div className="mt-1">{t.hint[safeLocale]}</div>
+            <div className="relative mt-4 rounded-2xl border border-black/8 bg-[#fffaf4] p-4 text-sm text-neutral-800">
+              <div className="font-semibold text-neutral-950">{isAr ? "التلميح" : "Hint"}</div>
+              <div className="mt-1 leading-7">{t.hint[safeLocale]}</div>
 
               {showAnswer && (
-                <div className="mt-4 rounded-2xl border border-white/20 bg-white/10 p-3">
-                  <div className="font-semibold text-neutral-900">{isAr ? "الإجابة" : "Answer"}</div>
+                <div className="mt-4 rounded-2xl border border-black/8 bg-white p-3">
+                  <div className="font-semibold text-neutral-950">{isAr ? "الإجابة" : "Answer"}</div>
                   <div className="mt-1">{t.answer[safeLocale]}</div>
                 </div>
               )}
             </div>
           )}
 
-          {/* Answer input */}
           <div className="mt-6">
-            <label className="text-sm font-semibold text-neutral-900">
+            <label className="text-sm font-semibold text-neutral-950">
               {t.ui.yourAnswer[safeLocale]}
             </label>
 
@@ -249,14 +253,14 @@ export default function PuzzleR1({
               }}
               onKeyDown={(e) => e.key === "Enter" && check()}
               placeholder={t.ui.placeholder[safeLocale]}
-              className="mt-2 w-full rounded-2xl border border-white/25 bg-white/10 px-4 py-3 text-neutral-900 outline-none placeholder:text-neutral-500 focus:border-neutral-900/50 focus:bg-white/15"
+              className="mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-base text-neutral-950 outline-none placeholder:text-neutral-400 focus:border-z-orange focus:ring-4 focus:ring-orange-100"
             />
 
             <div className="mt-4 flex flex-wrap gap-3">
               <button
                 type="button"
                 onClick={check}
-                className="rounded-2xl bg-neutral-900 px-4 py-2 text-sm font-semibold text-white hover:opacity-95"
+                className="rounded-2xl bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95"
               >
                 {t.ui.check[safeLocale]}
               </button>
@@ -264,13 +268,12 @@ export default function PuzzleR1({
               <button
                 type="button"
                 onClick={reset}
-                className="rounded-2xl border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-white/15"
+                className="rounded-2xl border border-black/10 bg-white px-5 py-3 text-sm font-medium text-neutral-900 transition hover:bg-neutral-50"
               >
                 {t.ui.reset[safeLocale]}
               </button>
             </div>
 
-            {/* Feedback */}
             <div
               className={`mt-4 transition-all duration-500 ease-out ${
                 status === "idle"
@@ -279,19 +282,19 @@ export default function PuzzleR1({
               }`}
             >
               {status === "wrong" && (
-                <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-3 text-sm text-neutral-900">
+                <div className="rounded-2xl border border-red-500/20 bg-red-50 p-3 text-sm text-neutral-900">
                   {t.tryAgain[safeLocale]}
                 </div>
               )}
 
               {status === "close" && (
-                <div className="rounded-2xl border border-orange-500/20 bg-orange-500/10 p-3 text-sm text-neutral-900 animate-[zowarPop_520ms_ease-out_1]">
+                <div className="rounded-2xl border border-orange-500/20 bg-orange-50 p-3 text-sm text-neutral-900 animate-[zowarPop_520ms_ease-out_1]">
                   {t.closeEnough[safeLocale]}
                 </div>
               )}
 
               {status === "correct" && (
-                <div className="rounded-2xl border border-green-500/20 bg-green-500/10 p-3 text-sm text-neutral-900 animate-[zowarPop_520ms_ease-out_1]">
+                <div className="rounded-2xl border border-green-500/20 bg-green-50 p-3 text-sm text-neutral-900 animate-[zowarPop_520ms_ease-out_1]">
                   {t.success[safeLocale]}
                 </div>
               )}
@@ -299,32 +302,35 @@ export default function PuzzleR1({
           </div>
 
           <style jsx>{`
-            /* sparkle dots */
             .sparkle {
               position: absolute;
               width: 6px;
               height: 6px;
               border-radius: 9999px;
               opacity: 0;
-              background: rgba(255, 255, 255, 0.75);
+              background: rgba(249, 115, 22, 0.7);
               filter: blur(0.2px);
               animation: zowarSparkle 850ms ease-out 1;
             }
+
             .s1 {
               top: 16px;
               left: 22px;
               animation-delay: 40ms;
             }
+
             .s2 {
               top: 34px;
               right: 34px;
               animation-delay: 120ms;
             }
+
             .s3 {
               top: 58px;
               left: 55%;
               animation-delay: 200ms;
             }
+
             .s4 {
               top: 22px;
               left: 70%;
@@ -352,7 +358,7 @@ export default function PuzzleR1({
               }
               45% {
                 transform: translateY(-1px) scale(1.02);
-                filter: brightness(1.08);
+                filter: brightness(1.04);
               }
               100% {
                 transform: translateY(0) scale(1);
@@ -362,25 +368,25 @@ export default function PuzzleR1({
 
             @keyframes zowarSuccessPulse {
               0% {
-                box-shadow: 0 20px 70px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 16px 50px rgba(0, 0, 0, 0.1);
               }
               45% {
-                box-shadow: 0 25px 85px rgba(34, 197, 94, 0.18);
+                box-shadow: 0 20px 60px rgba(34, 197, 94, 0.14);
               }
               100% {
-                box-shadow: 0 20px 70px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 16px 50px rgba(0, 0, 0, 0.1);
               }
             }
 
             @keyframes zowarClosePulse {
               0% {
-                box-shadow: 0 20px 70px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 16px 50px rgba(0, 0, 0, 0.1);
               }
               45% {
-                box-shadow: 0 25px 85px rgba(245, 158, 11, 0.16);
+                box-shadow: 0 20px 60px rgba(249, 115, 22, 0.12);
               }
               100% {
-                box-shadow: 0 20px 70px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 16px 50px rgba(0, 0, 0, 0.1);
               }
             }
           `}</style>

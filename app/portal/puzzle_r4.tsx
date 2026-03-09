@@ -54,11 +54,6 @@ const HINTS: Record<Locale, string[]> = {
   ],
 };
 
-/**
- * ✅ Shuffled (not lined up by category)
- * ✅ Rooftop -> Yellow taxi
- * ✅ Hills   -> Gas trucks
- */
 const TILES: readonly Tile[] = [
   { id: "CAMEL", category: "FAUNA", label: { en: "Camel", ar: "جمل" } },
   { id: "FUUL", category: "BREAKFAST", label: { en: "Fuul", ar: "فول" } },
@@ -144,7 +139,6 @@ export function PuzzleR4({ locale, onSolved }: Props) {
 
   function triggerNudge() {
     setNudge(false);
-    // next tick to restart animation reliably
     window.requestAnimationFrame(() => setNudge(true));
     window.setTimeout(() => setNudge(false), 220);
   }
@@ -181,59 +175,57 @@ export function PuzzleR4({ locale, onSolved }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [solvedCats]);
 
-  /* ------------------------------------------------------------------ */
-  /* UI                                                                */
-  /* ------------------------------------------------------------------ */
-
   const shell =
-    "relative overflow-hidden rounded-3xl border border-neutral-200/70 bg-white/55 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.10)] backdrop-blur-xl";
-  const glow =
-    "before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(1000px_circle_at_20%_10%,rgba(255,255,255,0.70),transparent_55%),radial-gradient(900px_circle_at_80%_30%,rgba(255,255,255,0.55),transparent_55%)]";
+    "relative overflow-hidden rounded-3xl border border-black/10 " +
+    "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))] " +
+    "p-5 sm:p-6 shadow-[0_16px_50px_rgba(0,0,0,0.10)]";
 
   const headerPill =
-    "inline-flex items-center gap-2 rounded-full border border-neutral-200/70 bg-white/60 px-3 py-1 text-xs text-neutral-700";
+    "inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-neutral-700 shadow-sm";
 
   const tileBase =
-    "rounded-2xl border border-neutral-200/70 bg-white/55 px-3 py-4 text-sm font-semibold text-neutral-900 shadow-[0_10px_25px_rgba(0,0,0,0.08)] backdrop-blur-xl transition-transform transition-colors duration-200 active:scale-[0.98] hover:scale-[1.01]";
+    "rounded-2xl border border-black/10 bg-white px-3 py-4 text-sm font-semibold text-neutral-900 " +
+    "shadow-sm transition duration-200 active:scale-[0.98] hover:scale-[1.01] hover:bg-neutral-50";
 
-  // ✅ Clear glass orange selection
   const tileSelected =
-    "border-orange-400/60 bg-orange-500/18 ring-2 ring-orange-400/70 shadow-[0_0_0_2px_rgba(251,146,60,0.22),0_18px_40px_rgba(251,146,60,0.18)]";
+    "border-z-orange bg-z-orange-soft ring-2 ring-offset-0 border-z-orange glow-z-orange z-orange";
 
   const solvedPill =
-    "inline-flex items-center gap-2 rounded-full border border-emerald-200/70 bg-white/60 px-3 py-1 text-xs font-semibold text-emerald-900 shadow-[0_10px_25px_rgba(0,0,0,0.06)]";
+    "inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900 shadow-sm";
 
   const btn =
     "group relative overflow-hidden rounded-2xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40";
 
   const ghostBtn =
-    "rounded-2xl border border-neutral-200/70 bg-white/60 px-5 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-white";
+    "rounded-2xl border border-black/10 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 shadow-sm transition hover:bg-neutral-50";
 
   return (
     <section dir={isAr ? "rtl" : "ltr"} className="mx-auto w-full max-w-2xl">
-      <div className={`${shell} ${glow}`}>
-        {/* Header */}
-        <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className={shell}>
+        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
+        <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white blur-3xl opacity-30" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.45),rgba(255,255,255,0))]" />
+
+        <div className="relative flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-1">
             <div className={headerPill}>
               <span className="opacity-80">{safeLocale === "en" ? "Round 4" : "الجولة ٤"}</span>
-              <span className="h-3 w-px bg-neutral-300/70" />
+              <span className="h-3 w-px bg-neutral-300" />
               <span className="opacity-90">{safeLocale === "en" ? "Connections" : "ترابط المجموعات"}</span>
             </div>
 
-            <h2 className="text-2xl font-semibold text-neutral-900">{t.title[safeLocale]}</h2>
-            <p className="text-sm text-neutral-600">
+            <h2 className="text-2xl font-semibold text-neutral-950">{t.title[safeLocale]}</h2>
+            <p className="text-sm text-neutral-700">
               {safeLocale === "en"
                 ? "Find 4 groups of 4. Select exactly four tiles, then submit."
                 : "اعثر على ٤ مجموعات (كل مجموعة ٤ كلمات). اختر ٤ مربعات ثم اضغط إرسال."}
             </p>
           </div>
 
-          {/* Solved category pills */}
           <div className="flex flex-wrap items-center justify-end gap-2 pt-1">
             {solvedCats.map((k) => (
               <span key={k} className={solvedPill}>
-                <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.30)]" />
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />
                 {CATEGORY_LABELS[k][safeLocale]}
               </span>
             ))}
@@ -242,26 +234,30 @@ export function PuzzleR4({ locale, onSolved }: Props) {
 
         <div className="mt-6">
           {!isSolved ? (
-            <div className="rounded-2xl border border-neutral-200/70 bg-white/60 p-4 backdrop-blur-md">
-              {/* Top row: selected count + hint toggle */}
+            <div className="rounded-2xl border border-black/8 bg-white/85 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="text-sm text-neutral-600">
+                <div className="text-sm text-neutral-700">
                   {safeLocale === "en" ? "Selected" : "المحدد"}:{" "}
-                  <span className="font-semibold text-neutral-900">{selected.length}/4</span>
+                  <span className="font-semibold text-neutral-950">{selected.length}/4</span>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setShowHint((v) => !v)}
-                  className="rounded-full border border-neutral-200/70 bg-white/70 px-3 py-1 text-xs font-semibold text-neutral-800 transition hover:bg-white"
+                  className="rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-semibold text-neutral-800 shadow-sm transition hover:bg-neutral-50"
                 >
-                  {showHint ? (safeLocale === "en" ? "Hide hint" : "إخفاء التلميح") : (safeLocale === "en" ? "Hint" : "تلميح")}
+                  {showHint
+                    ? safeLocale === "en"
+                      ? "Hide hint"
+                      : "إخفاء التلميح"
+                    : safeLocale === "en"
+                    ? "Hint"
+                    : "تلميح"}
                 </button>
               </div>
 
-              {/* Hint panel */}
               {showHint && (
-                <div className="mt-3 rounded-2xl border border-neutral-200/70 bg-white/60 p-3 text-sm text-neutral-700">
+                <div className="mt-3 rounded-2xl border border-black/8 bg-[#fffaf4] p-3 text-sm text-neutral-700">
                   <ul className="list-disc space-y-1 pl-5">
                     {HINTS[safeLocale].map((h, i) => (
                       <li key={i}>{h}</li>
@@ -270,7 +266,6 @@ export function PuzzleR4({ locale, onSolved }: Props) {
                 </div>
               )}
 
-              {/* Grid (nudges on wrong) */}
               <div className={["mt-4", nudge ? "animate-[nudge_220ms_ease-in-out_1]" : ""].join(" ")}>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {remainingTiles.map((tile) => {
@@ -290,7 +285,6 @@ export function PuzzleR4({ locale, onSolved }: Props) {
                 </div>
               </div>
 
-              {/* Actions + feedback */}
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <button type="button" onClick={submit} disabled={selected.length !== 4} className={btn}>
                   <span className="relative z-10">{safeLocale === "en" ? "Submit" : "إرسال"}</span>
@@ -322,7 +316,6 @@ export function PuzzleR4({ locale, onSolved }: Props) {
                 </div>
               </div>
 
-              {/* Scoped keyframes */}
               <style jsx>{`
                 @keyframes nudge {
                   0% {
@@ -347,17 +340,16 @@ export function PuzzleR4({ locale, onSolved }: Props) {
               `}</style>
             </div>
           ) : (
-            // Solved state
-            <div className="relative overflow-hidden rounded-3xl border border-emerald-200/70 bg-white/55 p-6 shadow-[0_0_0_2px_rgba(16,185,129,0.12),0_30px_80px_rgba(16,185,129,0.10)] backdrop-blur-xl">
-              <div className="absolute inset-0 bg-[radial-gradient(900px_circle_at_30%_20%,rgba(16,185,129,0.12),transparent_55%)]" />
+            <div className="relative overflow-hidden rounded-3xl border border-emerald-200 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(236,253,245,0.95))] p-6 shadow-[0_0_0_2px_rgba(16,185,129,0.10),0_24px_70px_rgba(16,185,129,0.10)]">
+              <div className="absolute inset-0 bg-[radial-gradient(900px_circle_at_30%_20%,rgba(16,185,129,0.10),transparent_55%)]" />
 
               <div className="relative">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/70 bg-white/60 px-3 py-1 text-xs text-emerald-900">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.30)]" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs text-emerald-900">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
                   {t.ui.solved?.[safeLocale] ?? (safeLocale === "en" ? "Solved!" : "تم الحل!")}
                 </div>
 
-                <h3 className="mt-3 text-2xl font-semibold text-neutral-900">
+                <h3 className="mt-3 text-2xl font-semibold text-neutral-950">
                   {safeLocale === "en"
                     ? "Time to claim your Arabic breakfast at Al Quds Falafel."
                     : "حان وقت الفطور العربي في فلافل القدس."}

@@ -15,13 +15,12 @@ function shuffle<T>(arr: readonly T[]): T[] {
   return a;
 }
 
-/** Simple normalize (no external file needed) */
 function normalizeAnswer(input: string): string {
   return input
     .trim()
     .toLowerCase()
     .replace(/\s+/g, " ")
-    .replace(/[^\p{L}\p{N}\s]/gu, ""); // letters/numbers/spaces (works for Arabic too)
+    .replace(/[^\p{L}\p{N}\s]/gu, "");
 }
 
 const COPY = {
@@ -83,17 +82,17 @@ function Bubble({
   onDragEnd?: (e: React.DragEvent) => void;
 }) {
   const base =
-    "select-none rounded-full px-3 py-2 text-sm font-medium transition active:scale-[0.98] " +
-    "border backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.12)]";
+    "select-none rounded-full px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98] " +
+    "border shadow-sm";
 
   const toneClass =
     tone === "solved"
-      ? "border-green-500/35 bg-green-500/15 text-green-50"
+      ? "border-green-200 bg-green-50 text-green-800"
       : tone === "good"
-      ? "border-green-500/30 bg-green-500/10 text-neutral-900"
+      ? "border-green-200 bg-green-50 text-neutral-900"
       : tone === "bad"
-      ? "border-red-500/30 bg-red-500/10 text-neutral-900"
-      : "border-white/20 bg-white/10 text-neutral-900";
+      ? "border-red-200 bg-red-50 text-neutral-900"
+      : "border-black/10 bg-white text-neutral-900 hover:bg-neutral-50";
 
   return (
     <button
@@ -127,22 +126,18 @@ export function PuzzleR3({
     [t.targetTokens]
   );
 
-  // Shuffle word bank once per locale mount
   const tiles = React.useMemo<Tile[]>(() => {
     const base: Tile[] = t.targetTokens.map((token, idx) => ({
       id: `${safeLocale}-${idx}-${token}`,
       text: token,
     }));
     return shuffle(base);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [safeLocale]);
+  }, [safeLocale, t.targetTokens]);
 
   const [pickedIds, setPickedIds] = React.useState<string[]>([]);
   const [checked, setChecked] = React.useState(false);
   const [status, setStatus] = React.useState<"idle" | "wrong" | "correct">("idle");
   const [showHint, setShowHint] = React.useState(false);
-
-  // For drag + drop highlighting
   const [dragOverSolve, setDragOverSolve] = React.useState(false);
 
   const pickedTiles = React.useMemo<Tile[]>(
@@ -197,6 +192,7 @@ export function PuzzleR3({
       setStatus("wrong");
       return;
     }
+
     for (let i = 0; i < targetNorm.length; i++) {
       if (builtNorm[i] !== targetNorm[i]) {
         setStatus("wrong");
@@ -213,7 +209,6 @@ export function PuzzleR3({
     }
   }
 
-  // ---- Drag & Drop handlers ----
   function onDragStartTile(id: string) {
     return (e: React.DragEvent) => {
       e.dataTransfer.setData("text/plain", id);
@@ -225,7 +220,6 @@ export function PuzzleR3({
     e.preventDefault();
     const id = e.dataTransfer.getData("text/plain");
     if (!id) return;
-    // only add if it is in the bank
     if (remainingTiles.some((x) => x.id === id)) pick(id);
     setDragOverSolve(false);
   }
@@ -241,46 +235,49 @@ export function PuzzleR3({
 
   const cardGlow =
     status === "correct"
-      ? "ring-2 ring-green-500/40 shadow-[0_0_60px_rgba(34,197,94,0.20)]"
+      ? "ring-2 ring-green-300 shadow-[0_0_40px_rgba(34,197,94,0.12)]"
       : status === "wrong"
-      ? "ring-2 ring-red-500/25"
-      : "ring-1 ring-white/10";
+      ? "ring-2 ring-red-200 shadow-[0_0_0_4px_rgba(239,68,68,0.06)]"
+      : "ring-1 ring-black/8";
 
   const shake = status === "wrong" ? "animate-[zowarShake_260ms_ease-in-out_1]" : "";
 
   return (
     <div dir={isAr ? "rtl" : "ltr"} className="w-full">
-      {/* Liquid glass background blobs (like Puzzle 2 vibe) */}
-      <div className="relative mx-auto max-w-3xl">
-        <div className="pointer-events-none absolute -top-10 left-[-30px] h-48 w-48 rounded-full bg-amber-200/35 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-10 right-[-30px] h-56 w-56 rounded-full bg-sky-200/35 blur-3xl" />
+      <div className="relative mx-auto max-w-3xl px-1 sm:px-0">
+        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
+        <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white blur-3xl opacity-30" />
 
         <div
           className={[
-            "relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-5 backdrop-blur-xl",
-            "shadow-[0_20px_70px_rgba(0,0,0,0.12)]",
+            "relative overflow-hidden rounded-3xl border border-black/10",
+            "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))]",
+            "p-5 sm:p-6",
+            "shadow-[0_16px_50px_rgba(0,0,0,0.10)]",
             cardGlow,
             shake,
           ].join(" ")}
         >
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="text-xl font-semibold text-neutral-900">{t.title}</h2>
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.45),rgba(255,255,255,0))]" />
+
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">{t.title}</h2>
               <p className="mt-1 text-sm text-neutral-700">{t.subtitle}</p>
-              <p className="mt-2 text-xs text-neutral-600">{t.ui.dragHelp}</p>
+              <p className="mt-2 text-xs text-neutral-500">{t.ui.dragHelp}</p>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 sm:justify-end">
               <button
                 onClick={() => setShowHint((s) => !s)}
-                className="rounded-xl border border-white/30 bg-white/10 px-3 py-2 text-sm text-neutral-900 hover:bg-white/15"
+                className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:bg-neutral-50"
               >
                 {showHint ? t.ui.hideHint : t.ui.showHint}
               </button>
 
               <button
                 onClick={resetAll}
-                className="rounded-xl border border-white/30 bg-white/10 px-3 py-2 text-sm text-neutral-900 hover:bg-white/15"
+                className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:bg-neutral-50"
               >
                 {t.ui.reset}
               </button>
@@ -288,7 +285,7 @@ export function PuzzleR3({
               <button
                 onClick={check}
                 disabled={status === "correct"}
-                className="rounded-xl bg-neutral-900 px-4 py-2 text-sm font-semibold text-white hover:opacity-95 disabled:opacity-40"
+                className="rounded-2xl bg-neutral-950 px-5 py-2 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-40"
               >
                 {t.ui.check}
               </button>
@@ -296,28 +293,27 @@ export function PuzzleR3({
           </div>
 
           {showHint && (
-            <div className="mt-4 rounded-2xl border border-white/20 bg-white/10 p-3 text-sm text-neutral-800">
+            <div className="relative mt-4 rounded-2xl border border-black/8 bg-[#fffaf4] p-4 text-sm text-neutral-800">
               {t.hint}
             </div>
           )}
 
-          {/* Solve line */}
           <div className="mt-6">
-            <div className="mb-2 text-sm font-semibold text-neutral-900">
-              {t.ui.solveLine}
-            </div>
+            <div className="mb-2 text-sm font-semibold text-neutral-950">{t.ui.solveLine}</div>
 
             <div
               onDrop={onDropToSolve}
               onDragOver={onDragOverSolve}
               onDragLeave={onDragLeaveSolve}
               className={[
-                "min-h-[74px] rounded-2xl border p-3 transition",
-                dragOverSolve ? "border-neutral-900/50 bg-white/15" : "border-white/20 bg-white/10",
+                "min-h-[84px] rounded-2xl border p-3 sm:p-4 transition",
+                dragOverSolve
+                  ? "border-z-orange bg-orange-50"
+                  : "border-black/10 bg-white/85",
               ].join(" ")}
             >
               {pickedTiles.length === 0 ? (
-                <span className="text-sm text-neutral-600">{t.ui.emptySolve}</span>
+                <span className="text-sm text-neutral-500">{t.ui.emptySolve}</span>
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {pickedTiles.map((tile, idx) => {
@@ -353,24 +349,23 @@ export function PuzzleR3({
               )}
             </div>
 
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <button
                 onClick={removeLast}
                 disabled={pickedTiles.length === 0 || status === "correct"}
-                className="rounded-xl border border-white/30 bg-white/10 px-3 py-2 text-sm text-neutral-900 hover:bg-white/15 disabled:opacity-40"
+                className="w-full rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:bg-neutral-50 disabled:opacity-40 sm:w-auto"
               >
                 {t.ui.removeLast}
               </button>
 
-              {/* Status text */}
-              <div className="ml-auto text-sm">
+              <div className="text-sm sm:max-w-md">
                 {status === "correct" ? (
-                  <div className="rounded-2xl border border-green-500/25 bg-green-500/10 px-3 py-2 text-neutral-900">
-                    <div className="font-semibold">{t.ui.solved}</div>
-                    <div className="mt-1 text-sm text-neutral-800">{t.ui.nextStep}</div>
+                  <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-neutral-900">
+                    <div className="font-semibold text-green-800">{t.ui.solved}</div>
+                    <div className="mt-1 text-sm text-neutral-700">{t.ui.nextStep}</div>
                   </div>
                 ) : status === "wrong" ? (
-                  <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-neutral-900">
+                  <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-neutral-900">
                     {t.ui.tryAgain}
                   </div>
                 ) : null}
@@ -378,13 +373,10 @@ export function PuzzleR3({
             </div>
           </div>
 
-          {/* Word bank */}
           <div className="mt-7">
-            <div className="mb-2 text-sm font-semibold text-neutral-900">
-              {t.ui.bubbleBank}
-            </div>
+            <div className="mb-2 text-sm font-semibold text-neutral-950">{t.ui.bubbleBank}</div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {remainingTiles.map((tile) => (
                 <Bubble
                   key={tile.id}
@@ -397,7 +389,6 @@ export function PuzzleR3({
             </div>
           </div>
 
-          {/* inline keyframes */}
           <style jsx>{`
             @keyframes zowarShake {
               0% {
@@ -416,6 +407,7 @@ export function PuzzleR3({
                 transform: translateX(0);
               }
             }
+
             @keyframes zowarPop {
               0% {
                 transform: translateY(2px) scale(0.98);
@@ -423,7 +415,7 @@ export function PuzzleR3({
               }
               45% {
                 transform: translateY(-1px) scale(1.02);
-                filter: brightness(1.08);
+                filter: brightness(1.04);
               }
               100% {
                 transform: translateY(0) scale(1);

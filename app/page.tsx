@@ -34,11 +34,12 @@ export default function Home() {
   const isAr = locale === "ar";
   const fontClass = isAr ? tajawal.className : fredoka.className;
 
-  // ✅ keep lang across pages
+  /* -------------------- KEEP LANG ACROSS PAGES -------------------- */
   const aboutHref = `/about?lang=${isAr ? "ar" : "en"}`;
   const bookingHref = `/booking?lang=${isAr ? "ar" : "en"}`;
   const portalHref = `/portal?lang=${isAr ? "ar" : "en"}`;
   const collaborateHref = `/collaborate?lang=${isAr ? "ar" : "en"}`;
+  const faqHref = `/faq?lang=${isAr ? "ar" : "en"}`;
 
   /* -------------------- PRICING DISPLAY ONLY -------------------- */
   const DEFAULT_CURRENCY: Currency = "USD";
@@ -134,8 +135,8 @@ export default function Home() {
           flip: { en: "Seamless Process", ar: "عملية سلسة" },
           title: { en: "Book in Minutes", ar: "احجز خلال دقائق" },
           body: {
-            en: "Pick a date, checkout securely, and you’re set. After booking, your Puzzle Portal unlocks to guide you through the route.",
-            ar: "اختر التاريخ، ادفع بأمان، وانطلق. بعد الحجز تُفتح بوابة الألغاز لتقودك في المسار.",
+            en: "Pick a date, checkout securely, and you’re set. After booking, your Puzzle Portal unlocks to guide you through the route. Your Zowar payment is made once at checkout, with no additional Zowar charges during the experience unless you choose optional extras outside the package.",
+            ar: "اختر التاريخ، وادفع بأمان، وانطلق. بعد الحجز تُفتح بوابة الألغاز لتقودك في المسار. يتم دفع قيمة Zowar مرة واحدة فقط عند الحجز، ولا توجد أي دفعات إضافية لـ Zowar أثناء التجربة إلا إذا اخترت إضافات اختيارية خارج الباقة.",
           },
           imageSrc: "/images/about/booking.jpg",
           imageAlt: { en: "Simple booking on a phone", ar: "حجز سهل عبر الهاتف" },
@@ -209,7 +210,7 @@ export default function Home() {
   const stickyCtaHref = bookingHref;
   const stickyCtaLabel = isAr ? "احجز التجربة" : "Book the Experience";
 
-  // ✅ match booking/collaborate background tone
+  /* -------------------- PAGE BACKGROUND -------------------- */
   const pageBg =
     "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(249,115,22,0.16),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
 
@@ -219,7 +220,6 @@ export default function Home() {
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="mx-auto max-w-7xl px-5">
           <nav className="mt-4 flex items-center justify-between rounded-2xl border border-black/10 bg-white/70 backdrop-blur-md px-4 py-3 text-neutral-900 shadow-sm">
-            {/* Logo -> home (hover anim like booking) */}
             <a
               href={isAr ? "/?lang=ar" : "/?lang=en"}
               className="group flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-black/[0.03]"
@@ -237,7 +237,6 @@ export default function Home() {
               <span className="hidden sm:inline text-sm font-semibold tracking-wide">ZOWAR</span>
             </a>
 
-            {/* Center links (desktop) */}
             <div className="hidden md:flex items-center gap-8 text-sm">
               <a className="hover:z-orange transition" href="#home">
                 {isAr ? "الرئيسية" : "Home"}
@@ -256,7 +255,6 @@ export default function Home() {
               </a>
             </div>
 
-            {/* Right controls */}
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -269,7 +267,7 @@ export default function Home() {
                 data-flash={flashLang}
                 aria-label={locale === "en" ? "Switch to Arabic" : "Switch to English"}
               >
-                <span>{locale === "en" ? t.toggle.ar : t.toggle.en}</span>
+                <span>{locale === "en" ? "العربية" : "English"}</span>
               </button>
 
               <div className="relative" ref={menuRef}>
@@ -331,6 +329,15 @@ export default function Home() {
                       {isAr ? "احجز الآن" : "Book now"}
                     </a>
 
+                    <a
+                      role="menuitem"
+                      href={faqHref}
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
+                    >
+                      {isAr ? "الأسئلة الشائعة" : "FAQ"}
+                    </a>
+
                     <div className="h-px bg-black/10" />
 
                     <a
@@ -341,6 +348,7 @@ export default function Home() {
                     >
                       {isAr ? "تعاون معنا" : "Collaborate with us"}
                     </a>
+
                     <a
                       role="menuitem"
                       href={portalHref}
@@ -359,7 +367,6 @@ export default function Home() {
 
       {/* ==================== HERO ==================== */}
       <section id="home" className="relative w-full overflow-hidden min-h-[78vh] sm:min-h-[86vh]">
-        {/* Background crossfade */}
         {heroMedia.map((m, i) => {
           const active = i === heroIndex;
           return (
@@ -381,14 +388,11 @@ export default function Home() {
           );
         })}
 
-        {/* Overlays for readability */}
         <div className="absolute inset-0 bg-black/45" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/35 to-black/70" />
 
-        {/* Content */}
         <div className="relative z-10 mx-auto flex min-h-[78vh] sm:min-h-[86vh] max-w-7xl items-center px-6 pt-24 pb-10">
           <div className="w-full text-center">
-            {/* ✅ Premium partial-orange treatment using YOUR utilities (z-orange) */}
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
               {isAr ? (
                 <span className="z-orange">حلّ. تذوّق. اكتشف</span>
@@ -431,7 +435,9 @@ export default function Home() {
       {/* ==================== HOW IT WORKS ==================== */}
       <section className="bg-[#fff3e8] py-14 sm:py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-center text-3xl md:text-4xl font-bold">{isAr ? "كيف تعمل التجربة" : "How It Works"}</h2>
+          <h2 className="text-center text-3xl md:text-4xl font-bold">
+            {isAr ? "كيف تعمل التجربة" : "How It Works"}
+          </h2>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
@@ -460,7 +466,6 @@ export default function Home() {
               >
                 <div className="flex items-center justify-between">
                   <div className="text-2xl">{c.icon}</div>
-                  {/* ✅ your utility */}
                   <div className="z-orange font-extrabold text-2xl">{c.n}</div>
                 </div>
                 <div className="mt-4 font-bold text-lg">{c.title}</div>
@@ -579,10 +584,10 @@ export default function Home() {
                     </span>
                   </a>
 
-                  <p className="mt-3 text-xs text-neutral-500">
+                  <p className="mt-3 text-xs text-neutral-500 leading-relaxed">
                     {isAr
-                      ? "ملاحظة: الدفع آمن وبوابة الألغاز تُفتح بعد إتمام الحجز."
-                      : "Note: Secure checkout. Puzzle Portal unlocks after booking."}
+                      ? "ملاحظة: الدفع آمن. يتم دفع قيمة Zowar مرة واحدة فقط عند الحجز، وتُفتح بوابة الألغاز بعد إتمام الدفع. أي مشتريات إضافية أثناء التجربة تكون اختيارية بالكامل."
+                      : "Note: Secure checkout. Your Zowar payment is made once at booking, and the Puzzle Portal unlocks after checkout. Any extra purchases during the experience are completely optional."}
                   </p>
                 </div>
               ) : null}
@@ -601,7 +606,7 @@ export default function Home() {
 
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             <a
-              href="mailto:hello@zowar.com"
+              href="mailto:hello@zowar.net"
               className="inline-flex items-center justify-center rounded-full bg-z-orange text-neutral-950 px-6 py-4 text-sm font-extrabold transition hover:opacity-95"
             >
               {isAr ? "راسلنا" : "Email us"}
@@ -657,7 +662,7 @@ export default function Home() {
                 </div>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li>
-                    <a className="hover:text-white/90 transition" href="#">
+                    <a className="hover:text-white/90 transition" href={faqHref}>
                       {isAr ? footer.links.faq.ar : footer.links.faq.en}
                     </a>
                   </li>
@@ -790,9 +795,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* ==================== GLOBAL STYLES ==================== */}
-      {/* ✅ REMOVE the old inline flash-orange CSS (it was overriding your globals + hiding orange with z-index:-1) */}
     </main>
   );
 }

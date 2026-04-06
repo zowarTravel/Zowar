@@ -20,6 +20,28 @@ const tajawal = Tajawal({
   display: "swap",
 });
 
+function IconImage({
+  src,
+  alt,
+  size = 28,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  size?: number;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`relative shrink-0 ${className}`}
+      style={{ width: size, height: size }}
+      aria-hidden="true"
+    >
+      <Image src={src} alt={alt} fill sizes={`${size}px`} className="object-contain" />
+    </div>
+  );
+}
+
 export default function Home() {
   /* -------------------- LOCALE -------------------- */
   const [locale, setLocale] = useState<Locale>("en");
@@ -214,6 +236,72 @@ export default function Home() {
   const pageBg =
     "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(249,115,22,0.16),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
 
+  const howItWorksCards = [
+    {
+      iconSrc: "/images/Icons/Booking.png",
+      iconAlt: isAr ? "أيقونة الحجز" : "Booking icon",
+      n: "1",
+      title: isAr ? "احجز" : "Book",
+      body: isAr ? "اختر التاريخ وافتح البوابة" : "Choose your date & unlock the portal",
+      footer:
+        isAr ? "بعد الحجز ستظهر بوابة الألغاز." : "After booking, your Puzzle Portal unlocks.",
+    },
+    {
+      iconSrc: "/images/Icons/Puzzle.png",
+      iconAlt: isAr ? "أيقونة اللغز" : "Puzzle icon",
+      n: "2",
+      title: isAr ? "حلّ" : "Solve",
+      body: isAr ? "اتبع الإشارات عبر المدينة" : "Follow clues through the city",
+      footer: isAr ? "ستحصل على تلميحات عند الحاجة." : "Hints are available if you get stuck.",
+    },
+    {
+      iconSrc: "/images/Icons/Food.png",
+      iconAlt: isAr ? "أيقونة الطعام" : "Food icon",
+      n: "3",
+      title: isAr ? "تذوّق" : "Taste",
+      body: isAr ? "استمتع بقمات أيقونية" : "Enjoy iconic bites along the way",
+      footer: isAr ? "النهاية بإطلالة + لقمة مميزة." : "Finish with a view + a final bite.",
+    },
+  ];
+
+  const snapshotItems = [
+    {
+      iconSrc: "/images/Icons/Clock.png",
+      iconAlt: isAr ? "أيقونة الوقت" : "Clock icon",
+      label: isAr ? "٢–٣ ساعات" : "2–3 hrs",
+    },
+    {
+      iconSrc: "/images/Icons/Walking.png",
+      iconAlt: isAr ? "أيقونة المشي" : "Walking icon",
+      label: isAr ? "٢–٣ كم" : "2–3 km",
+    },
+    {
+      iconSrc: "/images/Icons/Puzzle.png",
+      iconAlt: isAr ? "أيقونة اللغز" : "Puzzle icon",
+      label: isAr ? "سهل–متوسط" : "Easy–Medium",
+    },
+    {
+      iconSrc: "/images/Icons/Food.png",
+      iconAlt: isAr ? "أيقونة التذوّق" : "Food icon",
+      label: isAr ? "٤–٥ تذوّقات" : "4–5 tastings",
+    },
+    {
+      iconSrc: "/images/Icons/Shops.png",
+      iconAlt: isAr ? "أيقونة الشركاء المحليين" : "Local partners icon",
+      label: isAr ? "محطات شركاء محليين" : "Local partner stops",
+    },
+    {
+      iconSrc: "/images/Icons/Self-Guided.png",
+      iconAlt: isAr ? "أيقونة التجربة الذاتية" : "Self-paced icon",
+      label: isAr ? "على وتيرتك" : "Self-paced",
+    },
+    {
+      iconSrc: "/images/Icons/Puzzle.png",
+      iconAlt: isAr ? "أيقونة المساعدة" : "Help icon",
+      label: isAr ? "مساعدة عند الحاجة" : "Help if needed",
+    },
+  ];
+
   return (
     <main dir={isAr ? "rtl" : "ltr"} className={`${pageBg} ${fontClass}`}>
       {/* ==================== NAV ==================== */}
@@ -240,9 +328,6 @@ export default function Home() {
             <div className="hidden md:flex items-center gap-8 text-sm">
               <a className="hover:z-orange transition" href="#home">
                 {isAr ? "الرئيسية" : "Home"}
-              </a>
-              <a className="hover:z-orange transition" href="#about">
-                {isAr ? "اعرف أكثر" : "Learn More"}
               </a>
               <a className="hover:z-orange transition" href={aboutHref}>
                 {isAr ? "عن زوّار" : "About Zowar"}
@@ -440,51 +525,21 @@ export default function Home() {
           </h2>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              {
-                icon: "🎟️",
-                n: "1",
-                title: isAr ? "احجز" : "Book",
-                body: isAr ? "اختر التاريخ وافتح البوابة" : "Choose your date & unlock the portal",
-              },
-              {
-                icon: "🧩",
-                n: "2",
-                title: isAr ? "حلّ" : "Solve",
-                body: isAr ? "اتبع الإشارات عبر المدينة" : "Follow clues through the city",
-              },
-              {
-                icon: "🍢",
-                n: "3",
-                title: isAr ? "تذوّق" : "Taste",
-                body: isAr ? "استمتع بقمات أيقونية" : "Enjoy iconic bites along the way",
-              },
-            ].map((c) => (
+            {howItWorksCards.map((c) => (
               <div
                 key={c.n}
                 className="rounded-3xl bg-white/95 border border-black/5 shadow-sm px-7 py-7 text-left transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-lg"
               >
                 <div className="flex items-center justify-between">
-                  <div className="text-2xl">{c.icon}</div>
+                  <IconImage src={c.iconSrc} alt={c.iconAlt} size={34} />
                   <div className="z-orange font-extrabold text-2xl">{c.n}</div>
                 </div>
+
                 <div className="mt-4 font-bold text-lg">{c.title}</div>
                 <div className="mt-2 text-sm text-neutral-600 leading-relaxed">{c.body}</div>
 
                 <div className="mt-5 h-px bg-black/5" />
-                <div className="mt-4 text-xs text-neutral-500">
-                  {c.n === "1"
-                    ? isAr
-                      ? "بعد الحجز ستظهر بوابة الألغاز."
-                      : "After booking, your Puzzle Portal unlocks."
-                    : c.n === "2"
-                    ? isAr
-                      ? "ستحصل على تلميحات عند الحاجة."
-                      : "Hints are available if you get stuck."
-                    : isAr
-                    ? "النهاية بإطلالة + لقمة مميزة."
-                    : "Finish with a view + a final bite."}
-                </div>
+                <div className="mt-4 text-xs text-neutral-500">{c.footer}</div>
               </div>
             ))}
           </div>
@@ -495,20 +550,14 @@ export default function Home() {
       <section className="py-10 sm:py-12 bg-transparent">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-wrap items-center justify-center gap-3">
-            {[
-              { icon: "⏱️", label: isAr ? "٢–٣ ساعات" : "2–3 hrs" },
-              { icon: "🚶", label: isAr ? "٢–٣ كم" : "2–3 km" },
-              { icon: "🧩", label: isAr ? "سهل–متوسط" : "Easy–Medium" },
-              { icon: "🍴", label: isAr ? "٤–٥ تذوّقات" : "4–5 tastings" },
-              { icon: "🏪", label: isAr ? "محطات شركاء محليين" : "Local partner stops" },
-              { icon: "🗺️", label: isAr ? "على وتيرتك" : "Self-paced" },
-              { icon: "💬", label: isAr ? "مساعدة عند الحاجة" : "Help if needed" },
-            ].map((x) => (
+            {snapshotItems.map((x) => (
               <div
                 key={x.label}
                 className="min-w-[150px] rounded-2xl bg-white/80 border border-black/5 px-6 py-4 text-center shadow-sm"
               >
-                <div className="text-xl">{x.icon}</div>
+                <div className="flex justify-center">
+                  <IconImage src={x.iconSrc} alt={x.iconAlt} size={34} />
+                </div>
                 <div className="mt-2 text-xs font-semibold text-neutral-800">{x.label}</div>
               </div>
             ))}

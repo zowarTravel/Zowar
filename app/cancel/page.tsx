@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Checkout Canceled",
+  robots: { index: false, follow: false },
+};
+
 export default function CancelPage() {
   return (
     <main className="min-h-screen bg-white text-neutral-900 px-6 py-16">

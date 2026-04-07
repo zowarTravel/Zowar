@@ -1,5 +1,26 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Fredoka, Tajawal } from "next/font/google";
+
+export const metadata: Metadata = {
+  title: "FAQ",
+  description:
+    "Answers to common questions about Zowar's food puzzle walks in Amman — booking, routes, dietary needs, and more.",
+  alternates: {
+    canonical: "https://zowar.jo/faq",
+    languages: {
+      en: "https://zowar.jo/faq?lang=en",
+      ar: "https://zowar.jo/faq?lang=ar",
+    },
+  },
+  openGraph: {
+    title: "FAQ | Zowar",
+    description:
+      "Answers to common questions about Zowar's food puzzle walks in Amman.",
+    url: "https://zowar.jo/faq",
+    images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
+  },
+};
 
 type Locale = "en" | "ar";
 type SearchParams = Promise<{ lang?: string }>;

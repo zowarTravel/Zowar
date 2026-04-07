@@ -13,8 +13,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Zowar",
-  description: "Food puzzle walks in Amman.",
+  metadataBase: new URL("https://zowar.jo"),
+  title: {
+    default: "Zowar | Food Puzzle Walks in Amman",
+    template: "%s | Zowar",
+  },
+  description:
+    "Zowar offers self-guided food puzzle walks in Amman, Jordan. Explore local restaurants, solve clues, and taste your way through the city.",
+  openGraph: {
+    type: "website",
+    siteName: "Zowar",
+    locale: "en_US",
+    images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@zowarjo",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

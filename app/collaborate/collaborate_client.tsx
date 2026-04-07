@@ -106,10 +106,7 @@ const copy = {
 
 function OrangeBullet() {
   return (
-    <span
-      className="mt-[7px] inline-block h-2 w-2 shrink-0 rounded-full"
-      style={{ backgroundColor: "#f97316" }}
-    />
+    <span className="mt-[7px] inline-block h-2 w-2 shrink-0 rounded-full bg-z-orange" />
   );
 }
 
@@ -354,15 +351,10 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
                 disabled={status === "sending"}
                 className={[
                   "mt-2 w-full rounded-2xl px-5 py-4 font-semibold text-neutral-950 transition",
-                  status === "sending" ? "cursor-not-allowed opacity-70" : "hover:opacity-95",
+                  status === "sending"
+                    ? "cursor-not-allowed opacity-70 bg-orange-500/25"
+                    : "hover:opacity-95 bg-z-orange glow-z-orange",
                 ].join(" ")}
-                style={{
-                  backgroundColor: status === "sending" ? "rgba(249,115,22,0.25)" : "#f97316",
-                  boxShadow:
-                    status === "sending"
-                      ? "none"
-                      : "0 0 0 1px rgba(249,115,22,0.15), 0 0 30px rgba(249,115,22,0.35)",
-                }}
               >
                 {status === "sending" ? t.sending : t.send}
               </button>
@@ -371,7 +363,7 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
                 {t.dmLine}{" "}
                 <a
                   className="underline decoration-black/20 hover:decoration-black/40"
-                  href="https://instagram.com/"
+                  href="https://www.instagram.com/zowar.jo/"
                   target="_blank"
                   rel="noreferrer"
                 >

@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import SuccessClient from "./success_client";
+
+export const metadata: Metadata = {
+  title: "Booking Confirmed",
+  robots: { index: false, follow: false },
+};
 
 type Locale = "en" | "ar";
 

@@ -1,7 +1,28 @@
 // app/about/page.tsx
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Fredoka, Tajawal } from "next/font/google";
+
+export const metadata: Metadata = {
+  title: "About Zowar",
+  description:
+    "Learn about Zowar — the team behind Amman's self-guided food puzzle walks. Discover our story, mission, and the local spots we partner with.",
+  alternates: {
+    canonical: "https://zowar.jo/about",
+    languages: {
+      en: "https://zowar.jo/about?lang=en",
+      ar: "https://zowar.jo/about?lang=ar",
+    },
+  },
+  openGraph: {
+    title: "About Zowar",
+    description:
+      "Learn about Zowar — the team behind Amman's self-guided food puzzle walks.",
+    url: "https://zowar.jo/about",
+    images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
+  },
+};
 
 type Locale = "en" | "ar";
 
@@ -30,8 +51,7 @@ const copy = {
       `The first time I showed my wife — who isn’t from Jordan — around Amman, I wasn’t taking her to the “top 10” tourist spots — I was taking her to the places I grew up with. The falafel shop you only know because someone in your family swears by it. The perfect rooftop to enjoy magical late Amman nights.`,
       `Watching her experience Jordan for the first time made me realize something:`,
       `If I wasn’t local, she would have never seen this side of it.`,
-      `Not the real atmosphere.`,
-      `Not the hidden gems.`,
+      `Not the real atmosphere. Not the hidden gems`,
       `Not the places that don’t show up on travel guides.`,
       `This is where the idea of Zowar was born. A self-guided city experience where you solve, taste, and discover your way through Amman. Something to enjoy whether it’s your first visit or your hundredth!`,
       `Each stop reveals the next. Each clue pulls you deeper. You’re not just walking between locations — you’re connecting pieces. Food, views, culture, stories — they start to experience the bigger picture.`,

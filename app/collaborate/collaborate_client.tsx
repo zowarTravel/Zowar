@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-type Locale = "en" | "ar";
+type Locale = "en" | "ar" | "es";
 type Status = "idle" | "sending" | "success" | "error";
 
 const copy = {
@@ -99,8 +99,55 @@ const copy = {
     errorBody: "تأكد من الحقول المطلوبة ثم جرّب مرة ثانية.",
     dmLine: "بدك رسائل مباشرة؟",
     dm: "راسلنا على إنستغرام",
-    toggle: "EN",
+    toggle: "ES",
     home: "الرئيسية",
+  },
+  es: {
+    title: "Colaboraciones",
+    subtitle:
+      "Colabora con Zowar. Llevamos visitantes a locales cercanos a través de una ruta de puzzles gastronómicos.",
+    howTitle: "¿Cómo funciona?",
+    howSteps: [
+      "Enviamos visitantes a tu local (ruta clara y flujo agradable)",
+      "Ofreces una degustación sencilla (rápida de servir)",
+      "Nosotros gestionamos la experiencia (puzzles + soporte)",
+    ],
+    goodPartnerTitle: "¿Qué hace a un buen socio?",
+    goodPartner: [
+      "Calidad constante y servicio amable",
+      "Servicio rápido (idealmente menos de 5 minutos)",
+      "Un producto estrella del que estés orgulloso",
+      "Abierto a un acuerdo sencillo (precio fijo por visitante o canje de vales)",
+    ],
+    whyTitle: "¿Por qué colaborar con nosotros?",
+    why: [
+      "Nuevos clientes en horas de menor afluencia",
+      "Contenido en redes sociales + boca a boca orgánico",
+      "Demanda clara y predecible (programamos rutas)",
+      "Presencia en rutas Zowar + futuras expansiones",
+    ],
+    formTitle: "Solicitud de colaboración",
+    formNote: "Rellena esto y nos pondremos en contacto.",
+    fields: {
+      business: "Nombre del negocio",
+      contact: "Nombre de contacto",
+      email: "Correo electrónico",
+      phone: "Teléfono / WhatsApp",
+      area: "Zona (ej., Calle Rainbow)",
+      type: "Tipo (café, postre, falafel, tienda, etc.)",
+      message: "Mensaje",
+    },
+    required: "Obligatorio",
+    send: "Enviar",
+    sending: "Enviando…",
+    successTitle: "¡Enviado!",
+    successBody: "Gracias — nos pondremos en contacto pronto.",
+    errorTitle: "No se pudo enviar",
+    errorBody: "Revisa los campos obligatorios e inténtalo de nuevo.",
+    dmLine: "¿Prefieres mensaje directo?",
+    dm: "Escríbenos en Instagram",
+    toggle: "EN",
+    home: "Inicio",
   },
 } as const;
 
@@ -127,7 +174,8 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
   const isAr = locale === "ar";
   const t = copy[locale];
 
-  const toggleHref = `/collaborate?lang=${isAr ? "en" : "ar"}`;
+  const nextLang = locale === "en" ? "ar" : locale === "ar" ? "es" : "en";
+  const toggleHref = `/collaborate?lang=${nextLang}`;
   const homeHref = `/?lang=${locale}`;
 
   const [status, setStatus] = React.useState<Status>("idle");
@@ -163,7 +211,7 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
 
     if (!payload.business || !payload.contact || !payload.email) {
       setStatus("error");
-      setErrorMsg(isAr ? "الرجاء تعبئة الحقول المطلوبة." : "Please fill the required fields.");
+      setErrorMsg(locale === "ar" ? "الرجاء تعبئة الحقول المطلوبة." : locale === "es" ? "Por favor rellena los campos obligatorios." : "Please fill the required fields.");
       return;
     }
 
@@ -188,7 +236,7 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
         setStatus("error");
         setErrorMsg(
           serverErr ||
-            (isAr ? "حصل خطأ. جرّب مرة ثانية." : "Something went wrong. Please try again.")
+            (locale === "ar" ? "حصل خطأ. جرّب مرة ثانية." : locale === "es" ? "Algo salió mal. Por favor inténtalo de nuevo." : "Something went wrong. Please try again.")
         );
         return;
       }
@@ -197,7 +245,7 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
       form.reset();
     } catch {
       setStatus("error");
-      setErrorMsg(isAr ? "حصل خطأ بالشبكة. جرّب مرة ثانية." : "Network error. Please try again.");
+      setErrorMsg(locale === "ar" ? "حصل خطأ بالشبكة. جرّب مرة ثانية." : locale === "es" ? "Error de red. Por favor inténtalo de nuevo." : "Network error. Please try again.");
     }
   }
 

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-type Locale = "en" | "ar";
+type Locale = "en" | "ar" | "es";
 
 export default async function SuccessPage({
   searchParams,
@@ -16,7 +16,7 @@ export default async function SuccessPage({
   const { lang, session_id } = await searchParams;
 
   const normalizedLang = (lang ?? "").toLowerCase();
-  const locale: Locale = normalizedLang.startsWith("ar") ? "ar" : "en";
+  const locale: Locale = normalizedLang.startsWith("ar") ? "ar" : normalizedLang.startsWith("es") ? "es" : "en";
 
   return <SuccessClient locale={locale} sessionId={session_id} />;
 }

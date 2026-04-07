@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-type Locale = "en" | "ar";
+type Locale = "en" | "ar" | "es";
 
 const copy = {
   en: {
@@ -20,6 +20,13 @@ const copy = {
     body: "يتم الآن نقلك إلى بوابة زُوّار لبدء التجربة.",
     button: "الدخول إلى البوابة",
     home: "العودة للرئيسية",
+  },
+  es: {
+    eyebrow: "Reserva confirmada",
+    title: "Tu portal está desbloqueado",
+    body: "Te llevamos ahora a tu portal de Zowar para que puedas comenzar la experiencia.",
+    button: "Entrar al Portal",
+    home: "Volver al Inicio",
   },
 } as const;
 
@@ -39,7 +46,7 @@ export default function SuccessClient({
     if (sessionId) localStorage.setItem("zowar_session_id", sessionId);
 
     const timer = setTimeout(() => {
-      router.replace(`/portal?lang=${isAr ? "ar" : "en"}`);
+      router.replace(`/portal?lang=${locale}`);
     }, 1800);
 
     return () => clearTimeout(timer);
@@ -80,14 +87,14 @@ export default function SuccessClient({
 
           <div className="mt-8 flex flex-wrap gap-3">
             <button
-              onClick={() => router.push(`/portal?lang=${isAr ? "ar" : "en"}`)}
+              onClick={() => router.push(`/portal?lang=${locale}`)}
               className="bg-z-orange glow-z-orange inline-flex rounded-2xl px-5 py-3 font-semibold text-neutral-950 transition hover:opacity-95"
             >
               {t.button}
             </button>
 
             <Link
-              href={`/?lang=${isAr ? "ar" : "en"}`}
+              href={`/?lang=${locale}`}
               className="inline-flex rounded-2xl border border-black/10 bg-white px-5 py-3 font-semibold text-neutral-900 transition hover:bg-black/[0.03]"
             >
               {t.home}

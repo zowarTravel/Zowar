@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     languages: {
       en: "https://zowar.jo/?lang=en",
       ar: "https://zowar.jo/?lang=ar",
+      es: "https://zowar.jo/?lang=es",
     },
   },
   openGraph: {

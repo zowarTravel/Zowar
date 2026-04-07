@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: {
           en: `${BASE}/?lang=en`,
           ar: `${BASE}/?lang=ar`,
+          es: `${BASE}/?lang=es`,
         },
       },
     },
@@ -25,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: {
           en: `${BASE}/about?lang=en`,
           ar: `${BASE}/about?lang=ar`,
+          es: `${BASE}/about?lang=es`,
         },
       },
     },
@@ -37,6 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: {
           en: `${BASE}/booking?lang=en`,
           ar: `${BASE}/booking?lang=ar`,
+          es: `${BASE}/booking?lang=es`,
         },
       },
     },
@@ -49,6 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: {
           en: `${BASE}/faq?lang=en`,
           ar: `${BASE}/faq?lang=ar`,
+          es: `${BASE}/faq?lang=es`,
         },
       },
     },
@@ -61,6 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: {
           en: `${BASE}/collaborate?lang=en`,
           ar: `${BASE}/collaborate?lang=ar`,
+          es: `${BASE}/collaborate?lang=es`,
         },
       },
     },

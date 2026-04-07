@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     languages: {
       en: "https://zowar.jo/faq?lang=en",
       ar: "https://zowar.jo/faq?lang=ar",
+      es: "https://zowar.jo/faq?lang=es",
     },
   },
   openGraph: {
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   },
 };
 
-type Locale = "en" | "ar";
+type Locale = "en" | "ar" | "es";
 type SearchParams = Promise<{ lang?: string }>;
 
 const fredoka = Fredoka({
@@ -484,6 +485,202 @@ const content: Record<
       city: "تجربة صُممت لعشّاق الطعام الفضوليين في عمّان.",
     },
   },
+  es: {
+    nav: {
+      home: "Inicio",
+      booking: "Reserva Ahora",
+      about: "Sobre Zowar",
+      contact: "Contacto",
+      faq: "Preguntas Frecuentes",
+      menu: "Menú",
+      langToggle: "English",
+    },
+    hero: {
+      badge: "Preguntas Frecuentes",
+      title: "Reserva con confianza",
+      body:
+        "Todo aquí está diseñado para responder las preguntas que normalmente impiden a alguien reservar — desde el pago y la legitimidad hasta cómo se siente realmente la experiencia.",
+      bookCta: "Reserva la Experiencia",
+      homeCta: "Volver al Inicio",
+    },
+    trustCards: [
+      {
+        title: "Un solo pago",
+        body:
+          "El pago de Zowar se realiza una sola vez al reservar. No vuelves a pagar a Zowar durante la experiencia.",
+      },
+      {
+        title: "Sin cargos sorpresa",
+        body:
+          "El gasto extra solo ocurre si decides hacer compras opcionales fuera del paquete en una parada.",
+      },
+      {
+        title: "Pago seguro",
+        body:
+          "El pago se gestiona de forma segura para que los visitantes puedan reservar con mayor confianza.",
+      },
+    ],
+    sections: [
+      {
+        category: "Sobre Zowar",
+        items: [
+          {
+            question: "¿Qué es Zowar?",
+            answer:
+              "Zowar es una experiencia autoguiada de comida y puzzles por Amán. Usando tu teléfono, sigues pistas, resuelves desafíos sencillos y descubres paradas locales seleccionadas a lo largo del camino.",
+          },
+          {
+            question: "¿Es Zowar una visita guiada o un juego?",
+            answer:
+              "Es una combinación de ambos. Zowar combina la sensación de una experiencia de paseo por la ciudad con la diversión de una aventura basada en puzzles.",
+          },
+          {
+            question: "¿Para quién es Zowar?",
+            answer:
+              "Zowar está diseñado para turistas, locales, parejas, amigos y grupos pequeños que buscan una forma memorable de explorar Amán.",
+          },
+          {
+            question: "¿Necesito conocer bien Amán para participar?",
+            answer:
+              "No. La experiencia está diseñada tanto para visitantes primerizos como para locales. No necesitas conocimiento previo de la ciudad.",
+          },
+          {
+            question: "¿Está Zowar disponible en inglés y árabe?",
+            answer:
+              "Sí. Zowar está diseñado para ser accesible en inglés, árabe y español.",
+          },
+        ],
+      },
+      {
+        category: "Reserva y Pago",
+        items: [
+          {
+            question: "¿Cómo reservo?",
+            answer:
+              "Elige tu fecha en la página de reservas y completa el pago. Tras reservar, recibirás la información necesaria para comenzar tu experiencia.",
+          },
+          {
+            question: "¿Es seguro el pago?",
+            answer:
+              "Sí. Zowar utiliza un proceso de pago seguro para que tu información de pago se gestione de forma segura durante la reserva.",
+          },
+          {
+            question: "¿Habrá cargos adicionales más adelante?",
+            answer:
+              "Solo si los eliges tú. Si decides comprar comida extra, bebidas u otros artículos fuera de lo incluido en tu paquete, esas compras son separadas y opcionales.",
+          },
+          {
+            question: "¿Puedo reprogramar mi reserva?",
+            answer:
+              "Si tus planes cambian, contacta con Zowar lo antes posible y haremos todo lo posible para ayudarte según la disponibilidad.",
+          },
+        ],
+      },
+      {
+        category: "Qué Esperar",
+        items: [
+          {
+            question: "¿Cuánto dura la experiencia?",
+            answer:
+              "La mayoría de los grupos pueden esperar que la experiencia dure entre 2 y 3 horas según el ritmo de caminata y el tiempo en cada parada.",
+          },
+          {
+            question: "¿Cuánto hay que caminar?",
+            answer:
+              "Zowar es una experiencia caminable. Los visitantes deben esperar una cantidad moderada de caminata, por lo que se recomiendan zapatos cómodos.",
+          },
+          {
+            question: "¿Puedo hacer la experiencia con amigos o familia?",
+            answer:
+              "Sí. Funciona especialmente bien para parejas, amigos y grupos pequeños.",
+          },
+          {
+            question: "¿Puedo hacerla solo?",
+            answer:
+              "¡Sí! Sin embargo, muchos visitantes la disfrutan más con al menos 2 personas.",
+          },
+          {
+            question: "¿Qué pasa si nos atascamos en un puzzle?",
+            answer:
+              "Las pistas están integradas en la experiencia para que puedas seguir avanzando sin quedarte atascado demasiado tiempo.",
+          },
+        ],
+      },
+      {
+        category: "Comida y Paradas",
+        items: [
+          {
+            question: "¿Qué tipo de paradas se incluyen?",
+            answer:
+              "La ruta está construida alrededor de paradas locales seleccionadas que muestran la comida, la tradición, el ambiente y el carácter de Amán. La secuencia exacta es parte de la experiencia.",
+          },
+          {
+            question: "¿Son aleatorias las paradas?",
+            answer:
+              "No. La experiencia está diseñada intencionalmente alrededor de destinos seleccionados para crear una ruta fluida y memorable.",
+          },
+          {
+            question: "¿Puedo comprar cosas extra durante la experiencia?",
+            answer:
+              "Sí. Puedes comprar comida extra, bebidas u otros artículos en cualquier parada si quieres, pero esas compras son independientes de tu reserva de Zowar.",
+          },
+          {
+            question: "¿Los lugares participantes conocen Zowar?",
+            answer:
+              "Sí. Zowar está organizado intencionalmente, no como una ruta aleatoria, lo que ayuda a que la experiencia se sienta fluida y legítima.",
+          },
+        ],
+      },
+      {
+        category: "Preguntas Prácticas",
+        items: [
+          {
+            question: "¿Qué necesito traer?",
+            answer:
+              "Trae un smartphone cargado con acceso a internet, zapatos cómodos para caminar y ganas de explorar.",
+          },
+          {
+            question: "¿Es apta para familias?",
+            answer:
+              "Sí. La experiencia está diseñada para ser accesible y agradable para una amplia variedad de visitantes.",
+          },
+          {
+            question: "¿Qué pasa después de reservar?",
+            answer:
+              "Tras el pago recibirás la información necesaria para tu experiencia y podrás llegar preparado y comenzar con confianza.",
+          },
+          {
+            question: "¿Por qué reservar Zowar en lugar de explorar por mi cuenta?",
+            answer:
+              "Zowar añade estructura, anticipación y descubrimiento a tu salida. En lugar de simplemente visitar lugares uno por uno, vives la ciudad a través de una secuencia curada de pistas, paradas y momentos diseñados para ser memorables.",
+          },
+        ],
+      },
+    ],
+    support: {
+      title: "¿Aún tienes preguntas?",
+      body:
+        "Si algo importante para tu decisión no está respondido aquí, contáctanos antes de reservar y te ayudaremos a aclararlo.",
+      bookingCta: "Ir a Reservas",
+      contactCta: "Escríbenos",
+    },
+    footer: {
+      explore: "Explorar",
+      support: "Soporte",
+      connect: "Conectar",
+      about: "Sobre nosotros",
+      hunts: "Nuestras rutas",
+      faq: "Preguntas Frecuentes",
+      contact: "Contacto",
+      privacy: "Política de Privacidad",
+      partnerships: "Colaboraciones",
+      rightTitle: "¡Prueba Amán!",
+      terms: "Términos de Servicio",
+      copyright: "Derechos de autor ©",
+      rights: "TODOS LOS DERECHOS RESERVADOS.",
+      city: "Creado para amantes curiosos de la comida en Amán.",
+    },
+  },
 };
 
 function buildFaqSchema(locale: Locale) {
@@ -511,7 +708,8 @@ export default async function FAQPage({
   searchParams: SearchParams;
 }) {
   const { lang } = await searchParams;
-  const locale: Locale = lang === "ar" ? "ar" : "en";
+  const normalizedLang = (lang ?? "").toLowerCase();
+  const locale: Locale = normalizedLang.startsWith("ar") ? "ar" : normalizedLang.startsWith("es") ? "es" : "en";
   const isAr = locale === "ar";
   const c = content[locale];
   const fontClass = isAr ? tajawal.className : fredoka.className;
@@ -521,7 +719,8 @@ export default async function FAQPage({
   const bookingHref = `/booking?lang=${locale}`;
   const collaborateHref = `/collaborate?lang=${locale}`;
   const faqHref = `/faq?lang=${locale}`;
-  const switchHref = `/faq?lang=${isAr ? "en" : "ar"}`;
+  const nextLang = locale === "en" ? "ar" : locale === "ar" ? "es" : "en";
+  const switchHref = `/faq?lang=${nextLang}`;
 
   const pageBg =
     "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(249,115,22,0.16),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
@@ -598,6 +797,10 @@ export default async function FAQPage({
                 <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-neutral-900">
                   {isAr ? (
                     <span className="z-orange">{c.hero.title}</span>
+                  ) : locale === "es" ? (
+                    <>
+                      <span className="z-orange">Reserva</span> con confianza
+                    </>
                   ) : (
                     <>
                       <span className="z-orange">Book</span> with confidence
@@ -655,11 +858,11 @@ export default async function FAQPage({
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-wrap items-center justify-center gap-3">
             {[
-              { icon: "🔒", label: isAr ? "دفع آمن" : "Secure checkout" },
-              { icon: "💳", label: isAr ? "دفعة واحدة" : "One-time payment" },
-              { icon: "🧩", label: isAr ? "تلميحات عند الحاجة" : "Hints if needed" },
-              { icon: "📍", label: isAr ? "مسار منظم" : "Curated route" },
-              { icon: "🌆", label: isAr ? "تجربة ذاتية" : "Self-guided" },
+              { icon: "🔒", label: locale === "ar" ? "دفع آمن" : locale === "es" ? "Pago seguro" : "Secure checkout" },
+              { icon: "💳", label: locale === "ar" ? "دفعة واحدة" : locale === "es" ? "Pago único" : "One-time payment" },
+              { icon: "🧩", label: locale === "ar" ? "تلميحات عند الحاجة" : locale === "es" ? "Pistas si las necesitas" : "Hints if needed" },
+              { icon: "📍", label: locale === "ar" ? "مسار منظم" : locale === "es" ? "Ruta curada" : "Curated route" },
+              { icon: "🌆", label: locale === "ar" ? "تجربة ذاتية" : locale === "es" ? "Autoguiado" : "Self-guided" },
             ].map((x) => (
               <div
                 key={x.label}

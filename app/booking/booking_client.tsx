@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-type Locale = "en" | "ar";
+type Locale = "en" | "ar" | "es";
 
 interface BookingClientProps {
   locale: Locale;
@@ -59,11 +59,37 @@ const copy = {
     total: "الإجمالي",
     pay: "الانتقال للدفع",
     loading: "جاري التحويل…",
-    toggle: "EN",
+    toggle: "ES",
     currency: "د.أ",
     home: "الرئيسية",
     portal: "الذهاب إلى البوابة",
     freeCodeApplied: "تم تطبيق كود الحجز المجاني",
+  },
+  es: {
+    title: "Reserva",
+    subtitle:
+      "Elige la fecha de tu experiencia. Tras el pago recibirás una confirmación + el enlace de acceso al Portal.",
+    nextStepsTitle: "Próximos pasos",
+    nextSteps: [
+      "Completar el pago",
+      "Recibir el correo de confirmación",
+      "Obtener tu enlace al Portal + punto de inicio",
+      "Llegar y empezar a resolver",
+    ],
+    chooseDate: "Elige una fecha",
+    qty: "Participantes",
+    discount: "Código de descuento",
+    apply: "Aplicar",
+    summary: "Resumen del pedido",
+    subtotal: "Subtotal",
+    total: "Total",
+    pay: "Proceder al Pago",
+    loading: "Redirigiendo…",
+    toggle: "EN",
+    currency: "JOD",
+    home: "Inicio",
+    portal: "Ir al Portal",
+    freeCodeApplied: "Código de reserva gratuita aplicado",
   },
 } as const;
 
@@ -76,12 +102,13 @@ function clamp(n: number, min: number, max: number) {
 /* ---------------- Component ---------------- */
 
 export default function BookingClient({ locale }: BookingClientProps) {
-  const effectiveLocale: Locale = locale === "ar" ? "ar" : "en";
+  const effectiveLocale: Locale = locale === "ar" ? "ar" : locale === "es" ? "es" : "en";
   const isAr = effectiveLocale === "ar";
   const t = copy[effectiveLocale];
 
   const langParam = `lang=${effectiveLocale}`;
-  const toggleHref = `/booking?lang=${isAr ? "en" : "ar"}`;
+  const nextLang = effectiveLocale === "en" ? "ar" : effectiveLocale === "ar" ? "es" : "en";
+  const toggleHref = `/booking?lang=${nextLang}`;
   const homeHref = `/?${langParam}`;
   const portalHref = `/portal?${langParam}`;
 

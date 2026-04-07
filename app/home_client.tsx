@@ -50,18 +50,23 @@ export default function HomeClient() {
     if (typeof window === "undefined") return;
     const browserLang = navigator.language.toLowerCase();
     if (browserLang.startsWith("ar")) setLocale("ar");
+    else if (browserLang.startsWith("es")) setLocale("es");
   }, []);
 
   const t = useMemo(() => content[locale], [locale]);
   const isAr = locale === "ar";
   const fontClass = isAr ? tajawal.className : fredoka.className;
 
+  function tr(en: string, ar: string, es: string): string {
+    return locale === "ar" ? ar : locale === "es" ? es : en;
+  }
+
   /* -------------------- KEEP LANG ACROSS PAGES -------------------- */
-  const aboutHref = `/about?lang=${isAr ? "ar" : "en"}`;
-  const bookingHref = `/booking?lang=${isAr ? "ar" : "en"}`;
-  const portalHref = `/portal?lang=${isAr ? "ar" : "en"}`;
-  const collaborateHref = `/collaborate?lang=${isAr ? "ar" : "en"}`;
-  const faqHref = `/faq?lang=${isAr ? "ar" : "en"}`;
+  const aboutHref = `/about?lang=${locale}`;
+  const bookingHref = `/booking?lang=${locale}`;
+  const portalHref = `/portal?lang=${locale}`;
+  const collaborateHref = `/collaborate?lang=${locale}`;
+  const faqHref = `/faq?lang=${locale}`;
 
   /* -------------------- PRICING DISPLAY ONLY -------------------- */
   const DEFAULT_CURRENCY: Currency = "USD";
@@ -94,9 +99,9 @@ export default function HomeClient() {
   /* -------------------- HERO BACKGROUND MEDIA -------------------- */
   const heroMedia = useMemo(
     () => [
-      { src: "/images/street-food.jpg", alt: { en: "Amman street food", ar: "طعام شارع في عمّان" } },
-      { src: "/images/spices.jpg", alt: { en: "Spices", ar: "بهارات" } },
-      { src: "/images/desserts.jpg", alt: { en: "Desserts", ar: "حلويات" } },
+      { src: "/images/street-food.jpg", alt: { en: "Amman street food", ar: "طعام شارع في عمّان", es: "Comida callejera de Amán" } },
+      { src: "/images/spices.jpg", alt: { en: "Spices", ar: "بهارات", es: "Especias" } },
+      { src: "/images/desserts.jpg", alt: { en: "Desserts", ar: "حلويات", es: "Postres" } },
     ],
     []
   );
@@ -114,54 +119,58 @@ export default function HomeClient() {
       [
         {
           key: "cultural" as const,
-          label: { en: "Cultural Immersion", ar: "تجربة ثقافية" },
-          flip: { en: "Local Delights", ar: "مذاقات محلية" },
-          title: { en: "Taste the Culture, Live the City", ar: "تذوّق الثقافة وعِش المدينة" },
+          label: { en: "Cultural Immersion", ar: "تجربة ثقافية", es: "Inmersión Cultural" },
+          flip: { en: "Local Delights", ar: "مذاقات محلية", es: "Delicias Locales" },
+          title: { en: "Taste the Culture, Live the City", ar: "تذوّق الثقافة وعِش المدينة", es: "Prueba la Cultura, Vive la Ciudad" },
           body: {
             en: "Beyond food, ZOWAR is a journey through Amman’s stories—follow clues, meet local gems, and explore one stop at a time.",
             ar: "أكثر من مجرد طعام — زوّار رحلة داخل قصص عمّان. اتبع الإشارات واكتشف الأماكن المحلية خطوة بخطوة.",
+            es: "Más que comida, ZOWAR es un viaje por las historias de Amán — sigue pistas, descubre joyas locales y explora parada a parada.",
           },
           imageSrc: "/images/about/cultural.jpg",
-          imageAlt: { en: "Colorful streets of Amman", ar: "شوارع عمّان الملوّنة" },
+          imageAlt: { en: "Colorful streets of Amman", ar: "شوارع عمّان الملوّنة", es: "Las coloridas calles de Amán" },
           showCTA: false,
         },
         {
           key: "dietary" as const,
-          label: { en: "Dietary Restrictions", ar: "قيود غذائية" },
-          flip: { en: "Tailored Experience", ar: "تجربة مخصّصة" },
-          title: { en: "Made for Your Preferences", ar: "مصممة حسب تفضيلاتك" },
+          label: { en: "Dietary Restrictions", ar: "قيود غذائية", es: "Restricciones Dietéticas" },
+          flip: { en: "Tailored Experience", ar: "تجربة مخصّصة", es: "Experiencia Personalizada" },
+          title: { en: "Made for Your Preferences", ar: "مصممة حسب تفضيلاتك", es: "Diseñada para Tus Preferencias" },
           body: {
             en: "Tell us your needs (vegetarian, allergies, etc.) and we’ll guide you to the best-fit stops for your group.",
             ar: "أخبرنا باحتياجاتك (نباتي، حساسية، وغيرها) وسنوجّهك لأفضل محطات تناسب مجموعتك.",
+            es: "Cuéntanos tus necesidades (vegetariano, alergias, etc.) y te guiaremos a las paradas más adecuadas para tu grupo.",
           },
           imageSrc: "/images/about/dietary.jpg",
-          imageAlt: { en: "A spread of food options", ar: "خيارات طعام متنوعة" },
+          imageAlt: { en: "A spread of food options", ar: "خيارات طعام متنوعة", es: "Una variedad de opciones gastronómicas" },
           showCTA: false,
         },
         {
           key: "moments" as const,
-          label: { en: "Memorable Moments", ar: "لحظات لا تُنسى" },
-          flip: { en: "Lasting Memories", ar: "ذكريات تدوم" },
-          title: { en: "Moments Worth Keeping", ar: "لحظات تستحق أن تُحفظ" },
+          label: { en: "Memorable Moments", ar: "لحظات لا تُنسى", es: "Momentos Memorables" },
+          flip: { en: "Lasting Memories", ar: "ذكريات تدوم", es: "Recuerdos Duraderos" },
+          title: { en: "Moments Worth Keeping", ar: "لحظات تستحق أن تُحفظ", es: "Momentos que Vale la Pena Guardar" },
           body: {
             en: "Each stop is a small story—photos, laughs, and a finale with a view. Perfect for couples, friends, and visitors.",
             ar: "كل محطة قصة صغيرة — صور وضحكات ونهاية بإطلالة. مثالية للأصدقاء والزوار.",
+            es: "Cada parada es una pequeña historia — fotos, risas y un final con vistas. Perfecta para parejas, amigos y visitantes.",
           },
           imageSrc: "/images/about/moments.jpg",
-          imageAlt: { en: "Friends enjoying a rooftop view", ar: "أصدقاء يستمتعون بإطلالة" },
+          imageAlt: { en: "Friends enjoying a rooftop view", ar: "أصدقاء يستمتعون بإطلالة", es: "Amigos disfrutando de una vista desde una azotea" },
           showCTA: false,
         },
         {
           key: "booking" as const,
-          label: { en: "Easy Booking", ar: "حجز سهل" },
-          flip: { en: "Seamless Process", ar: "عملية سلسة" },
-          title: { en: "Book in Minutes", ar: "احجز خلال دقائق" },
+          label: { en: "Easy Booking", ar: "حجز سهل", es: "Reserva Fácil" },
+          flip: { en: "Seamless Process", ar: "عملية سلسة", es: "Proceso Sin Complicaciones" },
+          title: { en: "Book in Minutes", ar: "احجز خلال دقائق", es: "Reserva en Minutos" },
           body: {
             en: "Pick a date, checkout securely, and you’re set. After booking, your Puzzle Portal unlocks to guide you through the route. Your Zowar payment is made once at checkout, with no additional Zowar charges during the experience unless you choose optional extras outside the package.",
             ar: "اختر التاريخ، وادفع بأمان، وانطلق. بعد الحجز تُفتح بوابة الألغاز لتقودك في المسار. يتم دفع قيمة Zowar مرة واحدة فقط عند الحجز، ولا توجد أي دفعات إضافية لـ Zowar أثناء التجربة إلا إذا اخترت إضافات اختيارية خارج الباقة.",
+            es: "Elige una fecha, paga de forma segura y listo. Tras reservar, tu Portal de Puzzles se desbloquea para guiarte por la ruta. El pago de Zowar se realiza una sola vez al reservar, sin cargos adicionales durante la experiencia salvo que elijas extras opcionales fuera del paquete.",
           },
           imageSrc: "/images/about/booking.jpg",
-          imageAlt: { en: "Simple booking on a phone", ar: "حجز سهل عبر الهاتف" },
+          imageAlt: { en: "Simple booking on a phone", ar: "حجز سهل عبر الهاتف", es: "Reserva sencilla desde el teléfono" },
           showCTA: true,
         },
       ] as const,
@@ -207,30 +216,30 @@ export default function HomeClient() {
   /* -------------------- FOOTER TEXT -------------------- */
   const footer = useMemo(
     () => ({
-      explore: { en: "Explore", ar: "اكتشف" },
-      support: { en: "Support", ar: "الدعم" },
-      connect: { en: "Connect", ar: "تواصل" },
+      explore: { en: "Explore", ar: "اكتشف", es: "Explorar" },
+      support: { en: "Support", ar: "الدعم", es: "Soporte" },
+      connect: { en: "Connect", ar: "تواصل", es: "Conectar" },
       links: {
-        about: { en: "About us", ar: "من نحن" },
-        hunts: { en: "Our hunts", ar: "تجاربنا" },
-        testimonials: { en: "Testimonials", ar: "آراء العملاء" },
-        faq: { en: "FAQ", ar: "الأسئلة الشائعة" },
-        contact: { en: "Contact", ar: "تواصل" },
-        privacy: { en: "Privacy Policy", ar: "سياسة الخصوصية" },
-        blog: { en: "Blog", ar: "المدونة" },
-        newsletter: { en: "Newsletter", ar: "النشرة البريدية" },
-        partnerships: { en: "Partnerships", ar: "الشراكات" },
+        about: { en: "About us", ar: "من نحن", es: "Sobre nosotros" },
+        hunts: { en: "Our hunts", ar: "تجاربنا", es: "Nuestras rutas" },
+        testimonials: { en: "Testimonials", ar: "آراء العملاء", es: "Testimonios" },
+        faq: { en: "FAQ", ar: "الأسئلة الشائعة", es: "Preguntas Frecuentes" },
+        contact: { en: "Contact", ar: "تواصل", es: "Contacto" },
+        privacy: { en: "Privacy Policy", ar: "سياسة الخصوصية", es: "Política de Privacidad" },
+        blog: { en: "Blog", ar: "المدونة", es: "Blog" },
+        newsletter: { en: "Newsletter", ar: "النشرة البريدية", es: "Boletín" },
+        partnerships: { en: "Partnerships", ar: "الشراكات", es: "Colaboraciones" },
       },
-      rightTitle: { en: "Taste Amman!", ar: "تذوّق عمّان!" },
-      terms: { en: "Terms of Service", ar: "شروط الخدمة" },
-      copyright: { en: "COPYRIGHT ©", ar: "حقوق النشر ©" },
+      rightTitle: { en: "Taste Amman!", ar: "تذوّق عمّان!", es: "¡Prueba Amán!" },
+      terms: { en: "Terms of Service", ar: "شروط الخدمة", es: "Términos de Servicio" },
+      copyright: { en: "COPYRIGHT ©", ar: "حقوق النشر ©", es: "Derechos de autor ©" },
     }),
     []
   );
 
   /* -------------------- MOBILE CTA (sticky) -------------------- */
   const stickyCtaHref = bookingHref;
-  const stickyCtaLabel = isAr ? "احجز التجربة" : "Book the Experience";
+  const stickyCtaLabel = tr("Book the Experience", "احجز التجربة", "Reserva la Experiencia");
 
   /* -------------------- PAGE BACKGROUND -------------------- */
   const pageBg =
@@ -239,66 +248,65 @@ export default function HomeClient() {
   const howItWorksCards = [
     {
       iconSrc: "/images/Icons/Booking.png",
-      iconAlt: isAr ? "أيقونة الحجز" : "Booking icon",
+      iconAlt: tr("Booking icon", "أيقونة الحجز", "Icono de reserva"),
       n: "1",
-      title: isAr ? "احجز" : "Book",
-      body: isAr ? "اختر التاريخ وافتح البوابة" : "Choose your date & unlock the portal",
-      footer:
-        isAr ? "بعد الحجز ستظهر بوابة الألغاز." : "After booking, your Puzzle Portal unlocks.",
+      title: tr("Book", "احجز", "Reserva"),
+      body: tr("Choose your date & unlock the portal", "اختر التاريخ وافتح البوابة", "Elige tu fecha y desbloquea el portal"),
+      footer: tr("After booking, your Puzzle Portal unlocks.", "بعد الحجز ستظهر بوابة الألغاز.", "Tras reservar, tu Portal de Puzzles se desbloquea."),
     },
     {
       iconSrc: "/images/Icons/Puzzle.png",
-      iconAlt: isAr ? "أيقونة اللغز" : "Puzzle icon",
+      iconAlt: tr("Puzzle icon", "أيقونة اللغز", "Icono de puzzle"),
       n: "2",
-      title: isAr ? "حلّ" : "Solve",
-      body: isAr ? "اتبع الإشارات عبر المدينة" : "Follow clues through the city",
-      footer: isAr ? "ستحصل على تلميحات عند الحاجة." : "Hints are available if you get stuck.",
+      title: tr("Solve", "حلّ", "Resuelve"),
+      body: tr("Follow clues through the city", "اتبع الإشارات عبر المدينة", "Sigue las pistas por la ciudad"),
+      footer: tr("Hints are available if you get stuck.", "ستحصل على تلميحات عند الحاجة.", "Hay pistas disponibles si te quedas atascado."),
     },
     {
       iconSrc: "/images/Icons/Food.png",
-      iconAlt: isAr ? "أيقونة الطعام" : "Food icon",
+      iconAlt: tr("Food icon", "أيقونة الطعام", "Icono de comida"),
       n: "3",
-      title: isAr ? "تذوّق" : "Taste",
-      body: isAr ? "استمتع بقمات أيقونية" : "Enjoy iconic bites along the way",
-      footer: isAr ? "النهاية بإطلالة + لقمة مميزة." : "Finish with a view + a final bite.",
+      title: tr("Taste", "تذوّق", "Prueba"),
+      body: tr("Enjoy iconic bites along the way", "استمتع بقمات أيقونية", "Disfruta bocados icónicos a lo largo del camino"),
+      footer: tr("Finish with a view + a final bite.", "النهاية بإطلالة + لقمة مميزة.", "Termina con unas vistas + un último bocado."),
     },
   ];
 
   const snapshotItems = [
     {
       iconSrc: "/images/Icons/Clock.png",
-      iconAlt: isAr ? "أيقونة الوقت" : "Clock icon",
-      label: isAr ? "٢–٣ ساعات" : "2–3 hrs",
+      iconAlt: tr("Clock icon", "أيقونة الوقت", "Icono de reloj"),
+      label: tr("2–3 hrs", "٢–٣ ساعات", "2–3 hrs"),
     },
     {
       iconSrc: "/images/Icons/Walking.png",
-      iconAlt: isAr ? "أيقونة المشي" : "Walking icon",
-      label: isAr ? "٢–٣ كم" : "2–3 km",
+      iconAlt: tr("Walking icon", "أيقونة المشي", "Icono de caminar"),
+      label: tr("2–3 km", "٢–٣ كم", "2–3 km"),
     },
     {
       iconSrc: "/images/Icons/Puzzle.png",
-      iconAlt: isAr ? "أيقونة اللغز" : "Puzzle icon",
-      label: isAr ? "سهل–متوسط" : "Easy–Medium",
+      iconAlt: tr("Puzzle icon", "أيقونة اللغز", "Icono de puzzle"),
+      label: tr("Easy–Medium", "سهل–متوسط", "Fácil–Medio"),
     },
     {
       iconSrc: "/images/Icons/Food.png",
-      iconAlt: isAr ? "أيقونة التذوّق" : "Food icon",
-      label: isAr ? "٤–٥ تذوّقات" : "4–5 tastings",
+      iconAlt: tr("Food icon", "أيقونة التذوّق", "Icono de comida"),
+      label: tr("4–5 tastings", "٤–٥ تذوّقات", "4–5 degustaciones"),
     },
     {
       iconSrc: "/images/Icons/Shops.png",
-      iconAlt: isAr ? "أيقونة الشركاء المحليين" : "Local partners icon",
-      label: isAr ? "محطات شركاء محليين" : "Local partner stops",
+      iconAlt: tr("Local partners icon", "أيقونة الشركاء المحليين", "Icono de socios locales"),
+      label: tr("Local partner stops", "محطات شركاء محليين", "Paradas de socios locales"),
     },
     {
       iconSrc: "/images/Icons/Self-Guided.png",
-      iconAlt: isAr ? "أيقونة التجربة الذاتية" : "Self-paced icon",
-      label: isAr ? "على وتيرتك" : "Self-paced",
+      iconAlt: tr("Self-paced icon", "أيقونة التجربة الذاتية", "Icono de ritmo propio"),
+      label: tr("Self-paced", "على وتيرتك", "A tu ritmo"),
     },
     {
       iconSrc: "/images/Icons/Puzzle.png",
-      iconAlt: isAr ? "أيقونة المساعدة" : "Help icon",
-      label: isAr ? "مساعدة عند الحاجة" : "Help if needed",
+      iconAlt: tr("Help icon", "أيقونة المساعدة", "Icono de ayuda"),
+      label: tr("Help if needed", "مساعدة عند الحاجة", "Ayuda si es necesario"),
     },
   ];
 
@@ -309,7 +317,7 @@ export default function HomeClient() {
         <div className="mx-auto max-w-7xl px-5">
           <nav className="mt-4 flex items-center justify-between rounded-2xl border border-black/10 bg-white/70 backdrop-blur-md px-4 py-3 text-neutral-900 shadow-sm">
             <a
-              href={isAr ? "/?lang=ar" : "/?lang=en"}
+              href={`/?lang=${locale}`}
               className="group flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-black/[0.03]"
               aria-label="Go to home"
             >
@@ -327,33 +335,35 @@ export default function HomeClient() {
 
             <div className="hidden md:flex items-center gap-8 text-sm">
               <a className="hover:z-orange transition" href="#home">
-                {isAr ? "الرئيسية" : "Home"}
+                {tr("Home", "الرئيسية", "Inicio")}
               </a>
               <a className="hover:z-orange transition" href={aboutHref}>
-                {isAr ? "عن زوّار" : "About Zowar"}
+                {tr("About Zowar", "عن زوّار", "Sobre Zowar")}
               </a>
               <a className="hover:z-orange transition" href={bookingHref}>
-                {isAr ? "احجز الآن" : "Book Now"}
+                {tr("Book Now", "احجز الآن", "Reserva Ahora")}
               </a>
               <a className="hover:z-orange transition" href="#contact">
-                {isAr ? "تواصل" : "Contact"}
+                {tr("Contact", "تواصل", "Contacto")}
               </a>
             </div>
 
             <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onMouseEnter={() => triggerFlash("lang")}
-                onClick={() => {
-                  triggerFlash("lang");
-                  setLocale(locale === "en" ? "ar" : "en");
-                }}
-                className="flash-orange relative rounded-full border border-black/10 bg-white/80 px-4 py-3 text-xs sm:text-sm font-semibold"
-                data-flash={flashLang}
-                aria-label={locale === "en" ? "Switch to Arabic" : "Switch to English"}
-              >
-                <span>{locale === "en" ? "العربية" : "English"}</span>
-              </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onMouseEnter={() => triggerFlash("lang")}
+                  onClick={() => {
+                    triggerFlash("lang");
+                    setLocale(locale === "en" ? "ar" : locale === "ar" ? "es" : "en");
+                  }}
+                  className="flash-orange relative rounded-full border border-black/10 bg-white/80 px-4 py-3 text-xs sm:text-sm font-semibold"
+                  data-flash={flashLang}
+                  aria-label="Switch language"
+                >
+                  <span>{locale === "en" ? "العربية" : locale === "ar" ? "Español" : "English"}</span>
+                </button>
+              </div>
 
               <div className="relative" ref={menuRef}>
                 <button
@@ -369,7 +379,7 @@ export default function HomeClient() {
                   aria-expanded={menuOpen}
                 >
                   <span className="inline-flex items-center gap-2">
-                    {isAr ? "القائمة" : "Menu"}
+                    {tr("Menu", "القائمة", "Menú")}
                     <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" className="opacity-80">
                       <path
                         fill="currentColor"
@@ -393,7 +403,7 @@ export default function HomeClient() {
                       onClick={() => setMenuOpen(false)}
                       className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
-                      {isAr ? "اعرف أكثر" : "Learn more"}
+                      {tr("Learn more", "اعرف أكثر", "Aprender Más")}
                     </a>
 
                     <a
@@ -402,7 +412,7 @@ export default function HomeClient() {
                       onClick={() => setMenuOpen(false)}
                       className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
-                      {isAr ? "عن زوّار" : "About Zowar"}
+                      {tr("About Zowar", "عن زوّار", "Sobre Zowar")}
                     </a>
 
                     <a
@@ -411,7 +421,7 @@ export default function HomeClient() {
                       onClick={() => setMenuOpen(false)}
                       className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
-                      {isAr ? "احجز الآن" : "Book now"}
+                      {tr("Book now", "احجز الآن", "Reserva ahora")}
                     </a>
 
                     <a
@@ -420,7 +430,7 @@ export default function HomeClient() {
                       onClick={() => setMenuOpen(false)}
                       className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
-                      {isAr ? "الأسئلة الشائعة" : "FAQ"}
+                      {tr("FAQ", "الأسئلة الشائعة", "Preguntas Frecuentes")}
                     </a>
 
                     <div className="h-px bg-black/10" />
@@ -431,7 +441,7 @@ export default function HomeClient() {
                       onClick={() => setMenuOpen(false)}
                       className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
-                      {isAr ? "تعاون معنا" : "Collaborate with us"}
+                      {tr("Collaborate with us", "تعاون معنا", "Colabora con nosotros")}
                     </a>
 
                     <a
@@ -440,7 +450,7 @@ export default function HomeClient() {
                       onClick={() => setMenuOpen(false)}
                       className="block px-4 py-4 text-sm hover:bg-black/[0.03] transition"
                     >
-                      {isAr ? "بوابة الألغاز 🔒" : "Puzzle Portal 🔒"}
+                      {tr("Puzzle Portal 🔒", "بوابة الألغاز 🔒", "Portal de Puzzles 🔒")}
                     </a>
                   </div>
                 ) : null}
@@ -463,7 +473,7 @@ export default function HomeClient() {
             >
               <Image
                 src={m.src}
-                alt={isAr ? m.alt.ar : m.alt.en}
+                alt={tr(m.alt.en, m.alt.ar, m.alt.es)}
                 fill
                 priority={i === 0}
                 sizes="100vw"
@@ -481,6 +491,12 @@ export default function HomeClient() {
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
               {isAr ? (
                 <span className="z-orange">حلّ. تذوّق. اكتشف</span>
+              ) : locale === "es" ? (
+                <>
+                  <span className="z-orange">Resuelve.</span>{" "}
+                  <span className="z-orange">Prueba.</span>{" "}
+                  <span className="z-orange">Descubre</span> Amán
+                </>
               ) : (
                 <>
                   <span className="z-orange">Solve.</span>{" "}
@@ -491,9 +507,11 @@ export default function HomeClient() {
             </h1>
 
             <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-lg text-white/90">
-              {isAr
-                ? "تجربة مدينة ذاتية الإرشاد حيث تحل الألغاز، وتتذوّق لقمات أيقونية، وتكتشف عمّان على وتيرتك."
-                : "A self-guided city experience where you solve puzzles, taste iconic bites, and discover Amman at your own pace."}
+              {tr(
+                "A self-guided city experience where you solve puzzles, taste iconic bites, and discover Amman at your own pace.",
+                "تجربة مدينة ذاتية الإرشاد حيث تحل الألغاز، وتتذوّق لقمات أيقونية، وتكتشف عمّان على وتيرتك.",
+                "Una experiencia urbana autoguiada donde resuelves puzzles, pruebas bocados icónicos y descubres Amán a tu ritmo."
+              )}
             </p>
 
             <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -501,14 +519,14 @@ export default function HomeClient() {
                 href={bookingHref}
                 className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-z-orange text-neutral-950 px-10 py-4 text-sm font-extrabold tracking-wide transition hover:opacity-95"
               >
-                {isAr ? "احجز التجربة" : "Book the Experience"}
+                {tr("Book the Experience", "احجز التجربة", "Reserva la Experiencia")}
               </a>
 
               <a
                 href="#about"
                 className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-white/60 bg-white/10 px-10 py-4 text-sm font-bold tracking-wide text-white transition hover:bg-white/20 hover:border-white"
               >
-                {isAr ? "اعرف أكثر" : "Learn More"}
+                {tr("Learn More", "اعرف أكثر", "Aprender Más")}
               </a>
             </div>
 
@@ -521,7 +539,7 @@ export default function HomeClient() {
       <section className="bg-[#fff3e8] py-14 sm:py-16">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-center text-3xl md:text-4xl font-bold">
-            {isAr ? "كيف تعمل التجربة" : "How It Works"}
+            {tr("How It Works", "كيف تعمل التجربة", "Cómo Funciona")}
           </h2>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -570,8 +588,8 @@ export default function HomeClient() {
         <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-neutral-700">
           {aboutTabs.map((tab) => {
             const active = tab.key === activeAboutKey;
-            const labelText = isAr ? tab.label.ar : tab.label.en;
-            const flipText = isAr ? tab.flip.ar : tab.flip.en;
+            const labelText = tr(tab.label.en, tab.label.ar, tab.label.es);
+            const flipText = tr(tab.flip.en, tab.flip.ar, tab.flip.es);
 
             return (
               <button
@@ -603,7 +621,7 @@ export default function HomeClient() {
             <div className="rounded-3xl overflow-hidden bg-neutral-100">
               <img
                 src={activeAbout.imageSrc}
-                alt={isAr ? activeAbout.imageAlt.ar : activeAbout.imageAlt.en}
+                alt={tr(activeAbout.imageAlt.en, activeAbout.imageAlt.ar, activeAbout.imageAlt.es)}
                 className="w-full h-[280px] md:h-[360px] object-cover"
               />
             </div>
@@ -614,11 +632,11 @@ export default function HomeClient() {
               </div>
 
               <h3 className="text-2xl md:text-3xl font-medium">
-                {isAr ? activeAbout.title.ar : activeAbout.title.en}
+                {tr(activeAbout.title.en, activeAbout.title.ar, activeAbout.title.es)}
               </h3>
 
               <p className="mt-4 text-neutral-600 leading-relaxed">
-                {isAr ? activeAbout.body.ar : activeAbout.body.en}
+                {tr(activeAbout.body.en, activeAbout.body.ar, activeAbout.body.es)}
               </p>
 
               {activeAbout.showCTA ? (
@@ -627,16 +645,18 @@ export default function HomeClient() {
                     href={bookingHref}
                     className="inline-flex items-center gap-3 rounded-full bg-z-orange text-neutral-950 px-6 py-3 text-sm font-extrabold hover:opacity-95 transition"
                   >
-                    {isAr ? "احجز الآن" : "Book now"}
+                    {tr("Book now", "احجز الآن", "Reserva ahora")}
                     <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-black/10">
                       →
                     </span>
                   </a>
 
                   <p className="mt-3 text-xs text-neutral-500 leading-relaxed">
-                    {isAr
-                      ? "ملاحظة: الدفع آمن. يتم دفع قيمة Zowar مرة واحدة فقط عند الحجز، وتُفتح بوابة الألغاز بعد إتمام الدفع. أي مشتريات إضافية أثناء التجربة تكون اختيارية بالكامل."
-                      : "Note: Secure checkout. Your Zowar payment is made once at booking, and the Puzzle Portal unlocks after checkout. Any extra purchases during the experience are completely optional."}
+                    {tr(
+                      "Note: Secure checkout. Your Zowar payment is made once at booking, and the Puzzle Portal unlocks after checkout. Any extra purchases during the experience are completely optional.",
+                      "ملاحظة: الدفع آمن. يتم دفع قيمة Zowar مرة واحدة فقط عند الحجز، وتُفتح بوابة الألغاز بعد إتمام الدفع. أي مشتريات إضافية أثناء التجربة تكون اختيارية بالكامل.",
+                      "Nota: Pago seguro. El pago de Zowar se realiza una sola vez al reservar, y el Portal de Puzzles se desbloquea tras el pago. Cualquier compra adicional durante la experiencia es completamente opcional."
+                    )}
                   </p>
                 </div>
               ) : null}
@@ -648,9 +668,9 @@ export default function HomeClient() {
       {/* ==================== CONTACT ==================== */}
       <section id="contact" className="px-6 max-w-7xl mx-auto py-16">
         <div className="rounded-3xl border border-black/10 bg-white/80 backdrop-blur-xl p-8 md:p-10 shadow-[0_18px_60px_rgba(0,0,0,0.08)]">
-          <h3 className="text-2xl md:text-3xl font-bold">{isAr ? "تواصل معنا" : "Contact"}</h3>
+          <h3 className="text-2xl md:text-3xl font-bold">{tr("Contact", "تواصل معنا", "Contacto")}</h3>
           <p className="mt-3 text-neutral-600">
-            {isAr ? "هل لديك أسئلة أو ترتيبات خاصة؟" : "Questions or special accommodations?"}
+            {tr("Questions or special accommodations?", "هل لديك أسئلة أو ترتيبات خاصة؟", "¿Preguntas o necesidades especiales?")}
           </p>
 
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
@@ -658,14 +678,14 @@ export default function HomeClient() {
               href="mailto:hello@zowar.net"
               className="inline-flex items-center justify-center rounded-full bg-z-orange text-neutral-950 px-6 py-4 text-sm font-extrabold transition hover:opacity-95"
             >
-              {isAr ? "راسلنا" : "Email us"}
+              {tr("Email us", "راسلنا", "Escríbenos")}
             </a>
 
             <a
               href={bookingHref}
               className="inline-flex items-center justify-center rounded-full border border-z-orange px-6 py-4 text-sm font-semibold transition hover:bg-black/[0.03] z-orange"
             >
-              {isAr ? "اذهب للحجز" : "Go to booking"}
+              {tr("Go to booking", "اذهب للحجز", "Ir a reservas")}
             </a>
           </div>
         </div>
@@ -679,24 +699,24 @@ export default function HomeClient() {
               <div>
                 <div className="inline-flex items-center gap-2">
                   <span className="text-xs uppercase tracking-[0.22em] text-white/60">
-                    {isAr ? footer.explore.ar : footer.explore.en}
+                    {tr(footer.explore.en, footer.explore.ar, footer.explore.es)}
                   </span>
                   <span className="h-[2px] w-12 bg-z-orange/70" />
                 </div>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li>
                     <a className="hover:text-white transition z-orange" href={aboutHref}>
-                      {isAr ? footer.links.about.ar : footer.links.about.en}
+                      {tr(footer.links.about.en, footer.links.about.ar, footer.links.about.es)}
                     </a>
                   </li>
                   <li>
                     <a className="hover:text-white transition z-orange" href={bookingHref}>
-                      {isAr ? footer.links.hunts.ar : footer.links.hunts.en}
+                      {tr(footer.links.hunts.en, footer.links.hunts.ar, footer.links.hunts.es)}
                     </a>
                   </li>
                   <li>
                     <a className="hover:text-white/90 transition" href="#">
-                      {isAr ? footer.links.testimonials.ar : footer.links.testimonials.en}
+                      {tr(footer.links.testimonials.en, footer.links.testimonials.ar, footer.links.testimonials.es)}
                     </a>
                   </li>
                 </ul>
@@ -705,24 +725,24 @@ export default function HomeClient() {
               <div>
                 <div className="inline-flex items-center gap-2">
                   <span className="text-xs uppercase tracking-[0.22em] text-white/60">
-                    {isAr ? footer.support.ar : footer.support.en}
+                    {tr(footer.support.en, footer.support.ar, footer.support.es)}
                   </span>
                   <span className="h-[2px] w-12 bg-z-orange/70" />
                 </div>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li>
                     <a className="hover:text-white/90 transition" href={faqHref}>
-                      {isAr ? footer.links.faq.ar : footer.links.faq.en}
+                      {tr(footer.links.faq.en, footer.links.faq.ar, footer.links.faq.es)}
                     </a>
                   </li>
                   <li>
                     <a className="hover:text-white/90 transition" href="#contact">
-                      {isAr ? footer.links.contact.ar : footer.links.contact.en}
+                      {tr(footer.links.contact.en, footer.links.contact.ar, footer.links.contact.es)}
                     </a>
                   </li>
                   <li>
                     <a className="hover:text-white/90 transition" href="#">
-                      {isAr ? footer.links.privacy.ar : footer.links.privacy.en}
+                      {tr(footer.links.privacy.en, footer.links.privacy.ar, footer.links.privacy.es)}
                     </a>
                   </li>
                 </ul>
@@ -731,24 +751,24 @@ export default function HomeClient() {
               <div>
                 <div className="inline-flex items-center gap-2">
                   <span className="text-xs uppercase tracking-[0.22em] text-white/60">
-                    {isAr ? footer.connect.ar : footer.connect.en}
+                    {tr(footer.connect.en, footer.connect.ar, footer.connect.es)}
                   </span>
                   <span className="h-[2px] w-12 bg-z-orange/70" />
                 </div>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li>
                     <a className="hover:text-white/90 transition" href="#">
-                      {isAr ? footer.links.blog.ar : footer.links.blog.en}
+                      {tr(footer.links.blog.en, footer.links.blog.ar, footer.links.blog.es)}
                     </a>
                   </li>
                   <li>
                     <a className="hover:text-white/90 transition" href="#">
-                      {isAr ? footer.links.newsletter.ar : footer.links.newsletter.en}
+                      {tr(footer.links.newsletter.en, footer.links.newsletter.ar, footer.links.newsletter.es)}
                     </a>
                   </li>
                   <li>
                     <a className="hover:text-white/90 transition" href={collaborateHref}>
-                      {isAr ? footer.links.partnerships.ar : footer.links.partnerships.en}
+                      {tr(footer.links.partnerships.en, footer.links.partnerships.ar, footer.links.partnerships.es)}
                     </a>
                   </li>
                 </ul>
@@ -760,7 +780,7 @@ export default function HomeClient() {
                 <div className="hidden md:block w-px bg-z-orange/35" />
 
                 <div className={isAr ? "text-right" : "text-left"}>
-                  <div className="text-sm font-semibold">{isAr ? footer.rightTitle.ar : footer.rightTitle.en}</div>
+                  <div className="text-sm font-semibold">{tr(footer.rightTitle.en, footer.rightTitle.ar, footer.rightTitle.es)}</div>
 
                   <div className="mt-4 flex items-center gap-4">
                     <a
@@ -806,8 +826,8 @@ export default function HomeClient() {
                   </div>
 
                   <p className="mt-6 text-xs text-white/60">
-                    {footer.copyright.en} {new Date().getFullYear()} ZOWAR.{" "}
-                    {isAr ? "جميع الحقوق محفوظة." : "ALL RIGHTS RESERVED."}
+                    {tr(footer.copyright.en, footer.copyright.ar, footer.copyright.es)} {new Date().getFullYear()} ZOWAR.{" "}
+                    {tr("ALL RIGHTS RESERVED.", "جميع الحقوق محفوظة.", "TODOS LOS DERECHOS RESERVADOS.")}
                   </p>
                 </div>
               </div>
@@ -818,11 +838,11 @@ export default function HomeClient() {
             <span>{t.sections.footerCity}</span>
             <div className="flex items-center gap-4">
               <a href="#" className="hover:text-white transition">
-                {isAr ? footer.terms.ar : footer.terms.en}
+                {tr(footer.terms.en, footer.terms.ar, footer.terms.es)}
               </a>
               <span className="opacity-30">|</span>
               <a href="#" className="hover:text-white transition">
-                {isAr ? footer.links.privacy.ar : footer.links.privacy.en}
+                {tr(footer.links.privacy.en, footer.links.privacy.ar, footer.links.privacy.es)}
               </a>
             </div>
           </div>

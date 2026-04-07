@@ -3,7 +3,7 @@ import Stripe from "stripe";
 
 export const runtime = "nodejs";
 
-type Locale = "en" | "ar";
+type Locale = "en" | "ar" | "es";
 
 type ReqBody = {
   date: string;
@@ -17,7 +17,7 @@ const USD_PER_JOD = 1.41;
 const USD_CENTS = 100;
 
 function safeLocale(x: unknown): Locale {
-  return x === "ar" ? "ar" : "en";
+  return x === "ar" ? "ar" : x === "es" ? "es" : "en";
 }
 
 function toUsdCentsFromJod(jodAmount: number) {
@@ -118,12 +118,16 @@ export async function POST(req: Request) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: locale === "ar" ? "زُوّار – رحلة تذوّق" : "ZOWAR Food Scavenger Hunt",
+              name: locale === "ar" ? "زُوّار – رحلة تذوّق" : locale === "es" ? "ZOWAR Ruta Gastronómica" : "ZOWAR Food Scavenger Hunt",
               description:
                 locale === "ar"
                   ? `رحلة تذوّق ذاتية الإرشاد — ${date} — السعر: ${format3(
                       PRICE_PER_PERSON_JOD
                     )} د.أ للشخص`
+                  : locale === "es"
+                  ? `Ruta gastronómica autoguiada — ${date} — Precio: ${format3(
+                      PRICE_PER_PERSON_JOD
+                    )} JOD por persona`
                   : `Self-guided culinary hunt — ${date} — Price: ${format3(
                       PRICE_PER_PERSON_JOD
                     )} JOD per person`,

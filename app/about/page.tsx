@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     languages: {
       en: "https://zowar.jo/about?lang=en",
       ar: "https://zowar.jo/about?lang=ar",
+      es: "https://zowar.jo/about?lang=es",
     },
   },
   openGraph: {
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
-type Locale = "en" | "ar";
+type Locale = "en" | "ar" | "es";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -48,7 +49,7 @@ const copy = {
     toggleTo: "العربية",
     home: "Home",
     body: [
-      `The first time I showed my wife — who isn’t from Jordan — around Amman, I wasn’t taking her to the “top 10” tourist spots — I was taking her to the places I grew up with. The falafel shop you only know because someone in your family swears by it. The perfect rooftop to enjoy magical late Amman nights.`,
+      `The first time I showed my wife — who isn’t from Jordan — around Amman, I wasn’t taking her to the "top 10" tourist spots — I was taking her to the places I grew up with. The falafel shop you only know because someone in your family swears by it. The perfect rooftop to enjoy magical late Amman nights.`,
       `Watching her experience Jordan for the first time made me realize something:`,
       `If I wasn’t local, she would have never seen this side of it.`,
       `Not the real atmosphere. Not the hidden gems`,
@@ -66,30 +67,55 @@ const copy = {
     subtitle: "قصّة زوّار — وليش بنحب نخلي الناس تكتشف عمّان بطريقة مختلفة.",
     kicker: "قصّة زوّار",
     cta: "احجز تجربتك الآن",
-    toggleTo: "English",
+    toggleTo: "Español",
     home: "الرئيسية",
     body: [
-      `أول مرة زارت زوجتي عمّان — وهي مش من الأردن — ما أخذتها على “أفضل 10 أماكن سياحية”.`,
+      `أول مرة زارت زوجتي عمّان — وهي مش من الأردن — ما أخذتها على "أفضل 10 أماكن سياحية".`,
       `أخذتها على الأماكن اللي تربّينا معها.`,
       `محل الفلافل اللي ما بتعرفه إلا عشان حدا من العيلة بحلف لك إنه أزكى لقمة بالأردن.`,
       `والإطلالة المثالية عشان تستمتع بسهرات عمّان الساحرة.`,
       `وقتها أدركت إشي مهم:`,
       `لو ما كنت من أهل البلد، ما كانت شافت هذا الجانب من الأردن.`,
-      `لا الأجواء الحقيقية ولا الكنوز المخفية ولا الأماكن اللي ما بتطلع بأدلة السفر`,  
+      `لا الأجواء الحقيقية ولا الكنوز المخفية ولا الأماكن اللي ما بتطلع بأدلة السفر`,
       `ومن هون وُلدت فكرة زوّار.`,
       `تجربة مدينة ذاتية الإرشاد، بتحلّ فيها ألغاز، وتتذوّق، وتكتشف طريقك عبر عمّان — تجربة بتستمتع فيها سواء كانت زيارتك الأولى أو المية.`,
       `كل محطة بتكشف اللي بعدها.`,
       `كل لغز بأخذك أعمق.`,
       `إنت ما بتتنقل بس بين أماكن — إنت بتربط بين التفاصيل.`,
-      `زوّار مصمّمة للي بدهم طريقة جديدة يعيشوا المدينة.`, 
+      `زوّار مصمّمة للي بدهم طريقة جديدة يعيشوا المدينة.`,
       `لأنك أحيانًا ما بتحتاج مدينة جديدة.`,
       `بتحتاج طريقة جديدة تشوفها فيها.`,
+    ],
+  },
+  es: {
+    title: "Sobre Zowar",
+    subtitle: "La historia de Zowar — y por qué construimos una forma diferente de descubrir Amán.",
+    kicker: "La historia de Zowar",
+    cta: "Reserva tu experiencia ahora",
+    toggleTo: "English",
+    home: "Inicio",
+    body: [
+      `La primera vez que llevé a mi esposa — que no es de Jordania — a conocer Amán, no la llevé a los "10 mejores lugares turísticos". La llevé a los lugares con los que crecí.`,
+      `La tienda de falafel que solo conoces porque alguien en tu familia jura que es el mejor bocado de Jordania.`,
+      `La azotea perfecta para disfrutar las mágicas noches tardías de Amán.`,
+      `Verla descubrir Jordania por primera vez me hizo darme cuenta de algo:`,
+      `Si yo no fuera local, nunca habría visto este lado de Jordania.`,
+      `No la atmósfera real. No las joyas ocultas.`,
+      `No los lugares que no aparecen en las guías de viaje.`,
+      `Aquí nació la idea de Zowar. Una experiencia urbana autoguiada donde resuelves puzzles, degustas y descubres tu camino por Amán. ¡Algo que disfrutar tanto en tu primera visita como en la centésima!`,
+      `Cada parada revela la siguiente. Cada pista te lleva más adentro.`,
+      `No solo estás caminando entre lugares — estás conectando piezas.`,
+      `Comida, vistas, cultura, historias — empiezas a ver el cuadro completo.`,
+      `Está diseñado para visitantes que quieren más que una lista de tareas.`,
+      `Y para locales que creen que ya lo han visto todo.`,
+      `Porque a veces no necesitas una ciudad nueva.`,
+      `Solo necesitas una nueva forma de verla.`,
     ],
   },
 } as const;
 
 function safeLocale(x: unknown): Locale {
-  return x === "ar" ? "ar" : "en";
+  return x === "ar" ? "ar" : x === "es" ? "es" : "en";
 }
 
 export default async function AboutPage({
@@ -104,7 +130,8 @@ export default async function AboutPage({
 
   // preserve lang across nav
   const langParam = `lang=${locale}`;
-  const toggleHref = `/about?lang=${isAr ? "en" : "ar"}`;
+  const nextLang = locale === "en" ? "ar" : locale === "ar" ? "es" : "en";
+  const toggleHref = `/about?lang=${nextLang}`;
   const homeHref = `/?${langParam}`;
   const bookingHref = `/booking?${langParam}`;
 
@@ -192,8 +219,10 @@ export default async function AboutPage({
               </Link>
 
               <p className="mt-3 text-xs text-neutral-500">
-                {isAr
+                {locale === "ar"
                   ? "بعد الحجز بتوصلك رسالة تأكيد + رابط الدخول للبوابة."
+                  : locale === "es"
+                  ? "Tras el pago recibirás una confirmación + el enlace de acceso al Portal."
                   : "After checkout, you’ll receive a confirmation + the Portal access link."}
               </p>
             </div>

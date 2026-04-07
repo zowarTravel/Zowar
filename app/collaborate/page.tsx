@@ -3,10 +3,10 @@ import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import CollaborateClient from "./collaborate_client";
 
-type Locale = "en" | "ar";
+type Locale = "en" | "ar" | "es";
 
 function safeLocale(x: unknown): Locale {
-  return x === "ar" ? "ar" : "en";
+  return x === "ar" ? "ar" : x === "es" ? "es" : "en";
 }
 
 export async function generateMetadata({
@@ -27,6 +27,7 @@ export async function generateMetadata({
       languages: {
         en: "https://zowar.jo/collaborate?lang=en",
         ar: "https://zowar.jo/collaborate?lang=ar",
+        es: "https://zowar.jo/collaborate?lang=es",
       },
     },
     openGraph: {

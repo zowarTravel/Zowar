@@ -1,4 +1,4 @@
-export type Locale = "en" | "ar";
+export type Locale = "en" | "ar" | "es";
 
 export const content: Record<Locale, any> = {
   en: {
@@ -47,6 +47,31 @@ export const content: Record<Locale, any> = {
       contactTitle: "تواصل",
       contactBody: "الخطوة التالية: نموذج تواصل + رابط واتساب.",
       footerCity: "عمّان، الأردن",
+    },
+    toggle: { en: "EN", ar: "AR" },
+  },
+
+  es: {
+    nav: { home: "Inicio", booking: "Reserva", contact: "Contáctanos", cta: "Contáctanos →" },
+    hero: {
+      title: "Descubre los Sabores Ocultos de Amán",
+      badge: "¡Explora!",
+      body:
+        "Embárcate en una búsqueda culinaria autoguiada por Amán. Resuelve puzzles, sigue pistas y prueba la ciudad parada a parada.",
+      book: "Reserva Ahora",
+      learn: "Aprender Más →",
+    },
+    props: [
+      { title: "Aventura Autoguiada", body: "Explora a tu ritmo — sin grupos de turismo ni horarios fijos." },
+      { title: "Puzzles Interactivos", body: "Resuelve juegos multilingüe para desbloquear cada parada gastronómica." },
+      { title: "Comida Local Auténtica", body: "Lugares elegidos a mano que los locales adoran, no los turistas." },
+    ],
+    sections: {
+      bookingTitle: "Reserva",
+      bookingBody: "Siguiente: conectaremos Stripe checkout + selección de fecha aquí.",
+      contactTitle: "Contacto",
+      contactBody: "Siguiente: añadiremos un formulario de contacto real + enlace de WhatsApp.",
+      footerCity: "Amán, Jordania",
     },
     toggle: { en: "EN", ar: "AR" },
   },

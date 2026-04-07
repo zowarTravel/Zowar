@@ -3,10 +3,10 @@ import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
-type Locale = "en" | "ar";
+type Locale = "en" | "ar" | "es";
 
 function safeLocale(x: unknown): Locale {
-  return x === "ar" ? "ar" : "en";
+  return x === "ar" ? "ar" : x === "es" ? "es" : "en";
 }
 
 export async function POST(req: Request) {
@@ -58,6 +58,8 @@ if (!key) {
           error:
             locale === "ar"
               ? "الحقول المطلوبة ناقصة (اسم المحل، الاسم، الإيميل)."
+              : locale === "es"
+              ? "Faltan campos obligatorios (nombre del negocio, contacto, correo)."
               : "Missing required fields (business, contact, email).",
         },
         { status: 400 }

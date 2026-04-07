@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     languages: {
       en: "https://zowar.jo/booking?lang=en",
       ar: "https://zowar.jo/booking?lang=ar",
+      es: "https://zowar.jo/booking?lang=es",
     },
   },
   openGraph: {
@@ -19,4 +20,4 @@ export const metadata: Metadata = {
     url: "https://zowar.jo/booking",
     images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
   },
-}; type Locale = "en" | "ar"; export default async function BookingPage({ searchParams, }: { searchParams: Promise<{ lang?: string }>; }) { const { lang } = await searchParams; const normalizedLang = (lang ?? "").toLowerCase(); const locale: Locale = normalizedLang.startsWith("ar") ? "ar" : "en"; return <BookingClient locale={locale} />; }
+}; type Locale = "en" | "ar" | "es"; export default async function BookingPage({ searchParams, }: { searchParams: Promise<{ lang?: string }>; }) { const { lang } = await searchParams; const normalizedLang = (lang ?? "").toLowerCase(); const locale: Locale = normalizedLang.startsWith("ar") ? "ar" : normalizedLang.startsWith("es") ? "es" : "en"; return <BookingClient locale={locale} />; }

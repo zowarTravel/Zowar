@@ -87,13 +87,28 @@ export default function HomeClient() {
     return () => window.removeEventListener("mousedown", onDown);
   }, [menuOpen]);
 
+  /* -------------------- LANGUAGE DROPDOWN -------------------- */
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function onDown(e: MouseEvent) {
+      if (!langOpen) return;
+      const el = langRef.current;
+      if (!el) return;
+      if (e.target instanceof Node && !el.contains(e.target)) setLangOpen(false);
+    }
+    window.addEventListener("mousedown", onDown);
+    return () => window.removeEventListener("mousedown", onDown);
+  }, [langOpen]);
+
+  const langLabel = locale === "ar" ? "العربية" : locale === "es" ? "Español" : "English";
+
   /* -------------------- “FLASH ORANGE” (hover + click) -------------------- */
   const [flashMenu, setFlashMenu] = useState(0);
-  const [flashLang, setFlashLang] = useState(0);
 
-  function triggerFlash(which: "menu" | "lang") {
-    if (which === "menu") setFlashMenu((x) => x + 1);
-    if (which === "lang") setFlashLang((x) => x + 1);
+  function triggerFlash() {
+    setFlashMenu((x) => x + 1);
   }
 
   /* -------------------- HERO BACKGROUND MEDIA -------------------- */
@@ -349,28 +364,56 @@ export default function HomeClient() {
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="relative">
+              <div className="relative" ref={langRef}>
                 <button
                   type="button"
-                  onMouseEnter={() => triggerFlash("lang")}
-                  onClick={() => {
-                    triggerFlash("lang");
-                    setLocale(locale === "en" ? "ar" : locale === "ar" ? "es" : "en");
-                  }}
+                  onClick={() => setLangOpen((s) => !s)}
                   className="flash-orange relative rounded-full border border-black/10 bg-white/80 px-4 py-3 text-xs sm:text-sm font-semibold"
-                  data-flash={flashLang}
+                  aria-haspopup="listbox"
+                  aria-expanded={langOpen}
                   aria-label="Switch language"
                 >
-                  <span>{locale === "en" ? "العربية" : locale === "ar" ? "Español" : "English"}</span>
+                  <span className="inline-flex items-center gap-1">
+                    {langLabel}
+                    <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" className="opacity-60">
+                      <path fill="currentColor" d="M7 10l5 5 5-5H7Z" />
+                    </svg>
+                  </span>
                 </button>
+
+                {langOpen && (
+                  <div
+                    role="listbox"
+                    className={[
+                      "absolute z-50 mt-2 w-36 overflow-hidden rounded-2xl border border-black/10 bg-white/90 backdrop-blur-md shadow-xl text-neutral-900",
+                      isAr ? "left-0" : "right-0",
+                    ].join(" ")}
+                  >
+                    {(["en", "ar", "es"] as const).map((l) => (
+                      <button
+                        key={l}
+                        role="option"
+                        aria-selected={locale === l}
+                        type="button"
+                        onClick={() => { setLocale(l); setLangOpen(false); }}
+                        className={[
+                          "w-full px-4 py-3 text-left text-sm transition hover:bg-black/[0.03]",
+                          locale === l ? "font-semibold z-orange" : "",
+                        ].join(" ")}
+                      >
+                        {l === "en" ? "English" : l === "ar" ? "العربية" : "Español"}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="relative" ref={menuRef}>
                 <button
                   type="button"
-                  onMouseEnter={() => triggerFlash("menu")}
+                  onMouseEnter={() => triggerFlash()}
                   onClick={() => {
-                    triggerFlash("menu");
+                    triggerFlash();
                     setMenuOpen((s) => !s);
                   }}
                   className="flash-orange relative rounded-full border border-black/10 bg-white/80 px-4 py-3 text-xs sm:text-sm font-semibold"

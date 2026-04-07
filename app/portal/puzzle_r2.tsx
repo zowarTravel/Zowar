@@ -570,6 +570,40 @@ export default function PuzzleR2({
         </div>
       </div>
 
+      {/* Clues list — always visible below the grid */}
+      <div className="mt-6">
+        <div className="text-sm font-semibold text-neutral-950 mb-3">
+          {isAr ? "التلميحات" : "Clues"}
+        </div>
+        <div className="space-y-2">
+          {words.map((w, idx) => (
+            <div
+              key={w.num}
+              className="flex items-center justify-between gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3"
+            >
+              <button
+                type="button"
+                onClick={() => focusRowStart(idx)}
+                className="min-w-0 text-left flex-1"
+              >
+                <span className="text-sm text-neutral-900">
+                  <span className="font-semibold">{w.num}.</span>{" "}
+                  {isAr ? w.clue.ar : w.clue.en}{" "}
+                  <span className="text-neutral-400">({w.answer.length})</span>
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => solveRow(idx)}
+                className="shrink-0 rounded-xl border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 hover:bg-neutral-100"
+              >
+                {isAr ? "حل السطر" : "Solve row"}
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {showCluesMobile && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <button

@@ -1,17 +1,9 @@
 export const runtime = "nodejs";
 
 import { NextRequest } from "next/server";
-import { verifyPayload } from "@/app/lib/portal-token";
 
-type Auth = { sessionId: string; exp: number };
-
-function getAuth(req: NextRequest): Auth | null {
-  const token = req.cookies.get("zowar_auth")?.value;
-  if (!token) return null;
-  const p = verifyPayload<Auth>(token);
-  if (!p || (p.exp && p.exp < Date.now())) return null;
-  return p;
-}
+// No auth check here — the portal itself is protected by PortalGate.
+// Answer validation is server-side to keep accepted answers out of the client bundle.
 
 const R1: Record<string, string[]> = {
   en: ["pomegranate", "a pomegranate"],
@@ -39,7 +31,6 @@ function levenshtein(a: string, b: string): number {
 }
 
 export async function POST(req: NextRequest) {
-  if (!getAuth(req)) return Response.json({ result: "unauthorized" }, { status: 401 });
 
   const { round, answer, locale } = (await req.json()) as {
     round: string;

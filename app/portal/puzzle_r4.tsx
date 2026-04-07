@@ -3,7 +3,7 @@
 import React from "react";
 import type { Locale } from "./riddlecontent";
 import { riddle4 } from "./riddlecontent";
-import { setRoundSolved } from "./progress";
+import { setRoundSolved, serverSetRoundSolved } from "./progress";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                              */
@@ -118,6 +118,7 @@ export function PuzzleR4({ locale, onSolved }: Props) {
     if (solvedOnceRef.current) return;
     solvedOnceRef.current = true;
     setRoundSolved("r4");
+    serverSetRoundSolved("r4"); // fire-and-forget server sync
     onSolved?.();
   }
 

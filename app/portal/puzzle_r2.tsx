@@ -2,7 +2,7 @@
 
 import React from "react";
 import { riddle2, type Locale } from "./riddlecontent";
-import { readProgress, setRoundSolved } from "./progress";
+import { readProgress, setRoundSolved, serverSetRoundSolved } from "./progress";
 
 type WordSpec = {
   num: number;
@@ -255,6 +255,7 @@ export default function PuzzleR2({
 
     solvedOnceRef.current = true;
     setRoundSolved("r2");
+    serverSetRoundSolved("r2"); // fire-and-forget server sync
     onSolved?.();
   }
 

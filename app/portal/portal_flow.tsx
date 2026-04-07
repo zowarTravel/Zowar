@@ -4,7 +4,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Locale } from "./riddlecontent";
-import { readProgress, type PortalProgress } from "./progress";
+import { readProgress, syncProgress, type PortalProgress } from "./progress";
 
 /* ------------------------------------------------------------------ */
 /* Shared puzzle props                                                 */
@@ -97,8 +97,12 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
   const t4Ref = React.useRef<number | null>(null);
 
   React.useEffect(() => {
-    setProgress(readProgress());
+    let cancelled = false;
+    syncProgress().then((p) => {
+      if (!cancelled) setProgress(p);
+    });
     return () => {
+      cancelled = true;
       if (t1Ref.current) window.clearTimeout(t1Ref.current);
       if (t2Ref.current) window.clearTimeout(t2Ref.current);
       if (t3Ref.current) window.clearTimeout(t3Ref.current);

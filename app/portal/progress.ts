@@ -81,3 +81,39 @@ export function clearProgress() {
   if (typeof window === "undefined") return;
   localStorage.removeItem(KEY);
 }
+
+export async function syncProgress(): Promise<PortalProgress> {
+  try {
+    const res = await fetch("/api/portal/progress");
+    if (!res.ok) return readProgress();
+    const server = (await res.json()) as PortalProgress;
+    // Merge: local OR server (forward only)
+    const local = readProgress();
+    const merged: PortalProgress = {
+      r1: local.r1 || server.r1,
+      r2: local.r2 || server.r2,
+      r3: local.r3 || server.r3,
+      r4: local.r4 || server.r4,
+      r5: local.r5 || server.r5,
+    };
+    // Write merged back to localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem(KEY, JSON.stringify(merged));
+    }
+    return merged;
+  } catch {
+    return readProgress();
+  }
+}
+
+export async function serverSetRoundSolved(round: keyof PortalProgress): Promise<void> {
+  try {
+    await fetch("/api/portal/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ [round]: true }),
+    });
+  } catch {
+    // silently ignore — local progress is already saved
+  }
+}

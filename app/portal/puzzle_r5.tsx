@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { setRoundSolved } from "./progress";
+import { setRoundSolved, serverSetRoundSolved } from "./progress";
 import type { Locale } from "./riddlecontent";
 import { riddle5 } from "./riddlecontent";
 
@@ -104,6 +104,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     solvedOnceRef.current = true;
 
     setRoundSolved("r5");
+    serverSetRoundSolved("r5"); // fire-and-forget server sync
     onSolved?.();
 
     const count = 16;

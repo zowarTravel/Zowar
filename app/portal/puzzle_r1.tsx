@@ -1,87 +1,9 @@
 "use client";
 
 import React from "react";
-import { setRoundSolved } from "./progress";
+import { setRoundSolved, serverSetRoundSolved } from "./progress";
+import { riddle1 } from "./riddlecontent";
 import type { Locale } from "./riddlecontent";
-
-/* -------------------- HELPERS -------------------- */
-
-function normalizeAnswer(input: string): string {
-  return input
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " ")
-    .replace(/[^\p{L}\p{N}\s]/gu, "");
-}
-
-function levenshtein(a: string, b: string): number {
-  const m = a.length;
-  const n = b.length;
-  if (m === 0) return n;
-  if (n === 0) return m;
-
-  const dp = Array.from({ length: m + 1 }, () => new Array<number>(n + 1).fill(0));
-
-  for (let i = 0; i <= m; i++) dp[i][0] = i;
-  for (let j = 0; j <= n; j++) dp[0][j] = j;
-
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
-    }
-  }
-  return dp[m][n];
-}
-
-function isCloseEnough(input: string, accepted: readonly string[]): boolean {
-  const norm = normalizeAnswer(input);
-  if (!norm) return false;
-
-  const acceptedNorm = accepted.map(normalizeAnswer);
-  if (acceptedNorm.includes(norm)) return true;
-
-  const maxEdits = norm.length <= 5 ? 1 : 2;
-  return acceptedNorm.some((a) => levenshtein(norm, a) <= maxEdits);
-}
-
-/* -------------------- RIDDLE CONTENT -------------------- */
-
-const riddle1 = {
-  title: { en: "Riddle 1", ar: "اللغز ١" },
-  prompt: {
-    en: `Red crown upon my head,
-A hundred jewels I guard in bed.
-Inside are pearls, outside is leather,
-Name this fruit, if you are clever.`,
-    ar: `تاج أحمر فوق رأسي،
-أخفي مئة جوهرة في بطني.
-من جوة لؤلؤ، ومن برة جلد،
-احزر الفاكهة إن كنت ذكي.`,
-  },
-  hint: {
-    en: "Think of a fruit filled with jewel-like seeds.",
-    ar: "فكّر بفاكهة مليئة ببذور تشبه الجواهر.",
-  },
-  answer: { en: "Pomegranate", ar: "رمان" },
-  acceptedAnswers: {
-    en: ["pomegranate", "a pomegranate"],
-    ar: ["رمان", "الرمان"],
-  },
-  ui: {
-    showHint: { en: "Show hint", ar: "إظهار التلميح" },
-    hideHint: { en: "Hide hint", ar: "إخفاء التلميح" },
-    showAnswer: { en: "Show answer", ar: "إظهار الإجابة" },
-    hideAnswer: { en: "Hide answer", ar: "إخفاء الإجابة" },
-    yourAnswer: { en: "Your answer", ar: "إجابتك" },
-    placeholder: { en: "Type your answer...", ar: "اكتب إجابتك..." },
-    check: { en: "Check", ar: "تحقق" },
-    reset: { en: "Reset", ar: "إعادة" },
-  },
-  success: { en: "Correct ✅", ar: "إجابة صحيحة ✅" },
-  closeEnough: { en: "Close enough ✅ (we’ll count it!)", ar: "قريبة جدًا ✅ (مقبولة!)" },
-  tryAgain: { en: "Not quite — try again.", ar: "ليست صحيحة — حاول مرة أخرى." },
-} as const;
 
 /* -------------------- COMPONENT -------------------- */
 
@@ -100,6 +22,7 @@ export default function PuzzleR1({
   const [showHint, setShowHint] = React.useState(false);
   const [showAnswer, setShowAnswer] = React.useState(false);
   const [status, setStatus] = React.useState<"idle" | "correct" | "close" | "wrong">("idle");
+  const [isChecking, setIsChecking] = React.useState(false);
 
   const solvedOnceRef = React.useRef(false);
 
@@ -110,26 +33,34 @@ export default function PuzzleR1({
 
       setStatus(nextStatus);
       setRoundSolved("r1");
+      serverSetRoundSolved("r1"); // fire-and-forget server sync
       onSolved?.();
     },
     [onSolved]
   );
 
-  const check = React.useCallback(() => {
-    if (solvedOnceRef.current) return;
-
-    const accepted = t.acceptedAnswers[safeLocale];
-    const norm = normalizeAnswer(answer);
+  const check = React.useCallback(async () => {
+    if (solvedOnceRef.current || isChecking) return;
+    const norm = answer.trim();
     if (!norm) return;
 
-    if (accepted.map(normalizeAnswer).includes(norm)) {
-      markSolved("correct");
-    } else if (isCloseEnough(answer, accepted)) {
-      markSolved("close");
-    } else {
+    setIsChecking(true);
+    try {
+      const res = await fetch("/api/portal/check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ round: "r1", answer, locale: safeLocale }),
+      });
+      const { result } = await res.json();
+      if (result === "correct") markSolved("correct");
+      else if (result === "close") markSolved("close");
+      else setStatus("wrong");
+    } catch {
       setStatus("wrong");
+    } finally {
+      setIsChecking(false);
     }
-  }, [answer, safeLocale, t.acceptedAnswers, markSolved]);
+  }, [answer, safeLocale, isChecking, markSolved]);
 
   function reset() {
     setAnswer("");
@@ -260,9 +191,10 @@ export default function PuzzleR1({
               <button
                 type="button"
                 onClick={check}
-                className="rounded-2xl bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95"
+                disabled={!answer.trim() || isChecking}
+                className="rounded-2xl bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-50"
               >
-                {t.ui.check[safeLocale]}
+                {isChecking ? t.ui.checking[safeLocale] : t.ui.check[safeLocale]}
               </button>
 
               <button

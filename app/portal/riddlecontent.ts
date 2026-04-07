@@ -8,7 +8,30 @@ export type Locale = "en" | "ar";
 
 export const riddle1 = {
   title: { en: "Riddle 1", ar: "اللغز ١" },
-  // (you can migrate the rest later if you want)
+  prompt: {
+    en: `Red crown upon my head,\nA hundred jewels I guard in bed.\nInside are pearls, outside is leather,\nName this fruit, if you are clever.`,
+    ar: `تاج أحمر فوق رأسي،\nأخفي مئة جوهرة في بطني.\nمن جوة لؤلؤ، ومن برة جلد،\nاحزر الفاكهة إن كنت ذكي.`,
+  },
+  hint: {
+    en: "Think of a fruit filled with jewel-like seeds.",
+    ar: "فكّر بفاكهة مليئة ببذور تشبه الجواهر.",
+  },
+  answer: { en: "Pomegranate", ar: "رمان" },
+  // Note: acceptedAnswers intentionally NOT here — validation is server-side only
+  ui: {
+    showHint: { en: "Show hint", ar: "إظهار التلميح" },
+    hideHint: { en: "Hide hint", ar: "إخفاء التلميح" },
+    showAnswer: { en: "Show answer", ar: "إظهار الإجابة" },
+    hideAnswer: { en: "Hide answer", ar: "إخفاء الإجابة" },
+    yourAnswer: { en: "Your answer", ar: "إجابتك" },
+    placeholder: { en: "Type your answer...", ar: "اكتب إجابتك..." },
+    check: { en: "Check", ar: "تحقق" },
+    checking: { en: "Checking…", ar: "جارٍ التحقق…" },
+    reset: { en: "Reset", ar: "إعادة" },
+  },
+  success: { en: "Correct ✅", ar: "إجابة صحيحة ✅" },
+  closeEnough: { en: "Close enough ✅ (we'll count it!)", ar: "قريبة جدًا ✅ (مقبولة!)" },
+  tryAgain: { en: "Not quite — try again.", ar: "ليست صحيحة — حاول مرة أخرى." },
 } as const;
 
 /* ------------------------------------------------------------------ */

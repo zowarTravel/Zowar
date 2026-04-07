@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { Locale } from "./riddlecontent";
-import { setRoundSolved } from "./progress";
+import { setRoundSolved, serverSetRoundSolved } from "./progress";
 
 type Tile = { id: string; text: string };
 
@@ -205,6 +205,7 @@ export function PuzzleR3({
     if (!solvedRef.current) {
       solvedRef.current = true;
       setRoundSolved("r3");
+      serverSetRoundSolved("r3"); // fire-and-forget server sync
       onSolved?.();
     }
   }

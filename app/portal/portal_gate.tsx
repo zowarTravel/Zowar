@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import type { Locale } from "./riddlecontent";
+
 
 const copy = {
   en: {
@@ -31,7 +31,7 @@ export function PortalGate({
   locale,
   children,
 }: {
-  locale: Locale;
+  locale: string;
   children: React.ReactNode;
 }) {
   const safeLocale: PortalLocale = locale === "ar" ? "ar" : locale === "es" ? "es" : "en";

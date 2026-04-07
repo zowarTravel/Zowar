@@ -116,6 +116,8 @@ export default function PuzzleR2({
 
   const inputRefs = React.useRef<Record<string, HTMLInputElement | null>>({});
   const solvedOnceRef = React.useRef(false);
+  const rootRef = React.useRef<HTMLDivElement | null>(null);
+  const solvedActionRef = React.useRef<HTMLDivElement | null>(null);
 
   const [showHint, setShowHint] = React.useState(false);
   const [showCluesMobile, setShowCluesMobile] = React.useState(false);
@@ -255,8 +257,12 @@ export default function PuzzleR2({
 
     solvedOnceRef.current = true;
     setRoundSolved("r2");
-    serverSetRoundSolved("r2"); // fire-and-forget server sync
+    serverSetRoundSolved("r2");
     onSolved?.();
+
+    window.setTimeout(() => {
+      solvedActionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 220);
   }
 
   function closeCluesAndReturnToGrid() {
@@ -341,10 +347,11 @@ export default function PuzzleR2({
 
   return (
     <div
+      ref={rootRef}
       className={[
         "relative overflow-x-hidden rounded-3xl",
         "bg-[linear-gradient(180deg,#fafaf9_0%,#ffffff_100%)]",
-        "p-5 pb-20 shadow-sm transition-all sm:p-6 sm:pb-6",
+        "p-5 pb-[calc(9.5rem+env(safe-area-inset-bottom))] shadow-sm transition-all sm:p-6 sm:pb-6",
         cardGlow,
       ].join(" ")}
     >
@@ -457,13 +464,14 @@ export default function PuzzleR2({
                       const globalC = layout.minC + cc;
                       const cell = layout.cells[keyFor(r, globalC)];
 
-                      if (!cell)
+                      if (!cell) {
                         return (
                           <div
                             key={`e-${r}-${globalC}`}
                             style={{ width: "var(--cell)", height: "var(--cell)" }}
                           />
                         );
+                      }
 
                       const start = layout.starts[r];
                       const isStartCell = globalC === start;
@@ -570,9 +578,8 @@ export default function PuzzleR2({
         </div>
       </div>
 
-      {/* Clues list — always visible below the grid */}
-      <div className="mt-6">
-        <div className="text-sm font-semibold text-neutral-950 mb-3">
+      <div className="mt-6 hidden sm:block">
+        <div className="mb-3 text-sm font-semibold text-neutral-950">
           {isAr ? "التلميحات" : "Clues"}
         </div>
         <div className="space-y-2">
@@ -584,7 +591,7 @@ export default function PuzzleR2({
               <button
                 type="button"
                 onClick={() => focusRowStart(idx)}
-                className="min-w-0 text-left flex-1"
+                className="min-w-0 flex-1 text-left"
               >
                 <span className="text-sm text-neutral-900">
                   <span className="font-semibold">{w.num}.</span>{" "}
@@ -603,6 +610,21 @@ export default function PuzzleR2({
           ))}
         </div>
       </div>
+
+      {allSolved ? (
+        <div
+          ref={solvedActionRef}
+          className="mt-6 rounded-3xl border border-z-orange bg-z-orange-soft p-3 sm:hidden"
+        >
+          <button
+            type="button"
+            onClick={() => onSolved?.()}
+            className="w-full rounded-2xl bg-z-orange px-4 py-3 text-sm font-semibold text-white shadow-sm"
+          >
+            {isAr ? "المتابعة إلى اللغز التالي" : "Continue to next puzzle"}
+          </button>
+        </div>
+      ) : null}
 
       {showCluesMobile && (
         <div className="fixed inset-0 z-40 lg:hidden">
@@ -657,35 +679,42 @@ export default function PuzzleR2({
         </div>
       )}
 
-      <div className="sm:hidden">
-        <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-neutral-200 bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
-          <div className="mx-auto max-w-3xl px-4 py-3">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={check}
-                className="flex-1 rounded-2xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white hover:opacity-90"
-              >
-                {t.ui.check[safeLocale]}
-              </button>
+      {!allSolved ? (
+        <div className="sm:hidden">
+          <div
+            className="fixed bottom-0 left-0 right-0 z-30 border-t border-neutral-200 bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.06)]"
+            style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+          >
+            <div className="mx-auto max-w-3xl px-4 py-3">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={check}
+                  className="flex-1 rounded-2xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white hover:opacity-90"
+                >
+                  {t.ui.check[safeLocale]}
+                </button>
 
-              <button
-                onClick={reset}
-                className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50"
-              >
-                {t.ui.reset[safeLocale]}
-              </button>
+                <button
+                  onClick={reset}
+                  className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50"
+                >
+                  {t.ui.reset[safeLocale]}
+                </button>
 
-              <button
-                type="button"
-                onClick={() => setShowCluesMobile(true)}
-                className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50"
-              >
-                {isAr ? "تلميحات" : "Clues"}
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setShowCluesMobile(true)}
+                  className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50"
+                >
+                  {isAr ? "تلميحات" : "Clues"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="h-[calc(2rem+env(safe-area-inset-bottom))] sm:hidden" />
+      )}
     </div>
   );
 }

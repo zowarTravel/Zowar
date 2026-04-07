@@ -104,7 +104,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     solvedOnceRef.current = true;
 
     setRoundSolved("r5");
-    serverSetRoundSolved("r5"); // fire-and-forget server sync
+    serverSetRoundSolved("r5");
     onSolved?.();
 
     const count = 16;
@@ -190,9 +190,10 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     (isAr ? "نعم! اكتملت الصورة بالكامل! ✨" : "Yes! You completed the image! ✨");
 
   const finalCTA: string =
-    safeLocale === "en"
+    t.finalCTA?.[safeLocale] ??
+    (safeLocale === "en"
       ? "Continue towards the first circle in search of the area in the image!"
-      : "تابع باتجاه الدائرة الأولى وابحث عن المكان الظاهر في الصورة!";
+      : "تابع باتجاه الدائرة الأولى وابحث عن المكان الظاهر في الصورة!");
 
   const correctCount = locked.filter(Boolean).length;
 
@@ -234,7 +235,6 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
         <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
         <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white blur-3xl opacity-30" />
 
-        {/* Header */}
         <div className="relative flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
             <div className="text-xs uppercase tracking-wider text-neutral-500">{kicker}</div>
@@ -260,10 +260,10 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
           </div>
         ) : null}
 
-        {/* Board */}
         <div className="mt-6">
           <div className="relative mx-auto w-full max-w-[720px]">
             <div
+              dir="ltr"
               className={[
                 "relative aspect-square overflow-hidden border border-black/10 bg-white",
                 shouldMerge ? "rounded-3xl" : "rounded-[28px]",
@@ -275,6 +275,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
               ) : null}
 
               <div
+                dir="ltr"
                 className="absolute inset-0 grid transition-all duration-500 ease-out"
                 style={{
                   padding: pad,

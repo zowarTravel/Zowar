@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import LangDropdown from "@/app/components/lang-dropdown";
 
 type Locale = "en" | "ar" | "es";
 type Status = "idle" | "sending" | "success" | "error";
@@ -174,8 +175,6 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
   const isAr = locale === "ar";
   const t = copy[locale];
 
-  const nextLang = locale === "en" ? "ar" : locale === "ar" ? "es" : "en";
-  const toggleHref = `/collaborate?lang=${nextLang}`;
   const homeHref = `/?lang=${locale}`;
 
   const [status, setStatus] = React.useState<Status>("idle");
@@ -281,10 +280,8 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <Link href={toggleHref} className={subtleBtn}>
-              {t.toggle}
-            </Link>
+          <div className="flex items-center gap-2">
+            <LangDropdown locale={locale} basePath="/collaborate" isRtl={isAr} />
             <Link href={homeHref} className={subtleBtn}>
               {t.home}
             </Link>

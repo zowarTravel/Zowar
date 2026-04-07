@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import LangDropdown from "@/app/components/lang-dropdown";
 
 type Locale = "en" | "ar" | "es";
 
@@ -107,8 +108,6 @@ export default function BookingClient({ locale }: BookingClientProps) {
   const t = copy[effectiveLocale];
 
   const langParam = `lang=${effectiveLocale}`;
-  const nextLang = effectiveLocale === "en" ? "ar" : effectiveLocale === "ar" ? "es" : "en";
-  const toggleHref = `/booking?lang=${nextLang}`;
   const homeHref = `/?${langParam}`;
   const portalHref = `/portal?${langParam}`;
 
@@ -231,10 +230,8 @@ export default function BookingClient({ locale }: BookingClientProps) {
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <Link href={toggleHref} className={subtleBtn}>
-              {t.toggle}
-            </Link>
+          <div className="flex items-center gap-2">
+            <LangDropdown locale={effectiveLocale} basePath="/booking" isRtl={isAr} />
             <Link href={homeHref} className={subtleBtn}>
               {t.home}
             </Link>

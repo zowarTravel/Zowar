@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Fredoka, Tajawal } from "next/font/google";
+import LangDropdown from "@/app/components/lang-dropdown";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -719,8 +719,6 @@ export default async function FAQPage({
   const bookingHref = `/booking?lang=${locale}`;
   const collaborateHref = `/collaborate?lang=${locale}`;
   const faqHref = `/faq?lang=${locale}`;
-  const nextLang = locale === "en" ? "ar" : locale === "ar" ? "es" : "en";
-  const switchHref = `/faq?lang=${nextLang}`;
 
   const pageBg =
     "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(249,115,22,0.16),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
@@ -773,13 +771,12 @@ export default async function FAQPage({
             </div>
 
             <div className="flex items-center gap-2">
-              <Link
-                href={switchHref}
-                className="rounded-full border border-black/10 bg-white/80 px-4 py-3 text-xs sm:text-sm font-semibold"
-                aria-label={isAr ? "Switch to English" : "Switch to Arabic"}
-              >
-                {c.nav.langToggle}
-              </Link>
+              <LangDropdown
+                locale={locale}
+                basePath="/faq"
+                isRtl={isAr}
+                buttonClassName="rounded-full border border-black/10 bg-white/80 px-4 py-3 text-xs sm:text-sm font-semibold"
+              />
             </div>
           </nav>
         </div>

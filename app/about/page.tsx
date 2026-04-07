@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Fredoka, Tajawal } from "next/font/google";
+import LangDropdown from "@/app/components/lang-dropdown";
 
 export const metadata: Metadata = {
   title: "About Zowar",
@@ -130,8 +131,6 @@ export default async function AboutPage({
 
   // preserve lang across nav
   const langParam = `lang=${locale}`;
-  const nextLang = locale === "en" ? "ar" : locale === "ar" ? "es" : "en";
-  const toggleHref = `/about?lang=${nextLang}`;
   const homeHref = `/?${langParam}`;
   const bookingHref = `/booking?${langParam}`;
 
@@ -171,11 +170,9 @@ export default async function AboutPage({
             </div>
           </div>
 
-          {/* No top CTA — only toggle + home */}
-          <div className="flex gap-2">
-            <Link href={toggleHref} className={subtleBtn}>
-              {t.toggleTo}
-            </Link>
+          {/* No top CTA — only lang dropdown + home */}
+          <div className="flex items-center gap-2">
+            <LangDropdown locale={locale} basePath="/about" isRtl={isAr} />
             <Link href={homeHref} className={subtleBtn}>
               {t.home}
             </Link>

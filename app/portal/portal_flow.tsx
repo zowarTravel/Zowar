@@ -173,7 +173,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
   }, []);
 
   const nextBtn =
-    "group relative overflow-hidden rounded-2xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95";
+    "group relative overflow-hidden rounded-2xl bg-z-orange px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95";
   const shine =
     "pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full";
 
@@ -211,7 +211,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
               type="button"
               onClick={() => setActiveRound("r1")}
               className={`rounded-full px-3 py-1 ${
-                activeRound === "r1" ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-700"
+                activeRound === "r1" ? "bg-z-orange text-white" : "bg-neutral-100 text-neutral-700"
               }`}
             >
               {isAr ? "١" : "R1"} {progress.r1 ? "✓" : "•"}

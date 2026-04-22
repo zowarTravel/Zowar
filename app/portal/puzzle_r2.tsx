@@ -357,6 +357,9 @@ export default function PuzzleR2({
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-xl">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
+            {safeLocale === "ar" ? "الجولة ٢ · كلمات متقاطعة" : "Round 2 · Crossword"}
+          </div>
           <h2 className="text-xl font-semibold text-neutral-950">{t.title[safeLocale]}</h2>
           <p className="mt-1 text-neutral-700">{t.prompt[safeLocale]}</p>
         </div>
@@ -379,7 +382,7 @@ export default function PuzzleR2({
           <div className="hidden gap-2 sm:flex">
             <button
               onClick={check}
-              className="rounded-2xl bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+              className="rounded-2xl bg-z-orange px-4 py-2 text-sm font-medium text-white hover:opacity-90"
             >
               {t.ui.check[safeLocale]}
             </button>

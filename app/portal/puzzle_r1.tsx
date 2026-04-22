@@ -119,6 +119,9 @@ export default function PuzzleR1({
 
           <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
+                {isAr ? "الجولة ١ · لغز" : "Round 1 · Riddle"}
+              </div>
               <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
                 {t.title[safeLocale]}
               </h2>
@@ -192,7 +195,7 @@ export default function PuzzleR1({
                 type="button"
                 onClick={check}
                 disabled={!answer.trim() || isChecking}
-                className="rounded-2xl bg-neutral-950 px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-50"
+                className="rounded-2xl bg-z-orange px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-50"
               >
                 {isChecking ? t.ui.checking[safeLocale] : t.ui.check[safeLocale]}
               </button>

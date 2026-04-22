@@ -237,8 +237,8 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
 
         <div className="relative flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-wider text-neutral-500">{kicker}</div>
-            <h1 className="mt-1 text-2xl font-semibold text-neutral-950 sm:text-3xl">{title}</h1>
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">{kicker}</div>
+            <h1 className="text-2xl font-semibold text-neutral-950 sm:text-3xl">{title}</h1>
             <p className="mt-2 text-sm leading-relaxed text-neutral-700">{prompt}</p>
           </div>
 

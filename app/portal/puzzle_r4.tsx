@@ -182,7 +182,7 @@ export function PuzzleR4({ locale, onSolved }: Props) {
     "p-5 sm:p-6 shadow-[0_16px_50px_rgba(0,0,0,0.10)]";
 
   const headerPill =
-    "inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-neutral-700 shadow-sm";
+    "inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold z-orange";
 
   const tileBase =
     "rounded-2xl border border-black/10 bg-white px-3 py-4 text-sm font-semibold text-neutral-900 " +
@@ -195,7 +195,7 @@ export function PuzzleR4({ locale, onSolved }: Props) {
     "inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900 shadow-sm";
 
   const btn =
-    "group relative overflow-hidden rounded-2xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40";
+    "group relative overflow-hidden rounded-2xl bg-z-orange px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40";
 
   const ghostBtn =
     "rounded-2xl border border-black/10 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 shadow-sm transition hover:bg-neutral-50";

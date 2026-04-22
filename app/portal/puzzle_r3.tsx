@@ -263,6 +263,9 @@ export function PuzzleR3({
 
           <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
+                {isAr ? "الجولة ٣ · ابنِ الجملة" : "Round 3 · Build the Phrase"}
+              </div>
               <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">{t.title}</h2>
               <p className="mt-1 text-sm text-neutral-700">{t.subtitle}</p>
               <p className="mt-2 text-xs text-neutral-500">{t.ui.dragHelp}</p>
@@ -286,7 +289,7 @@ export function PuzzleR3({
               <button
                 onClick={check}
                 disabled={status === "correct"}
-                className="rounded-2xl bg-neutral-950 px-5 py-2 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-40"
+                className="rounded-2xl bg-z-orange px-5 py-2 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-40"
               >
                 {t.ui.check}
               </button>

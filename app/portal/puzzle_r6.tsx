@@ -231,7 +231,7 @@ function StepCard({
   icon: React.ReactNode;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur-xl">
+    <div className="relative overflow-hidden rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
       <div className="absolute inset-x-0 top-0 h-1 bg-z-orange" />
       <div className="mb-3 flex items-center justify-between">
         <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-z-orange bg-z-orange-soft z-orange glow-z-orange">
@@ -243,10 +243,10 @@ function StepCard({
       </div>
 
       <div className="space-y-1">
-        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">
+        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
           {label}
         </div>
-        <div className="text-sm font-medium leading-6 text-white/90">
+        <div className="text-sm font-medium leading-6 text-neutral-800">
           {text}
         </div>
       </div>
@@ -307,27 +307,27 @@ function PuzzleR6({ locale }: { locale: Locale }) {
   }
 
   return (
-    <section dir={dir} className="mx-auto w-full max-w-6xl px-4 pb-24">
-      <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-white/5 shadow-2xl backdrop-blur-2xl">
-        <div className="absolute -top-24 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-z-orange-soft blur-3xl" />
+    <section dir={dir} className="mx-auto w-full max-w-6xl pb-10">
+      <div className="relative overflow-hidden rounded-[32px] border border-neutral-200 bg-white shadow-lg">
+        <div className="absolute -top-24 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-z-orange-soft blur-3xl opacity-60" />
 
-        <div className="relative border-b border-white/10 p-6 sm:p-8">
+        <div className="relative border-b border-neutral-200 p-6 sm:p-8">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] z-orange">
             <CompassIcon />
             {t.eyebrow}
           </div>
 
           <div className="max-w-3xl">
-            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl">
               {t.title}
             </h2>
-            <p className="mt-3 text-base leading-7 text-white/75 sm:text-lg">
+            <p className="mt-3 text-base leading-7 text-neutral-600 sm:text-lg">
               {t.subtitle}
             </p>
           </div>
 
-          <div className="mt-6 rounded-3xl border border-white/10 bg-black/20 p-4">
-            <div className="text-sm font-medium text-white/70">
+          <div className="mt-6 rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
+            <div className="text-sm font-medium text-neutral-600">
               {t.instruction}
             </div>
 
@@ -338,7 +338,7 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                     {icon}
                   </div>
                   {i < icons.length - 1 && (
-                    <div className="h-[2px] flex-1 rounded-full bg-white/15">
+                    <div className="h-[2px] flex-1 rounded-full bg-neutral-200">
                       <div className="h-full w-2/3 rounded-full bg-z-orange" />
                     </div>
                   )}
@@ -364,9 +364,9 @@ function PuzzleR6({ locale }: { locale: Locale }) {
               </div>
 
               <div className="mt-6 rounded-[28px] border border-z-orange bg-z-orange-soft p-[1px] glow-z-orange">
-                <div className="rounded-[27px] bg-black/30 p-5 sm:p-6">
+                <div className="rounded-[27px] bg-white p-5 sm:p-6">
                   <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="text-sm font-semibold uppercase tracking-[0.2em] text-white/55">
+                    <div className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500">
                       {t.instruction}
                     </div>
 
@@ -381,18 +381,18 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                   </div>
 
                   {showHint && (
-                    <div className="mb-5 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-4 sm:p-5">
+                    <div className="mb-5 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5">
                       <div className="flex items-start gap-4">
                         <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-z-orange bg-z-orange-soft z-orange glow-z-orange">
                           <FlowerIcon />
                         </div>
 
                         <div className="min-w-0">
-                          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-white/55">
+                          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
                             {t.hintTitle}
                           </div>
 
-                          <div className="mt-2 text-base leading-7 text-white/85">
+                          <div className="mt-2 text-base leading-7 text-neutral-700">
                             {t.hintBody}
                           </div>
 
@@ -417,7 +417,7 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                     <button
                       type="button"
                       onClick={handleReset}
-                      className="inline-flex h-14 items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-5 font-medium text-white/85 transition hover:bg-white/10"
+                      className="inline-flex h-14 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-5 font-medium text-neutral-700 transition hover:bg-neutral-50"
                     >
                       {t.reset}
                     </button>
@@ -429,7 +429,7 @@ function PuzzleR6({ locale }: { locale: Locale }) {
 
           {foundIt && (
             <div className="rounded-[28px] border border-z-orange bg-z-orange-soft p-[1px] glow-z-orange">
-              <div className="rounded-[27px] bg-black/30 p-5 sm:p-6">
+              <div className="rounded-[27px] bg-white p-5 sm:p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="max-w-3xl">
                     <div className="inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] z-orange">
@@ -437,13 +437,13 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                       {t.selectionTitle}
                     </div>
 
-                    <h3 className="mt-4 text-2xl font-semibold text-white">
+                    <h3 className="mt-4 text-2xl font-semibold text-neutral-900">
                       {t.selectionTitle}
                     </h3>
-                    <p className="mt-2 text-base leading-7 text-white/75">
+                    <p className="mt-2 text-base leading-7 text-neutral-600">
                       {t.selectionBody}
                     </p>
-                    <p className="mt-3 text-sm leading-6 text-white/55">
+                    <p className="mt-3 text-sm leading-6 text-neutral-500">
                       {t.helperText}
                     </p>
                   </div>
@@ -452,7 +452,7 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                     <button
                       type="button"
                       onClick={handleBackToRoute}
-                      className="inline-flex h-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 text-sm font-medium text-white/85 transition hover:bg-white/10"
+                      className="inline-flex h-12 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
                     >
                       {t.backToRoute}
                     </button>
@@ -460,7 +460,7 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                     <button
                       type="button"
                       onClick={handleReset}
-                      className="inline-flex h-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 text-sm font-medium text-white/85 transition hover:bg-white/10"
+                      className="inline-flex h-12 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
                     >
                       {t.reset}
                     </button>
@@ -479,16 +479,16 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                         type="button"
                         onClick={() => handleSelectFrontage(option)}
                         className={[
-                          "group relative overflow-hidden rounded-3xl border bg-white/5 text-left transition",
+                          "group relative overflow-hidden rounded-3xl border bg-white text-left transition",
                           "hover:scale-[1.01] hover:border-z-orange",
                           isSelected
                             ? "border-z-orange glow-z-orange"
-                            : "border-white/10",
-                          showSuccess ? "ring-2 ring-emerald-400/60" : "",
-                          showWrong ? "ring-2 ring-red-400/50" : "",
+                            : "border-neutral-200",
+                          showSuccess ? "ring-2 ring-emerald-500/40" : "",
+                          showWrong ? "ring-2 ring-red-400/40" : "",
                         ].join(" ")}
                       >
-                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-black/20">
+                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-100">
                           <Image
                             src={option.image}
                             alt={`${t.optionLabel} ${idx + 1}`}
@@ -499,14 +499,14 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                           />
                         </div>
 
-                        <div className="border-t border-white/10 p-4">
+                        <div className="border-t border-neutral-200 p-4">
                           <div className="flex items-center justify-between gap-3">
-                            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-white/65">
+                            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
                               {t.optionLabel} {idx + 1}
                             </div>
 
                             {showSuccess && (
-                              <div className="inline-flex items-center gap-1 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-100">
+                              <div className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
                                 <CheckIcon />
                               </div>
                             )}
@@ -518,22 +518,22 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                 </div>
 
                 {status === "wrong" && (
-                  <div className="mt-5 rounded-2xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+                  <div className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                     {t.wrong}
                   </div>
                 )}
 
                 {status === "success" && (
-                  <div className="mt-5 rounded-3xl border border-emerald-400/30 bg-emerald-500/10 p-4 sm:p-5">
+                  <div className="mt-5 rounded-3xl border border-emerald-200 bg-emerald-50 p-4 sm:p-5">
                     <div className="flex items-start gap-3">
-                      <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-400/15 text-emerald-200">
+                      <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
                         <CheckIcon />
                       </div>
                       <div>
-                        <div className="text-lg font-semibold text-emerald-100">
+                        <div className="text-lg font-semibold text-emerald-800">
                           {t.successTitle}
                         </div>
-                        <div className="mt-1 text-sm leading-6 text-emerald-50/90">
+                        <div className="mt-1 text-sm leading-6 text-emerald-700">
                           {t.successBody}
                         </div>
                       </div>

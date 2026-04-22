@@ -64,11 +64,16 @@ const PuzzleR5 = dynamic(
   { ssr: false, loading: () => <LoadingCard locale="en" /> }
 ) as React.ComponentType<PuzzleProps>;
 
+const PuzzleR6 = dynamic(
+  () => import("./puzzle_r6").then((m) => resolveComponent(m, "PuzzleR6")),
+  { ssr: false, loading: () => <LoadingCard locale="en" /> }
+) as React.ComponentType<PuzzleProps>;
+
 /* ------------------------------------------------------------------ */
 /* Portal flow                                                         */
 /* ------------------------------------------------------------------ */
 
-type Round = "r1" | "r2" | "r3" | "r4" | "r5";
+type Round = "r1" | "r2" | "r3" | "r4" | "r5" | "r6";
 const PROGRESS_KEY = "zowar_progress_v1";
 
 export default function PortalFlow({ locale }: { locale: Locale }) {
@@ -82,6 +87,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
     r3: false,
     r4: false,
     r5: false,
+    r6: false,
   }));
 
   const [activeRound, setActiveRound] = React.useState<Round>("r1");
@@ -90,11 +96,13 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
   const [showNextR2, setShowNextR2] = React.useState(false);
   const [showNextR3, setShowNextR3] = React.useState(false);
   const [showNextR4, setShowNextR4] = React.useState(false);
+  const [showNextR5, setShowNextR5] = React.useState(false);
 
   const t1Ref = React.useRef<number | null>(null);
   const t2Ref = React.useRef<number | null>(null);
   const t3Ref = React.useRef<number | null>(null);
   const t4Ref = React.useRef<number | null>(null);
+  const t5Ref = React.useRef<number | null>(null);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -107,6 +115,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
       if (t2Ref.current) window.clearTimeout(t2Ref.current);
       if (t3Ref.current) window.clearTimeout(t3Ref.current);
       if (t4Ref.current) window.clearTimeout(t4Ref.current);
+      if (t5Ref.current) window.clearTimeout(t5Ref.current);
     };
   }, []);
 
@@ -122,6 +131,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
   React.useEffect(() => setShowNextR2(progress.r2), [progress.r2]);
   React.useEffect(() => setShowNextR3(progress.r3), [progress.r3]);
   React.useEffect(() => setShowNextR4(progress.r4), [progress.r4]);
+  React.useEffect(() => setShowNextR5(progress.r5), [progress.r5]);
 
   const onR1Solved = React.useCallback(() => {
     setProgress((p) => (p.r1 ? p : { ...p, r1: true }));
@@ -153,6 +163,13 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
 
   const onR5Solved = React.useCallback(() => {
     setProgress((p) => (p.r5 ? p : { ...p, r5: true }));
+    setShowNextR5(false);
+    if (t5Ref.current) window.clearTimeout(t5Ref.current);
+    t5Ref.current = window.setTimeout(() => setShowNextR5(true), 750);
+  }, []);
+
+  const onR6Solved = React.useCallback(() => {
+    setProgress((p) => (p.r6 ? p : { ...p, r6: true }));
   }, []);
 
   const nextBtn =
@@ -259,6 +276,21 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
             >
               {isAr ? "٥" : "R5"} {progress.r5 ? "✓" : "•"}
             </button>
+
+            <button
+              type="button"
+              onClick={() => progress.r5 && setActiveRound("r6")}
+              disabled={!progress.r5}
+              className={`rounded-full px-3 py-1 ${
+                !progress.r5
+                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
+                  : activeRound === "r6"
+                  ? "bg-neutral-900 text-white"
+                  : "bg-neutral-100 text-neutral-700"
+              }`}
+            >
+              {isAr ? "٦" : "R6"} {progress.r6 ? "✓" : "•"}
+            </button>
           </div>
         </div>
       </div>
@@ -344,6 +376,26 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
           ) : (
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
               {isAr ? "الجولة ٥ مقفلة." : "Round 5 is locked."}
+            </div>
+          )}
+          {progress.r5 && showNextR5 && (
+            <div className="mt-4">
+              <button type="button" onClick={() => setActiveRound("r6")} className={nextBtn}>
+                <span className="relative z-10">{isAr ? "التالي: الجولة ٦ →" : "Next puzzle: Round 6 →"}</span>
+                <span className={shine} />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeRound === "r6" && (
+        <div>
+          {progress.r5 ? (
+            <PuzzleR6 locale={safeLocale} onSolved={onR6Solved} />
+          ) : (
+            <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
+              {isAr ? "الجولة ٦ مقفلة." : "Round 6 is locked."}
             </div>
           )}
         </div>

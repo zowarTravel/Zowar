@@ -4,10 +4,10 @@ import { NextRequest } from "next/server";
 import { verifyPayload, signPayload } from "@/app/lib/portal-token";
 
 type Auth = { sessionId: string; exp: number };
-type Progress = { r1: boolean; r2: boolean; r3: boolean; r4: boolean; r5: boolean };
+type Progress = { r1: boolean; r2: boolean; r3: boolean; r4: boolean; r5: boolean; r6: boolean };
 
 const NINETY_DAYS = 90 * 24 * 3600;
-const EMPTY: Progress = { r1: false, r2: false, r3: false, r4: false, r5: false };
+const EMPTY: Progress = { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false };
 
 function getAuth(req: NextRequest): Auth | null {
   const token = req.cookies.get("zowar_auth")?.value;
@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
     r3: current.r3 || body.r3 === true,
     r4: current.r4 || body.r4 === true,
     r5: current.r5 || body.r5 === true,
+    r6: current.r6 || body.r6 === true,
   };
 
   return new Response(JSON.stringify(next), {

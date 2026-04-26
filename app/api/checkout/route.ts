@@ -73,23 +73,21 @@ export async function POST(req: Request) {
       process.env.NEXT_PUBLIC_SITE_URL ||
       "http://localhost:3000";
 
-    const successUrl = new URL("/success", origin);
-    successUrl.searchParams.set("lang", locale);
-
-    const cancelUrl = new URL("/booking", origin);
-    cancelUrl.searchParams.set("lang", locale);
+    // {CHECKOUT_SESSION_ID} is a Stripe template variable — replaced with the real ID on redirect
+    const successUrl = `${origin}/success?lang=${locale}&session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${origin}/booking?lang=${locale}`;
 
     // FREE BYPASS
     if (freeCode && submittedCode && submittedCode === freeCode) {
-      successUrl.searchParams.set("free", "1");
+      const freeSuccessUrl = `${origin}/success?lang=${locale}&free=1`;
 
       console.log("[checkout] FREE BRANCH HIT", {
-        redirect: successUrl.toString(),
+        redirect: freeSuccessUrl,
       });
 
       return Response.json(
         {
-          url: successUrl.toString(),
+          url: freeSuccessUrl,
           free: true,
           debug: "FREE_BRANCH_HIT",
         },
@@ -138,8 +136,8 @@ export async function POST(req: Request) {
         },
       ],
 
-      success_url: successUrl.toString(),
-      cancel_url: cancelUrl.toString(),
+      success_url: successUrl,
+      cancel_url: cancelUrl,
 
       metadata: {
         date,

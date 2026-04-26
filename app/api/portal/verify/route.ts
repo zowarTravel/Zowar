@@ -1,17 +1,33 @@
 export const runtime = "nodejs";
 
+import Stripe from "stripe";
 import { signPayload } from "@/app/lib/portal-token";
 
 const NINETY_DAYS = 90 * 24 * 3600;
 
-// NOTE: This endpoint trusts any session_id that looks like a Stripe session (cs_...).
-// When you switch to live Stripe keys, replace this with a real Stripe API verification.
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error("Missing STRIPE_SECRET_KEY");
+  return new Stripe(key);
+}
+
 export async function POST(req: Request) {
   try {
     const { session_id } = (await req.json()) as { session_id?: string };
 
     if (!session_id?.startsWith("cs_")) {
       return Response.json({ valid: false }, { status: 400 });
+    }
+
+    const stripe = getStripe();
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+
+    const paid =
+      session.payment_status === "paid" ||
+      session.payment_status === "no_payment_required";
+
+    if (!paid) {
+      return Response.json({ valid: false }, { status: 402 });
     }
 
     const token = signPayload({

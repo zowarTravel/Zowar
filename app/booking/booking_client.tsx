@@ -172,7 +172,8 @@ export default function BookingClient({ locale }: BookingClientProps) {
       /* ---------- NORMAL STRIPE PATH ---------- */
 
       if (!res.ok || !data?.url) {
-        throw new Error(data?.error || "Checkout failed");
+        const msg = [data?.error, data?.code, data?.type].filter(Boolean).join(" · ");
+        throw new Error(msg || "Checkout failed");
       }
 
       window.location.href = data.url;

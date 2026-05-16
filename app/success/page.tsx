@@ -11,12 +11,12 @@ type Locale = "en" | "ar" | "es";
 export default async function SuccessPage({
   searchParams,
 }: {
-  searchParams: Promise<{ lang?: string; session_id?: string }>;
+  searchParams: Promise<{ lang?: string; session_id?: string; experience?: string }>;
 }) {
-  const { lang, session_id } = await searchParams;
+  const { lang, session_id, experience } = await searchParams;
 
   const normalizedLang = (lang ?? "").toLowerCase();
   const locale: Locale = normalizedLang.startsWith("ar") ? "ar" : normalizedLang.startsWith("es") ? "es" : "en";
 
-  return <SuccessClient locale={locale} sessionId={session_id} />;
+  return <SuccessClient locale={locale} sessionId={session_id} experience={experience} />;
 }

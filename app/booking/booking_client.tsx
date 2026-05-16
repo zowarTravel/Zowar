@@ -18,6 +18,14 @@ const copy = {
     title: "Booking",
     subtitle:
       "Choose your adventure date. After checkout, you’ll receive a confirmation + the Portal access link.",
+    experienceTitle: "Choose Your Experience",
+    exp1Name: "Experience Rainbow Street",
+    exp1Desc: "A 6-stop culinary walk through Rainbow Street’s iconic cafés & eateries.",
+    exp1Stops: "6 stops",
+    exp2Name: "Experience Al Weibdeh",
+    exp2Desc: "A 7-stop food adventure through the historic Al Weibdeh neighbourhood.",
+    exp2Stops: "7 stops",
+    exp2Soon: "Coming soon",
     nextStepsTitle: "Next steps",
     nextSteps: [
       "Complete checkout",
@@ -44,6 +52,14 @@ const copy = {
     title: "الحجز",
     subtitle:
       "اختر تاريخ التجربة. بعد الدفع ستصلك رسالة تأكيد + رابط الدخول إلى البوابة.",
+    experienceTitle: "اختر تجربتك",
+    exp1Name: "تجربة شارع الرينبو",
+    exp1Desc: "جولة ذواقة من ٦ محطات عبر المقاهي والمطاعم الأيقونية في شارع الرينبو.",
+    exp1Stops: "٦ محطات",
+    exp2Name: "تجربة الويبدة",
+    exp2Desc: "مغامرة طعام من ٧ محطات عبر حي الويبدة التاريخي.",
+    exp2Stops: "٧ محطات",
+    exp2Soon: "قريباً",
     nextStepsTitle: "الخطوات التالية",
     nextSteps: [
       "إتمام الدفع",
@@ -70,6 +86,14 @@ const copy = {
     title: "Reserva",
     subtitle:
       "Elige la fecha de tu experiencia. Tras el pago recibirás una confirmación + el enlace de acceso al Portal.",
+    experienceTitle: "Elige tu Experiencia",
+    exp1Name: "Experiencia Calle Rainbow",
+    exp1Desc: "Un recorrido gastronómico de 6 paradas por los cafés y restaurantes de Rainbow Street.",
+    exp1Stops: "6 paradas",
+    exp2Name: "Experiencia Al Weibdeh",
+    exp2Desc: "Una aventura culinaria de 7 paradas por el histórico barrio de Al Weibdeh.",
+    exp2Stops: "7 paradas",
+    exp2Soon: "Próximamente",
     nextStepsTitle: "Próximos pasos",
     nextSteps: [
       "Completar el pago",
@@ -103,7 +127,9 @@ function clamp(n: number, min: number, max: number) {
 /* ---------------- Component ---------------- */
 
 export default function BookingClient({ locale }: BookingClientProps) {
-  const effectiveLocale: Locale = locale === "ar" ? "ar" : locale === "es" ? "es" : "en";
+  const effectiveLocale: Locale =
+    locale === "ar" ? "ar" : locale === "es" ? "es" : "en";
+
   const isAr = effectiveLocale === "ar";
   const t = copy[effectiveLocale];
 
@@ -112,6 +138,10 @@ export default function BookingClient({ locale }: BookingClientProps) {
   const portalHref = `/portal?${langParam}`;
 
   /* ---------------- State ---------------- */
+
+  const [experience, setExperience] = React.useState<"rainbow" | "weibdeh">(
+    "rainbow"
+  );
 
   const [date, setDate] = React.useState(() => {
     const d = new Date();
@@ -134,7 +164,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
     const normalized = code.trim().toLowerCase();
 
     if (normalized === "zowarfree") {
-      setDiscount(total);
+      setDiscount(subtotal);
       setCodeMessage(t.freeCodeApplied);
     } else {
       setDiscount(0);
@@ -156,6 +186,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
           date,
           qty: Math.max(1, qty),
           code: code.trim() || undefined,
+          experience,
         }),
       });
 
@@ -165,14 +196,17 @@ export default function BookingClient({ locale }: BookingClientProps) {
       /* ---------- FREE CODE PATH ---------- */
 
       if (res.ok && data?.free) {
-        window.location.href = `/success?${langParam}`;
+        window.location.href = data.url ?? `/success?${langParam}`;
         return;
       }
 
       /* ---------- NORMAL STRIPE PATH ---------- */
 
       if (!res.ok || !data?.url) {
-        const msg = [data?.error, data?.code, data?.type].filter(Boolean).join(" · ");
+        const msg = [data?.error, data?.code, data?.type]
+          .filter(Boolean)
+          .join(" · ");
+
         throw new Error(msg || "Checkout failed");
       }
 
@@ -197,6 +231,12 @@ export default function BookingClient({ locale }: BookingClientProps) {
   const inputClass =
     "mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-z-orange";
 
+  const experienceCardBase =
+    "relative rounded-2xl border p-4 text-start transition";
+
+  const experienceImageClass =
+    "relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm sm:h-28 sm:w-28";
+
   /* ---------------- Render ---------------- */
 
   return (
@@ -218,7 +258,10 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
             <div>
               <h1 className="text-3xl font-semibold">{t.title}</h1>
-              <p className="mt-2 max-w-2xl text-neutral-600">{t.subtitle}</p>
+
+              <p className="mt-2 max-w-2xl text-neutral-600">
+                {t.subtitle}
+              </p>
 
               <div className="mt-3">
                 <Link
@@ -232,16 +275,143 @@ export default function BookingClient({ locale }: BookingClientProps) {
           </div>
 
           <div className="flex items-center gap-2">
-            <LangDropdown locale={effectiveLocale} basePath="/booking" isRtl={isAr} />
+            <LangDropdown
+              locale={effectiveLocale}
+              basePath="/booking"
+              isRtl={isAr}
+            />
+
             <Link href={homeHref} className={subtleBtn}>
               {t.home}
             </Link>
           </div>
         </div>
 
+        {/* Experience Selector */}
+
+        <div className={`mt-8 ${glassCard} p-6`}>
+          <div className="text-base font-semibold">{t.experienceTitle}</div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {/* Rainbow Street */}
+
+            <button
+              type="button"
+              onClick={() => setExperience("rainbow")}
+              className={`${experienceCardBase} ${
+                experience === "rainbow"
+                  ? "border-z-orange bg-z-orange-soft"
+                  : "border-black/10 bg-white hover:bg-black/[0.02]"
+              }`}
+            >
+              {experience === "rainbow" && (
+                <div className="absolute end-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-z-orange">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-3 w-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+              )}
+
+              <div className="flex items-center gap-4 pe-6">
+                <div className={experienceImageClass}>
+                  <Image
+                    src="/Rainbow.png"
+                    alt="Rainbow Street"
+                    fill
+                    sizes="112px"
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-neutral-950">
+                    {t.exp1Name}
+                  </div>
+
+                  <div className="mt-1 text-sm leading-relaxed text-neutral-600">
+                    {t.exp1Desc}
+                  </div>
+
+                  <div className="mt-3 inline-flex items-center rounded-full border border-z-orange bg-z-orange-soft px-2.5 py-0.5 text-xs font-semibold z-orange">
+                    {t.exp1Stops}
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            {/* Al Weibdeh */}
+
+            <button
+              type="button"
+              onClick={() => setExperience("weibdeh")}
+              className={`${experienceCardBase} ${
+                experience === "weibdeh"
+                  ? "border-z-orange bg-z-orange-soft"
+                  : "border-black/10 bg-white hover:bg-black/[0.02]"
+              }`}
+            >
+              {experience === "weibdeh" && (
+                <div className="absolute end-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-z-orange">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-3 w-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+              )}
+
+              <div className="flex items-center gap-4 pe-6">
+                <div className={experienceImageClass}>
+                  <Image
+                    src="/Weibdeh.png"
+                    alt="Al Weibdeh"
+                    fill
+                    sizes="112px"
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-neutral-950">
+                    {t.exp2Name}
+                  </div>
+
+                  <div className="mt-1 text-sm leading-relaxed text-neutral-600">
+                    {t.exp2Desc}
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <div className="inline-flex items-center rounded-full border border-z-orange bg-z-orange-soft px-2.5 py-0.5 text-xs font-semibold z-orange">
+                      {t.exp2Stops}
+                    </div>
+
+                    <span className="text-xs text-neutral-400">
+                      {t.exp2Soon}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+
         {/* Layout */}
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
           {/* Left Card */}
 
           <section className={`${glassCard} p-6`}>
@@ -257,7 +427,9 @@ export default function BookingClient({ locale }: BookingClientProps) {
             </ul>
 
             <div className="mt-6">
-              <label className="text-sm text-neutral-600">{t.chooseDate}</label>
+              <label className="text-sm text-neutral-600">
+                {t.chooseDate}
+              </label>
 
               <input
                 type="date"

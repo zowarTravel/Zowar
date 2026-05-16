@@ -10,6 +10,7 @@ type ReqBody = {
   qty: number;
   locale?: Locale;
   code?: string;
+  experience?: string;
 };
 
 const PRICE_PER_PERSON_JOD = 20.0;
@@ -52,6 +53,7 @@ export async function POST(req: Request) {
     const date = String(body?.date ?? "").trim();
     const qty = Number(body?.qty ?? 0);
     const locale = safeLocale(body?.locale);
+    const experience = body?.experience === "weibdeh" ? "weibdeh" : "rainbow";
     const submittedCode = normalizeCode(body?.code);
     const freeCode = normalizeCode(process.env.FREE_BOOKING_CODE);
 
@@ -74,12 +76,12 @@ export async function POST(req: Request) {
       "http://localhost:3000";
 
     // {CHECKOUT_SESSION_ID} is a Stripe template variable — replaced with the real ID on redirect
-    const successUrl = `${origin}/success?lang=${locale}&session_id={CHECKOUT_SESSION_ID}`;
+    const successUrl = `${origin}/success?lang=${locale}&session_id={CHECKOUT_SESSION_ID}&experience=${experience}`;
     const cancelUrl = `${origin}/booking?lang=${locale}`;
 
     // FREE BYPASS
     if (freeCode && submittedCode && submittedCode === freeCode) {
-      const freeSuccessUrl = `${origin}/success?lang=${locale}&free=1`;
+      const freeSuccessUrl = `${origin}/success?lang=${locale}&free=1&experience=${experience}`;
 
       console.log("[checkout] FREE BRANCH HIT", {
         redirect: freeSuccessUrl,
@@ -116,7 +118,12 @@ export async function POST(req: Request) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: locale === "ar" ? "زُوّار – رحلة تذوّق" : locale === "es" ? "ZOWAR Ruta Gastronómica" : "ZOWAR Food Scavenger Hunt",
+              name:
+                locale === "ar"
+                  ? experience === "weibdeh" ? "زُوّار – تجربة الويبدة" : "زُوّار – تجربة الرينبو"
+                  : locale === "es"
+                  ? experience === "weibdeh" ? "ZOWAR Experiencia Al Weibdeh" : "ZOWAR Experiencia Calle Rainbow"
+                  : experience === "weibdeh" ? "ZOWAR Experience Al Weibdeh" : "ZOWAR Experience Rainbow Street",
               description:
                 locale === "ar"
                   ? `رحلة تذوّق ذاتية الإرشاد — ${date} — السعر: ${format3(
@@ -143,6 +150,7 @@ export async function POST(req: Request) {
         date,
         qty: String(qty),
         lang: locale,
+        experience,
         promo_code_entered: submittedCode || "",
         promo_free_enabled: "false",
         display_currency: "jod",

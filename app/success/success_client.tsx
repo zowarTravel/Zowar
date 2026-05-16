@@ -33,24 +33,29 @@ const copy = {
 export default function SuccessClient({
   locale,
   sessionId,
+  experience,
 }: {
   locale: Locale;
   sessionId?: string;
+  experience?: string;
 }) {
   const router = useRouter();
   const isAr = locale === "ar";
   const t = copy[locale];
 
+  const portalPath = experience === "weibdeh" ? "/portal/weibdeh" : "/portal";
+
   React.useEffect(() => {
     localStorage.setItem("zowar_unlocked", "1");
     if (sessionId) localStorage.setItem("zowar_session_id", sessionId);
+    if (experience) localStorage.setItem("zowar_experience", experience);
 
     const timer = setTimeout(() => {
-      router.replace(`/portal?lang=${locale}`);
+      router.replace(`${portalPath}?lang=${locale}`);
     }, 1800);
 
     return () => clearTimeout(timer);
-  }, [isAr, router, sessionId]);
+  }, [isAr, router, sessionId, experience, portalPath]);
 
   return (
     <main
@@ -87,7 +92,7 @@ export default function SuccessClient({
 
           <div className="mt-8 flex flex-wrap gap-3">
             <button
-              onClick={() => router.push(`/portal?lang=${locale}`)}
+              onClick={() => router.push(`${portalPath}?lang=${locale}`)}
               className="bg-z-orange glow-z-orange inline-flex rounded-2xl px-5 py-3 font-semibold text-neutral-950 transition hover:opacity-95"
             >
               {t.button}

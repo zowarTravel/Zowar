@@ -23,11 +23,9 @@ const content = {
     eyebrow: "Route Puzzle",
     title: "Follow the Street",
     subtitle:
-      "Trace the route, find the dessert stop, then choose the correct storefront sketch.",
+      "Trace the route, follow the clues, and choose the matching frontage when you arrive.",
     instruction:
-      "Follow the clues below. Once you arrive, tap “Found it!” and select the matching frontage.",
-    foundIt: "Found it!",
-    backToRoute: "Back to route",
+      "Follow the clues below, then select the frontage that matches the place you found.",
     reset: "Reset",
     showHint: "Show hint",
     hideHint: "Hide hint",
@@ -37,29 +35,29 @@ const content = {
       { label: "Orient", text: "Head toward First Circle." },
       { label: "Transition", text: "Leave the colorful street behind." },
       { label: "Movement", text: "Follow the rocky road downhill." },
-      { label: "Identity", text: "Stop and smell the flower for your dessert." },
+      {
+        label: "Final clue",
+        text: "Enjoy your walk and head towards the place drawn below to stop and smell the flowers.",
+      },
     ] satisfies StepItem[],
-    selectionTitle: "Select the correct frontage",
+    selectionEyebrow: "Select the matching frontage",
+    selectionTitle: "Select the matching frontage",
     selectionBody:
-      "You found the stop — now tap the sketch that matches the storefront you reached.",
+      "Use the route clues and what you found on the street to choose the correct place.",
     optionLabel: "Frontage",
     wrong:
-      "Not quite. Look again at the storefront details and choose the correct sketch.",
+      "Not quite. Compare the frontage shape, street character, and surrounding details, then try again.",
     successTitle: "Correct!",
     successBody:
-      "Nice work — you found the correct storefront and completed the route.",
-    helperText:
-      "Use the sketch details, proportions, and storefront features to pick the correct option.",
+      "Nice work — you found the matching frontage and completed this puzzle.",
   },
   ar: {
     eyebrow: "لغز الطريق",
     title: "اتبع الشارع",
     subtitle:
-      "اتبع المسار، اعثر على محطة الحلوى، ثم اختر رسم الواجهة الصحيح.",
+      "اتبع المسار، سر مع الإشارات، ثم اختر الواجهة المطابقة عندما تصل.",
     instruction:
-      "اتبع الإشارات أدناه. عندما تصل، اضغط «وجدتها!» ثم اختر الواجهة المطابقة.",
-    foundIt: "وجدتها!",
-    backToRoute: "العودة إلى المسار",
+      "اتبع الإشارات أدناه، ثم اختر الواجهة التي تطابق المكان الذي وجدته.",
     reset: "إعادة",
     showHint: "إظهار التلميح",
     hideHint: "إخفاء التلميح",
@@ -69,22 +67,28 @@ const content = {
       { label: "الاتجاه", text: "اتجه نحو الدوار الأول." },
       { label: "الانتقال", text: "اترك الشارع الملوّن خلفك." },
       { label: "الحركة", text: "اتبع الطريق الحجري نزولاً." },
-      { label: "الهوية", text: "توقف واشمم الزهرة قبل التحلية." },
+      {
+        label: "الدليل الأخير",
+        text: "استمتع بمشيتك واتجه نحو المكان المرسوم أدناه لتتوقف وتشُمّ الزهور.",
+      },
     ] satisfies StepItem[],
-    selectionTitle: "اختر الواجهة الصحيحة",
+    selectionEyebrow: "اختر الواجهة المطابقة",
+    selectionTitle: "اختر الواجهة المطابقة",
     selectionBody:
-      "لقد وصلت إلى المحطة — الآن اضغط على الرسم الذي يطابق واجهة المكان الذي وجدته.",
+      "استخدم إشارات الطريق وما وجدته في الشارع لاختيار المكان الصحيح.",
     optionLabel: "واجهة",
     wrong:
-      "ليست هذه الواجهة الصحيحة. انظر جيداً إلى تفاصيل المحل ثم اختر الرسم المطابق.",
+      "ليست هذه الواجهة الصحيحة. قارن شكل الواجهة وطابع الشارع والتفاصيل المحيطة ثم حاول مرة أخرى.",
     successTitle: "إجابة صحيحة!",
     successBody:
-      "أحسنت — لقد اخترت الواجهة الصحيحة وأكملت هذا المسار.",
-    helperText:
-      "استخدم تفاصيل الرسم ونِسَب الواجهة وعناصر المحل لاختيار الخيار الصحيح.",
+      "أحسنت — لقد اخترت الواجهة المطابقة وأكملت هذا اللغز.",
   },
 } as const;
 
+/**
+ * Update isCorrect if needed.
+ * Based on your current setup, frontage-c is the correct answer.
+ */
 const frontageOptions: FrontageOption[] = [
   {
     id: "a",
@@ -111,6 +115,8 @@ function CompassIcon() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       <circle cx="12" cy="12" r="8.5" />
       <path d="M14.8 9.2l-2 5.6-5.6 2 2-5.6 5.6-2z" />
@@ -118,20 +124,27 @@ function CompassIcon() {
   );
 }
 
-function StreamerIcon() {
+function HangingLanternsIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
       className="h-5 w-5"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.8"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      <path d="M3 7c2.5 0 2.5 2 5 2s2.5-2 5-2 2.5 2 5 2 2.5-2 3-2" />
-      <path d="M6 9v5" />
-      <path d="M11 9v7" />
-      <path d="M16 9v4" />
-      <path d="M20 9v6" />
+      <path d="M3 6c2.2 0 2.6 1.4 4.8 1.4S10.4 6 12.6 6s2.6 1.4 4.8 1.4S19.8 6 21 6" />
+      <path d="M6.2 6.8v3.4" />
+      <path d="M11.6 6.2v4.2" />
+      <path d="M17.4 6.8V10" />
+      <path d="M5.1 10.2c.3 1 2 1 2.3 0" />
+      <path d="M10.4 10.2c.3 1 2.4 1 2.7 0" />
+      <path d="M16.5 10.1c.3 1 2 1 2.3 0" />
+      <path d="M4.9 10.1h2.6" />
+      <path d="M10.3 10.1h2.8" />
+      <path d="M16.3 10.1h2.6" />
     </svg>
   );
 }
@@ -144,6 +157,8 @@ function PathIcon() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       <path d="M5 20c0-5 4-5 4-10s-4-5-4-10" />
       <path d="M11 20c0-5 4-5 4-10s-4-5-4-10" opacity="0.7" />
@@ -160,6 +175,8 @@ function FlowerIcon() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       <circle cx="12" cy="12" r="1.8" />
       <path d="M12 5.2c1.6-2.3 4.7-2 5.4.4.4 1.5-.3 2.8-1.7 3.7" />
@@ -167,7 +184,7 @@ function FlowerIcon() {
       <path d="M15.5 17.3c1.4 2.3-.4 5.1-2.8 4.9-1.6-.1-2.5-1.3-3-2.8" />
       <path d="M8.5 17.3c-1.4 2.3-4.6 2-5.3-.4-.4-1.5.3-2.8 1.7-3.7" />
       <path d="M5.8 10.4c-2.7-.3-4.4 2.3-3.2 4.4.8 1.4 2.2 1.8 3.8 1.7" />
-      <path d="M8.5 6.7c-1.4-2.3.4-5.1 2.8-4.9 1.6.1 2.5 1.3 3 2.8" />
+      <path d="M8.5 6.7c-1.4-2.3.4-5.1 2.8-4.9 1.6.1 2.5-1.3 3-2.8" />
     </svg>
   );
 }
@@ -180,6 +197,8 @@ function HintIcon() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       <path d="M12 3a7 7 0 0 0-4.5 12.4c.9.8 1.5 1.7 1.7 2.6h5.6c.2-.9.8-1.8 1.7-2.6A7 7 0 0 0 12 3z" />
       <path d="M9.5 21h5" />
@@ -196,13 +215,15 @@ function CheckIcon() {
       fill="none"
       stroke="currentColor"
       strokeWidth="2.1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       <path d="M5 12.5l4.2 4.2L19 7" />
     </svg>
   );
 }
 
-function StorefrontIcon() {
+function SketchIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -210,11 +231,12 @@ function StorefrontIcon() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      <path d="M4 10h16" />
-      <path d="M5 10l1-4h12l1 4" />
-      <path d="M6 10v8h12v-8" />
-      <path d="M10 18v-4h4v4" />
+      <rect x="4" y="5" width="16" height="14" rx="2" />
+      <path d="M8 15l2.5-2.5L13 15l2-2 3 3" />
+      <circle cx="9" cy="9" r="1.2" />
     </svg>
   );
 }
@@ -234,10 +256,10 @@ function StepCard({
     <div className="relative overflow-hidden rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
       <div className="absolute inset-x-0 top-0 h-1 bg-z-orange" />
       <div className="mb-3 flex items-center justify-between">
-        <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-z-orange bg-z-orange-soft z-orange glow-z-orange">
+        <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-neutral-300 bg-white text-neutral-900">
           {icon}
         </div>
-        <div className="inline-flex h-8 min-w-8 items-center justify-center rounded-full border border-z-orange bg-z-orange-soft px-2 text-sm font-semibold z-orange">
+        <div className="inline-flex h-8 min-w-8 items-center justify-center rounded-full border border-neutral-300 bg-white px-2 text-sm font-semibold text-neutral-800">
           {index}
         </div>
       </div>
@@ -260,35 +282,21 @@ function PuzzleR6({ locale }: { locale: Locale }) {
   const dir = safeLocale === "ar" ? "rtl" : "ltr";
 
   const [showHint, setShowHint] = useState(false);
-  const [foundIt, setFoundIt] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "wrong" | "success">("idle");
 
   const icons = useMemo(
     () => [
       <CompassIcon key="compass" />,
-      <StreamerIcon key="streamers" />,
+      <HangingLanternsIcon key="lanterns" />,
       <PathIcon key="path" />,
       <FlowerIcon key="flower" />,
     ],
     []
   );
 
-  function handleFoundIt() {
-    setFoundIt(true);
-    setStatus("idle");
-    setSelectedId(null);
-  }
-
-  function handleBackToRoute() {
-    setFoundIt(false);
-    setStatus("idle");
-    setSelectedId(null);
-  }
-
   function handleReset() {
     setShowHint(false);
-    setFoundIt(false);
     setSelectedId(null);
     setStatus("idle");
   }
@@ -299,7 +307,7 @@ function PuzzleR6({ locale }: { locale: Locale }) {
     if (option.isCorrect) {
       setStatus("success");
       setRoundSolved(ROUND_KEY);
-      serverSetRoundSolved(ROUND_KEY);
+      void serverSetRoundSolved(ROUND_KEY);
       return;
     }
 
@@ -334,7 +342,7 @@ function PuzzleR6({ locale }: { locale: Locale }) {
             <div className="mt-4 hidden items-center gap-3 md:flex">
               {icons.map((icon, i) => (
                 <React.Fragment key={i}>
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-z-orange bg-z-orange-soft z-orange glow-z-orange">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-300 bg-white text-neutral-900">
                     {icon}
                   </div>
                   {i < icons.length - 1 && (
@@ -349,123 +357,71 @@ function PuzzleR6({ locale }: { locale: Locale }) {
         </div>
 
         <div className="relative p-6 sm:p-8">
-          {!foundIt && (
-            <>
-              <div className="grid gap-4 md:grid-cols-2">
-                {t.steps.map((step, i) => (
-                  <StepCard
-                    key={step.label}
-                    index={i + 1}
-                    label={step.label}
-                    text={step.text}
-                    icon={icons[i]}
-                  />
-                ))}
+          <div className="grid gap-4 md:grid-cols-2">
+            {t.steps.map((step, i) => (
+              <StepCard
+                key={step.label}
+                index={i + 1}
+                label={step.label}
+                text={step.text}
+                icon={icons[i]}
+              />
+            ))}
+          </div>
+
+          <div className="mt-6 rounded-[28px] border border-z-orange bg-z-orange-soft p-[1px] glow-z-orange">
+            <div className="rounded-[27px] bg-white p-5 sm:p-6">
+              <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500">
+                  {t.selectionEyebrow}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowHint((v) => !v)}
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-z-orange bg-z-orange-soft px-4 py-2 text-sm font-medium z-orange transition hover:scale-[1.01]"
+                >
+                  <HintIcon />
+                  {showHint ? t.hideHint : t.showHint}
+                </button>
               </div>
 
-              <div className="mt-6 rounded-[28px] border border-z-orange bg-z-orange-soft p-[1px] glow-z-orange">
-                <div className="rounded-[27px] bg-white p-5 sm:p-6">
-                  <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500">
-                      {t.instruction}
+              {showHint && (
+                <div className="mb-5 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-z-orange bg-z-orange-soft z-orange glow-z-orange">
+                      <FlowerIcon />
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => setShowHint((v) => !v)}
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-z-orange bg-z-orange-soft px-4 py-2 text-sm font-medium z-orange transition hover:scale-[1.01]"
-                    >
-                      <HintIcon />
-                      {showHint ? t.hideHint : t.showHint}
-                    </button>
-                  </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                        {t.hintTitle}
+                      </div>
 
-                  {showHint && (
-                    <div className="mb-5 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5">
-                      <div className="flex items-start gap-4">
-                        <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-z-orange bg-z-orange-soft z-orange glow-z-orange">
-                          <FlowerIcon />
-                        </div>
+                      <div className="mt-2 text-base leading-7 text-neutral-700">
+                        {t.hintBody}
+                      </div>
 
-                        <div className="min-w-0">
-                          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                            {t.hintTitle}
-                          </div>
-
-                          <div className="mt-2 text-base leading-7 text-neutral-700">
-                            {t.hintBody}
-                          </div>
-
-                          <div className="mt-3 inline-flex rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-sm font-medium z-orange">
-                            الياسمينة
-                          </div>
-                        </div>
+                      <div className="mt-3 inline-flex rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-sm font-medium z-orange">
+                        الياسمينة
                       </div>
                     </div>
-                  )}
-
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <button
-                      type="button"
-                      onClick={handleFoundIt}
-                      className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-z-orange px-5 font-semibold text-white transition hover:scale-[1.01]"
-                    >
-                      <CheckIcon />
-                      {t.foundIt}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      className="inline-flex h-14 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-5 font-medium text-neutral-700 transition hover:bg-neutral-50"
-                    >
-                      {t.reset}
-                    </button>
                   </div>
                 </div>
-              </div>
-            </>
-          )}
+              )}
 
-          {foundIt && (
-            <div className="rounded-[28px] border border-z-orange bg-z-orange-soft p-[1px] glow-z-orange">
-              <div className="rounded-[27px] bg-white p-5 sm:p-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="max-w-3xl">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] z-orange">
-                      <StorefrontIcon />
-                      {t.selectionTitle}
-                    </div>
-
-                    <h3 className="mt-4 text-2xl font-semibold text-neutral-900">
-                      {t.selectionTitle}
-                    </h3>
-                    <p className="mt-2 text-base leading-7 text-neutral-600">
-                      {t.selectionBody}
-                    </p>
-                    <p className="mt-3 text-sm leading-6 text-neutral-500">
-                      {t.helperText}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col gap-3 sm:min-w-[180px]">
-                    <button
-                      type="button"
-                      onClick={handleBackToRoute}
-                      className="inline-flex h-12 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
-                    >
-                      {t.backToRoute}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      className="inline-flex h-12 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
-                    >
-                      {t.reset}
-                    </button>
-                  </div>
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] z-orange">
+                  <SketchIcon />
+                  {t.selectionEyebrow}
                 </div>
+
+                <h3 className="mt-4 text-2xl font-semibold text-neutral-900">
+                  {t.selectionTitle}
+                </h3>
+                <p className="mt-2 text-base leading-7 text-neutral-600">
+                  {t.selectionBody}
+                </p>
 
                 <div className="mt-6 grid gap-4 md:grid-cols-3">
                   {frontageOptions.map((option, idx) => {
@@ -518,15 +474,15 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                 </div>
 
                 {status === "wrong" && (
-                  <div className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  <div className="mt-5 rounded-2xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
                     {t.wrong}
                   </div>
                 )}
 
                 {status === "success" && (
-                  <div className="mt-5 rounded-3xl border border-emerald-200 bg-emerald-50 p-4 sm:p-5">
+                  <div className="mt-5 rounded-3xl border border-emerald-300 bg-emerald-50 p-4 sm:p-5">
                     <div className="flex items-start gap-3">
-                      <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
+                      <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
                         <CheckIcon />
                       </div>
                       <div>
@@ -541,8 +497,18 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                   </div>
                 )}
               </div>
+
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="inline-flex h-14 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-5 font-medium text-neutral-700 transition hover:bg-neutral-50"
+                >
+                  {t.reset}
+                </button>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </section>

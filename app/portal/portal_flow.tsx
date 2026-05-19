@@ -225,7 +225,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
                 !progress.r1
                   ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
                   : activeRound === "r2"
-                  ? "bg-neutral-900 text-white"
+                  ? "bg-z-orange text-white"
                   : "bg-neutral-100 text-neutral-700"
               }`}
             >
@@ -240,7 +240,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
                 !progress.r2
                   ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
                   : activeRound === "r3"
-                  ? "bg-neutral-900 text-white"
+                  ? "bg-z-orange text-white"
                   : "bg-neutral-100 text-neutral-700"
               }`}
             >
@@ -255,7 +255,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
                 !progress.r3
                   ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
                   : activeRound === "r4"
-                  ? "bg-neutral-900 text-white"
+                  ? "bg-z-orange text-white"
                   : "bg-neutral-100 text-neutral-700"
               }`}
             >
@@ -270,7 +270,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
                 !progress.r4
                   ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
                   : activeRound === "r5"
-                  ? "bg-neutral-900 text-white"
+                  ? "bg-z-orange text-white"
                   : "bg-neutral-100 text-neutral-700"
               }`}
             >
@@ -285,7 +285,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
                 !progress.r5
                   ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
                   : activeRound === "r6"
-                  ? "bg-neutral-900 text-white"
+                  ? "bg-z-orange text-white"
                   : "bg-neutral-100 text-neutral-700"
               }`}
             >

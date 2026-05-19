@@ -60,7 +60,7 @@ export default function SuccessClient({
   return (
     <main
       dir={isAr ? "rtl" : "ltr"}
-      className="min-h-screen bg-[radial-gradient(900px_600px_at_18%_24%,rgba(249,115,22,0.16),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.05),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)] text-neutral-900"
+      className="min-h-screen z-page-bg text-neutral-900"
     >
       <div className="mx-auto flex min-h-screen max-w-3xl items-center px-6 py-16">
         <div className="w-full rounded-[32px] border border-black/10 bg-white/80 p-8 shadow-[0_18px_60px_rgba(0,0,0,0.08)] backdrop-blur-xl md:p-10">

@@ -1,26 +1,49 @@
 @import "tailwindcss";
 
-/* ===== ZOWAR DESIGN TOKENS ===== */
+/* =============================================
+   ZOWAR DESIGN TOKENS — v2 Brand System
+   ============================================= */
 :root {
-  --background: #0b0b0b;
-  --foreground: #ffffff;
+  /* ── Primary brand ── */
+  --z-terracotta:       #C8694A;
+  --z-terracotta-soft:  rgba(200, 105, 74, 0.12);
+  --z-terracotta-glow:  rgba(200, 105, 74, 0.28);
 
-  /* 🔥 Zowar Brand Orange */
-  --zowar-orange: #f97316;
-  --zowar-orange-soft: rgba(249, 115, 22, 0.15);
-  --zowar-orange-glow: rgba(249, 115, 22, 0.35);
+  --z-gold:             #C8A13A;
+  --z-gold-soft:        rgba(200, 161, 58, 0.10);
+
+  /* ── Interactive / CTA ── */
+  --z-clay:             #E08A6B;
+  --z-clay-soft:        rgba(224, 138, 107, 0.14);
+  --z-clay-glow:        rgba(224, 138, 107, 0.32);
+
+  /* ── Surfaces ── */
+  --z-off-white:        #FAF8F6;
+  --z-sand:             #E7DFD2;
+  --z-light-gray:       #D9D6D1;
+
+  /* ── Typography ── */
+  --z-black:            #1A1A1A;
+  --z-dark-gray:        #535353;
+  --z-charcoal:         #3E3E3E;
+  --z-medium-gray:      #8A8A8A;
+
+  /* ── Secondary accents ── */
+  --z-taupe:            #A7907A;
+  --z-olive:            #6E7A52;
+  --z-teal:             #2F5C5D;
+
+  /* ── Layout ── */
+  --background:         var(--z-off-white);
+  --foreground:         var(--z-black);
+
+  /* ── Legacy aliases (backward compat, pointing to new system) ── */
+  --zowar-orange:       var(--z-clay);
+  --zowar-orange-soft:  var(--z-terracotta-soft);
+  --zowar-orange-glow:  var(--z-clay-glow);
 }
 
-/* Optional light mode fallback */
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #ffffff;
-    --foreground: #171717;
-  }
-}
-
-html,
-body {
+html, body {
   height: 100%;
 }
 
@@ -30,25 +53,84 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
+/* =============================================
+   UTILITY CLASSES
+   ============================================= */
 @layer utilities {
-  .bg-z-orange { background-color: var(--zowar-orange); }
-  .bg-z-orange-soft { background-color: var(--zowar-orange-soft); }
-  .border-z-orange { border-color: var(--zowar-orange); }
-  .glow-z-orange {
-    box-shadow: 0 0 0 1px var(--zowar-orange-soft), 0 0 30px var(--zowar-orange-glow);
+
+  /* ── Terracotta (brand accent, badges, icons) ── */
+  .bg-z-terracotta       { background-color: var(--z-terracotta); }
+  .bg-z-terracotta-soft  { background-color: var(--z-terracotta-soft); }
+  .text-z-terracotta     { color: var(--z-terracotta); }
+  .border-z-terracotta   { border-color: var(--z-terracotta); }
+  .glow-z-terracotta     { box-shadow: 0 0 0 1px var(--z-terracotta-soft), 0 0 30px var(--z-terracotta-glow); }
+
+  /* ── Clay (CTA buttons, interactive fills) ── */
+  .bg-z-clay             { background-color: var(--z-clay); }
+  .bg-z-clay-soft        { background-color: var(--z-clay-soft); }
+  .text-z-clay           { color: var(--z-clay); }
+  .glow-z-clay           { box-shadow: 0 0 0 1px var(--z-clay-soft), 0 0 30px var(--z-clay-glow); }
+
+  /* ── Gold (accents, emphasis) ── */
+  .bg-z-gold             { background-color: var(--z-gold); }
+  .bg-z-gold-soft        { background-color: var(--z-gold-soft); }
+  .text-z-gold           { color: var(--z-gold); }
+  .border-z-gold         { border-color: var(--z-gold); }
+
+  /* ── Surfaces ── */
+  .bg-z-sand             { background-color: var(--z-sand); }
+  .bg-z-off-white        { background-color: var(--z-off-white); }
+  .bg-z-light-gray       { background-color: var(--z-light-gray); }
+  .border-z-light-gray   { border-color: var(--z-light-gray); }
+
+  /* ── Text ── */
+  .text-z-black          { color: var(--z-black); }
+  .text-z-charcoal       { color: var(--z-charcoal); }
+  .text-z-dark-gray      { color: var(--z-dark-gray); }
+  .text-z-medium-gray    { color: var(--z-medium-gray); }
+  .text-z-taupe          { color: var(--z-taupe); }
+  .text-z-olive          { color: var(--z-olive); }
+  .text-z-teal           { color: var(--z-teal); }
+
+  /* ── Background fills ── */
+  .bg-z-black            { background-color: var(--z-black); }
+  .bg-z-charcoal         { background-color: var(--z-charcoal); }
+  .bg-z-teal             { background-color: var(--z-teal); }
+  .bg-z-olive            { background-color: var(--z-olive); }
+  .bg-z-taupe            { background-color: var(--z-taupe); }
+
+  /* ── Borders ── */
+  .border-z-charcoal     { border-color: var(--z-charcoal); }
+  .border-z-taupe        { border-color: var(--z-taupe); }
+
+  /* ── Legacy z-orange → maps to Clay (CTA) + Terracotta (accent text/border) ── */
+  .bg-z-orange           { background-color: var(--z-clay); }
+  .bg-z-orange-soft      { background-color: var(--z-terracotta-soft); }
+  .border-z-orange       { border-color: var(--z-terracotta); }
+  .glow-z-orange         { box-shadow: 0 0 0 1px var(--z-clay-soft), 0 0 30px var(--z-clay-glow); }
+  .z-orange              { color: var(--z-terracotta); }
+  .z-orange-important    { color: var(--z-terracotta) !important; }
+
+  /* ── Page background (warm terracotta glow over off-white → sand) ── */
+  .z-page-bg {
+    background:
+      radial-gradient(900px 600px at 18% 24%, rgba(200, 105, 74, 0.10), transparent 55%),
+      radial-gradient(700px 500px at 80% 30%, rgba(0, 0, 0, 0.04), transparent 55%),
+      linear-gradient(to bottom, var(--z-off-white), var(--z-sand));
   }
-  .z-orange { color: var(--zowar-orange);}
-  .z-orange-important { color: var(--zowar-orange) !important; } 
 }
 
-/* ===== Animation ===== */
+/* =============================================
+   ANIMATIONS
+   ============================================= */
 @keyframes letterHop {
-  0% { transform: translateY(0); opacity: 1; }
-  30% { transform: translateY(-6px); opacity: 0.9; }
-  60% { transform: translateY(2px); opacity: 1; }
+  0%   { transform: translateY(0); opacity: 1; }
+  30%  { transform: translateY(-6px); opacity: 0.9; }
+  60%  { transform: translateY(2px); opacity: 1; }
   100% { transform: translateY(0); }
 }
-/* ===== Zowar: Orange Flash Button (works with glass/backdrop) ===== */
+
+/* ── Flash Terracotta (nav hover/click effect) ── */
 .flash-orange {
   position: relative;
   overflow: hidden;
@@ -59,21 +141,21 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--zowar-orange);
+  background: var(--z-terracotta);
   opacity: 0;
   transform: scale(0.98);
   transition: opacity 220ms ease, transform 220ms ease;
-  z-index: 0; /* ✅ keep it above the button background */
+  z-index: 0;
 }
 
 .flash-orange > * {
   position: relative;
-  z-index: 1; /* ✅ keep text/icons above the orange layer */
+  z-index: 1;
 }
 
 .flash-orange:hover {
-  border-color: var(--zowar-orange);
-  color: #111;
+  border-color: var(--z-terracotta);
+  color: var(--z-off-white);
 }
 
 .flash-orange:hover::before {
@@ -87,18 +169,18 @@ body {
   position: absolute;
   inset: -2px;
   border-radius: 9999px;
-  background: var(--zowar-orange-soft);
+  background: var(--z-terracotta-soft);
   opacity: 0;
   pointer-events: none;
   z-index: 0;
 }
 
 .flash-orange[data-flash][data-flash]::after {
-  animation: orangePulse 520ms ease-out;
+  animation: terraPulse 520ms ease-out;
 }
 
-@keyframes orangePulse {
-  0% { opacity: 0; transform: scale(0.98); }
-  35% { opacity: 1; transform: scale(1); }
+@keyframes terraPulse {
+  0%   { opacity: 0; transform: scale(0.98); }
+  35%  { opacity: 1; transform: scale(1); }
   100% { opacity: 0; transform: scale(1.02); }
 }

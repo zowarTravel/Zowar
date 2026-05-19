@@ -76,7 +76,7 @@ export default function LangDropdown({
               onClick={() => select(l)}
               className={[
                 "w-full px-4 py-3 text-left text-sm transition hover:bg-black/[0.03]",
-                locale === l ? "font-semibold text-[#ff8936]" : "",
+                locale === l ? "font-semibold z-orange" : "",
               ].join(" ")}
             >
               {l === "en" ? "English" : l === "ar" ? "العربية" : "Español"}

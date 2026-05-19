@@ -297,7 +297,7 @@ export function PuzzleR3({
           </div>
 
           {showHint && (
-            <div className="relative mt-4 rounded-2xl border border-black/8 bg-[#fffaf4] p-4 text-sm text-neutral-800">
+            <div className="relative mt-4 rounded-2xl border border-black/8 bg-z-off-white p-4 text-sm text-neutral-800">
               {t.hint}
             </div>
           )}

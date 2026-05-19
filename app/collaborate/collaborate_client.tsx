@@ -248,8 +248,7 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
     }
   }
 
-  const pageBg =
-    "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(255,137,54,0.18),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
+  const pageBg = "min-h-screen text-neutral-900 z-page-bg";
 
   const glassCard =
     "rounded-[28px] border border-black/10 bg-white/80 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.08)]";
@@ -296,7 +295,7 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
               className="pointer-events-none absolute inset-0 opacity-100"
               style={{
                 backgroundImage:
-                  "radial-gradient(600px 400px at 15% 35%, rgba(255,165,0,0.20), transparent 55%)",
+                  "radial-gradient(600px 400px at 15% 35%, rgba(200,105,74,0.10), transparent 55%)",
                 backgroundRepeat: "no-repeat",
               }}
             />
@@ -397,7 +396,7 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
                 className={[
                   "mt-2 w-full rounded-2xl px-5 py-4 font-semibold text-neutral-950 transition",
                   status === "sending"
-                    ? "cursor-not-allowed opacity-70 bg-orange-500/25"
+                    ? "cursor-not-allowed opacity-70 bg-z-terracotta/25"
                     : "hover:opacity-95 bg-z-orange glow-z-orange",
                 ].join(" ")}
               >

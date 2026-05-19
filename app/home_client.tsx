@@ -257,8 +257,7 @@ export default function HomeClient() {
   const stickyCtaLabel = tr("Book the Experience", "احجز التجربة", "Reserva la Experiencia");
 
   /* -------------------- PAGE BACKGROUND -------------------- */
-  const pageBg =
-    "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(249,115,22,0.16),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
+  const pageBg = "min-h-screen text-neutral-900 z-page-bg";
 
   const howItWorksCards = [
     {
@@ -533,18 +532,18 @@ export default function HomeClient() {
           <div className="w-full text-center">
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
               {isAr ? (
-                <span className="z-orange">حلّ. تذوّق. اكتشف</span>
+                <span className="text-z-terracotta">حلّ. تذوّق. اكتشف</span>
               ) : locale === "es" ? (
                 <>
-                  <span className="z-orange">Resuelve.</span>{" "}
-                  <span className="z-orange">Prueba.</span>{" "}
-                  <span className="z-orange">Descubre</span> Amán
+                  <span className="text-z-terracotta">Resuelve.</span>{" "}
+                  <span className="text-z-terracotta">Prueba.</span>{" "}
+                  <span className="text-z-terracotta">Descubre</span> Amán
                 </>
               ) : (
                 <>
-                  <span className="z-orange">Solve.</span>{" "}
-                  <span className="z-orange">Taste.</span>{" "}
-                  <span className="z-orange">Discover</span> Amman
+                  <span className="text-z-terracotta">Solve.</span>{" "}
+                  <span className="text-z-terracotta">Taste.</span>{" "}
+                  <span className="text-z-terracotta">Discover</span> Amman
                 </>
               )}
             </h1>
@@ -579,7 +578,7 @@ export default function HomeClient() {
       </section>
 
       {/* ==================== HOW IT WORKS ==================== */}
-      <section className="bg-[#fff3e8] py-14 sm:py-16">
+      <section className="bg-z-sand py-14 sm:py-16">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-center text-3xl md:text-4xl font-bold">
             {tr("How It Works", "كيف تعمل التجربة", "Cómo Funciona")}
@@ -735,7 +734,7 @@ export default function HomeClient() {
       </section>
 
       {/* ==================== FOOTER ==================== */}
-      <footer className="bg-black text-white">
+      <footer className="bg-z-black text-white">
         <div className="max-w-7xl mx-auto px-6 py-14 pb-28 md:pb-14">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
             <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-10">

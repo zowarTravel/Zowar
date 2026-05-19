@@ -720,8 +720,7 @@ export default async function FAQPage({
   const collaborateHref = `/collaborate?lang=${locale}`;
   const faqHref = `/faq?lang=${locale}`;
 
-  const pageBg =
-    "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(249,115,22,0.16),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
+  const pageBg = "min-h-screen text-neutral-900 z-page-bg";
 
   const faqSchema = buildFaqSchema(locale);
 
@@ -826,7 +825,7 @@ export default async function FAQPage({
                 </div>
               </div>
 
-              <div className="border-t lg:border-t-0 lg:border-l border-black/10 bg-[#fff3e8] p-8 md:p-10">
+              <div className="border-t lg:border-t-0 lg:border-l border-black/10 bg-z-sand p-8 md:p-10">
                 <div className="grid grid-cols-1 gap-4">
                   {c.trustCards.map((card, i) => (
                     <div
@@ -933,7 +932,7 @@ export default async function FAQPage({
         </div>
       </section>
 
-      <footer className="bg-black text-white">
+      <footer className="bg-z-black text-white">
         <div className="max-w-7xl mx-auto px-6 py-14">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
             <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-10">

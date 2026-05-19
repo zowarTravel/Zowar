@@ -219,8 +219,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
   /* ---------------- Styles ---------------- */
 
-  const pageBg =
-    "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(255,137,54,0.18),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
+  const pageBg = "min-h-screen text-neutral-900 z-page-bg";
 
   const glassCard =
     "rounded-[28px] border border-black/10 bg-white/80 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.08)]";

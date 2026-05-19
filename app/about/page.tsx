@@ -137,8 +137,7 @@ export default async function AboutPage({
   const fontClass = isAr ? tajawal.className : fredoka.className;
 
   // Booking-style background + glass
-  const pageBg =
-    "min-h-screen text-neutral-900 bg-[radial-gradient(900px_600px_at_18%_24%,rgba(255,137,54,0.18),transparent_55%),radial-gradient(700px_500px_at_80%_30%,rgba(0,0,0,0.06),transparent_55%),linear-gradient(to_bottom,#ffffff,#f6f6f7)]";
+  const pageBg = "min-h-screen text-neutral-900 z-page-bg";
 
   const glassCard =
     "rounded-[28px] border border-black/10 bg-white/80 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.08)]";
@@ -187,7 +186,7 @@ export default async function AboutPage({
             className="pointer-events-none absolute inset-0 opacity-100"
             style={{
               backgroundImage:
-                "radial-gradient(700px 450px at 18% 30%, rgba(255,137,54,0.18), transparent 60%)",
+                "radial-gradient(700px 450px at 18% 30%, rgba(200,105,74,0.10), transparent 60%)",
               backgroundSize: "auto",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
@@ -196,7 +195,7 @@ export default async function AboutPage({
 
           <div className="relative">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-3 py-1 text-xs font-semibold">
-              <span className="h-2 w-2 rounded-full bg-[#ff8936]" />
+              <span className="h-2 w-2 rounded-full bg-z-terracotta" />
               {t.kicker}
             </div>
 
@@ -210,7 +209,7 @@ export default async function AboutPage({
             <div className="mt-8">
               <Link
                 href={bookingHref}
-                className="inline-flex items-center justify-center rounded-2xl bg-[#ff8936] px-5 py-4 font-semibold text-neutral-950 hover:opacity-95"
+                className="inline-flex items-center justify-center rounded-2xl bg-z-clay px-5 py-4 font-semibold text-neutral-950 hover:opacity-95"
               >
                 {t.cta}
               </Link>

@@ -100,7 +100,7 @@ export function PortalGate({
 
   if (state === "checking") {
     return (
-      <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-neutral-950 text-white flex items-center justify-center">
+      <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-z-black text-white flex items-center justify-center">
         <p className="text-white/60 text-sm">{t.verifying}</p>
       </div>
     );
@@ -108,14 +108,14 @@ export function PortalGate({
 
   if (state === "locked") {
     return (
-      <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-neutral-950 text-white">
+      <div dir={isAr ? "rtl" : "ltr"} className="min-h-screen bg-z-black text-white">
         <div className="mx-auto max-w-2xl px-6 py-16">
           <h1 className="text-3xl font-semibold">{t.lockedTitle}</h1>
           <p className="mt-3 text-white/70">{t.lockedBody}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={`/booking?lang=${safeLocale}`}
-              className="inline-flex rounded-2xl bg-orange-500 px-5 py-4 font-semibold text-neutral-950 hover:bg-orange-400"
+              className="inline-flex rounded-2xl bg-z-clay px-5 py-4 font-semibold text-neutral-950 hover:opacity-90"
             >
               {t.cta}
             </a>

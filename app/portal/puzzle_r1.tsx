@@ -76,7 +76,7 @@ export default function PuzzleR1({
       : status === "wrong"
       ? "ring-2 ring-red-500/25"
       : status === "close"
-      ? "ring-2 ring-orange-500/25 shadow-[0_0_40px_rgba(249,115,22,0.10)]"
+      ? "ring-2 ring-z-terracotta/25 shadow-[0_0_40px_rgba(200,105,74,0.10)]"
       : "ring-1 ring-black/8";
 
   const successPulse =
@@ -161,7 +161,7 @@ export default function PuzzleR1({
           </div>
 
           {showHint && (
-            <div className="relative mt-4 rounded-2xl border border-black/8 bg-[#fffaf4] p-4 text-sm text-neutral-800">
+            <div className="relative mt-4 rounded-2xl border border-black/8 bg-z-off-white p-4 text-sm text-neutral-800">
               <div className="font-semibold text-neutral-950">{isAr ? "التلميح" : "Hint"}</div>
               <div className="mt-1 leading-7">{t.hint[safeLocale]}</div>
 
@@ -187,7 +187,7 @@ export default function PuzzleR1({
               }}
               onKeyDown={(e) => e.key === "Enter" && check()}
               placeholder={t.ui.placeholder[safeLocale]}
-              className="mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-base text-neutral-950 outline-none placeholder:text-neutral-400 focus:border-z-orange focus:ring-4 focus:ring-orange-100"
+              className="mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-base text-neutral-950 outline-none placeholder:text-neutral-400 focus:border-z-orange focus:ring-4 focus:ring-[rgba(200,105,74,0.12)]"
             />
 
             <div className="mt-4 flex flex-wrap gap-3">
@@ -223,7 +223,7 @@ export default function PuzzleR1({
               )}
 
               {status === "close" && (
-                <div className="rounded-2xl border border-orange-500/20 bg-orange-50 p-3 text-sm text-neutral-900 animate-[zowarPop_520ms_ease-out_1]">
+                <div className="rounded-2xl border border-z-terracotta/20 bg-z-terracotta-soft p-3 text-sm text-neutral-900 animate-[zowarPop_520ms_ease-out_1]">
                   {t.closeEnough[safeLocale]}
                 </div>
               )}
@@ -243,7 +243,7 @@ export default function PuzzleR1({
               height: 6px;
               border-radius: 9999px;
               opacity: 0;
-              background: rgba(249, 115, 22, 0.7);
+              background: rgba(200, 105, 74, 0.7);
               filter: blur(0.2px);
               animation: zowarSparkle 850ms ease-out 1;
             }
@@ -318,7 +318,7 @@ export default function PuzzleR1({
                 box-shadow: 0 16px 50px rgba(0, 0, 0, 0.1);
               }
               45% {
-                box-shadow: 0 20px 60px rgba(249, 115, 22, 0.12);
+                box-shadow: 0 20px 60px rgba(200, 105, 74, 0.12);
               }
               100% {
                 box-shadow: 0 16px 50px rgba(0, 0, 0, 0.1);

@@ -397,7 +397,7 @@ export default function PuzzleR2({
       </div>
 
       {showHint && (
-        <div className="mt-4 rounded-2xl border border-black/8 bg-[#fffaf4] p-4 text-sm text-neutral-700">
+        <div className="mt-4 rounded-2xl border border-black/8 bg-z-off-white p-4 text-sm text-neutral-700">
           {safeLocale === "en"
             ? "Use the clues to complete each row. When a row is right, the crossing center letters reveal the hidden word."
             : "استخدم التلميحات لإكمال كل سطر. عندما يكون السطر صحيحًا، تكشف الحروف الوسطية عن الكلمة المخفية."}
@@ -431,7 +431,7 @@ export default function PuzzleR2({
         <div className="w-full">
           <div
             ref={gridRef}
-            className="rounded-3xl border border-black/5 bg-[radial-gradient(circle_at_20%_10%,rgba(249,115,22,0.08),transparent_45%),radial-gradient(circle_at_80%_90%,rgba(59,130,246,0.06),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.96),rgba(255,255,255,0.90))] p-4 sm:p-6"
+            className="rounded-3xl border border-black/5 bg-[radial-gradient(circle_at_20%_10%,rgba(200,105,74,0.08),transparent_45%),radial-gradient(circle_at_80%_90%,rgba(59,130,246,0.06),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.96),rgba(255,255,255,0.90))] p-4 sm:p-6"
           >
             <div ref={scrollerRef} className="relative w-full overflow-x-auto">
               <div ref={overlayRef} className="pointer-events-none absolute inset-0 z-10">

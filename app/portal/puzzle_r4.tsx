@@ -258,7 +258,7 @@ export function PuzzleR4({ locale, onSolved }: Props) {
               </div>
 
               {showHint && (
-                <div className="mt-3 rounded-2xl border border-black/8 bg-[#fffaf4] p-3 text-sm text-neutral-700">
+                <div className="mt-3 rounded-2xl border border-black/8 bg-z-off-white p-3 text-sm text-neutral-700">
                   <ul className="list-disc space-y-1 pl-5">
                     {HINTS[safeLocale].map((h, i) => (
                       <li key={i}>{h}</li>

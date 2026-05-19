@@ -253,7 +253,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
         </div>
 
         {showHint && !solved ? (
-          <div className="mt-4 rounded-2xl border border-black/8 bg-[#fffaf4] p-4 text-sm text-neutral-700">
+          <div className="mt-4 rounded-2xl border border-black/8 bg-z-off-white p-4 text-sm text-neutral-700">
             {isAr
               ? "القطع الصحيحة تظهر بإطار أخضر، والقطع غير الصحيحة بإطار أحمر. بدّل بين قطعتين في كل مرة."
               : "Correct pieces show a green outline, and incorrect pieces show a red outline. Swap two pieces at a time."}
@@ -379,7 +379,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                         top: `${s.y}%`,
                         background: "rgba(255,255,255,0.85)",
                         boxShadow:
-                          "0 0 0 1px rgba(249,115,22,0.20), 0 10px 24px rgba(249,115,22,0.12)",
+                          "0 0 0 1px rgba(200,105,74,0.20), 0 10px 24px rgba(200,105,74,0.12)",
                         animation: "zowar-spark 820ms ease-out forwards",
                       }}
                     />

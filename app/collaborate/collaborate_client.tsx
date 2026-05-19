@@ -266,8 +266,8 @@ export default function CollaborateClient({ locale }: { locale: Locale }) {
               <Image
                 src="/logo.png"
                 alt="ZOWAR logo"
-                width={72}
-                height={72}
+                width={96}
+                height={96}
                 priority
                 className="opacity-95 transition-transform duration-200 ease-out hover:opacity-100 hover:-translate-y-[2px] hover:rotate-[-1deg] hover:scale-[1.02]"
               />

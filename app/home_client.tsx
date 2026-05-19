@@ -335,12 +335,12 @@ export default function HomeClient() {
               className="group flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-black/[0.03]"
               aria-label="Go to home"
             >
-              <div className="relative h-10 w-10 md:h-11 md:w-11">
+              <div className="relative h-12 w-12 md:h-14 md:w-14">
                 <Image
                   src="/logo.png"
                   alt="ZOWAR logo"
                   fill
-                  sizes="44px"
+                  sizes="56px"
                   className="object-contain opacity-95 transition-transform duration-200 ease-out group-hover:opacity-100 group-hover:-translate-y-[2px] group-hover:rotate-[-1deg] group-hover:scale-[1.02]"
                 />
               </div>

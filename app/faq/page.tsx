@@ -739,7 +739,7 @@ export default async function FAQPage({
               className="group flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-black/[0.03]"
               aria-label="Go to home"
             >
-              <div className="relative h-10 w-10 md:h-11 md:w-11">
+              <div className="relative h-12 w-12 md:h-14 md:w-14">
                 <img
                   src="/logo.png"
                   alt="ZOWAR logo"

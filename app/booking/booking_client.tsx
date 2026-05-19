@@ -249,8 +249,8 @@ export default function BookingClient({ locale }: BookingClientProps) {
               <Image
                 src="/logo.png"
                 alt="ZOWAR logo"
-                width={72}
-                height={72}
+                width={96}
+                height={96}
                 priority
               />
             </Link>

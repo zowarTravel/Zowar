@@ -2,434 +2,374 @@
 
 import React from "react";
 import type { Locale } from "./riddlecontent";
+import { riddle4 } from "./riddlecontent";
 import { setRoundSolved, serverSetRoundSolved } from "./progress";
 
-type Tile = { id: string; text: string };
+/* ------------------------------------------------------------------ */
+/* Types                                                              */
+/* ------------------------------------------------------------------ */
 
-function shuffle<T>(arr: readonly T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function normalizeAnswer(input: string): string {
-  return input
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .replace(/[^\p{L}\p{N}\s]/gu, "");
-}
-
-const COPY = {
-  en: {
-    title: "Round 3: Build the Phrase",
-    subtitle: "Drag the word bubbles into the solve line (or tap to add).",
-    hint: "Think: what’s your next stop after Trinitae (and what you’ll eat).",
-    targetTokens: ["NEXT", "STOP", "IS", "JABRI", "FOR", "KNAFEH"],
-    ui: {
-      solveLine: "Solve line",
-      bubbleBank: "Word bank",
-      check: "Check",
-      reset: "Reset",
-      showHint: "Show hint",
-      hideHint: "Hide hint",
-      removeLast: "Remove last",
-      solved: "Solved!",
-      tryAgain: "Not quite — try again.",
-      nextStep: "Head to Jabri for knafeh. (Open Maps and search “Jabri”.)",
-      dragHelp: "Tip: drag bubbles into the solve line.",
-      emptySolve: "Drop bubbles here…",
-    },
-  },
-  ar: {
-    title: "الجولة ٣: رتّب العبارة",
-    subtitle: "اسحب فقاعات الكلمات إلى سطر الحل (أو اضغط للإضافة).",
-    hint: "فكّر: ما هي محطتك التالية بعد ترينيتي؟ وماذا ستأكل؟",
-    targetTokens: ["محطتك", "التالية", "جبري", "للكنافة"],
-    ui: {
-      solveLine: "سطر الحل",
-      bubbleBank: "بنك الكلمات",
-      check: "تحقق",
-      reset: "إعادة",
-      showHint: "إظهار التلميح",
-      hideHint: "إخفاء التلميح",
-      removeLast: "حذف آخر كلمة",
-      solved: "تم الحل!",
-      tryAgain: "ليست صحيحة — جرّب مرة أخرى.",
-      nextStep: "اذهب إلى جبري للكنافة. (افتح الخرائط وابحث عن “Jabri”.)",
-      dragHelp: "نصيحة: اسحب الفقاعات إلى سطر الحل.",
-      emptySolve: "اسحب الفقاعات هنا…",
-    },
-  },
-} as const;
-
-function Bubble({
-  text,
-  tone = "neutral",
-  draggable,
-  onClick,
-  onDragStart,
-  onDragEnd,
-}: {
-  text: string;
-  tone?: "neutral" | "good" | "bad" | "solved";
-  draggable?: boolean;
-  onClick?: () => void;
-  onDragStart?: (e: React.DragEvent) => void;
-  onDragEnd?: (e: React.DragEvent) => void;
-}) {
-  const base =
-    "select-none rounded-full px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98] " +
-    "border shadow-sm";
-
-  const toneClass =
-    tone === "solved"
-      ? "border-green-200 bg-green-50 text-green-800"
-      : tone === "good"
-      ? "border-green-200 bg-green-50 text-neutral-900"
-      : tone === "bad"
-      ? "border-red-200 bg-red-50 text-neutral-900"
-      : "border-black/10 bg-white text-neutral-900 hover:bg-neutral-50";
-
-  return (
-    <button
-      type="button"
-      draggable={draggable}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      onClick={onClick}
-      className={[base, toneClass, draggable ? "cursor-grab" : "cursor-pointer"].join(" ")}
-    >
-      {text}
-    </button>
-  );
-}
-
-export function PuzzleR3({
-  locale,
-  onSolved,
-}: {
+type Props = {
   locale: Locale;
   onSolved?: () => void;
-}) {
+};
+
+type CategoryKey = "BREAKFAST" | "FAUNA" | "DESERT" | "AMMAN";
+
+type Tile = {
+  id: string;
+  category: CategoryKey;
+  label: Record<Locale, string>;
+};
+
+const CATEGORY_LABELS: Record<CategoryKey, Record<Locale, string>> = {
+  BREAKFAST: {
+    en: "Traditional Arabic breakfast items",
+    ar: "أصناف فطور عربي تقليدي",
+  },
+  FAUNA: {
+    en: "Local fauna",
+    ar: "حيوانات/كائنات محلية",
+  },
+  DESERT: {
+    en: "Desert trip (Wadi Rum vibes)",
+    ar: "رحلة صحراء (أجواء وادي رم)",
+  },
+  AMMAN: {
+    en: "Amman city vibes",
+    ar: "أجواء عمّان",
+  },
+};
+
+const HINTS: Record<Locale, string[]> = {
+  en: [
+    "There are 4 groups of 4. Tap tiles to select them.",
+    "Think: food items, animals, desert imagery, and city life.",
+    "If you're stuck, try grouping the most obvious 2 first.",
+  ],
+  ar: [
+    "هناك ٤ مجموعات (كل مجموعة ٤ كلمات). اضغط للاختيار.",
+    "فكّر: أطعمة، حيوانات، أجواء الصحراء، وأجواء المدينة.",
+    "إذا علِقت، ابدأ بأوضح مجموعتين ثم أكمل الباقي.",
+  ],
+};
+
+const TILES: readonly Tile[] = [
+  { id: "CAMEL", category: "FAUNA", label: { en: "Camel", ar: "جمل" } },
+  { id: "FUUL", category: "BREAKFAST", label: { en: "Fuul", ar: "فول" } },
+  { id: "RED_SAND", category: "DESERT", label: { en: "Red sand", ar: "رمل أحمر" } },
+  { id: "YELLOW_TAXI", category: "AMMAN", label: { en: "Yellow taxi", ar: "تاكسي أصفر" } },
+
+  { id: "LABNEH", category: "BREAKFAST", label: { en: "Labneh", ar: "لبنة" } },
+  { id: "GECKO", category: "FAUNA", label: { en: "Gecko", ar: "وزغة" } },
+  { id: "JEEP", category: "DESERT", label: { en: "4 Wheel Drive", ar: "سيارة دفع رباعي" } },
+  { id: "TRAFFIC", category: "AMMAN", label: { en: "Traffic", ar: "زحمة" } },
+
+  { id: "STARS", category: "DESERT", label: { en: "Starry night", ar: "سماء مليئة بالنجوم" } },
+  { id: "HUMMUS", category: "BREAKFAST", label: { en: "Hummus", ar: "حمّص" } },
+  { id: "EAGLE", category: "FAUNA", label: { en: "Falcon", ar: "نسر" } },
+  { id: "GAS_TRUCKS", category: "AMMAN", label: { en: "Gas trucks", ar: "سيارات الغاز" } },
+
+  { id: "CANYON", category: "DESERT", label: { en: "Canyon", ar: "وادي/خنق" } },
+  { id: "FALAFEL", category: "BREAKFAST", label: { en: "Falafel", ar: "فلافل" } },
+  { id: "FOX", category: "FAUNA", label: { en: "Desert fox", ar: "ثعلب" } },
+  { id: "CAFE", category: "AMMAN", label: { en: "Cafés", ar: "كافيهات" } },
+] as const;
+
+/* ------------------------------------------------------------------ */
+/* Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function getCategoryIfValidSelection(ids: string[]): CategoryKey | null {
+  if (ids.length !== 4) return null;
+  const tiles = TILES.filter((t) => ids.includes(t.id));
+  if (tiles.length !== 4) return null;
+  const cat = tiles[0].category;
+  return tiles.every((t) => t.category === cat) ? cat : null;
+}
+
+/* ------------------------------------------------------------------ */
+/* Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export function PuzzleR3({ locale, onSolved }: Props) {
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
   const isAr = safeLocale === "ar";
-  const t = COPY[safeLocale];
+  const t = riddle4;
 
-  const solvedRef = React.useRef(false);
+  const [selected, setSelected] = React.useState<string[]>([]);
+  const [solvedCats, setSolvedCats] = React.useState<CategoryKey[]>([]);
+  const [status, setStatus] = React.useState<"idle" | "correct" | "wrong">("idle");
+  const [isSolved, setIsSolved] = React.useState(false);
 
-  const targetNorm = React.useMemo(
-    () => t.targetTokens.map((x) => normalizeAnswer(x)),
-    [t.targetTokens]
-  );
-
-  const tiles = React.useMemo<Tile[]>(() => {
-    const base: Tile[] = t.targetTokens.map((token, idx) => ({
-      id: `${safeLocale}-${idx}-${token}`,
-      text: token,
-    }));
-    return shuffle(base);
-  }, [safeLocale, t.targetTokens]);
-
-  const [pickedIds, setPickedIds] = React.useState<string[]>([]);
-  const [checked, setChecked] = React.useState(false);
-  const [status, setStatus] = React.useState<"idle" | "wrong" | "correct">("idle");
   const [showHint, setShowHint] = React.useState(false);
-  const [dragOverSolve, setDragOverSolve] = React.useState(false);
+  const [nudge, setNudge] = React.useState(false);
 
-  const pickedTiles = React.useMemo<Tile[]>(
-    () =>
-      pickedIds
-        .map((id) => tiles.find((tile) => tile.id === id))
-        .filter((x): x is Tile => Boolean(x)),
-    [pickedIds, tiles]
-  );
+  const solvedOnceRef = React.useRef(false);
+  const timerRef = React.useRef<number | null>(null);
 
-  const remainingTiles = React.useMemo<Tile[]>(() => {
-    const picked = new Set(pickedIds);
-    return tiles.filter((x) => !picked.has(x.id));
-  }, [pickedIds, tiles]);
+  React.useEffect(() => {
+    return () => {
+      if (timerRef.current) window.clearTimeout(timerRef.current);
+    };
+  }, []);
 
-  const builtNorm = React.useMemo(
-    () => pickedTiles.map((x) => normalizeAnswer(x.text)),
-    [pickedTiles]
-  );
-
-  function resetAll() {
-    setPickedIds([]);
-    setChecked(false);
-    setStatus("idle");
+  function finishOnce() {
+    if (solvedOnceRef.current) return;
+    solvedOnceRef.current = true;
+    setRoundSolved("r3");
+    serverSetRoundSolved("r3"); // fire-and-forget server sync
+    onSolved?.();
   }
 
-  function removeLast() {
-    setPickedIds((prev) => prev.slice(0, -1));
-    setChecked(false);
-    setStatus("idle");
-  }
+  const remainingTiles = React.useMemo(() => {
+    const solved = new Set(solvedCats);
+    return TILES.filter((x) => !solved.has(x.category));
+  }, [solvedCats]);
 
-  function pick(id: string) {
-    setPickedIds((prev) => {
-      if (prev.includes(id)) return prev;
-      return [...prev, id];
+  function toggleTile(id: string) {
+    if (isSolved) return;
+    setStatus("idle");
+
+    setSelected((cur) => {
+      if (cur.includes(id)) return cur.filter((x) => x !== id);
+      if (cur.length >= 4) return cur;
+      return [...cur, id];
     });
-    setChecked(false);
-    setStatus("idle");
   }
 
-  function unpick(id: string) {
-    setPickedIds((prev) => prev.filter((x) => x !== id));
-    setChecked(false);
-    setStatus("idle");
+  function triggerNudge() {
+    setNudge(false);
+    window.requestAnimationFrame(() => setNudge(true));
+    window.setTimeout(() => setNudge(false), 220);
   }
 
-  function check() {
-    setChecked(true);
+  function submit() {
+    if (isSolved) return;
+    if (selected.length !== 4) return;
 
-    if (builtNorm.length !== targetNorm.length) {
+    const cat = getCategoryIfValidSelection(selected);
+
+    if (!cat || solvedCats.includes(cat)) {
       setStatus("wrong");
+      triggerNudge();
+      if (timerRef.current) window.clearTimeout(timerRef.current);
+      timerRef.current = window.setTimeout(() => setStatus("idle"), 520);
       return;
     }
 
-    for (let i = 0; i < targetNorm.length; i++) {
-      if (builtNorm[i] !== targetNorm[i]) {
-        setStatus("wrong");
-        return;
-      }
-    }
-
     setStatus("correct");
+    if (timerRef.current) window.clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(() => {
+      setSolvedCats((cur) => [...cur, cat]);
+      setSelected([]);
+      setStatus("idle");
+    }, 380);
+  }
 
-    if (!solvedRef.current) {
-      solvedRef.current = true;
-      setRoundSolved("r3");
-      serverSetRoundSolved("r3"); // fire-and-forget server sync
-      onSolved?.();
+  React.useEffect(() => {
+    if (solvedCats.length === 4 && !isSolved) {
+      setIsSolved(true);
+      if (timerRef.current) window.clearTimeout(timerRef.current);
+      timerRef.current = window.setTimeout(() => finishOnce(), 350);
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [solvedCats]);
 
-  function onDragStartTile(id: string) {
-    return (e: React.DragEvent) => {
-      e.dataTransfer.setData("text/plain", id);
-      e.dataTransfer.effectAllowed = "move";
-    };
-  }
+  const shell =
+    "relative overflow-hidden rounded-3xl border border-black/10 " +
+    "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))] " +
+    "p-5 sm:p-6 shadow-[0_16px_50px_rgba(0,0,0,0.10)]";
 
-  function onDropToSolve(e: React.DragEvent) {
-    e.preventDefault();
-    const id = e.dataTransfer.getData("text/plain");
-    if (!id) return;
-    if (remainingTiles.some((x) => x.id === id)) pick(id);
-    setDragOverSolve(false);
-  }
+  const headerPill =
+    "inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold z-orange";
 
-  function onDragOverSolve(e: React.DragEvent) {
-    e.preventDefault();
-    setDragOverSolve(true);
-  }
+  const tileBase =
+    "rounded-2xl border border-black/10 bg-white px-3 py-4 text-sm font-semibold text-neutral-900 " +
+    "shadow-sm transition duration-200 active:scale-[0.98] hover:scale-[1.01] hover:bg-neutral-50";
 
-  function onDragLeaveSolve() {
-    setDragOverSolve(false);
-  }
+  const tileSelected =
+    "border-z-orange bg-z-orange-soft ring-2 ring-offset-0 border-z-orange glow-z-orange z-orange";
 
-  const cardGlow =
-    status === "correct"
-      ? "ring-2 ring-green-300 shadow-[0_0_40px_rgba(34,197,94,0.12)]"
-      : status === "wrong"
-      ? "ring-2 ring-red-200 shadow-[0_0_0_4px_rgba(239,68,68,0.06)]"
-      : "ring-1 ring-black/8";
+  const solvedPill =
+    "inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900 shadow-sm";
 
-  const shake = status === "wrong" ? "animate-[zowarShake_260ms_ease-in-out_1]" : "";
+  const btn =
+    "group relative overflow-hidden rounded-2xl bg-z-orange px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40";
+
+  const ghostBtn =
+    "rounded-2xl border border-black/10 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 shadow-sm transition hover:bg-neutral-50";
 
   return (
-    <div dir={isAr ? "rtl" : "ltr"} className="w-full">
-      <div className="relative mx-auto max-w-3xl px-1 sm:px-0">
+    <section dir={isAr ? "rtl" : "ltr"} className="mx-auto w-full max-w-2xl">
+      <div className={shell}>
         <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
         <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white blur-3xl opacity-30" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.45),rgba(255,255,255,0))]" />
 
-        <div
-          className={[
-            "relative overflow-hidden rounded-3xl border border-black/10",
-            "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))]",
-            "p-5 sm:p-6",
-            "shadow-[0_16px_50px_rgba(0,0,0,0.10)]",
-            cardGlow,
-            shake,
-          ].join(" ")}
-        >
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.45),rgba(255,255,255,0))]" />
-
-          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div className="min-w-0">
-              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
-                {isAr ? "الجولة ٣ · ابنِ الجملة" : "Round 3 · Build the Phrase"}
-              </div>
-              <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">{t.title}</h2>
-              <p className="mt-1 text-sm text-neutral-700">{t.subtitle}</p>
-              <p className="mt-2 text-xs text-neutral-500">{t.ui.dragHelp}</p>
+        <div className="relative flex flex-wrap items-start justify-between gap-3">
+          <div className="space-y-1">
+            <div className={headerPill}>
+              <span className="opacity-80">{safeLocale === "en" ? "Round 3" : "الجولة ٣"}</span>
+              <span className="h-3 w-px bg-neutral-300" />
+              <span className="opacity-90">{safeLocale === "en" ? "Connections" : "ترابط المجموعات"}</span>
             </div>
 
-            <div className="flex flex-wrap gap-2 sm:justify-end">
-              <button
-                onClick={() => setShowHint((s) => !s)}
-                className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:bg-neutral-50"
-              >
-                {showHint ? t.ui.hideHint : t.ui.showHint}
-              </button>
-
-              <button
-                onClick={resetAll}
-                className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:bg-neutral-50"
-              >
-                {t.ui.reset}
-              </button>
-
-              <button
-                onClick={check}
-                disabled={status === "correct"}
-                className="rounded-2xl bg-z-orange px-5 py-2 text-sm font-semibold text-white transition hover:opacity-95 disabled:opacity-40"
-              >
-                {t.ui.check}
-              </button>
-            </div>
+            <h2 className="text-2xl font-semibold text-neutral-950">{t.title[safeLocale]}</h2>
+            <p className="text-sm text-neutral-700">
+              {safeLocale === "en"
+                ? "Find 4 groups of 4. Select exactly four tiles, then submit."
+                : "اعثر على ٤ مجموعات (كل مجموعة ٤ كلمات). اختر ٤ مربعات ثم اضغط إرسال."}
+            </p>
           </div>
 
-          {showHint && (
-            <div className="relative mt-4 rounded-2xl border border-black/8 bg-z-off-white p-4 text-sm text-neutral-800">
-              {t.hint}
-            </div>
-          )}
+          <div className="flex flex-wrap items-center justify-end gap-2 pt-1">
+            {solvedCats.map((k) => (
+              <span key={k} className={solvedPill}>
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                {CATEGORY_LABELS[k][safeLocale]}
+              </span>
+            ))}
+          </div>
+        </div>
 
-          <div className="mt-6">
-            <div className="mb-2 text-sm font-semibold text-neutral-950">{t.ui.solveLine}</div>
+        <div className="mt-6">
+          {!isSolved ? (
+            <div className="rounded-2xl border border-black/8 bg-white/85 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="text-sm text-neutral-700">
+                  {safeLocale === "en" ? "Selected" : "المحدد"}:{" "}
+                  <span className="font-semibold text-neutral-950">{selected.length}/4</span>
+                </div>
 
-            <div
-              onDrop={onDropToSolve}
-              onDragOver={onDragOverSolve}
-              onDragLeave={onDragLeaveSolve}
-              className={[
-                "min-h-[84px] rounded-2xl border p-3 sm:p-4 transition",
-                dragOverSolve
-                  ? "border-z-orange bg-orange-50"
-                  : "border-black/10 bg-white/85",
-              ].join(" ")}
-            >
-              {pickedTiles.length === 0 ? (
-                <span className="text-sm text-neutral-500">{t.ui.emptySolve}</span>
-              ) : (
-                <div className="flex flex-wrap gap-2">
-                  {pickedTiles.map((tile, idx) => {
-                    const correctAtPos = checked && builtNorm[idx] === targetNorm[idx];
-                    const wrongAtPos =
-                      checked &&
-                      idx < targetNorm.length &&
-                      builtNorm[idx] !== targetNorm[idx];
+                <button
+                  type="button"
+                  onClick={() => setShowHint((v) => !v)}
+                  className="rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-semibold text-neutral-800 shadow-sm transition hover:bg-neutral-50"
+                >
+                  {showHint
+                    ? safeLocale === "en"
+                      ? "Hide hint"
+                      : "إخفاء التلميح"
+                    : safeLocale === "en"
+                    ? "Hint"
+                    : "تلميح"}
+                </button>
+              </div>
 
-                    const tone: "neutral" | "good" | "bad" | "solved" =
-                      status === "correct"
-                        ? "solved"
-                        : correctAtPos
-                        ? "good"
-                        : wrongAtPos
-                        ? "bad"
-                        : "neutral";
+              {showHint && (
+                <div className="mt-3 rounded-2xl border border-black/8 bg-z-off-white p-3 text-sm text-neutral-700">
+                  <ul className="list-disc space-y-1 pl-5">
+                    {HINTS[safeLocale].map((h, i) => (
+                      <li key={i}>{h}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-                    const style: React.CSSProperties =
-                      status === "correct" ? { animationDelay: `${idx * 90}ms` } : {};
-
+              <div className={["mt-4", nudge ? "animate-[nudge_220ms_ease-in-out_1]" : ""].join(" ")}>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {remainingTiles.map((tile) => {
+                    const isPicked = selected.includes(tile.id);
                     return (
-                      <span
-                        key={`${tile.id}-picked`}
-                        style={style}
-                        className={status === "correct" ? "animate-[zowarPop_520ms_ease-out_1]" : ""}
+                      <button
+                        key={tile.id}
+                        type="button"
+                        onClick={() => toggleTile(tile.id)}
+                        className={[tileBase, isPicked ? tileSelected : ""].join(" ")}
+                        aria-pressed={isPicked}
                       >
-                        <Bubble text={tile.text} tone={tone} onClick={() => unpick(tile.id)} />
-                      </span>
+                        {tile.label[safeLocale]}
+                      </button>
                     );
                   })}
                 </div>
-              )}
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <button type="button" onClick={submit} disabled={selected.length !== 4} className={btn}>
+                  <span className="relative z-10">{safeLocale === "en" ? "Submit" : "إرسال"}</span>
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelected([]);
+                    setStatus("idle");
+                  }}
+                  className={ghostBtn}
+                >
+                  {safeLocale === "en" ? "Clear" : "مسح"}
+                </button>
+
+                <div className="ml-auto min-h-[24px] text-sm">
+                  {status === "correct" && (
+                    <span className="text-emerald-700">
+                      {safeLocale === "en" ? "Nice — group found." : "ممتاز — تم العثور على مجموعة."}
+                    </span>
+                  )}
+                  {status === "wrong" && (
+                    <span className="text-rose-700">
+                      {t.ui.tryAgain?.[safeLocale] ?? (safeLocale === "en" ? "Try again." : "جرّب مرة أخرى.")}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <style jsx>{`
+                @keyframes nudge {
+                  0% {
+                    transform: translateX(0);
+                  }
+                  20% {
+                    transform: translateX(${isAr ? "10px" : "-10px"});
+                  }
+                  40% {
+                    transform: translateX(${isAr ? "-10px" : "10px"});
+                  }
+                  60% {
+                    transform: translateX(${isAr ? "8px" : "-8px"});
+                  }
+                  80% {
+                    transform: translateX(${isAr ? "-6px" : "6px"});
+                  }
+                  100% {
+                    transform: translateX(0);
+                  }
+                }
+              `}</style>
             </div>
+          ) : (
+            <div className="relative overflow-hidden rounded-3xl border border-emerald-200 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(236,253,245,0.95))] p-6 shadow-[0_0_0_2px_rgba(16,185,129,0.10),0_24px_70px_rgba(16,185,129,0.10)]">
+              <div className="absolute inset-0 bg-[radial-gradient(900px_circle_at_30%_20%,rgba(16,185,129,0.10),transparent_55%)]" />
 
-            <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-              <button
-                onClick={removeLast}
-                disabled={pickedTiles.length === 0 || status === "correct"}
-                className="w-full rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:bg-neutral-50 disabled:opacity-40 sm:w-auto"
-              >
-                {t.ui.removeLast}
-              </button>
+              <div className="relative">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs text-emerald-900">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                  {t.ui.solved?.[safeLocale] ?? (safeLocale === "en" ? "Solved!" : "تم الحل!")}
+                </div>
 
-              <div className="text-sm sm:max-w-md">
-                {status === "correct" ? (
-                  <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-neutral-900">
-                    <div className="font-semibold text-green-800">{t.ui.solved}</div>
-                    <div className="mt-1 text-sm text-neutral-700">{t.ui.nextStep}</div>
-                  </div>
-                ) : status === "wrong" ? (
-                  <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-neutral-900">
-                    {t.ui.tryAgain}
-                  </div>
-                ) : null}
+                <h3 className="mt-3 text-2xl font-semibold text-neutral-950">
+                  {safeLocale === "en"
+                    ? "Time to claim your Arabic breakfast at Al Quds Falafel."
+                    : "حان وقت الفطور العربي في فلافل القدس."}
+                </h3>
+
+                <p className="mt-2 text-neutral-700">{t.finalInstruction[safeLocale]}</p>
+
+                <div className="mt-5 h-px w-full bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+                <div className="mt-4 text-sm text-neutral-600">
+                  {safeLocale === "en"
+                    ? "Show this screen if you need to confirm your next stop."
+                    : "اعرض هذه الشاشة إذا احتجت لتأكيد محطتك التالية."}
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="mt-7">
-            <div className="mb-2 text-sm font-semibold text-neutral-950">{t.ui.bubbleBank}</div>
-
-            <div className="flex flex-wrap gap-2.5">
-              {remainingTiles.map((tile) => (
-                <Bubble
-                  key={tile.id}
-                  text={tile.text}
-                  draggable={status !== "correct"}
-                  onDragStart={onDragStartTile(tile.id)}
-                  onClick={() => pick(tile.id)}
-                />
-              ))}
-            </div>
-          </div>
-
-          <style jsx>{`
-            @keyframes zowarShake {
-              0% {
-                transform: translateX(0);
-              }
-              25% {
-                transform: translateX(-6px);
-              }
-              50% {
-                transform: translateX(6px);
-              }
-              75% {
-                transform: translateX(-4px);
-              }
-              100% {
-                transform: translateX(0);
-              }
-            }
-
-            @keyframes zowarPop {
-              0% {
-                transform: translateY(2px) scale(0.98);
-                filter: brightness(1);
-              }
-              45% {
-                transform: translateY(-1px) scale(1.02);
-                filter: brightness(1.04);
-              }
-              100% {
-                transform: translateY(0) scale(1);
-                filter: brightness(1);
-              }
-            }
-          `}</style>
+          )}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

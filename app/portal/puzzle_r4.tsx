@@ -1,376 +1,552 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import type { Locale } from "./riddlecontent";
-import { riddle4 } from "./riddlecontent";
 import { setRoundSolved, serverSetRoundSolved } from "./progress";
 
-/* ------------------------------------------------------------------ */
-/* Types                                                              */
-/* ------------------------------------------------------------------ */
+type Status = "idle" | "wrong" | "correct";
 
-type Props = {
-  locale: Locale;
-  onSolved?: () => void;
-};
-
-type CategoryKey = "BREAKFAST" | "FAUNA" | "DESERT" | "AMMAN";
-
-type Tile = {
-  id: string;
-  category: CategoryKey;
-  label: Record<Locale, string>;
-};
-
-const CATEGORY_LABELS: Record<CategoryKey, Record<Locale, string>> = {
-  BREAKFAST: {
-    en: "Traditional Arabic breakfast items",
-    ar: "أصناف فطور عربي تقليدي",
-  },
-  FAUNA: {
-    en: "Local fauna",
-    ar: "حيوانات/كائنات محلية",
-  },
-  DESERT: {
-    en: "Desert trip (Wadi Rum vibes)",
-    ar: "رحلة صحراء (أجواء وادي رم)",
-  },
-  AMMAN: {
-    en: "Amman city vibes",
-    ar: "أجواء عمّان",
-  },
-};
-
-const HINTS: Record<Locale, string[]> = {
-  en: [
-    "There are 4 groups of 4. Tap tiles to select them.",
-    "Think: food items, animals, desert imagery, and city life.",
-    "If you're stuck, try grouping the most obvious 2 first.",
-  ],
-  ar: [
-    "هناك ٤ مجموعات (كل مجموعة ٤ كلمات). اضغط للاختيار.",
-    "فكّر: أطعمة، حيوانات، أجواء الصحراء، وأجواء المدينة.",
-    "إذا علِقت، ابدأ بأوضح مجموعتين ثم أكمل الباقي.",
-  ],
-};
-
-const TILES: readonly Tile[] = [
-  { id: "CAMEL", category: "FAUNA", label: { en: "Camel", ar: "جمل" } },
-  { id: "FUUL", category: "BREAKFAST", label: { en: "Fuul", ar: "فول" } },
-  { id: "RED_SAND", category: "DESERT", label: { en: "Red sand", ar: "رمل أحمر" } },
-  { id: "YELLOW_TAXI", category: "AMMAN", label: { en: "Yellow taxi", ar: "تاكسي أصفر" } },
-
-  { id: "LABNEH", category: "BREAKFAST", label: { en: "Labneh", ar: "لبنة" } },
-  { id: "GECKO", category: "FAUNA", label: { en: "Gecko", ar: "وزغة" } },
-  { id: "JEEP", category: "DESERT", label: { en: "4 Wheel Drive", ar: "سيارة دفع رباعي" } },
-  { id: "TRAFFIC", category: "AMMAN", label: { en: "Traffic", ar: "زحمة" } },
-
-  { id: "STARS", category: "DESERT", label: { en: "Starry night", ar: "سماء مليئة بالنجوم" } },
-  { id: "HUMMUS", category: "BREAKFAST", label: { en: "Hummus", ar: "حمّص" } },
-  { id: "EAGLE", category: "FAUNA", label: { en: "Falcon", ar: "نسر" } },
-  { id: "GAS_TRUCKS", category: "AMMAN", label: { en: "Gas trucks", ar: "سيارات الغاز" } },
-
-  { id: "CANYON", category: "DESERT", label: { en: "Canyon", ar: "وادي/خنق" } },
-  { id: "FALAFEL", category: "BREAKFAST", label: { en: "Falafel", ar: "فلافل" } },
-  { id: "FOX", category: "FAUNA", label: { en: "Desert fox", ar: "ثعلب" } },
-  { id: "CAFE", category: "AMMAN", label: { en: "Cafés", ar: "كافيهات" } },
+const MAP_FRAMES = [
+  "/images/puzzles/r3/Destination%20Map%201.png",
+  "/images/puzzles/r3/Destination%20Map%202.png",
+  "/images/puzzles/r3/Destination%20Map%203.png",
 ] as const;
 
-/* ------------------------------------------------------------------ */
-/* Helpers                                                            */
-/* ------------------------------------------------------------------ */
+const LOGO_OPTIONS = [
+  {
+    id: "f1",
+    src: "/images/puzzles/r3/Falafel%201.png",
+  },
+  {
+    id: "f2",
+    src: "/images/puzzles/r3/Falafel%202.png",
+  },
+  {
+    id: "f3",
+    src: "/images/puzzles/r3/Falafel%203.png",
+  },
+] as const;
 
-function getCategoryIfValidSelection(ids: string[]): CategoryKey | null {
-  if (ids.length !== 4) return null;
-  const tiles = TILES.filter((t) => ids.includes(t.id));
-  if (tiles.length !== 4) return null;
-  const cat = tiles[0].category;
-  return tiles.every((t) => t.category === cat) ? cat : null;
+const CORRECT_LOGO_ID = "f1";
+
+const COPY = {
+  en: {
+    title: "Round 4: Follow the Clue",
+    subtitle:
+      "Study the map, use the hints if needed, then confirm the real sign when you arrive.",
+    mapTitle: "Clue map",
+    mapCaptions: [
+      "Start by studying the original clue map.",
+      "Hint 1 adds the destination marker.",
+      "Hint 2 reveals the final place name.",
+    ],
+    riddleLabel: "Clue",
+    riddle:
+      "First, find the view. Nearby waits a golden, crispy staple of the Jordanian breakfast spread.",
+    ui: {
+      showHint: "Show hint",
+      nextHint: "Next hint",
+      allHintsShown: "All hints shown",
+      reset: "Reset",
+      foundIt: "Found it!",
+      mapUpdated1: "Map updated",
+      mapUpdated2: "Map refined",
+      hintHelper:
+        "Use the map first. If you need help, each hint reveals a little more.",
+      keepWalking:
+        `When you think you've found the place, press “Found it!”`,
+      foundPrompt:
+        "Nice. Now look at the real sign and choose the logo that matches it.",
+      arrivalCheck: "Arrival check",
+      arrivalPrompt: "Which logo matches the real Falafel Al Quds sign?",
+      arrivalSub:
+        "Look closely at the sign and choose the correct number of mint leaves and falafel.",
+      check: "Check",
+      solved: "Solved!",
+      tryAgain:
+        "Not quite — look closely at the sign again and try one more time.",
+      nextStep:
+        "Perfect. You found the classic — enjoy your bite at Al Quds Falafel.",
+      selectOne: "Select one logo to continue.",
+      aboutTitle: "About this stop",
+      aboutText:
+        "Al Quds Falafel has been serving its famous falafel sandwiches on Rainbow Street since 1966, making it one of Amman's oldest and most beloved street-food stops, enjoyed by even the Royal Family. It keeps things simple: crispy falafel tucked into sesame kaʿek with tahini and pickles.",
+    },
+  },
+  ar: {
+    title: "الجولة ٤: اتبع الدليل",
+    subtitle:
+      "ادرس الخريطة، استخدم التلميحات إذا احتجت، ثم أكّد اللافتة الحقيقية عندما تصل.",
+    mapTitle: "خريطة الدليل",
+    mapCaptions: [
+      "ابدأ بدراسة خريطة الدليل الأصلية.",
+      "التلميح الأول يضيف علامة الوجهة.",
+      "التلميح الثاني يكشف اسم المكان النهائي.",
+    ],
+    riddleLabel: "الدليل",
+    riddle:
+      "أولًا، ابحث عن الإطلالة. بالقرب منها تنتظرك لقمة ذهبية مقرمشة لا تخلو منها سفرة الفطور الأردنية.",
+    ui: {
+      showHint: "إظهار التلميح",
+      nextHint: "التلميح التالي",
+      allHintsShown: "تم عرض كل التلميحات",
+      reset: "إعادة",
+      foundIt: "وصلت!",
+      mapUpdated1: "تم تحديث الخريطة",
+      mapUpdated2: "تم توضيح الخريطة",
+      hintHelper:
+        "استخدم الخريطة أولًا. وإذا احتجت مساعدة، كل تلميح يكشف جزءًا إضافيًا.",
+      keepWalking:
+        `عندما تعتقد أنك وجدت المكان، اضغط على "وصلت!"`,
+      foundPrompt:
+        "ممتاز. الآن انظر إلى اللافتة الحقيقية واختر الشعار المطابق لها.",
+      arrivalCheck: "تأكيد الوصول",
+      arrivalPrompt: "أي شعار يطابق لافتة فلافل القدس الحقيقية؟",
+      arrivalSub:
+        "انظر جيدًا إلى اللافتة واختر العدد الصحيح من أوراق النعنع وحبات الفلافل.",
+      check: "تحقق",
+      solved: "تم الحل!",
+      tryAgain:
+        "ليست صحيحة — انظر إلى اللافتة مرة أخرى ثم جرّب من جديد.",
+      nextStep:
+        "ممتاز. لقد وجدت الكلاسيكي — استمتع بلقمتك في فلافل القدس.",
+      selectOne: "اختر شعارًا واحدًا للمتابعة.",
+      aboutTitle: "عن هذه المحطة",
+      aboutText:
+        "يقدّم فلافل القدس ساندويشات الفلافل الشهيرة على شارع الرينبو منذ عام 1966، مما يجعله من أقدم وأحبّ محلات الأكل الشعبي في عمّان. بساطته جزء من شهرته: فلافل مقرمشة داخل كعك بالسمسم مع الطحينة والمخلل.",
+    },
+  },
+} as const;
+
+function LogoOption({
+  src,
+  alt,
+  selected,
+  onClick,
+}: {
+  src: string;
+  alt: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={[
+        "group relative overflow-hidden rounded-2xl border bg-white/90 p-3 transition",
+        "shadow-[0_8px_30px_rgba(0,0,0,0.06)]",
+        "hover:-translate-y-0.5 hover:shadow-[0_12px_34px_rgba(0,0,0,0.10)]",
+        selected
+          ? "border-[#D7792A] bg-[#FFF7EF] ring-2 ring-[#D7792A]/30"
+          : "border-black/10",
+      ].join(" ")}
+    >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.95),rgba(255,255,255,0.75)_55%,transparent_100%)] opacity-70" />
+
+      <div className="relative mx-auto flex min-h-[140px] items-center justify-center">
+        <Image
+          src={src}
+          alt={alt}
+          width={180}
+          height={180}
+          className="h-auto max-h-[150px] w-auto object-contain"
+        />
+      </div>
+    </button>
+  );
 }
 
-/* ------------------------------------------------------------------ */
-/* Component                                                          */
-/* ------------------------------------------------------------------ */
-
-export function PuzzleR4({ locale, onSolved }: Props) {
+export default function PuzzleR4({
+  locale,
+  onSolved,
+}: {
+  locale: Locale;
+  onSolved?: () => void;
+}) {
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
   const isAr = safeLocale === "ar";
-  const t = riddle4;
+  const t = COPY[safeLocale];
 
-  const [selected, setSelected] = React.useState<string[]>([]);
-  const [solvedCats, setSolvedCats] = React.useState<CategoryKey[]>([]);
-  const [status, setStatus] = React.useState<"idle" | "correct" | "wrong">("idle");
-  const [isSolved, setIsSolved] = React.useState(false);
+  const solvedRef = React.useRef(false);
 
-  const [showHint, setShowHint] = React.useState(false);
-  const [nudge, setNudge] = React.useState(false);
+  const [hintStep, setHintStep] = React.useState(0);
+  const [foundIt, setFoundIt] = React.useState(false);
+  const [selectedLogoId, setSelectedLogoId] = React.useState<string | null>(
+    null
+  );
+  const [status, setStatus] = React.useState<Status>("idle");
+  const [flashBadge, setFlashBadge] = React.useState(false);
 
-  const solvedOnceRef = React.useRef(false);
-  const timerRef = React.useRef<number | null>(null);
+  const hasMoreHints = hintStep < MAP_FRAMES.length - 1;
 
   React.useEffect(() => {
-    return () => {
-      if (timerRef.current) window.clearTimeout(timerRef.current);
-    };
-  }, []);
+    if (hintStep === 0) return;
 
-  function finishOnce() {
-    if (solvedOnceRef.current) return;
-    solvedOnceRef.current = true;
-    setRoundSolved("r4");
-    serverSetRoundSolved("r4"); // fire-and-forget server sync
-    onSolved?.();
+    setFlashBadge(true);
+
+    const timer = window.setTimeout(() => {
+      setFlashBadge(false);
+    }, 1200);
+
+    return () => window.clearTimeout(timer);
+  }, [hintStep]);
+
+  function advanceHint() {
+    if (!hasMoreHints) return;
+
+    setHintStep((prev) => Math.min(prev + 1, MAP_FRAMES.length - 1));
+    setStatus("idle");
   }
 
-  const remainingTiles = React.useMemo(() => {
-    const solved = new Set(solvedCats);
-    return TILES.filter((x) => !solved.has(x.category));
-  }, [solvedCats]);
+  function resetAll() {
+    setHintStep(0);
+    setFoundIt(false);
+    setSelectedLogoId(null);
+    setStatus("idle");
+  }
 
-  function toggleTile(id: string) {
-    if (isSolved) return;
+  function handleFoundIt() {
+    setFoundIt(true);
     setStatus("idle");
 
-    setSelected((cur) => {
-      if (cur.includes(id)) return cur.filter((x) => x !== id);
-      if (cur.length >= 4) return cur;
-      return [...cur, id];
-    });
+    window.setTimeout(() => {
+      const el = document.getElementById("r4-arrival-check");
+      el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 80);
   }
 
-  function triggerNudge() {
-    setNudge(false);
-    window.requestAnimationFrame(() => setNudge(true));
-    window.setTimeout(() => setNudge(false), 220);
+  function chooseLogo(id: string) {
+    setSelectedLogoId(id);
+    if (status !== "correct") setStatus("idle");
   }
 
-  function submit() {
-    if (isSolved) return;
-    if (selected.length !== 4) return;
+  function checkAnswer() {
+    if (!foundIt) return;
 
-    const cat = getCategoryIfValidSelection(selected);
-
-    if (!cat || solvedCats.includes(cat)) {
+    if (!selectedLogoId) {
       setStatus("wrong");
-      triggerNudge();
-      if (timerRef.current) window.clearTimeout(timerRef.current);
-      timerRef.current = window.setTimeout(() => setStatus("idle"), 520);
+      return;
+    }
+
+    if (selectedLogoId !== CORRECT_LOGO_ID) {
+      setStatus("wrong");
       return;
     }
 
     setStatus("correct");
-    if (timerRef.current) window.clearTimeout(timerRef.current);
-    timerRef.current = window.setTimeout(() => {
-      setSolvedCats((cur) => [...cur, cat]);
-      setSelected([]);
-      setStatus("idle");
-    }, 380);
+
+    if (!solvedRef.current) {
+      solvedRef.current = true;
+      setRoundSolved("r4");
+      serverSetRoundSolved("r4");
+      onSolved?.();
+    }
   }
 
-  React.useEffect(() => {
-    if (solvedCats.length === 4 && !isSolved) {
-      setIsSolved(true);
-      if (timerRef.current) window.clearTimeout(timerRef.current);
-      timerRef.current = window.setTimeout(() => finishOnce(), 350);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [solvedCats]);
+  const cardGlow =
+    status === "correct"
+      ? "ring-2 ring-green-300 shadow-[0_0_40px_rgba(34,197,94,0.12)]"
+      : status === "wrong"
+      ? "ring-2 ring-red-200 shadow-[0_0_0_4px_rgba(239,68,68,0.06)]"
+      : "ring-1 ring-black/8";
 
-  const shell =
-    "relative overflow-hidden rounded-3xl border border-black/10 " +
-    "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))] " +
-    "p-5 sm:p-6 shadow-[0_16px_50px_rgba(0,0,0,0.10)]";
+  const shake =
+    status === "wrong" ? "animate-[zowarShake_280ms_ease-in-out_1]" : "";
 
-  const headerPill =
-    "inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold z-orange";
-
-  const tileBase =
-    "rounded-2xl border border-black/10 bg-white px-3 py-4 text-sm font-semibold text-neutral-900 " +
-    "shadow-sm transition duration-200 active:scale-[0.98] hover:scale-[1.01] hover:bg-neutral-50";
-
-  const tileSelected =
-    "border-z-orange bg-z-orange-soft ring-2 ring-offset-0 border-z-orange glow-z-orange z-orange";
-
-  const solvedPill =
-    "inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900 shadow-sm";
-
-  const btn =
-    "group relative overflow-hidden rounded-2xl bg-z-orange px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40";
-
-  const ghostBtn =
-    "rounded-2xl border border-black/10 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 shadow-sm transition hover:bg-neutral-50";
+  const hintButtonLabel =
+    hintStep === 0
+      ? t.ui.showHint
+      : hasMoreHints
+      ? t.ui.nextHint
+      : t.ui.allHintsShown;
 
   return (
-    <section dir={isAr ? "rtl" : "ltr"} className="mx-auto w-full max-w-2xl">
-      <div className={shell}>
-        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
-        <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white blur-3xl opacity-30" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.45),rgba(255,255,255,0))]" />
+    <div dir={isAr ? "rtl" : "ltr"} className="w-full">
+      <div className="relative mx-auto max-w-4xl px-1 sm:px-0">
+        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-[#F6D2AF] opacity-50 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white opacity-30 blur-3xl" />
 
-        <div className="relative flex flex-wrap items-start justify-between gap-3">
-          <div className="space-y-1">
-            <div className={headerPill}>
-              <span className="opacity-80">{safeLocale === "en" ? "Round 4" : "الجولة ٤"}</span>
-              <span className="h-3 w-px bg-neutral-300" />
-              <span className="opacity-90">{safeLocale === "en" ? "Connections" : "ترابط المجموعات"}</span>
-            </div>
+        <div
+          className={[
+            "relative overflow-hidden rounded-3xl border border-black/10",
+            "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))]",
+            "p-5 sm:p-6",
+            "shadow-[0_16px_50px_rgba(0,0,0,0.10)]",
+            cardGlow,
+            shake,
+          ].join(" ")}
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.75),transparent_40%)]" />
 
-            <h2 className="text-2xl font-semibold text-neutral-950">{t.title[safeLocale]}</h2>
-            <p className="text-sm text-neutral-700">
-              {safeLocale === "en"
-                ? "Find 4 groups of 4. Select exactly four tiles, then submit."
-                : "اعثر على ٤ مجموعات (كل مجموعة ٤ كلمات). اختر ٤ مربعات ثم اضغط إرسال."}
-            </p>
-          </div>
+          <div className="relative">
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D7792A]">
+                  Zowar
+                </p>
 
-          <div className="flex flex-wrap items-center justify-end gap-2 pt-1">
-            {solvedCats.map((k) => (
-              <span key={k} className={solvedPill}>
-                <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                {CATEGORY_LABELS[k][safeLocale]}
-              </span>
-            ))}
-          </div>
-        </div>
+                <h2 className="mt-1 text-2xl font-semibold tracking-tight text-neutral-950 sm:text-3xl">
+                  {t.title}
+                </h2>
 
-        <div className="mt-6">
-          {!isSolved ? (
-            <div className="rounded-2xl border border-black/8 bg-white/85 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="text-sm text-neutral-700">
-                  {safeLocale === "en" ? "Selected" : "المحدد"}:{" "}
-                  <span className="font-semibold text-neutral-950">{selected.length}/4</span>
-                </div>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-neutral-600 sm:text-[15px]">
+                  {t.subtitle}
+                </p>
+              </div>
 
+              <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
-                  onClick={() => setShowHint((v) => !v)}
-                  className="rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-semibold text-neutral-800 shadow-sm transition hover:bg-neutral-50"
+                  onClick={advanceHint}
+                  disabled={!hasMoreHints}
+                  className={[
+                    "rounded-full px-4 py-2 text-sm font-semibold transition",
+                    hasMoreHints
+                      ? "bg-[#D7792A] text-white shadow-[0_8px_24px_rgba(215,121,42,0.25)] hover:translate-y-[-1px]"
+                      : "cursor-not-allowed bg-[#F3E2D0] text-[#A6724A]",
+                  ].join(" ")}
                 >
-                  {showHint
-                    ? safeLocale === "en"
-                      ? "Hide hint"
-                      : "إخفاء التلميح"
-                    : safeLocale === "en"
-                    ? "Hint"
-                    : "تلميح"}
-                </button>
-              </div>
-
-              {showHint && (
-                <div className="mt-3 rounded-2xl border border-black/8 bg-z-off-white p-3 text-sm text-neutral-700">
-                  <ul className="list-disc space-y-1 pl-5">
-                    {HINTS[safeLocale].map((h, i) => (
-                      <li key={i}>{h}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div className={["mt-4", nudge ? "animate-[nudge_220ms_ease-in-out_1]" : ""].join(" ")}>
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {remainingTiles.map((tile) => {
-                    const isPicked = selected.includes(tile.id);
-                    return (
-                      <button
-                        key={tile.id}
-                        type="button"
-                        onClick={() => toggleTile(tile.id)}
-                        className={[tileBase, isPicked ? tileSelected : ""].join(" ")}
-                        aria-pressed={isPicked}
-                      >
-                        {tile.label[safeLocale]}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <button type="button" onClick={submit} disabled={selected.length !== 4} className={btn}>
-                  <span className="relative z-10">{safeLocale === "en" ? "Submit" : "إرسال"}</span>
-                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                  {hintButtonLabel}
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => {
-                    setSelected([]);
-                    setStatus("idle");
-                  }}
-                  className={ghostBtn}
+                  onClick={resetAll}
+                  className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-50"
                 >
-                  {safeLocale === "en" ? "Clear" : "مسح"}
+                  {t.ui.reset}
                 </button>
-
-                <div className="ml-auto min-h-[24px] text-sm">
-                  {status === "correct" && (
-                    <span className="text-emerald-700">
-                      {safeLocale === "en" ? "Nice — group found." : "ممتاز — تم العثور على مجموعة."}
-                    </span>
-                  )}
-                  {status === "wrong" && (
-                    <span className="text-rose-700">
-                      {t.ui.tryAgain?.[safeLocale] ?? (safeLocale === "en" ? "Try again." : "جرّب مرة أخرى.")}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <style jsx>{`
-                @keyframes nudge {
-                  0% {
-                    transform: translateX(0);
-                  }
-                  20% {
-                    transform: translateX(${isAr ? "10px" : "-10px"});
-                  }
-                  40% {
-                    transform: translateX(${isAr ? "-10px" : "10px"});
-                  }
-                  60% {
-                    transform: translateX(${isAr ? "8px" : "-8px"});
-                  }
-                  80% {
-                    transform: translateX(${isAr ? "-6px" : "6px"});
-                  }
-                  100% {
-                    transform: translateX(0);
-                  }
-                }
-              `}</style>
-            </div>
-          ) : (
-            <div className="relative overflow-hidden rounded-3xl border border-emerald-200 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(236,253,245,0.95))] p-6 shadow-[0_0_0_2px_rgba(16,185,129,0.10),0_24px_70px_rgba(16,185,129,0.10)]">
-              <div className="absolute inset-0 bg-[radial-gradient(900px_circle_at_30%_20%,rgba(16,185,129,0.10),transparent_55%)]" />
-
-              <div className="relative">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs text-emerald-900">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  {t.ui.solved?.[safeLocale] ?? (safeLocale === "en" ? "Solved!" : "تم الحل!")}
-                </div>
-
-                <h3 className="mt-3 text-2xl font-semibold text-neutral-950">
-                  {safeLocale === "en"
-                    ? "Time to claim your Arabic breakfast at Al Quds Falafel."
-                    : "حان وقت الفطور العربي في فلافل القدس."}
-                </h3>
-
-                <p className="mt-2 text-neutral-700">{t.finalInstruction[safeLocale]}</p>
-
-                <div className="mt-5 h-px w-full bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
-                <div className="mt-4 text-sm text-neutral-600">
-                  {safeLocale === "en"
-                    ? "Show this screen if you need to confirm your next stop."
-                    : "اعرض هذه الشاشة إذا احتجت لتأكيد محطتك التالية."}
-                </div>
               </div>
             </div>
-          )}
+
+            <div className="grid gap-5 lg:grid-cols-[1.25fr_0.75fr]">
+              <section className="relative">
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-semibold text-neutral-900">
+                    {t.mapTitle}
+                  </h3>
+
+                  <p className="text-end text-xs text-neutral-500">
+                    {t.mapCaptions[hintStep]}
+                  </p>
+                </div>
+
+                <div className="relative overflow-hidden rounded-[28px] border border-black/10 bg-[#F9F4EC] p-2 shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
+                  {flashBadge && (
+                    <div
+                      className={[
+                        "pointer-events-none absolute end-4 top-4 z-20 rounded-full px-3 py-1.5 text-xs font-semibold text-white",
+                        "bg-[#D7792A]/95 shadow-[0_10px_25px_rgba(215,121,42,0.28)]",
+                        "animate-[zowarHintBadge_1.15s_ease-out_1]",
+                      ].join(" ")}
+                    >
+                      {hintStep === 1 ? t.ui.mapUpdated1 : t.ui.mapUpdated2}
+                    </div>
+                  )}
+
+                  <div
+                    key={`map-frame-${hintStep}`}
+                    className="animate-[zowarMapSwap_420ms_cubic-bezier(.22,1,.36,1)_1]"
+                  >
+                    <Image
+                      src={MAP_FRAMES[hintStep]}
+                      alt={`Puzzle 4 clue map ${hintStep + 1}`}
+                      width={1600}
+                      height={900}
+                      priority={hintStep === 0}
+                      className="h-auto w-full rounded-[22px] object-cover"
+                    />
+                  </div>
+                </div>
+              </section>
+
+              <aside className="space-y-4">
+                <div className="rounded-3xl border border-black/10 bg-white/80 p-4 shadow-[0_8px_28px_rgba(0,0,0,0.05)]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D7792A]">
+                    {t.riddleLabel}
+                  </p>
+
+                  <p className="mt-2 text-sm leading-7 text-neutral-800 sm:text-[15px]">
+                    {t.riddle}
+                  </p>
+
+                  <p className="mt-3 text-xs leading-5 text-neutral-500">
+                    {t.ui.hintHelper}
+                  </p>
+                </div>
+
+                {!foundIt && (
+                  <div className="rounded-3xl border border-black/10 bg-white/85 p-4 shadow-[0_8px_28px_rgba(0,0,0,0.05)] animate-[zowarFadeUp_320ms_cubic-bezier(.22,1,.36,1)_1]">
+                    <p className="text-sm leading-6 text-neutral-700">
+                      {t.ui.keepWalking}
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={handleFoundIt}
+                      className="mt-4 w-full rounded-2xl bg-[#D7792A] px-4 py-3 text-sm font-semibold text-white shadow-[0_10px_26px_rgba(215,121,42,0.25)] transition hover:translate-y-[-1px]"
+                    >
+                      {t.ui.foundIt}
+                    </button>
+                  </div>
+                )}
+
+                {foundIt && (
+                  <div
+                    id="r4-arrival-check"
+                    className="rounded-3xl border border-black/10 bg-white/85 p-4 shadow-[0_8px_28px_rgba(0,0,0,0.05)] animate-[zowarRevealQuestion_420ms_cubic-bezier(.22,1,.36,1)_1]"
+                  >
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D7792A]">
+                      {t.ui.arrivalCheck}
+                    </p>
+
+                    <h3 className="mt-2 text-lg font-semibold text-neutral-950">
+                      {t.ui.arrivalPrompt}
+                    </h3>
+
+                    <p className="mt-1 text-sm leading-6 text-neutral-600">
+                      {t.ui.arrivalSub}
+                    </p>
+
+                    <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                      {LOGO_OPTIONS.map((option, idx) => (
+                        <LogoOption
+                          key={option.id}
+                          src={option.src}
+                          alt={`Falafel logo option ${idx + 1}`}
+                          selected={selectedLogoId === option.id}
+                          onClick={() => chooseLogo(option.id)}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={checkAnswer}
+                      className="mt-4 w-full rounded-2xl bg-[#D7792A] px-4 py-3 text-sm font-semibold text-white shadow-[0_10px_26px_rgba(215,121,42,0.25)] transition hover:translate-y-[-1px]"
+                    >
+                      {t.ui.check}
+                    </button>
+
+                    {status === "wrong" && (
+                      <p className="mt-3 rounded-2xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">
+                        {selectedLogoId ? t.ui.tryAgain : t.ui.selectOne}
+                      </p>
+                    )}
+
+                    {status === "correct" && (
+                      <div className="mt-3 space-y-3">
+                        <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-green-800">
+                          <p className="text-sm font-semibold">
+                            {t.ui.solved}
+                          </p>
+
+                          <p className="mt-1 text-sm">{t.ui.nextStep}</p>
+                        </div>
+
+                        <div className="rounded-2xl border border-[#D7792A]/20 bg-[#FFF7EF] px-4 py-3 text-neutral-800">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D7792A]">
+                            {t.ui.aboutTitle}
+                          </p>
+
+                          <p className="mt-2 text-sm leading-6">
+                            {t.ui.aboutText}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </aside>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+
+      <style jsx global>{`
+        @keyframes zowarMapSwap {
+          0% {
+            opacity: 0;
+            transform: translateY(8px) scale(0.988);
+            filter: saturate(0.95);
+          }
+
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: saturate(1);
+          }
+        }
+
+        @keyframes zowarHintBadge {
+          0% {
+            opacity: 0;
+            transform: translateY(-6px) scale(0.96);
+          }
+
+          15% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+
+          82% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+
+          100% {
+            opacity: 0;
+            transform: translateY(-4px) scale(0.98);
+          }
+        }
+
+        @keyframes zowarFadeUp {
+          0% {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes zowarRevealQuestion {
+          0% {
+            opacity: 0;
+            transform: translateY(12px) scale(0.985);
+            filter: blur(2px);
+          }
+
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+          }
+        }
+
+        @keyframes zowarShake {
+          0%,
+          100% {
+            transform: translateX(0);
+          }
+
+          25% {
+            transform: translateX(-4px);
+          }
+
+          50% {
+            transform: translateX(4px);
+          }
+
+          75% {
+            transform: translateX(-2px);
+          }
+        }
+      `}</style>
+    </div>
   );
 }
-
-export default PuzzleR4;

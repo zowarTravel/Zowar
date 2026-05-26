@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     locale: string;
   };
 
-  if (round === "r1") {
+  if (round === "r2") {
     const lang = locale === "ar" ? "ar" : locale === "es" ? "es" : "en";
     const accepted = R1[lang];
     const norm = normalize(answer ?? "");

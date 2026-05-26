@@ -124,30 +124,6 @@ function CompassIcon() {
   );
 }
 
-function HangingLanternsIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 6c2.2 0 2.6 1.4 4.8 1.4S10.4 6 12.6 6s2.6 1.4 4.8 1.4S19.8 6 21 6" />
-      <path d="M6.2 6.8v3.4" />
-      <path d="M11.6 6.2v4.2" />
-      <path d="M17.4 6.8V10" />
-      <path d="M5.1 10.2c.3 1 2 1 2.3 0" />
-      <path d="M10.4 10.2c.3 1 2.4 1 2.7 0" />
-      <path d="M16.5 10.1c.3 1 2 1 2.3 0" />
-      <path d="M4.9 10.1h2.6" />
-      <path d="M10.3 10.1h2.8" />
-      <path d="M16.3 10.1h2.6" />
-    </svg>
-  );
-}
 
 function FlowerIcon() {
   return (
@@ -356,17 +332,14 @@ export default function PuzzleR6({ locale }: { locale: Locale }) {
               {hintsRevealed > 0 && (
                 <div className="mb-6 grid gap-3">
                   {t.hints.slice(0, hintsRevealed).map((hint, idx) => {
-                    const icon =
-                      idx === 0 ? <HangingLanternsIcon /> : idx === 1 ? <FlowerIcon /> : <SketchIcon />;
-
                     return (
                       <div
                         key={`${hint}-${idx}`}
                         className="overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5"
                       >
                         <div className="flex items-start gap-4">
-                          <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-z-orange bg-z-orange-soft z-orange">
-                            {icon}
+                          <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-z-orange bg-z-orange-soft text-base font-bold z-orange">
+                            {idx + 1}
                           </div>
 
                           <div className="min-w-0">

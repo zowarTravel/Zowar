@@ -139,7 +139,7 @@ function LogoOption({
         "shadow-[0_8px_30px_rgba(0,0,0,0.06)]",
         "hover:-translate-y-0.5 hover:shadow-[0_12px_34px_rgba(0,0,0,0.10)]",
         selected
-          ? "border-[#D7792A] bg-[#FFF7EF] ring-2 ring-[#D7792A]/30"
+          ? "border-z-orange bg-z-orange-soft ring-2 ring-z-orange/30"
           : "border-black/10",
       ].join(" ")}
     >
@@ -265,7 +265,7 @@ export default function PuzzleR4({
   return (
     <div dir={isAr ? "rtl" : "ltr"} className="w-full">
       <div className="relative mx-auto max-w-4xl px-1 sm:px-0">
-        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-[#F6D2AF] opacity-50 blur-3xl" />
+        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft opacity-50 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white opacity-30 blur-3xl" />
 
         <div
@@ -283,15 +283,15 @@ export default function PuzzleR4({
           <div className="relative">
             <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D7792A]">
-                  Zowar
-                </p>
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
+                  {isAr ? "الجولة ٤ · اتبع الدليل" : "Round 4 · Follow the Clue"}
+                </div>
 
-                <h2 className="mt-1 text-2xl font-semibold tracking-tight text-neutral-950 sm:text-3xl">
+                <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
                   {t.title}
                 </h2>
 
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-neutral-600 sm:text-[15px]">
+                <p className="mt-1 max-w-2xl text-sm leading-6 text-neutral-600">
                   {t.subtitle}
                 </p>
               </div>
@@ -302,10 +302,10 @@ export default function PuzzleR4({
                   onClick={advanceHint}
                   disabled={!hasMoreHints}
                   className={[
-                    "rounded-full px-4 py-2 text-sm font-semibold transition",
+                    "rounded-2xl px-4 py-2 text-sm font-semibold transition",
                     hasMoreHints
-                      ? "bg-[#D7792A] text-white shadow-[0_8px_24px_rgba(215,121,42,0.25)] hover:translate-y-[-1px]"
-                      : "cursor-not-allowed bg-[#F3E2D0] text-[#A6724A]",
+                      ? "bg-z-orange text-white shadow-[0_8px_24px_rgba(200,105,74,0.25)] hover:opacity-95 hover:translate-y-[-1px]"
+                      : "cursor-not-allowed bg-z-orange-soft text-z-orange opacity-60",
                   ].join(" ")}
                 >
                   {hintButtonLabel}
@@ -314,7 +314,7 @@ export default function PuzzleR4({
                 <button
                   type="button"
                   onClick={resetAll}
-                  className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-50"
+                  className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-50"
                 >
                   {t.ui.reset}
                 </button>
@@ -333,12 +333,12 @@ export default function PuzzleR4({
                   </p>
                 </div>
 
-                <div className="relative overflow-hidden rounded-[28px] border border-black/10 bg-[#F9F4EC] p-2 shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
+                <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
                   {flashBadge && (
                     <div
                       className={[
                         "pointer-events-none absolute end-4 top-4 z-20 rounded-full px-3 py-1.5 text-xs font-semibold text-white",
-                        "bg-[#D7792A]/95 shadow-[0_10px_25px_rgba(215,121,42,0.28)]",
+                        "bg-z-orange shadow-[0_10px_25px_rgba(200,105,74,0.28)]",
                         "animate-[zowarHintBadge_1.15s_ease-out_1]",
                       ].join(" ")}
                     >
@@ -356,7 +356,7 @@ export default function PuzzleR4({
                       width={1600}
                       height={900}
                       priority={hintStep === 0}
-                      className="h-auto w-full rounded-[22px] object-cover"
+                      className="h-auto w-full object-contain brightness-[1.02] contrast-[1.06]"
                     />
                   </div>
                 </div>
@@ -364,7 +364,7 @@ export default function PuzzleR4({
 
               <aside className="space-y-4">
                 <div className="rounded-3xl border border-black/10 bg-white/80 p-4 shadow-[0_8px_28px_rgba(0,0,0,0.05)]">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D7792A]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-z-orange">
                     {t.riddleLabel}
                   </p>
 
@@ -386,7 +386,7 @@ export default function PuzzleR4({
                     <button
                       type="button"
                       onClick={handleFoundIt}
-                      className="mt-4 w-full rounded-2xl bg-[#D7792A] px-4 py-3 text-sm font-semibold text-white shadow-[0_10px_26px_rgba(215,121,42,0.25)] transition hover:translate-y-[-1px]"
+                      className="mt-4 w-full rounded-2xl bg-z-orange px-4 py-3 text-sm font-semibold text-white shadow-[0_10px_26px_rgba(200,105,74,0.25)] transition hover:opacity-95"
                     >
                       {t.ui.foundIt}
                     </button>
@@ -398,7 +398,7 @@ export default function PuzzleR4({
                     id="r4-arrival-check"
                     className="rounded-3xl border border-black/10 bg-white/85 p-4 shadow-[0_8px_28px_rgba(0,0,0,0.05)] animate-[zowarRevealQuestion_420ms_cubic-bezier(.22,1,.36,1)_1]"
                   >
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D7792A]">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-z-orange">
                       {t.ui.arrivalCheck}
                     </p>
 
@@ -410,7 +410,7 @@ export default function PuzzleR4({
                       {t.ui.arrivalSub}
                     </p>
 
-                    <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                    <div className="mt-4 grid grid-cols-3 gap-2">
                       {LOGO_OPTIONS.map((option, idx) => (
                         <LogoOption
                           key={option.id}
@@ -425,7 +425,8 @@ export default function PuzzleR4({
                     <button
                       type="button"
                       onClick={checkAnswer}
-                      className="mt-4 w-full rounded-2xl bg-[#D7792A] px-4 py-3 text-sm font-semibold text-white shadow-[0_10px_26px_rgba(215,121,42,0.25)] transition hover:translate-y-[-1px]"
+                      disabled={!selectedLogoId}
+                      className="mt-4 w-full rounded-2xl bg-z-orange px-4 py-3 text-sm font-semibold text-white shadow-[0_10px_26px_rgba(200,105,74,0.25)] transition hover:opacity-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none"
                     >
                       {t.ui.check}
                     </button>
@@ -446,8 +447,8 @@ export default function PuzzleR4({
                           <p className="mt-1 text-sm">{t.ui.nextStep}</p>
                         </div>
 
-                        <div className="rounded-2xl border border-[#D7792A]/20 bg-[#FFF7EF] px-4 py-3 text-neutral-800">
-                          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D7792A]">
+                        <div className="rounded-2xl border border-z-orange/20 bg-z-orange-soft px-4 py-3 text-neutral-800">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-z-orange">
                             {t.ui.aboutTitle}
                           </p>
 

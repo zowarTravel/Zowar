@@ -131,6 +131,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     };
   }, []);
 
+
   function reset() {
     setSelected(null);
     setSolved(false);
@@ -179,8 +180,8 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
       ? "اضغط على قطعتين لتبديل مكانهما. أكمل الصورة لتكشف وجهتك التالية."
       : "Tap two tiles to swap them. Complete the image to reveal your next destination.");
 
-  const uiShowHint: string = isAr ? "إظهار التلميح" : "Show hint";
-  const uiHideHint: string = isAr ? "إخفاء التلميح" : "Hide hint";
+  const uiCheckTiles: string = isAr ? "تحقق من القطع" : "Check tiles";
+  const uiHideCheck: string = isAr ? "إخفاء التحقق" : "Hide check";
   const uiReset: string = t.ui?.reset?.[safeLocale] ?? (isAr ? "إعادة" : "Reset");
   const uiProgressLabel: string =
     t.ui?.progressLabel?.[safeLocale] ?? (isAr ? "القطع المثبّتة:" : "Locked pieces:");
@@ -189,11 +190,17 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     t.success?.[safeLocale] ??
     (isAr ? "نعم! اكتملت الصورة بالكامل! ✨" : "Yes! You completed the image! ✨");
 
-  const finalCTA: string =
-    t.finalCTA?.[safeLocale] ??
+  const finalInstruction: string =
+    t.finalInstruction?.[safeLocale] ??
     (safeLocale === "en"
-      ? "Continue towards the first circle in search of the area in the image!"
-      : "تابع باتجاه الدائرة الأولى وابحث عن المكان الظاهر في الصورة!");
+      ? "You've walked the city and cracked every puzzle. Head to Mijana — the best view in Amman is yours."
+      : "قطعتَ الشوارع وحللتَ كل الألغاز. اذهب إلى ميجانا — أجمل إطلالة في عمّان في انتظارك.");
+
+  const endCopy: string =
+    t.endCopy?.[safeLocale] ??
+    (safeLocale === "en"
+      ? "Time to enjoy all the tasty bites and the magical Amman view at Mijana."
+      : "حان وقت الاستمتاع بكل اللقيمات اللذيذة والإطلالة الرائعة على عمّان في ميجانا.");
 
   const correctCount = locked.filter(Boolean).length;
 
@@ -244,7 +251,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
 
           <div className="flex items-center gap-2 pt-2 sm:pt-0">
             <button className={btn} onClick={() => setShowHint((v) => !v)} disabled={solved}>
-              {showHint ? uiHideHint : uiShowHint}
+              {showHint ? uiHideCheck : uiCheckTiles}
             </button>
             <button className={btn} onClick={reset}>
               {uiReset}
@@ -399,7 +406,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="text-sm text-neutral-700">
                 {solved ? (
-                  <span className="font-semibold text-emerald-700">{finalCTA}</span>
+                  <span className="font-semibold text-emerald-700">{endCopy}</span>
                 ) : (
                   <span>
                     {uiProgressLabel} <span className="font-semibold">{correctCount}/{total}</span>
@@ -407,7 +414,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                 )}
               </div>
 
-              {solved ? <div className={`${btnOrange} cursor-default`}>{finalCTA}</div> : null}
+              {solved ? <div className={`${btnOrange} cursor-default`}>{finalInstruction}</div> : null}
             </div>
 
             {!canShowImage ? (

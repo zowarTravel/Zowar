@@ -248,6 +248,21 @@ export default function PuzzleR2({
             </div>
           </div>
 
+          {(status === "correct" || status === "close") && (
+            <div className="mt-6 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-5 animate-[zowarFadeUp_420ms_cubic-bezier(.22,1,.36,1)_1]">
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-z-orange">
+                {t.aboutEyebrow[safeLocale]}
+              </div>
+              <h3 className="mt-2 text-xl font-semibold text-neutral-950">
+                {t.aboutTitle[safeLocale]}
+              </h3>
+              <div className="mt-3 space-y-3 text-sm leading-7 text-neutral-700">
+                <p>{t.aboutBody1[safeLocale]}</p>
+                <p>{t.aboutBody2[safeLocale]}</p>
+              </div>
+            </div>
+          )}
+
           <style jsx>{`
             .sparkle {
               position: absolute;
@@ -334,6 +349,17 @@ export default function PuzzleR2({
               }
               100% {
                 box-shadow: 0 16px 50px rgba(0, 0, 0, 0.1);
+              }
+            }
+
+            @keyframes zowarFadeUp {
+              0% {
+                opacity: 0;
+                transform: translateY(10px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0);
               }
             }
           `}</style>

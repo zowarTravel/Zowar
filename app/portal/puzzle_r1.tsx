@@ -146,6 +146,7 @@ export default function PuzzleR1({
   const [allSolved, setAllSolved] = React.useState(false);
   const [glowStep, setGlowStep] = React.useState(0);
   const [status, setStatus] = React.useState<"idle" | "correct" | "wrong">("idle");
+  const [scrollEdge, setScrollEdge] = React.useState({ left: false, right: false });
 
   function normalizeChar(ch: string) {
     return isAr ? ch : ch.toUpperCase();
@@ -310,7 +311,11 @@ export default function PuzzleR1({
 
     const scroller = scrollerRef.current;
     if (scroller) {
-      const onScroll = () => recomputeLabels();
+      const onScroll = () => {
+        recomputeLabels();
+        const el = scrollerRef.current;
+        if (el) setScrollEdge({ left: el.scrollLeft > 8, right: el.scrollLeft < el.scrollWidth - el.clientWidth - 8 });
+      };
       scroller.addEventListener("scroll", onScroll, { passive: true });
       return () => {
         window.removeEventListener("resize", onResize);
@@ -325,6 +330,16 @@ export default function PuzzleR1({
     const t = window.setTimeout(() => recomputeLabels(), 50);
     return () => window.clearTimeout(t);
   }, [recomputeLabels]);
+
+  React.useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const update = () =>
+      setScrollEdge({ left: el.scrollLeft > 8, right: el.scrollWidth - el.clientWidth > 8 });
+    update();
+    const id = window.setTimeout(update, 200);
+    return () => window.clearTimeout(id);
+  }, []);
 
   const cardGlow =
     status === "correct"
@@ -419,8 +434,14 @@ export default function PuzzleR1({
         <div className="w-full">
           <div
             ref={gridRef}
-            className="rounded-3xl border border-black/5 bg-[radial-gradient(circle_at_20%_10%,rgba(200,105,74,0.08),transparent_45%),radial-gradient(circle_at_80%_90%,rgba(59,130,246,0.06),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.96),rgba(255,255,255,0.90))] p-4 sm:p-6"
+            className="relative rounded-3xl border border-black/5 bg-[radial-gradient(circle_at_20%_10%,rgba(200,105,74,0.08),transparent_45%),radial-gradient(circle_at_80%_90%,rgba(59,130,246,0.06),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.96),rgba(255,255,255,0.90))] p-4 sm:p-6"
           >
+            {scrollEdge.left && (
+              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-10 rounded-l-3xl bg-gradient-to-r from-white/90 to-transparent" />
+            )}
+            {scrollEdge.right && (
+              <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-10 rounded-r-3xl bg-gradient-to-l from-white/90 to-transparent" />
+            )}
             <div ref={scrollerRef} className="relative w-full overflow-x-auto">
               <div ref={overlayRef} className="pointer-events-none absolute inset-0 z-10">
                 {labelPos.map((p) => (

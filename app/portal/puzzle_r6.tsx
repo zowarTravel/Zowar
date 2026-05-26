@@ -1,16 +1,11 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import type { Locale } from "./riddlecontent";
 import { setRoundSolved, serverSetRoundSolved } from "./progress";
 
 const ROUND_KEY = "r6" as const;
-
-type StepItem = {
-  label: string;
-  text: string;
-};
 
 type FrontageOption = {
   id: string;
@@ -23,72 +18,77 @@ const content = {
     eyebrow: "Route Puzzle",
     title: "Follow the Street",
     subtitle:
-      "Trace the route, follow the clues, and choose the matching frontage when you arrive.",
+      "Start with the first clue, reveal hints if you need them, then choose the storefront that feels most familiar.",
     instruction:
-      "Follow the clues below, then select the frontage that matches the place you found.",
+      "Begin with the first clue. Use hints only if you get stuck, then select the storefront that matches what you found.",
     reset: "Reset",
-    showHint: "Show hint",
-    hideHint: "Hide hint",
-    hintTitle: "A blooming clue",
-    hintBody: "Jasmine in Arabic is called Al Yasmeenah (الياسمينة).",
-    steps: [
-      { label: "Orient", text: "Head toward First Circle." },
-      { label: "Transition", text: "Leave the colorful street behind." },
-      { label: "Movement", text: "Follow the rocky road downhill." },
-      {
-        label: "Final clue",
-        text: "Enjoy your walk and head towards the place drawn below to stop and smell the flowers.",
-      },
-    ] satisfies StepItem[],
-    selectionEyebrow: "Select the matching frontage",
-    selectionTitle: "Select the matching frontage",
+    hintsEyebrow: "Need a hint?",
+    revealHint: "Show hint",
+    revealNextHint: "Next hint",
+    hideHints: "Hide hints",
+    clue1Label: "Orient",
+    clue1Text: "Walk past the colorful street toward First Circle.",
+    hintTitle: "Hint",
+    hints: [
+      "Leave the colorful decorations hanging behind and walk towards First Circle.",
+      "Look for a knafeh spot named after an Arabic flower.",
+      "You’re looking for Al Yasmeenah.",
+    ],
+    selectionEyebrow: "Storefront check",
+    selectionTitle: "Which storefront looks most familiar?",
     selectionBody:
-      "Use the route clues and what you found on the street to choose the correct place.",
+      "Use the clue and the hints you uncovered to choose the place that best matches what you found on the street.",
     optionLabel: "Frontage",
     wrong:
       "Not quite. Compare the frontage shape, street character, and surrounding details, then try again.",
     successTitle: "Correct!",
     successBody:
-      "Nice work — you found the matching frontage and completed this puzzle.",
+      "Nice work — you found Al Yasmeenah and completed this puzzle.",
+    aboutEyebrow: "About this stop",
+    aboutTitle: "Al Yasmeenah",
+    aboutBody1:
+      "Knafeh is closely associated with Nablus, Palestine, where it became one of the region’s most beloved celebratory sweets.",
+    aboutBody2:
+      "At Al Yasmeenah, that tradition continues on Rainbow Street, where a family recipe brought from Palestine is served in the heart of the neighborhood.",
   },
   ar: {
     eyebrow: "لغز الطريق",
     title: "اتبع الشارع",
     subtitle:
-      "اتبع المسار، سر مع الإشارات، ثم اختر الواجهة المطابقة عندما تصل.",
+      "ابدأ بالدليل الأول، واكشف التلميحات عند الحاجة، ثم اختر الواجهة التي تبدو الأكثر ألفة.",
     instruction:
-      "اتبع الإشارات أدناه، ثم اختر الواجهة التي تطابق المكان الذي وجدته.",
+      "ابدأ بالدليل الأول. استخدم التلميحات فقط إذا علقت، ثم اختر الواجهة التي تطابق ما وجدته في الشارع.",
     reset: "إعادة",
-    showHint: "إظهار التلميح",
-    hideHint: "إخفاء التلميح",
-    hintTitle: "تلميح مزهر",
-    hintBody: "اسم الياسمين بالعربية هو الياسمينة (Al Yasmeenah).",
-    steps: [
-      { label: "الاتجاه", text: "اتجه نحو الدوار الأول." },
-      { label: "الانتقال", text: "اترك الشارع الملوّن خلفك." },
-      { label: "الحركة", text: "اتبع الطريق الحجري نزولاً." },
-      {
-        label: "الدليل الأخير",
-        text: "استمتع بمشيتك واتجه نحو المكان المرسوم أدناه لتتوقف وتشُمّ الزهور.",
-      },
-    ] satisfies StepItem[],
-    selectionEyebrow: "اختر الواجهة المطابقة",
-    selectionTitle: "اختر الواجهة المطابقة",
+    hintsEyebrow: "تحتاج تلميحاً؟",
+    revealHint: "إظهار تلميح",
+    revealNextHint: "التلميح التالي",
+    hideHints: "إخفاء التلميحات",
+    clue1Label: "الاتجاه",
+    clue1Text: "امشِ بعد الشارع الملوّن باتجاه الدوار الأول.",
+    hintTitle: "تلميح",
+    hints: [
+      "اترك الزينة الملوّنة المعلّقة خلفك وامشِ باتجاه الدوار الأول.",
+      "ابحث عن محل كنافة اسمه مأخوذ من زهرة عربية.",
+      "أنت تبحث عن الياسمينة.",
+    ],
+    selectionEyebrow: "تأكيد الواجهة",
+    selectionTitle: "أي واجهة تبدو الأكثر ألفة؟",
     selectionBody:
-      "استخدم إشارات الطريق وما وجدته في الشارع لاختيار المكان الصحيح.",
+      "استخدم الدليل والتلميحات التي كشفتها لاختيار المكان الذي يطابق ما وجدته في الشارع.",
     optionLabel: "واجهة",
     wrong:
       "ليست هذه الواجهة الصحيحة. قارن شكل الواجهة وطابع الشارع والتفاصيل المحيطة ثم حاول مرة أخرى.",
     successTitle: "إجابة صحيحة!",
-    successBody:
-      "أحسنت — لقد اخترت الواجهة المطابقة وأكملت هذا اللغز.",
+    successBody: "أحسنت — لقد وجدت الياسمينة وأكملت هذا اللغز.",
+    aboutEyebrow: "عن هذه المحطة",
+    aboutTitle: "الياسمينة",
+    aboutBody1:
+      "ترتبط الكنافة ارتباطاً وثيقاً بمدينة نابلس في فلسطين، حيث أصبحت واحدة من أشهر الحلويات الاحتفالية في المنطقة.",
+    aboutBody2:
+      "وفي الياسمينة تستمر هذه التقاليد على شارع الرينبو، حيث تنتقل وصفة عائلية من فلسطين إلى قلب الحي.",
   },
 } as const;
 
-/**
- * Update isCorrect if needed.
- * Based on your current setup, frontage-c is the correct answer.
- */
 const frontageOptions: FrontageOption[] = [
   {
     id: "a",
@@ -149,24 +149,6 @@ function HangingLanternsIcon() {
   );
 }
 
-function PathIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 20c0-5 4-5 4-10s-4-5-4-10" />
-      <path d="M11 20c0-5 4-5 4-10s-4-5-4-10" opacity="0.7" />
-      <path d="M17 20c0-5 4-5 4-10s-4-5-4-10" opacity="0.45" />
-    </svg>
-  );
-}
-
 function FlowerIcon() {
   return (
     <svg
@@ -184,7 +166,7 @@ function FlowerIcon() {
       <path d="M15.5 17.3c1.4 2.3-.4 5.1-2.8 4.9-1.6-.1-2.5-1.3-3-2.8" />
       <path d="M8.5 17.3c-1.4 2.3-4.6 2-5.3-.4-.4-1.5.3-2.8 1.7-3.7" />
       <path d="M5.8 10.4c-2.7-.3-4.4 2.3-3.2 4.4.8 1.4 2.2 1.8 3.8 1.7" />
-      <path d="M8.5 6.7c-1.4-2.3.4-5.1 2.8-4.9 1.6.1 2.5-1.3 3-2.8" />
+      <path d="M8.5 6.7c-1.4-2.3.4-5.1 2.8-4.9 1.6.1 2.5 1.3 3 2.8" />
     </svg>
   );
 }
@@ -241,26 +223,22 @@ function SketchIcon() {
   );
 }
 
-function StepCard({
-  index,
+function ClueCard({
   label,
   text,
-  icon,
 }: {
-  index: number;
   label: string;
   text: string;
-  icon: React.ReactNode;
 }) {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
       <div className="absolute inset-x-0 top-0 h-1 bg-z-orange" />
       <div className="mb-3 flex items-center justify-between">
         <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-neutral-300 bg-white text-neutral-900">
-          {icon}
+          <CompassIcon />
         </div>
         <div className="inline-flex h-8 min-w-8 items-center justify-center rounded-full border border-neutral-300 bg-white px-2 text-sm font-semibold text-neutral-800">
-          {index}
+          1
         </div>
       </div>
 
@@ -276,29 +254,27 @@ function StepCard({
   );
 }
 
-function PuzzleR6({ locale }: { locale: Locale }) {
+export default function PuzzleR6({ locale }: { locale: Locale }) {
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
   const t = content[safeLocale];
   const dir = safeLocale === "ar" ? "rtl" : "ltr";
 
-  const [showHint, setShowHint] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "wrong" | "success">("idle");
-
-  const icons = useMemo(
-    () => [
-      <CompassIcon key="compass" />,
-      <HangingLanternsIcon key="lanterns" />,
-      <PathIcon key="path" />,
-      <FlowerIcon key="flower" />,
-    ],
-    []
-  );
+  const [hintsRevealed, setHintsRevealed] = useState(0);
 
   function handleReset() {
-    setShowHint(false);
     setSelectedId(null);
     setStatus("idle");
+    setHintsRevealed(0);
+  }
+
+  function handleRevealHint() {
+    setHintsRevealed((prev) => Math.min(prev + 1, t.hints.length));
+  }
+
+  function handleHideHints() {
+    setHintsRevealed(0);
   }
 
   function handleSelectFrontage(option: FrontageOption) {
@@ -338,75 +314,73 @@ function PuzzleR6({ locale }: { locale: Locale }) {
             <div className="text-sm font-medium text-neutral-600">
               {t.instruction}
             </div>
-
-            <div className="mt-4 hidden items-center gap-3 md:flex">
-              {icons.map((icon, i) => (
-                <React.Fragment key={i}>
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-300 bg-white text-neutral-900">
-                    {icon}
-                  </div>
-                  {i < icons.length - 1 && (
-                    <div className="h-[2px] flex-1 rounded-full bg-neutral-200">
-                      <div className="h-full w-2/3 rounded-full bg-z-orange" />
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
           </div>
         </div>
 
         <div className="relative p-6 sm:p-8">
-          <div className="grid gap-4 md:grid-cols-2">
-            {t.steps.map((step, i) => (
-              <StepCard
-                key={step.label}
-                index={i + 1}
-                label={step.label}
-                text={step.text}
-                icon={icons[i]}
-              />
-            ))}
+          <div className="max-w-xl">
+            <ClueCard label={t.clue1Label} text={t.clue1Text} />
           </div>
 
           <div className="mt-6 rounded-[28px] border border-z-orange bg-z-orange-soft p-[1px] glow-z-orange">
             <div className="rounded-[27px] bg-white p-5 sm:p-6">
               <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500">
-                  {t.selectionEyebrow}
+                  {t.hintsEyebrow}
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setShowHint((v) => !v)}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-z-orange bg-z-orange-soft px-4 py-2 text-sm font-medium z-orange transition hover:scale-[1.01]"
-                >
-                  <HintIcon />
-                  {showHint ? t.hideHint : t.showHint}
-                </button>
+                <div className="flex flex-wrap gap-2">
+                  {hintsRevealed < t.hints.length && (
+                    <button
+                      type="button"
+                      onClick={handleRevealHint}
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-z-orange bg-z-orange-soft px-4 py-2 text-sm font-medium z-orange transition hover:scale-[1.01]"
+                    >
+                      <HintIcon />
+                      {hintsRevealed === 0 ? t.revealHint : t.revealNextHint}
+                    </button>
+                  )}
+
+                  {hintsRevealed > 0 && (
+                    <button
+                      type="button"
+                      onClick={handleHideHints}
+                      className="inline-flex items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
+                    >
+                      {t.hideHints}
+                    </button>
+                  )}
+                </div>
               </div>
 
-              {showHint && (
-                <div className="mb-5 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5">
-                  <div className="flex items-start gap-4">
-                    <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-z-orange bg-z-orange-soft z-orange glow-z-orange">
-                      <FlowerIcon />
-                    </div>
+              {hintsRevealed > 0 && (
+                <div className="mb-6 grid gap-3">
+                  {t.hints.slice(0, hintsRevealed).map((hint, idx) => {
+                    const icon =
+                      idx === 0 ? <HangingLanternsIcon /> : idx === 1 ? <FlowerIcon /> : <SketchIcon />;
 
-                    <div className="min-w-0">
-                      <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                        {t.hintTitle}
-                      </div>
+                    return (
+                      <div
+                        key={`${hint}-${idx}`}
+                        className="overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5"
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-z-orange bg-z-orange-soft z-orange">
+                            {icon}
+                          </div>
 
-                      <div className="mt-2 text-base leading-7 text-neutral-700">
-                        {t.hintBody}
+                          <div className="min-w-0">
+                            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                              {t.hintTitle} {idx + 1}
+                            </div>
+                            <div className="mt-2 text-base leading-7 text-neutral-700">
+                              {hint}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-
-                      <div className="mt-3 inline-flex rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-sm font-medium z-orange">
-                        الياسمينة
-                      </div>
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
               )}
 
@@ -480,21 +454,39 @@ function PuzzleR6({ locale }: { locale: Locale }) {
                 )}
 
                 {status === "success" && (
-                  <div className="mt-5 rounded-3xl border border-emerald-300 bg-emerald-50 p-4 sm:p-5">
-                    <div className="flex items-start gap-3">
-                      <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
-                        <CheckIcon />
-                      </div>
-                      <div>
-                        <div className="text-lg font-semibold text-emerald-800">
-                          {t.successTitle}
+                  <>
+                    <div className="mt-5 rounded-3xl border border-emerald-300 bg-emerald-50 p-4 sm:p-5">
+                      <div className="flex items-start gap-3">
+                        <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
+                          <CheckIcon />
                         </div>
-                        <div className="mt-1 text-sm leading-6 text-emerald-700">
-                          {t.successBody}
+                        <div>
+                          <div className="text-lg font-semibold text-emerald-800">
+                            {t.successTitle}
+                          </div>
+                          <div className="mt-1 text-sm leading-6 text-emerald-700">
+                            {t.successBody}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+
+                    <div className="mt-5 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-5 sm:p-6">
+                      <div className="inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] z-orange">
+                        <FlowerIcon />
+                        {t.aboutEyebrow}
+                      </div>
+
+                      <h4 className="mt-4 text-2xl font-semibold text-neutral-900">
+                        {t.aboutTitle}
+                      </h4>
+
+                      <div className="mt-3 space-y-3 text-base leading-7 text-neutral-700">
+                        <p>{t.aboutBody1}</p>
+                        <p>{t.aboutBody2}</p>
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
 
@@ -514,6 +506,3 @@ function PuzzleR6({ locale }: { locale: Locale }) {
     </section>
   );
 }
-
-export { PuzzleR6 };
-export default PuzzleR6;

@@ -19,7 +19,7 @@ type MapPin = {
 
 const MAP_PINS: MapPin[] = [
   { id: "pin-a", top: "33.5%", left: "27.5%", isCorrect: false },
-  { id: "pin-b", top: "34.8%", left: "43.5%", isCorrect: true },
+  { id: "pin-b", top: "47%", left: "27%", isCorrect: true },
   { id: "pin-c", top: "12.5%", left: "74.5%", isCorrect: false },
   { id: "pin-d", top: "67.5%", left: "31.5%", isCorrect: false },
   { id: "pin-e", top: "76%", left: "59.5%", isCorrect: false },
@@ -50,11 +50,11 @@ const CONTENT = {
     successTitle: "Correct!",
     successBody: "You found Al Yasmeenah.",
     aboutEyebrow: "About this stop",
-    aboutTitle: "Flour & Fire",
+    aboutTitle: "Mijana",
     aboutBody1:
-      "Flour & Fire is an artisan bakery on Rainbow Street, and it fits beautifully into the neighborhood’s rhythm of walking, sharing, and stopping for something fresh from the oven.",
+      "Time to enjoy all the tasty bites and the magical Amman view at Mijana.",
     aboutBody2:
-      "Manakeesh topped with za’atar holds a special place across Jordan and the wider Levant — warm, aromatic, and deeply familiar, it is the kind of bakery staple that turns a simple stop into part of the city’s daily ritual.",
+      "Make your way to Mijana — your table and the view are waiting.",
     reset: "Reset",
   },
   ar: {
@@ -80,11 +80,11 @@ const CONTENT = {
     successTitle: "إجابة صحيحة!",
     successBody: "لقد وجدت الياسمينة.",
     aboutEyebrow: "عن هذه المحطة",
-    aboutTitle: "فلور آند فاير",
+    aboutTitle: "ميجانا",
     aboutBody1:
-      "فلور آند فاير مخبز حرفي على شارع الرينبو، وينسجم مع إيقاع الحي القائم على المشي والمشاركة والتوقف لتذوق شيء طازج خارج من الفرن.",
+      "حان وقت الاستمتاع بكل اللقيمات اللذيذة والإطلالة الرائعة على عمّان في ميجانا.",
     aboutBody2:
-      "تحتل المناقيش بالزعتر مكانة خاصة في الأردن وبلاد الشام — دافئة وعطِرة ومألوفة، وهي من تلك المخبوزات التي تجعل التوقف البسيط جزءاً من طقوس المدينة اليومية.",
+      "توجّه إلى ميجانا — طاولتك والإطلالة بانتظارك.",
     reset: "إعادة",
   },
 } as const;

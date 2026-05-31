@@ -5,6 +5,9 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Locale } from "./riddlecontent";
 import { readProgress, syncProgress, type PortalProgress } from "./progress";
+import { collectStamp } from "./passport_progress";
+import type { StampId } from "./passport_data";
+import StampCollectedModal from "./StampCollectedModal";
 
 /* ------------------------------------------------------------------ */
 /* Shared puzzle props                                                 */
@@ -69,18 +72,57 @@ const PuzzleR6 = dynamic(
   { ssr: false, loading: () => <LoadingCard locale="en" /> }
 ) as React.ComponentType<PuzzleProps>;
 
+const PuzzleR7 = dynamic(
+  () => import("./puzzle_r7").then((m) => resolveComponent(m, "PuzzleR7")),
+  { ssr: false, loading: () => <LoadingCard locale="en" /> }
+) as React.ComponentType<PuzzleProps>;
+
+/* ------------------------------------------------------------------ */
+/* Types                                                               */
+/* ------------------------------------------------------------------ */
+
+type Round = "r1" | "r2" | "r3" | "r4" | "r5" | "r6" | "r7";
+const PROGRESS_KEY = "zowar_progress_v1";
+
+const ROUND_STAMP: Record<"r1" | "r2" | "r3" | "r4" | "r5" | "r6", StampId> = {
+  r1: "coffee",
+  r2: "rumman",
+  r3: "soap-house",
+  r4: "falafel-al-quds",
+  r5: "al-yasmeenah",
+  r6: "flour-fire",
+};
+
+const ROUNDS: ReadonlyArray<{
+  key: Round;
+  num: number;
+  titleEn: string;
+  titleAr: string;
+}> = [
+  { key: "r1", num: 1, titleEn: "Round 1", titleAr: "الجولة ١" },
+  { key: "r2", num: 2, titleEn: "Round 2", titleAr: "الجولة ٢" },
+  { key: "r3", num: 3, titleEn: "Round 3", titleAr: "الجولة ٣" },
+  { key: "r4", num: 4, titleEn: "Round 4", titleAr: "الجولة ٤" },
+  { key: "r5", num: 5, titleEn: "Round 5", titleAr: "الجولة ٥" },
+  { key: "r6", num: 6, titleEn: "Round 6", titleAr: "الجولة ٦" },
+  { key: "r7", num: 7, titleEn: "Final Stop", titleAr: "المحطة الأخيرة" },
+];
+
+type StampModal = {
+  stampId: StampId;
+  onContinue: () => void;
+};
+
 /* ------------------------------------------------------------------ */
 /* Portal flow                                                         */
 /* ------------------------------------------------------------------ */
-
-type Round = "r1" | "r2" | "r3" | "r4" | "r5" | "r6";
-const PROGRESS_KEY = "zowar_progress_v1";
 
 export default function PortalFlow({ locale }: { locale: Locale }) {
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
   const isAr = safeLocale === "ar";
   const toggleHref = isAr ? "/portal?lang=en" : "/portal?lang=ar";
 
+  /* ── Progress state (declared before derived values) ── */
   const [progress, setProgress] = React.useState<PortalProgress>(() => ({
     r1: false,
     r2: false,
@@ -88,37 +130,44 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
     r4: false,
     r5: false,
     r6: false,
+    r7: false,
   }));
 
-  const [activeRound, setActiveRound] = React.useState<Round>("r1");
+  const completedCount = ROUNDS.filter(({ key }) => progress[key]).length;
 
+  const [activeRound, setActiveRound] = React.useState<Round>("r1");
+  const [stampModal, setStampModal] = React.useState<StampModal | null>(null);
+
+  /* Next-button visibility — shown immediately on load if already solved,
+     or after the stamp modal is dismissed on a fresh solve. */
   const [showNextR1, setShowNextR1] = React.useState(false);
   const [showNextR2, setShowNextR2] = React.useState(false);
   const [showNextR3, setShowNextR3] = React.useState(false);
   const [showNextR4, setShowNextR4] = React.useState(false);
   const [showNextR5, setShowNextR5] = React.useState(false);
+  const [showNextR6, setShowNextR6] = React.useState(false);
 
-  const t1Ref = React.useRef<number | null>(null);
-  const t2Ref = React.useRef<number | null>(null);
-  const t3Ref = React.useRef<number | null>(null);
-  const t4Ref = React.useRef<number | null>(null);
-  const t5Ref = React.useRef<number | null>(null);
-
+  /* ── Sync progress on mount & show next-buttons for already-solved rounds ── */
   React.useEffect(() => {
     let cancelled = false;
+
     syncProgress().then((p) => {
-      if (!cancelled) setProgress(p);
+      if (cancelled) return;
+      setProgress(p);
+
+      /* Auto-collect stamps for any rounds solved before this feature landed */
+      if (p.r1) { collectStamp(ROUND_STAMP.r1); setShowNextR1(true); }
+      if (p.r2) { collectStamp(ROUND_STAMP.r2); setShowNextR2(true); }
+      if (p.r3) { collectStamp(ROUND_STAMP.r3); setShowNextR3(true); }
+      if (p.r4) { collectStamp(ROUND_STAMP.r4); setShowNextR4(true); }
+      if (p.r5) { collectStamp(ROUND_STAMP.r5); setShowNextR5(true); }
+      if (p.r6) { collectStamp(ROUND_STAMP.r6); setShowNextR6(true); }
     });
-    return () => {
-      cancelled = true;
-      if (t1Ref.current) window.clearTimeout(t1Ref.current);
-      if (t2Ref.current) window.clearTimeout(t2Ref.current);
-      if (t3Ref.current) window.clearTimeout(t3Ref.current);
-      if (t4Ref.current) window.clearTimeout(t4Ref.current);
-      if (t5Ref.current) window.clearTimeout(t5Ref.current);
-    };
+
+    return () => { cancelled = true; };
   }, []);
 
+  /* ── Cross-tab sync ── */
   React.useEffect(() => {
     function onStorage(e: StorageEvent) {
       if (e.key === PROGRESS_KEY) setProgress(readProgress());
@@ -127,61 +176,83 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  React.useEffect(() => setShowNextR1(progress.r1), [progress.r1]);
-  React.useEffect(() => setShowNextR2(progress.r2), [progress.r2]);
-  React.useEffect(() => setShowNextR3(progress.r3), [progress.r3]);
-  React.useEffect(() => setShowNextR4(progress.r4), [progress.r4]);
-  React.useEffect(() => setShowNextR5(progress.r5), [progress.r5]);
+  /* ── Solve callbacks — collect stamp, open modal, reveal Next on Continue ── */
 
-  const onR1Solved = React.useCallback(() => {
-    setProgress((p) => (p.r1 ? p : { ...p, r1: true }));
-    setShowNextR1(false);
-    if (t1Ref.current) window.clearTimeout(t1Ref.current);
-    t1Ref.current = window.setTimeout(() => setShowNextR1(true), 750);
+  function makeSolveHandler(
+    round: "r1" | "r2" | "r3" | "r4" | "r5" | "r6",
+    setShowNext: React.Dispatch<React.SetStateAction<boolean>>
+  ) {
+    return () => {
+      setProgress((p) => (p[round] ? p : { ...p, [round]: true }));
+      collectStamp(ROUND_STAMP[round]);
+      setStampModal({
+        stampId: ROUND_STAMP[round],
+        onContinue: () => {
+          setStampModal(null);
+          setShowNext(true);
+        },
+      });
+    };
+  }
+
+  const onR1Solved = React.useCallback(
+    makeSolveHandler("r1", setShowNextR1),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  const onR2Solved = React.useCallback(
+    makeSolveHandler("r2", setShowNextR2),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  const onR3Solved = React.useCallback(
+    makeSolveHandler("r3", setShowNextR3),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  const onR4Solved = React.useCallback(
+    makeSolveHandler("r4", setShowNextR4),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  const onR5Solved = React.useCallback(
+    makeSolveHandler("r5", setShowNextR5),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  const onR6Solved = React.useCallback(
+    makeSolveHandler("r6", setShowNextR6),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  const onR7Solved = React.useCallback(() => {
+    setProgress((p) => (p.r7 ? p : { ...p, r7: true }));
   }, []);
 
-  const onR2Solved = React.useCallback(() => {
-    setProgress((p) => (p.r2 ? p : { ...p, r2: true }));
-    setShowNextR2(false);
-    if (t2Ref.current) window.clearTimeout(t2Ref.current);
-    t2Ref.current = window.setTimeout(() => setShowNextR2(true), 750);
-  }, []);
-
-  const onR3Solved = React.useCallback(() => {
-    setProgress((p) => (p.r3 ? p : { ...p, r3: true }));
-    setShowNextR3(false);
-    if (t3Ref.current) window.clearTimeout(t3Ref.current);
-    t3Ref.current = window.setTimeout(() => setShowNextR3(true), 750);
-  }, []);
-
-  const onR4Solved = React.useCallback(() => {
-    setProgress((p) => (p.r4 ? p : { ...p, r4: true }));
-    setShowNextR4(false);
-    if (t4Ref.current) window.clearTimeout(t4Ref.current);
-    t4Ref.current = window.setTimeout(() => setShowNextR4(true), 750);
-  }, []);
-
-  const onR5Solved = React.useCallback(() => {
-    setProgress((p) => (p.r5 ? p : { ...p, r5: true }));
-    setShowNextR5(false);
-    if (t5Ref.current) window.clearTimeout(t5Ref.current);
-    t5Ref.current = window.setTimeout(() => setShowNextR5(true), 750);
-  }, []);
-
-  const onR6Solved = React.useCallback(() => {
-    setProgress((p) => (p.r6 ? p : { ...p, r6: true }));
-  }, []);
-
+  /* ── Shared button styles ── */
   const nextBtn =
     "group relative overflow-hidden rounded-2xl bg-z-orange px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95";
   const shine =
     "pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full";
-
   const topBtn =
     "inline-flex h-11 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 text-sm font-semibold text-neutral-900 shadow-sm hover:bg-neutral-50 active:scale-[0.99]";
 
+  /* ------------------------------------------------------------------ */
+  /* Render                                                              */
+  /* ------------------------------------------------------------------ */
+
   return (
     <div className="space-y-6">
+      {/* Stamp reward modal — rendered at portal level as a fixed overlay */}
+      {stampModal && (
+        <StampCollectedModal
+          stampId={stampModal.stampId}
+          locale={safeLocale}
+          onContinue={stampModal.onContinue}
+        />
+      )}
+
       {/* Sticky top controls */}
       <div className="sticky top-0 z-20 -mx-4 border-b border-neutral-100 bg-white/85 px-4 pb-3 pt-2 backdrop-blur">
         <div className="flex items-center justify-between gap-3">
@@ -194,106 +265,71 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
         </div>
       </div>
 
-      {/* Progress header + manual round buttons */}
-      <div className="rounded-2xl border border-neutral-200 bg-white p-4">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <div className="text-sm font-semibold">{isAr ? "التقدم" : "Progress"}</div>
-            <div className="mt-1 text-sm text-neutral-600">
-              {isAr
-                ? "ابدأ من الجولة ١. افتح الجولات التالية بعد الحل."
-                : "Start at Round 1. Unlock the next rounds as you solve."}
-            </div>
-          </div>
+      {/* Progress stepper */}
+      <div className="rounded-2xl border border-neutral-200 bg-white px-4 pt-4 pb-5">
+        <div className="mb-4 flex items-center justify-between">
+          <span className="text-sm font-semibold text-neutral-900">
+            {isAr ? "التقدم" : "Progress"}
+          </span>
+          <span className="text-xs text-neutral-400">
+            {completedCount} / 7 {isAr ? "مكتملة" : "complete"}
+          </span>
+        </div>
 
-          <div className="flex gap-2 text-xs">
-            <button
-              type="button"
-              onClick={() => setActiveRound("r1")}
-              className={`rounded-full px-3 py-1 ${
-                activeRound === "r1" ? "bg-z-orange text-white" : "bg-neutral-100 text-neutral-700"
-              }`}
-            >
-              {isAr ? "١" : "R1"} {progress.r1 ? "✓" : "•"}
-            </button>
+        <div className="relative flex items-center justify-between">
+          <div className="absolute inset-x-[18px] top-1/2 -translate-y-1/2 h-0.5 rounded-full bg-neutral-200" />
+          {completedCount > 0 && (
+            <div
+              className="absolute left-[18px] top-1/2 -translate-y-1/2 h-0.5 rounded-full bg-z-orange transition-all duration-500"
+              style={{ width: `calc(${((completedCount - 1) / 6) * 100}% * (1 - 36px / 100%))` }}
+            />
+          )}
 
-            <button
-              type="button"
-              onClick={() => progress.r1 && setActiveRound("r2")}
-              disabled={!progress.r1}
-              className={`rounded-full px-3 py-1 ${
-                !progress.r1
-                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
-                  : activeRound === "r2"
-                  ? "bg-z-orange text-white"
-                  : "bg-neutral-100 text-neutral-700"
-              }`}
-            >
-              {isAr ? "٢" : "R2"} {progress.r2 ? "✓" : "•"}
-            </button>
+          {ROUNDS.map(({ key, num, titleEn, titleAr }, idx) => {
+            const done = progress[key];
+            const active = activeRound === key;
+            const unlocked = idx === 0 || progress[`r${idx}` as keyof PortalProgress];
 
-            <button
-              type="button"
-              onClick={() => progress.r2 && setActiveRound("r3")}
-              disabled={!progress.r2}
-              className={`rounded-full px-3 py-1 ${
-                !progress.r2
-                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
-                  : activeRound === "r3"
-                  ? "bg-z-orange text-white"
-                  : "bg-neutral-100 text-neutral-700"
-              }`}
-            >
-              {isAr ? "٣" : "R3"} {progress.r3 ? "✓" : "•"}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => progress.r3 && setActiveRound("r4")}
-              disabled={!progress.r3}
-              className={`rounded-full px-3 py-1 ${
-                !progress.r3
-                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
-                  : activeRound === "r4"
-                  ? "bg-z-orange text-white"
-                  : "bg-neutral-100 text-neutral-700"
-              }`}
-            >
-              {isAr ? "٤" : "R4"} {progress.r4 ? "✓" : "•"}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => progress.r4 && setActiveRound("r5")}
-              disabled={!progress.r4}
-              className={`rounded-full px-3 py-1 ${
-                !progress.r4
-                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
-                  : activeRound === "r5"
-                  ? "bg-z-orange text-white"
-                  : "bg-neutral-100 text-neutral-700"
-              }`}
-            >
-              {isAr ? "٥" : "R5"} {progress.r5 ? "✓" : "•"}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => progress.r5 && setActiveRound("r6")}
-              disabled={!progress.r5}
-              className={`rounded-full px-3 py-1 ${
-                !progress.r5
-                  ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
-                  : activeRound === "r6"
-                  ? "bg-z-orange text-white"
-                  : "bg-neutral-100 text-neutral-700"
-              }`}
-            >
-              {isAr ? "٦" : "R6"} {progress.r6 ? "✓" : "•"}
-            </button>
-          </div>
+            return (
+              <button
+                key={key}
+                type="button"
+                title={isAr ? titleAr : titleEn}
+                onClick={() => { if (unlocked) setActiveRound(key); }}
+                disabled={!unlocked}
+                className={[
+                  "relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold transition-all duration-200",
+                  active
+                    ? "scale-110 border-z-orange bg-z-orange text-white shadow-[0_0_0_4px_rgba(200,105,74,0.18)]"
+                    : done
+                    ? "border-z-orange bg-z-orange-soft z-orange"
+                    : unlocked
+                    ? "border-neutral-300 bg-white text-neutral-600 hover:border-z-orange hover:text-z-orange"
+                    : "cursor-not-allowed border-neutral-200 bg-neutral-50 text-neutral-300",
+                ].join(" ")}
+              >
+                {done && !active ? (
+                  <svg
+                    viewBox="0 0 12 12"
+                    className="h-3.5 w-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M1.5 6.5l3 3 6-6" />
+                  </svg>
+                ) : (
+                  num
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
+
+      {/* ── Round panels ── */}
 
       {activeRound === "r1" && (
         <div>
@@ -301,7 +337,9 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
           {progress.r1 && showNextR1 && (
             <div className="mt-4">
               <button type="button" onClick={() => setActiveRound("r2")} className={nextBtn}>
-                <span className="relative z-10">{isAr ? "التالي: الجولة ٢ →" : "Next puzzle: Round 2 →"}</span>
+                <span className="relative z-10">
+                  {isAr ? "التالي: الجولة ٢ →" : "Next puzzle: Round 2 →"}
+                </span>
                 <span className={shine} />
               </button>
             </div>
@@ -321,7 +359,9 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
           {progress.r2 && showNextR2 && (
             <div className="mt-4">
               <button type="button" onClick={() => setActiveRound("r3")} className={nextBtn}>
-                <span className="relative z-10">{isAr ? "التالي: الجولة ٣ →" : "Next puzzle: Round 3 →"}</span>
+                <span className="relative z-10">
+                  {isAr ? "التالي: الجولة ٣ →" : "Next puzzle: Round 3 →"}
+                </span>
                 <span className={shine} />
               </button>
             </div>
@@ -341,7 +381,9 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
           {progress.r3 && showNextR3 && (
             <div className="mt-4">
               <button type="button" onClick={() => setActiveRound("r4")} className={nextBtn}>
-                <span className="relative z-10">{isAr ? "التالي: الجولة ٤ →" : "Next puzzle: Round 4 →"}</span>
+                <span className="relative z-10">
+                  {isAr ? "التالي: الجولة ٤ →" : "Next puzzle: Round 4 →"}
+                </span>
                 <span className={shine} />
               </button>
             </div>
@@ -361,7 +403,9 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
           {progress.r4 && showNextR4 && (
             <div className="mt-4">
               <button type="button" onClick={() => setActiveRound("r5")} className={nextBtn}>
-                <span className="relative z-10">{isAr ? "التالي: الجولة ٥ →" : "Next puzzle: Round 5 →"}</span>
+                <span className="relative z-10">
+                  {isAr ? "التالي: الجولة ٥ →" : "Next puzzle: Round 5 →"}
+                </span>
                 <span className={shine} />
               </button>
             </div>
@@ -381,7 +425,9 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
           {progress.r5 && showNextR5 && (
             <div className="mt-4">
               <button type="button" onClick={() => setActiveRound("r6")} className={nextBtn}>
-                <span className="relative z-10">{isAr ? "التالي: الجولة ٦ →" : "Next puzzle: Round 6 →"}</span>
+                <span className="relative z-10">
+                  {isAr ? "التالي: الجولة ٦ →" : "Next puzzle: Round 6 →"}
+                </span>
                 <span className={shine} />
               </button>
             </div>
@@ -396,6 +442,28 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
           ) : (
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
               {isAr ? "الجولة ٦ مقفلة." : "Round 6 is locked."}
+            </div>
+          )}
+          {progress.r6 && showNextR6 && (
+            <div className="mt-4">
+              <button type="button" onClick={() => setActiveRound("r7")} className={nextBtn}>
+                <span className="relative z-10">
+                  {isAr ? "التالي: المحطة الأخيرة →" : "Final Stop →"}
+                </span>
+                <span className={shine} />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeRound === "r7" && (
+        <div>
+          {progress.r6 ? (
+            <PuzzleR7 locale={safeLocale} onSolved={onR7Solved} />
+          ) : (
+            <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
+              {isAr ? "المحطة الأخيرة مقفلة." : "Final Stop is locked."}
             </div>
           )}
         </div>

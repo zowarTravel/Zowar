@@ -11,6 +11,7 @@ export type PortalProgress = {
   r4: boolean;
   r5: boolean;
   r6: boolean;
+  r7: boolean;
 };
 
 const KEY = "zowar_progress_v1";
@@ -27,6 +28,7 @@ function freshDefault(): PortalProgress {
     r4: false,
     r5: false,
     r6: false,
+    r7: false,
   };
 }
 
@@ -63,6 +65,7 @@ export function readProgress(): PortalProgress {
     r4: parsed.r4 === true,
     r5: parsed.r5 === true,
     r6: parsed.r6 === true,
+    r7: parsed.r7 === true,
   };
 }
 
@@ -99,6 +102,7 @@ export async function syncProgress(): Promise<PortalProgress> {
       r4: local.r4 || server.r4,
       r5: local.r5 || server.r5,
       r6: local.r6 || (server.r6 ?? false),
+      r7: local.r7 || (server.r7 ?? false),
     };
     // Write merged back to localStorage
     if (typeof window !== "undefined") {

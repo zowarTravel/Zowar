@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { content, Locale } from "./content";
 import Image from "next/image";
 import { Fredoka, Tajawal } from "next/font/google";
+import TestimonialsSection from "./components/TestimonialsSection";
 
 type Currency = "USD" | "JOD";
 type AboutTabKey = "cultural" | "dietary" | "moments" | "booking";
@@ -707,6 +708,9 @@ export default function HomeClient() {
         </div>
       </section>
 
+      {/* ==================== TESTIMONIALS ==================== */}
+      <TestimonialsSection locale={locale as "en" | "ar" | "es"} />
+
       {/* ==================== CONTACT ==================== */}
       <section id="contact" className="px-6 max-w-7xl mx-auto py-16">
         <div className="rounded-3xl border border-black/10 bg-white/80 backdrop-blur-xl p-8 md:p-10 shadow-[0_18px_60px_rgba(0,0,0,0.08)]">
@@ -757,7 +761,7 @@ export default function HomeClient() {
                     </a>
                   </li>
                   <li>
-                    <a className="hover:text-white/90 transition" href="#">
+                    <a className="hover:text-white/90 transition" href="#testimonials">
                       {tr(footer.links.testimonials.en, footer.links.testimonials.ar, footer.links.testimonials.es)}
                     </a>
                   </li>

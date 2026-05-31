@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 export const runtime = "nodejs";
+export const maxDuration = 20;
 
 type Locale = "en" | "ar" | "es";
 

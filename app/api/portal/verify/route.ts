@@ -1,14 +1,19 @@
 export const runtime = "nodejs";
+export const maxDuration = 30;
 
 import Stripe from "stripe";
 import { signPayload } from "@/app/lib/portal-token";
 
 const NINETY_DAYS = 90 * 24 * 3600;
 
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) throw new Error("Missing STRIPE_SECRET_KEY");
-  return new Stripe(key);
+let _stripe: Stripe | null = null;
+function getStripe(): Stripe {
+  if (!_stripe) {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key) throw new Error("Missing STRIPE_SECRET_KEY");
+    _stripe = new Stripe(key);
+  }
+  return _stripe;
 }
 
 export async function POST(req: Request) {

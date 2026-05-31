@@ -2,6 +2,7 @@
 import Stripe from "stripe";
 
 export const runtime = "nodejs";
+export const maxDuration = 30;
 
 type Locale = "en" | "ar" | "es";
 
@@ -34,12 +35,14 @@ function format2(n: number) {
   return n.toFixed(2);
 }
 
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) {
-    throw new Error("Missing STRIPE_SECRET_KEY environment variable.");
+let _stripe: Stripe | null = null;
+function getStripe(): Stripe {
+  if (!_stripe) {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key) throw new Error("Missing STRIPE_SECRET_KEY environment variable.");
+    _stripe = new Stripe(key);
   }
-  return new Stripe(key);
+  return _stripe;
 }
 
 function normalizeCode(x: unknown) {

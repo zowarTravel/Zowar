@@ -118,8 +118,8 @@ export const riddle4 = {
 /* ------------------------------------------------------------------ */
 
 export const riddle5 = {
-  title: { en: "Round 5: Assemble the Image", ar: "الجولة ٥: رتّب الصورة" },
-  kicker: { en: "Round 5", ar: "الجولة ٥" },
+  title: { en: "Round 6: Assemble the Image", ar: "الجولة ٦: رتّب الصورة" },
+  kicker: { en: "Round 6", ar: "الجولة ٦" },
   prompt: {
     en: "Tap two tiles to swap them. Complete the image to reveal your next destination.",
     ar: "اضغط على قطعتين لتبديل مكانهما. عند اكتمال الصورة ستظهر وجهتك التالية.",

@@ -1,481 +1,315 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import type { Locale } from "./riddlecontent";
 import { setRoundSolved, serverSetRoundSolved } from "./progress";
 
 const ROUND_KEY = "r6" as const;
+const MAP_IMAGE = "/images/puzzles/r6/knafeh.png";
 
-type FrontageOption = {
+type HintLevel = 0 | 1 | 2 | 3;
+
+type MapPin = {
   id: string;
-  image: string;
+  top: string;
+  left: string;
   isCorrect: boolean;
 };
 
-const content = {
+const MAP_PINS: MapPin[] = [
+  { id: "pin-a", top: "33.5%", left: "27.5%", isCorrect: false },
+  { id: "pin-b", top: "34.8%", left: "43.5%", isCorrect: true },
+  { id: "pin-c", top: "12.5%", left: "74.5%", isCorrect: false },
+  { id: "pin-d", top: "67.5%", left: "31.5%", isCorrect: false },
+  { id: "pin-e", top: "76%", left: "59.5%", isCorrect: false },
+  { id: "pin-f", top: "84%", left: "90.5%", isCorrect: false },
+];
+
+const CONTENT = {
   en: {
-    eyebrow: "Route Puzzle",
-    title: "Follow the Street",
+    kicker: "Round 6 · Map Puzzle",
+    title: "Find the Sweet Stop",
     subtitle:
-      "Start with the first clue, reveal hints if you need them, then choose the storefront that feels most familiar.",
-    instruction:
-      "Begin with the first clue. Use hints only if you get stuck, then select the storefront that matches what you found.",
-    reset: "Reset",
-    hintsEyebrow: "Need a hint?",
-    revealHint: "Show hint",
-    revealNextHint: "Next hint",
+      "Study the clue below, then tap the pin on the map that marks the right location.",
+    clueLabel: "Clue",
+    clueText:
+      "On the diagonal between First Circle and the street of colorful decorations waits a traditional sweet no Jordanian celebration is complete without.",
+    showHint: "Show hint",
+    nextHint: "Next hint",
     hideHints: "Hide hints",
-    clue1Label: "Orient",
-    clue1Text: "Walk past the colorful street toward First Circle.",
-    hintTitle: "Hint",
+    hintLabel: "Hint",
     hints: [
       "Leave the colorful decorations hanging behind and walk towards First Circle.",
       "Look for a knafeh spot named after an Arabic flower.",
-      "You’re looking for Al Yasmeenah.",
+      "You're looking for Al Yasmeenah.",
     ],
-    selectionEyebrow: "Storefront check",
-    selectionTitle: "Which storefront looks most familiar?",
-    selectionBody:
-      "Use the clue and the hints you uncovered to choose the place that best matches what you found on the street.",
-    optionLabel: "Frontage",
+    mapInstruction: "Tap the pin that matches the clue.",
     wrong:
-      "Not quite. Compare the frontage shape, street character, and surrounding details, then try again.",
+      "Not quite — revisit the diagonal between First Circle and the decorated street, then try again.",
     successTitle: "Correct!",
-    successBody:
-      "Nice work — you found Al Yasmeenah and completed this puzzle.",
+    successBody: "You found Al Yasmeenah.",
     aboutEyebrow: "About this stop",
-    aboutTitle: "Al Yasmeenah",
+    aboutTitle: "Flour & Fire",
     aboutBody1:
-      "Knafeh is closely associated with Nablus, Palestine, where it became one of the region’s most beloved celebratory sweets.",
+      "Flour & Fire is an artisan bakery on Rainbow Street, and it fits beautifully into the neighborhood’s rhythm of walking, sharing, and stopping for something fresh from the oven.",
     aboutBody2:
-      "At Al Yasmeenah, that tradition continues on Rainbow Street, where a family recipe brought from Palestine is served in the heart of the neighborhood.",
+      "Manakeesh topped with za’atar holds a special place across Jordan and the wider Levant — warm, aromatic, and deeply familiar, it is the kind of bakery staple that turns a simple stop into part of the city’s daily ritual.",
+    reset: "Reset",
   },
   ar: {
-    eyebrow: "لغز الطريق",
-    title: "اتبع الشارع",
+    kicker: "الجولة ٦ · لغز الخريطة",
+    title: "اعثر على محطة الحلوى",
     subtitle:
-      "ابدأ بالدليل الأول، واكشف التلميحات عند الحاجة، ثم اختر الواجهة التي تبدو الأكثر ألفة.",
-    instruction:
-      "ابدأ بالدليل الأول. استخدم التلميحات فقط إذا علقت، ثم اختر الواجهة التي تطابق ما وجدته في الشارع.",
-    reset: "إعادة",
-    hintsEyebrow: "تحتاج تلميحاً؟",
-    revealHint: "إظهار تلميح",
-    revealNextHint: "التلميح التالي",
+      "اقرأ الدليل أدناه، ثم اضغط على الدبوس الذي يُشير إلى الموقع الصحيح.",
+    clueLabel: "الدليل",
+    clueText:
+      "على الخط القطري بين الدوار الأول والشارع المزيّن بالألوان تنتظرك حلوى تقليدية لا تكتمل أي مناسبة أردنية من دونها.",
+    showHint: "إظهار تلميح",
+    nextHint: "التلميح التالي",
     hideHints: "إخفاء التلميحات",
-    clue1Label: "الاتجاه",
-    clue1Text: "امشِ بعد الشارع الملوّن باتجاه الدوار الأول.",
-    hintTitle: "تلميح",
+    hintLabel: "تلميح",
     hints: [
       "اترك الزينة الملوّنة المعلّقة خلفك وامشِ باتجاه الدوار الأول.",
       "ابحث عن محل كنافة اسمه مأخوذ من زهرة عربية.",
       "أنت تبحث عن الياسمينة.",
     ],
-    selectionEyebrow: "تأكيد الواجهة",
-    selectionTitle: "أي واجهة تبدو الأكثر ألفة؟",
-    selectionBody:
-      "استخدم الدليل والتلميحات التي كشفتها لاختيار المكان الذي يطابق ما وجدته في الشارع.",
-    optionLabel: "واجهة",
+    mapInstruction: "اضغط على الدبوس الذي يطابق الدليل.",
     wrong:
-      "ليست هذه الواجهة الصحيحة. قارن شكل الواجهة وطابع الشارع والتفاصيل المحيطة ثم حاول مرة أخرى.",
+      "ليست هذه — ارجع إلى الخط القطري بين الدوار الأول والشارع المزيّن وحاول مجدداً.",
     successTitle: "إجابة صحيحة!",
-    successBody: "أحسنت — لقد وجدت الياسمينة وأكملت هذا اللغز.",
+    successBody: "لقد وجدت الياسمينة.",
     aboutEyebrow: "عن هذه المحطة",
-    aboutTitle: "الياسمينة",
+    aboutTitle: "فلور آند فاير",
     aboutBody1:
-      "ترتبط الكنافة ارتباطاً وثيقاً بمدينة نابلس في فلسطين، حيث أصبحت واحدة من أشهر الحلويات الاحتفالية في المنطقة.",
+      "فلور آند فاير مخبز حرفي على شارع الرينبو، وينسجم مع إيقاع الحي القائم على المشي والمشاركة والتوقف لتذوق شيء طازج خارج من الفرن.",
     aboutBody2:
-      "وفي الياسمينة تستمر هذه التقاليد على شارع الرينبو، حيث تنتقل وصفة عائلية من فلسطين إلى قلب الحي.",
+      "تحتل المناقيش بالزعتر مكانة خاصة في الأردن وبلاد الشام — دافئة وعطِرة ومألوفة، وهي من تلك المخبوزات التي تجعل التوقف البسيط جزءاً من طقوس المدينة اليومية.",
+    reset: "إعادة",
   },
 } as const;
 
-const frontageOptions: FrontageOption[] = [
-  {
-    id: "a",
-    image: "/images/puzzles/r6/frontage-a.png",
-    isCorrect: false,
-  },
-  {
-    id: "b",
-    image: "/images/puzzles/r6/frontage-b.png",
-    isCorrect: false,
-  },
-  {
-    id: "c",
-    image: "/images/puzzles/r6/frontage-c.png",
-    isCorrect: true,
-  },
-];
+type Props = {
+  locale: Locale;
+  onSolved?: () => void;
+};
 
-function CompassIcon() {
+function PinSvg({ fill }: { fill: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M14.8 9.2l-2 5.6-5.6 2 2-5.6 5.6-2z" />
+    <svg viewBox="0 0 24 24" className="h-8 w-8" fill={fill} aria-hidden="true">
+      <path d="M12 22s7-7.1 7-12a7 7 0 1 0-14 0c0 4.9 7 12 7 12Z" />
+      <circle cx="12" cy="10" r="2.8" fill="white" />
     </svg>
   );
 }
 
-
-function FlowerIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="1.8" />
-      <path d="M12 5.2c1.6-2.3 4.7-2 5.4.4.4 1.5-.3 2.8-1.7 3.7" />
-      <path d="M18.2 10.4c2.7-.3 4.4 2.3 3.2 4.4-.8 1.4-2.2 1.8-3.8 1.7" />
-      <path d="M15.5 17.3c1.4 2.3-.4 5.1-2.8 4.9-1.6-.1-2.5-1.3-3-2.8" />
-      <path d="M8.5 17.3c-1.4 2.3-4.6 2-5.3-.4-.4-1.5.3-2.8 1.7-3.7" />
-      <path d="M5.8 10.4c-2.7-.3-4.4 2.3-3.2 4.4.8 1.4 2.2 1.8 3.8 1.7" />
-      <path d="M8.5 6.7c-1.4-2.3.4-5.1 2.8-4.9 1.6.1 2.5 1.3 3 2.8" />
-    </svg>
-  );
-}
-
-function HintIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 3a7 7 0 0 0-4.5 12.4c.9.8 1.5 1.7 1.7 2.6h5.6c.2-.9.8-1.8 1.7-2.6A7 7 0 0 0 12 3z" />
-      <path d="M9.5 21h5" />
-      <path d="M10 18.5h4" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.1"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12.5l4.2 4.2L19 7" />
-    </svg>
-  );
-}
-
-function SketchIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="4" y="5" width="16" height="14" rx="2" />
-      <path d="M8 15l2.5-2.5L13 15l2-2 3 3" />
-      <circle cx="9" cy="9" r="1.2" />
-    </svg>
-  );
-}
-
-function ClueCard({
-  label,
-  text,
-}: {
-  label: string;
-  text: string;
-}) {
-  return (
-    <div className="relative overflow-hidden rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
-      <div className="absolute inset-x-0 top-0 h-1 bg-z-orange" />
-      <div className="mb-3 flex items-center justify-between">
-        <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-neutral-300 bg-white text-neutral-900">
-          <CompassIcon />
-        </div>
-        <div className="inline-flex h-8 min-w-8 items-center justify-center rounded-full border border-neutral-300 bg-white px-2 text-sm font-semibold text-neutral-800">
-          1
-        </div>
-      </div>
-
-      <div className="space-y-1">
-        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
-          {label}
-        </div>
-        <div className="text-sm font-medium leading-6 text-neutral-800">
-          {text}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default function PuzzleR6({ locale }: { locale: Locale }) {
+export default function PuzzleR6({ locale, onSolved }: Props) {
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
-  const t = content[safeLocale];
-  const dir = safeLocale === "ar" ? "rtl" : "ltr";
+  const isAr = safeLocale === "ar";
+  const t = CONTENT[safeLocale];
 
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [status, setStatus] = useState<"idle" | "wrong" | "success">("idle");
-  const [hintsRevealed, setHintsRevealed] = useState(0);
+  const [selectedPinId, setSelectedPinId] = React.useState<string | null>(null);
+  const [status, setStatus] = React.useState<"idle" | "wrong" | "success">("idle");
+  const [hintsRevealed, setHintsRevealed] = React.useState<HintLevel>(0);
+  const solvedRef = React.useRef(false);
 
   function handleReset() {
-    setSelectedId(null);
+    setSelectedPinId(null);
     setStatus("idle");
     setHintsRevealed(0);
   }
 
-  function handleRevealHint() {
-    setHintsRevealed((prev) => Math.min(prev + 1, t.hints.length));
-  }
+  function handlePinSelect(pin: MapPin) {
+    if (status === "success") return;
+    setSelectedPinId(pin.id);
 
-  function handleHideHints() {
-    setHintsRevealed(0);
-  }
-
-  function handleSelectFrontage(option: FrontageOption) {
-    setSelectedId(option.id);
-
-    if (option.isCorrect) {
+    if (pin.isCorrect) {
       setStatus("success");
-      setRoundSolved(ROUND_KEY);
-      void serverSetRoundSolved(ROUND_KEY);
-      return;
+      if (!solvedRef.current) {
+        solvedRef.current = true;
+        setRoundSolved(ROUND_KEY);
+        void serverSetRoundSolved(ROUND_KEY);
+        onSolved?.();
+      }
+    } else {
+      setStatus("wrong");
     }
-
-    setStatus("wrong");
   }
+
+  const card =
+    "rounded-3xl border border-black/10 " +
+    "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))] " +
+    "shadow-[0_16px_50px_rgba(0,0,0,0.10)]";
+
+  const btn =
+    "rounded-2xl px-4 py-2 text-sm font-medium transition active:scale-[0.99] " +
+    "border border-black/10 bg-white text-neutral-900 shadow-sm hover:bg-neutral-50";
+
+  const btnOrange =
+    "inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-semibold transition active:scale-[0.99] " +
+    "border border-z-orange bg-z-orange-soft z-orange";
 
   return (
-    <section dir={dir} className="mx-auto w-full max-w-6xl pb-10">
-      <div className="relative overflow-hidden rounded-[32px] border border-neutral-200 bg-white shadow-lg">
-        <div className="absolute -top-24 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-z-orange-soft blur-3xl opacity-60" />
+    <div dir={isAr ? "rtl" : "ltr"} className="mx-auto w-full max-w-5xl px-4 py-8 sm:py-10">
+      <style>{`
+        @keyframes r6-fade-up {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
 
-        <div className="relative border-b border-neutral-200 p-6 sm:p-8">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] z-orange">
-            <CompassIcon />
-            {t.eyebrow}
-          </div>
+      <div className={`${card} relative p-5 sm:p-6`}>
+        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
 
-          <div className="max-w-3xl">
-            <h2 className="text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl">
-              {t.title}
-            </h2>
-            <p className="mt-3 text-base leading-7 text-neutral-600 sm:text-lg">
-              {t.subtitle}
-            </p>
-          </div>
-
-          <div className="mt-6 rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
-            <div className="text-sm font-medium text-neutral-600">
-              {t.instruction}
+        <div className="relative flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
+              {t.kicker}
             </div>
+            <h1 className="text-2xl font-semibold text-neutral-950 sm:text-3xl">{t.title}</h1>
+            <p className="mt-2 text-sm leading-relaxed text-neutral-700">{t.subtitle}</p>
           </div>
+
+          <button type="button" className={btn} onClick={handleReset}>
+            {t.reset}
+          </button>
         </div>
 
-        <div className="relative p-6 sm:p-8">
-          <div className="max-w-xl">
-            <ClueCard label={t.clue1Label} text={t.clue1Text} />
+        <div className="relative mt-5 overflow-hidden rounded-2xl border border-black/8 bg-z-off-white p-4">
+          <div className="absolute inset-x-0 top-0 h-0.5 bg-z-orange" />
+          <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500">
+            {t.clueLabel}
+          </div>
+          <p className="text-sm leading-7 text-neutral-800">{t.clueText}</p>
+        </div>
+
+        <div className="mt-4">
+          <div className="flex flex-wrap gap-2">
+            {hintsRevealed < 3 && (
+              <button
+                type="button"
+                className={btnOrange}
+                onClick={() => setHintsRevealed((p) => Math.min(p + 1, 3) as HintLevel)}
+              >
+                {hintsRevealed === 0 ? t.showHint : t.nextHint}
+              </button>
+            )}
+            {hintsRevealed > 0 && (
+              <button type="button" className={btn} onClick={() => setHintsRevealed(0)}>
+                {t.hideHints}
+              </button>
+            )}
           </div>
 
-          <div className="mt-6 rounded-[28px] border border-z-orange bg-z-orange-soft p-[1px] glow-z-orange">
-            <div className="rounded-[27px] bg-white p-5 sm:p-6">
-              <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500">
-                  {t.hintsEyebrow}
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {hintsRevealed < t.hints.length && (
-                    <button
-                      type="button"
-                      onClick={handleRevealHint}
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-z-orange bg-z-orange-soft px-4 py-2 text-sm font-medium z-orange transition hover:scale-[1.01]"
-                    >
-                      <HintIcon />
-                      {hintsRevealed === 0 ? t.revealHint : t.revealNextHint}
-                    </button>
-                  )}
-
-                  {hintsRevealed > 0 && (
-                    <button
-                      type="button"
-                      onClick={handleHideHints}
-                      className="inline-flex items-center justify-center rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
-                    >
-                      {t.hideHints}
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {hintsRevealed > 0 && (
-                <div className="mb-6 grid gap-3">
-                  {t.hints.slice(0, hintsRevealed).map((hint, idx) => {
-                    return (
-                      <div
-                        key={`${hint}-${idx}`}
-                        className="overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5"
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-z-orange bg-z-orange-soft text-base font-bold z-orange">
-                            {idx + 1}
-                          </div>
-
-                          <div className="min-w-0">
-                            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                              {t.hintTitle} {idx + 1}
-                            </div>
-                            <div className="mt-2 text-base leading-7 text-neutral-700">
-                              {hint}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] z-orange">
-                  <SketchIcon />
-                  {t.selectionEyebrow}
-                </div>
-
-                <h3 className="mt-4 text-2xl font-semibold text-neutral-900">
-                  {t.selectionTitle}
-                </h3>
-                <p className="mt-2 text-base leading-7 text-neutral-600">
-                  {t.selectionBody}
-                </p>
-
-                <div className="mt-6 grid gap-4 md:grid-cols-3">
-                  {frontageOptions.map((option, idx) => {
-                    const isSelected = selectedId === option.id;
-                    const showSuccess = status === "success" && option.isCorrect;
-                    const showWrong = status === "wrong" && isSelected;
-
-                    return (
-                      <button
-                        key={option.id}
-                        type="button"
-                        onClick={() => handleSelectFrontage(option)}
-                        className={[
-                          "group relative overflow-hidden rounded-3xl border bg-white text-left transition",
-                          "hover:scale-[1.01] hover:border-z-orange",
-                          isSelected
-                            ? "border-z-orange glow-z-orange"
-                            : "border-neutral-200",
-                          showSuccess ? "ring-2 ring-emerald-500/40" : "",
-                          showWrong ? "ring-2 ring-red-400/40" : "",
-                        ].join(" ")}
-                      >
-                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-100">
-                          <Image
-                            src={option.image}
-                            alt={`${t.optionLabel} ${idx + 1}`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 33vw"
-                            priority={idx === 0}
-                          />
-                        </div>
-
-                        <div className="border-t border-neutral-200 p-4">
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                              {t.optionLabel} {idx + 1}
-                            </div>
-
-                            {showSuccess && (
-                              <div className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
-                                <CheckIcon />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {status === "wrong" && (
-                  <div className="mt-5 rounded-2xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
-                    {t.wrong}
-                  </div>
-                )}
-
-                {status === "success" && (
-                  <>
-                    <div className="mt-5 rounded-3xl border border-emerald-300 bg-emerald-50 p-4 sm:p-5">
-                      <div className="flex items-start gap-3">
-                        <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
-                          <CheckIcon />
-                        </div>
-                        <div>
-                          <div className="text-lg font-semibold text-emerald-800">
-                            {t.successTitle}
-                          </div>
-                          <div className="mt-1 text-sm leading-6 text-emerald-700">
-                            {t.successBody}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-5 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-5 sm:p-6">
-                      <div className="inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] z-orange">
-                        <FlowerIcon />
-                        {t.aboutEyebrow}
-                      </div>
-
-                      <h4 className="mt-4 text-2xl font-semibold text-neutral-900">
-                        {t.aboutTitle}
-                      </h4>
-
-                      <div className="mt-3 space-y-3 text-base leading-7 text-neutral-700">
-                        <p>{t.aboutBody1}</p>
-                        <p>{t.aboutBody2}</p>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="inline-flex h-14 items-center justify-center rounded-2xl border border-neutral-200 bg-white px-5 font-medium text-neutral-700 transition hover:bg-neutral-50"
+          {hintsRevealed > 0 && (
+            <div className="mt-3 grid gap-2">
+              {(t.hints as readonly string[]).slice(0, hintsRevealed).map((hint, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-2xl border border-black/8 bg-z-off-white p-3 text-sm leading-7 text-neutral-700"
                 >
-                  {t.reset}
-                </button>
-              </div>
+                  <span className="mb-0.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-500">
+                    {t.hintLabel} {idx + 1}
+                  </span>
+                  {hint}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="mt-6">
+          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500">
+            {t.mapInstruction}
+          </p>
+
+          <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-neutral-100 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.04)]">
+            <div className="relative aspect-square w-full">
+              <Image
+                src={MAP_IMAGE}
+                alt={isAr ? "خريطة اللغز" : "Puzzle map"}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 900px"
+                priority
+              />
+
+              {MAP_PINS.map((pin) => {
+                const isSelected = selectedPinId === pin.id;
+                const isCorrectAndSolved = status === "success" && pin.isCorrect;
+                const isWrong = status === "wrong" && isSelected;
+
+                const fill = isCorrectAndSolved
+                  ? "#059669"
+                  : isWrong
+                    ? "#EF4444"
+                    : isSelected
+                      ? "#a8563b"
+                      : "#C8694A";
+
+                const scale = isSelected || isCorrectAndSolved ? 1.22 : 1;
+                const shadow =
+                  isSelected || isCorrectAndSolved
+                    ? "drop-shadow(0 6px 12px rgba(0,0,0,0.30))"
+                    : "drop-shadow(0 2px 5px rgba(0,0,0,0.22))";
+
+                return (
+                  <button
+                    key={pin.id}
+                    type="button"
+                    onClick={() => handlePinSelect(pin)}
+                    className="absolute -translate-x-1/2 -translate-y-full transition-transform duration-150"
+                    style={{
+                      top: pin.top,
+                      left: pin.left,
+                      transform: `translate(-50%, -100%) scale(${scale})`,
+                      filter: shadow,
+                    }}
+                    aria-label={pin.id}
+                  >
+                    <PinSvg fill={fill} />
+                  </button>
+                );
+              })}
             </div>
           </div>
+
+          {status === "wrong" && (
+            <div
+              className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+              style={{ animation: "r6-fade-up .22s ease-out" }}
+            >
+              {t.wrong}
+            </div>
+          )}
+
+          {status === "success" && (
+            <>
+              <div
+                className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3"
+                style={{ animation: "r6-fade-up .22s ease-out" }}
+              >
+                <div className="text-sm font-semibold text-emerald-800">{t.successTitle}</div>
+                <div className="mt-1 text-sm leading-6 text-emerald-700">{t.successBody}</div>
+              </div>
+
+              <div
+                className="mt-4 rounded-3xl border border-black/8 bg-z-off-white p-4 sm:p-5"
+                style={{ animation: "r6-fade-up .28s ease-out" }}
+              >
+                <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500">
+                  {t.aboutEyebrow}
+                </div>
+                <h3 className="text-lg font-semibold text-neutral-950">{t.aboutTitle}</h3>
+                <div className="mt-2 space-y-2 text-sm leading-7 text-neutral-700">
+                  <p>{t.aboutBody1}</p>
+                  <p>{t.aboutBody2}</p>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

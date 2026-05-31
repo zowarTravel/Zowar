@@ -103,8 +103,8 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     if (!solved || solvedOnceRef.current) return;
     solvedOnceRef.current = true;
 
-    setRoundSolved("r5");
-    serverSetRoundSolved("r5");
+    setRoundSolved("r6");
+    serverSetRoundSolved("r6");
     onSolved?.();
 
     const count = 16;

@@ -55,6 +55,12 @@ const CONTENT = {
       "Time to enjoy all the tasty bites and the magical Amman view at Mijana.",
     aboutBody2:
       "Make your way to Mijana — your table and the view are waiting.",
+    storyEyebrow: "The story behind the sweet",
+    storyTitle: "Al Yasmeenah",
+    storyBody1:
+      "Named after the jasmine flower, Al Yasmeenah sits on Rainbow Street as quietly and confidently as the sweet it serves. Knafeh has been synonymous with Nablus, Palestine for centuries — shredded pastry layered over soft white cheese, drenched in rose-kissed sugar syrup, and finished with a dusting of ground pistachios. The interplay of textures is unlike anything else in the Levantine pantry: crisp on top, molten beneath, salty enough to keep you reaching for more.",
+    storyBody2:
+      "At Al Yasmeenah, a family recipe carried from Palestine continues in the heart of Amman's most beloved neighborhood. The portions are generous, the cheese pulls the way it should, and the syrup hits just hard enough. It is the kind of sweet that turns a detour into a ritual — and a ritual into a reason to come back.",
     reset: "Reset",
   },
   ar: {
@@ -85,6 +91,12 @@ const CONTENT = {
       "حان وقت الاستمتاع بكل اللقيمات اللذيذة والإطلالة الرائعة على عمّان في ميجانا.",
     aboutBody2:
       "توجّه إلى ميجانا — طاولتك والإطلالة بانتظارك.",
+    storyEyebrow: "قصة وراء الحلاوة",
+    storyTitle: "الياسمينة",
+    storyBody1:
+      "سُمّيت على اسم زهرة الياسمين، وتقع الياسمينة على شارع الرينبو بهدوء وثقة كما تفعل الحلاوة التي تقدّمها. ارتبطت الكنافة بمدينة نابلس الفلسطينية منذ قرون — كدايف فوق جبن أبيض طري، تُغمر بقطر عطري ومنقوع بالورد، وتُزيَّن بحبات الفستق الحلبي المطحون. لا يُضاهى هذا التوازن بين القوام المقرمش من أعلى والجبن الممطوط من أسفل، مع تلك الملوحة الخفية التي تجعلك لا تتوقف عن الأكل.",
+    storyBody2:
+      "في الياسمينة، تواصل وصفة عائلية أُحضرت من فلسطين حياتها في قلب أحب أحياء عمّان. الحصص سخية، والجبن يمتد كما ينبغي، والقطر في مكانه تماماً. هذه من تلك الحلويات التي تحوّل التوقف العابر إلى طقس لا يُنسى، والطقس إلى سبب للعودة.",
     reset: "إعادة",
   },
 } as const;
@@ -304,6 +316,20 @@ export default function PuzzleR6({ locale, onSolved }: Props) {
                 <div className="mt-2 space-y-2 text-sm leading-7 text-neutral-700">
                   <p>{t.aboutBody1}</p>
                   <p>{t.aboutBody2}</p>
+                </div>
+              </div>
+
+              <div
+                className="mt-3 rounded-3xl border border-z-orange/20 bg-[linear-gradient(160deg,rgba(200,105,74,0.06),rgba(250,247,242,0.80))] p-4 sm:p-5"
+                style={{ animation: "r6-fade-up .34s ease-out" }}
+              >
+                <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-z-orange/70">
+                  {t.storyEyebrow}
+                </div>
+                <h3 className="text-lg font-semibold text-neutral-950">{t.storyTitle}</h3>
+                <div className="mt-2 space-y-3 text-sm leading-7 text-neutral-700">
+                  <p>{t.storyBody1}</p>
+                  <p>{t.storyBody2}</p>
                 </div>
               </div>
             </>

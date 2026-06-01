@@ -19,7 +19,7 @@ type MapPin = {
 
 const MAP_PINS: MapPin[] = [
   { id: "pin-a", top: "33.5%", left: "27.5%", isCorrect: false },
-  { id: "pin-b", top: "47%", left: "27%", isCorrect: true },
+  { id: "pin-b", top: "50%", left: "35%", isCorrect: true },
   { id: "pin-c", top: "12.5%", left: "74.5%", isCorrect: false },
   { id: "pin-d", top: "67.5%", left: "31.5%", isCorrect: false },
   { id: "pin-e", top: "76%", left: "59.5%", isCorrect: false },
@@ -58,9 +58,9 @@ const CONTENT = {
     storyEyebrow: "The story behind the sweet",
     storyTitle: "Al Yasmeenah",
     storyBody1:
-      "Named after the jasmine flower, Al Yasmeenah sits on Rainbow Street as quietly and confidently as the sweet it serves. Knafeh has been synonymous with Nablus, Palestine for centuries — shredded pastry layered over soft white cheese, drenched in rose-kissed sugar syrup, and finished with a dusting of ground pistachios. The interplay of textures is unlike anything else in the Levantine pantry: crisp on top, molten beneath, salty enough to keep you reaching for more.",
+      "Named after the jasmine flower, Al Yasmeenah is one of Rainbow Street's sweetest rituals. This is the kind of knafeh people come back for: crisp golden pastry, soft melted cheese, warm syrup, and a finish of pistachio.",
     storyBody2:
-      "At Al Yasmeenah, a family recipe carried from Palestine continues in the heart of Amman's most beloved neighborhood. The portions are generous, the cheese pulls the way it should, and the syrup hits just hard enough. It is the kind of sweet that turns a detour into a ritual — and a ritual into a reason to come back.",
+      "Rooted in the Nablus tradition and carried from Palestine to the heart of Amman, it feels just as special to first-time visitors as it does to locals who already know the pull of a proper bite. Generous, comforting, and worth slowing down for, Al Yasmeenah is the kind of stop that turns a walk into a memory.",
     reset: "Reset",
   },
   ar: {
@@ -94,9 +94,9 @@ const CONTENT = {
     storyEyebrow: "قصة وراء الحلاوة",
     storyTitle: "الياسمينة",
     storyBody1:
-      "سُمّيت على اسم زهرة الياسمين، وتقع الياسمينة على شارع الرينبو بهدوء وثقة كما تفعل الحلاوة التي تقدّمها. ارتبطت الكنافة بمدينة نابلس الفلسطينية منذ قرون — كدايف فوق جبن أبيض طري، تُغمر بقطر عطري ومنقوع بالورد، وتُزيَّن بحبات الفستق الحلبي المطحون. لا يُضاهى هذا التوازن بين القوام المقرمش من أعلى والجبن الممطوط من أسفل، مع تلك الملوحة الخفية التي تجعلك لا تتوقف عن الأكل.",
+      "مسمّاة على اسم زهرة الياسمين، الياسمينة من أطيب وقفات شارع الرينبو. هون بتلاقي كنافة بتنطلب عن خاطر: قرشة ذهبية، جبنة سايحة، قطر دافئ، ولمسة فستق بتكمّل الطعمة.",
     storyBody2:
-      "في الياسمينة، تواصل وصفة عائلية أُحضرت من فلسطين حياتها في قلب أحب أحياء عمّان. الحصص سخية، والجبن يمتد كما ينبغي، والقطر في مكانه تماماً. هذه من تلك الحلويات التي تحوّل التوقف العابر إلى طقس لا يُنسى، والطقس إلى سبب للعودة.",
+      "مستوحاة من تقاليد كنافة نابلس ومنقولة من فلسطين لقلب عمّان، وبتحسّها مميزة للسائح وللواحد اللي بعرفها من زمان بنفس الوقت. زاكية، مشبعة، وبتستاهل توقف إلها — من هالنوع اللي بخلّي المشوار ذكرى حلوة.",
     reset: "إعادة",
   },
 } as const;

@@ -20,10 +20,10 @@ const CENTER_WORD_EN = "MAGENTA";
 const WORDS_EN: WordSpec[] = [
   { num: 1, answer: "AMMAN",   crossIndex: 1, clue: { en: "Jordan's capital city",     ar: "عاصمة الأردن" } },
   { num: 2, answer: "RAINBOW", crossIndex: 1, clue: { en: "Colorful arc after rain",   ar: "قوس ملوّن بعد المطر" } },
-  { num: 3, answer: "ORANGE",  crossIndex: 4, clue: { en: "A citrus fruit",             ar: "فاكهة حمضية برتقالية" } },
+  { num: 3, answer: "BEGIN",   crossIndex: 2, clue: { en: "What you're doing right now", ar: "ما تفعله في هذه اللحظة"  } },
   { num: 4, answer: "STREET",  crossIndex: 3, clue: { en: "You walk down one",          ar: "تمشي فيه" } },
   { num: 5, answer: "LEMON",   crossIndex: 4, clue: { en: "Sour and yellow",            ar: "حامض وأصفر" } },
-  { num: 6, answer: "TOUM",    crossIndex: 0, clue: { en: "Garlicky white sauce",       ar: "صلصة الثوم البيضاء" } },
+  { num: 6, answer: "TOUM",    crossIndex: 0, clue: { en: "Garlicky white sauce in Shawerma",       ar: "صلصةالشاورمة" } },
   { num: 7, answer: "CAFE",    crossIndex: 1, clue: { en: "Where you go for coffee",    ar: "مكان القهوة" } },
 ];
 
@@ -32,9 +32,9 @@ const CENTER_WORD_AR = "ماجنتا";
 const WORDS_AR: WordSpec[] = [
   { num: 1, answer: "عمان",    crossIndex: 1, clue: { en: "Jordan's capital",           ar: "عاصمة الأردن" } },
   { num: 2, answer: "ياسمين", crossIndex: 1, clue: { en: "A fragrant white flower",    ar: "زهرة عطرة بيضاء" } },
-  { num: 3, answer: "ثلج",    crossIndex: 2, clue: { en: "Melts in summer",             ar: "يذوب في الصيف" } },
+  { num: 3, answer: "درج",    crossIndex: 2, clue: { en: "You'll climb many on this street", ar: "ستصعد عليه كثيرًا في هذا الشارع" } },
   { num: 4, answer: "ليمون",  crossIndex: 4, clue: { en: "Sour yellow fruit",           ar: "فاكهة صفراء حامضة" } },
-  { num: 5, answer: "توم",    crossIndex: 0, clue: { en: "Garlic sauce",                ar: "صلصة الثوم" } },
+  { num: 5, answer: "توم",    crossIndex: 0, clue: { en: "Garlic sauce",                ar: "صلصةالشاورمة" } },
   { num: 6, answer: "شارع",   crossIndex: 1, clue: { en: "A road in the city",          ar: "طريق في المدينة" } },
 ];
 
@@ -649,19 +649,44 @@ export default function PuzzleR1({
       ) : null}
 
       {allSolved && (
-        <div className="mt-4 rounded-3xl border border-neutral-200 bg-white p-5">
-          <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-400">
-            {isAr ? "بالجوار" : "Nearby"}
+        <div className="mt-4 space-y-4 animate-[zowarFadeUp_420ms_cubic-bezier(.22,1,.36,1)_1]">
+          {/* About Magenta */}
+          <div className="overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-5">
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-z-orange">
+              {isAr ? "محطتك التالية" : "Your next stop"}
+            </div>
+            <h3 className="mt-2 text-xl font-semibold text-neutral-950">
+              {isAr ? "ماجنتا" : "Magenta"}
+            </h3>
+            <div className="mt-3 space-y-3 text-sm leading-7 text-neutral-700">
+              <p>
+                {isAr
+                  ? "بعيدًا عن الضجيج، تحتل ماجنتا مكانة مميزة كواحدة من أكثر المقاهي حيوية في عمّان — تُعرف بإبداعها وأعمالها الفنية وإطلالتها الهادئة على جبل عمّان."
+                  : "Tucked away from the chaos, Magenta is one of Amman's most vibrant cafés — known for its creativity and artwork along with its peaceful overview of Jabal Amman."}
+              </p>
+              <p>
+                {isAr
+                  ? "الاسم كان التلميح. لقد وصلت — الآن جد مكانك واستمتع بالمنظر."
+                  : "The name was the clue. You've found it — now grab a seat and take in the view."}
+              </p>
+            </div>
           </div>
-          <h4 className="mt-2 text-base font-semibold text-neutral-950">
-            {isAr ? "جِلد" : "Jeld"}
-            {!isAr && <span className="ml-1.5 font-normal text-neutral-400">(جِلد)</span>}
-          </h4>
-          <p className="mt-2 text-sm leading-6 text-neutral-600">
-            {isAr
-              ? "مباشرةً بجانبك — جِلد محل مستقل يحمل تشكيلة منتخبة من المنتجات المحلية. المكان أنيق وجدير بالاكتشاف."
-              : "Right next door — Jeld is an independent local store with a carefully chosen selection of locally made goods. Not part of the tour, but the space is elegantly curated and worth discovering."}
-          </p>
+
+          {/* Nearby tip: Jeld */}
+          <div className="rounded-3xl border border-neutral-200 bg-white p-5">
+            <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-400">
+              {isAr ? "بالجوار" : "Nearby"}
+            </div>
+            <h4 className="mt-2 text-base font-semibold text-neutral-950">
+              {isAr ? "جِلد" : "Jeld"}
+              {!isAr && <span className="ml-1.5 font-normal text-neutral-400">(جِلد)</span>}
+            </h4>
+            <p className="mt-2 text-sm leading-6 text-neutral-600">
+              {isAr
+                ? "مباشرةً بجانبك — جِلد محل مستقل يحمل تشكيلة منتخبة من المنتجات المحلية. المكان أنيق وجدير بالاكتشاف."
+                : "Right next door — Jeld is an independent local store with a carefully chosen selection of locally made goods. Not part of the tour, but the space is elegantly curated and worth discovering."}
+            </p>
+          </div>
         </div>
       )}
 
@@ -754,6 +779,13 @@ export default function PuzzleR1({
       ) : (
         <div className="h-[calc(2rem+env(safe-area-inset-bottom))] sm:hidden" />
       )}
+
+      <style jsx>{`
+        @keyframes zowarFadeUp {
+          0% { opacity: 0; transform: translateY(10px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }

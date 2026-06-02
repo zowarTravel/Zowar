@@ -16,28 +16,26 @@ type RowState = "idle" | "correct" | "wrong";
 const VIRTUAL_CENTER_COL = 12;
 
 /** ---------- ENGLISH ---------- */
-const CENTER_WORD_EN = "TRINITAE";
+const CENTER_WORD_EN = "MAGENTA";
 const WORDS_EN: WordSpec[] = [
-  { num: 1, answer: "TOUM", crossIndex: 0, clue: { en: "Arabic garlic sauce", ar: "صلصة الثوم العربية" } },
-  { num: 2, answer: "ROOFTOPS", crossIndex: 0, clue: { en: "Amman vibes are best experienced from", ar: "أفضل أجواء عمّان تُعاش من" } },
-  { num: 3, answer: "RAINBOW", crossIndex: 2, clue: { en: "Colorful arcs after rain", ar: "ألوان تظهر بعد المطر" } },
-  { num: 4, answer: "ADVENTURE", crossIndex: 4, clue: { en: "This whole walk-and-solve experience is an", ar: "هذه التجربة كلها تُعتبر" } },
-  { num: 5, answer: "WADIRUM", crossIndex: 3, clue: { en: "Jordan's famous desert destination", ar: "وجهة صحراوية مشهورة في الأردن" } },
-  { num: 6, answer: "TOUR", crossIndex: 0, clue: { en: "A guided experience or route", ar: "جولة أو مسار مُنظّم" } },
-  { num: 7, answer: "SHAWARMA", crossIndex: 2, clue: { en: "Famous Jordan street food", ar: "أكلة شارع مشهورة في الأردن" } },
-  { num: 8, answer: "CAFE", crossIndex: 3, clue: { en: "Coffee place", ar: "مكان القهوة" } },
+  { num: 1, answer: "AMMAN",   crossIndex: 1, clue: { en: "Jordan's capital city",     ar: "عاصمة الأردن" } },
+  { num: 2, answer: "RAINBOW", crossIndex: 1, clue: { en: "Colorful arc after rain",   ar: "قوس ملوّن بعد المطر" } },
+  { num: 3, answer: "ORANGE",  crossIndex: 4, clue: { en: "A citrus fruit",             ar: "فاكهة حمضية برتقالية" } },
+  { num: 4, answer: "STREET",  crossIndex: 3, clue: { en: "You walk down one",          ar: "تمشي فيه" } },
+  { num: 5, answer: "LEMON",   crossIndex: 4, clue: { en: "Sour and yellow",            ar: "حامض وأصفر" } },
+  { num: 6, answer: "TOUM",    crossIndex: 0, clue: { en: "Garlicky white sauce",       ar: "صلصة الثوم البيضاء" } },
+  { num: 7, answer: "CAFE",    crossIndex: 1, clue: { en: "Where you go for coffee",    ar: "مكان القهوة" } },
 ];
 
 /** ---------- ARABIC ---------- */
-const CENTER_WORD_AR = "ترينيتي";
+const CENTER_WORD_AR = "ماجنتا";
 const WORDS_AR: WordSpec[] = [
-  { num: 1, answer: "توم", crossIndex: 0, clue: { en: "Garlic sauce (Arabic)", ar: "صلصة الثوم" } },
-  { num: 2, answer: "أشاورما", crossIndex: 4, clue: { en: "Jordan street food (Arabic word)", ar: "أكلة شارع مشهورة" } },
-  { num: 3, answer: "ياسمين", crossIndex: 4, clue: { en: "A fragrant flower", ar: "زهرة عطرة" } },
-  { num: 4, answer: "صابون", crossIndex: 4, clue: { en: "Soap", ar: "يُستخدم للتنظيف" } },
-  { num: 5, answer: "نشامي", crossIndex: 4, clue: { en: "Jordanian word for a brave/good person", ar: "لقب للأردني الشهم" } },
-  { num: 6, answer: "التي", crossIndex: 2, clue: { en: "Arabic relative pronoun (fem.)", ar: "اسم موصول للمؤنث" } },
-  { num: 7, answer: "واديرم", crossIndex: 3, clue: { en: "Jordan's famous desert destination", ar: "وجهة صحراوية مشهورة" } },
+  { num: 1, answer: "عمان",    crossIndex: 1, clue: { en: "Jordan's capital",           ar: "عاصمة الأردن" } },
+  { num: 2, answer: "ياسمين", crossIndex: 1, clue: { en: "A fragrant white flower",    ar: "زهرة عطرة بيضاء" } },
+  { num: 3, answer: "ثلج",    crossIndex: 2, clue: { en: "Melts in summer",             ar: "يذوب في الصيف" } },
+  { num: 4, answer: "ليمون",  crossIndex: 4, clue: { en: "Sour yellow fruit",           ar: "فاكهة صفراء حامضة" } },
+  { num: 5, answer: "توم",    crossIndex: 0, clue: { en: "Garlic sauce",                ar: "صلصة الثوم" } },
+  { num: 6, answer: "شارع",   crossIndex: 1, clue: { en: "A road in the city",          ar: "طريق في المدينة" } },
 ];
 
 type Cell = {
@@ -409,9 +407,21 @@ export default function PuzzleR1({
 
       <div className="mt-4 space-y-3">
         {status === "correct" && (
-          <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-green-800">
-            {isAr ? "تم الحل! ✅" : "Solved! ✅"}
-          </div>
+          <>
+            <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800">
+              {isAr ? "أحسنت! الكلمة المخفية هي:" : "All correct! The hidden word is:"}
+            </div>
+            <div className="flex items-center justify-center gap-1.5">
+              {(isAr ? ["م","ا","ج","ن","ت","ا"] : ["M","A","G","E","N","T","A"]).map((letter, i) => (
+                <span
+                  key={i}
+                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-amber-200 bg-gradient-to-b from-[#FFFCF6] to-[#FEF0D2] text-sm font-bold text-amber-900 shadow-sm"
+                >
+                  {letter}
+                </span>
+              ))}
+            </div>
+          </>
         )}
         {status === "wrong" && (
           <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">
@@ -637,6 +647,23 @@ export default function PuzzleR1({
           </button>
         </div>
       ) : null}
+
+      {allSolved && (
+        <div className="mt-4 rounded-3xl border border-neutral-200 bg-white p-5">
+          <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-400">
+            {isAr ? "بالجوار" : "Nearby"}
+          </div>
+          <h4 className="mt-2 text-base font-semibold text-neutral-950">
+            {isAr ? "جِلد" : "Jeld"}
+            {!isAr && <span className="ml-1.5 font-normal text-neutral-400">(جِلد)</span>}
+          </h4>
+          <p className="mt-2 text-sm leading-6 text-neutral-600">
+            {isAr
+              ? "مباشرةً بجانبك — جِلد محل مستقل يحمل تشكيلة منتخبة من المنتجات المحلية. المكان أنيق وجدير بالاكتشاف."
+              : "Right next door — Jeld is an independent local store with a carefully chosen selection of locally made goods. Not part of the tour, but the space is elegantly curated and worth discovering."}
+          </p>
+        </div>
+      )}
 
       {showCluesMobile && (
         <div className="fixed inset-0 z-40 lg:hidden">

@@ -12,12 +12,16 @@ export const riddle1 = {
     ar: "ثمرة هذه التلال",
   },
   prompt: {
-    en: `In Madaba's mosaics my crown was carved in stone,\nFrom Ajloun's hillsides each October I am known.\nCrack me at the market — I bleed a hundred rooms of red,\nA Roman name meaning "full of seeds," the traders said.\nWhat am I?`,
-    ar: `في فسيفساء مادبا نُقش تاجي بالحجر،\nومن تلال عجلون أتيتُ مع كل شهر تشرين.\nشُقّني في السوق فأنزف مئة غرفة من العقيق،\nواسمي اللاتيني: مليء بالبذور في كل طريق.\nما أنا؟`,
+    en: `Red crown upon my head,\nA hundred jewels I guard in bed.\nInside are pearls, outside is leather,\nName this fruit, if you are clever.`,
+    ar: `تاج أحمر فوق رأسي،\nأخفي مئة جوهرة في بطني.\nمن جوة لؤلؤ، ومن برة جلد،\nاحزر الفاكهة إن كنت ذكي.`,
   },
   hint: {
     en: "A fruit deeply tied to Jordan — you'll find it pressed into juice on nearly every street corner.",
     ar: "فاكهة مرتبطة بعمق بالأردن — ستجدها معصورة عصيراً في كل زاوية شارع تقريباً.",
+  },
+  hint2: {
+    en: "Think of a fruit filled with jewel-like seeds.",
+    ar: "فكّر بفاكهة مليئة ببذور تشبه الجواهر.",
   },
   answer: { en: "Pomegranate", ar: "رمان" },
   ui: {

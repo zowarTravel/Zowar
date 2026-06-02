@@ -19,9 +19,9 @@ type MapPin = {
 
 const MAP_PINS: MapPin[] = [
   { id: "pin-a", top: "33.5%", left: "27.5%", isCorrect: false },
-  { id: "pin-b", top: "50%", left: "35%", isCorrect: true },
-  { id: "pin-c", top: "12.5%", left: "74.5%", isCorrect: false },
-  { id: "pin-d", top: "67.5%", left: "31.5%", isCorrect: false },
+  { id: "pin-b", top: "43%", left: "38%", isCorrect: true },
+  { id: "pin-c", top: "12.5%", left: "54.5%", isCorrect: false },
+  { id: "pin-d", top: "68.5%", left: "33.5%", isCorrect: false },
   { id: "pin-e", top: "76%", left: "59.5%", isCorrect: false },
   { id: "pin-f", top: "84%", left: "90.5%", isCorrect: false },
 ];

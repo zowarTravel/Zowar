@@ -632,8 +632,8 @@ export default function PuzzleR7({
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-neutral-700">
                     {isAr
-                      ? "شارع الرينبو ليس وجهةً واحدة — بل مسار مليء بطبقات من شخصية عمّان اليومية. جماله يأتي من المزيج: الحجر القديم، المحلات الصغيرة، المقاهي، أكل الشارع، الإطلالات المخفية، والشعور بأن كل زاوية تحمل قصة إذا تمهّلت بما يكفي لتلاحظها."
-                      : "Rainbow Street is not just one destination — it is a layered walk through Amman's everyday character. Its charm comes from the mix: old stone, small shops, cafés, street food, hidden views, and the feeling that every corner has a story if you slow down enough to notice it."}
+                      ? "حصل شارع الرينبو على اسمه من سينما الرينبو التي جعلت هذا التل ملتقىً للأهالي لأجيال. المباني الحجرية التي رافقتك طوال الطريق شُيِّدت في عشرينيات القرن الماضي لنخبة عمّان من سياسيين وسفراء وأفراد من الأسرة الحاكمة. مشروع إحياء في ٢٠٠٦ أعاد إليه ممشاه وإطلالاته. المحطات التي تتبّعتها للتو هي خريطة لذلك التاريخ المتراكم — الشارع ذاته، حقب مختلفة، كلها لا تزال هنا."
+                      : "Rainbow Street takes its name from the Rainbow Cinema, a neighbourhood theatre that made this hill a gathering place for generations. The stone buildings you passed were raised in the 1920s for Amman's elite — politicians, ambassadors, even royals. A 2006 restoration returned its walkways and overlooks to life. The stops you just traced are a map of that layered history: the same street, different eras, all still here."}
                   </p>
                 </div>
               </div>

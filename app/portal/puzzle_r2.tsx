@@ -177,6 +177,8 @@ export default function PuzzleR2({
               <div className="font-semibold text-neutral-950">{isAr ? "التلميح" : "Hint"}</div>
               <div className="mt-1 leading-7">{t.hint[safeLocale]}</div>
 
+              <div className="mt-3 leading-7">{t.hint2[safeLocale]}</div>
+
               {showAnswer && (
                 <div className="mt-4 rounded-2xl border border-black/8 bg-white p-3">
                   <div className="font-semibold text-neutral-950">{isAr ? "الإجابة" : "Answer"}</div>

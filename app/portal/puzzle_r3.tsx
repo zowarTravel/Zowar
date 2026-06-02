@@ -14,7 +14,7 @@ type Props = {
   onSolved?: () => void;
 };
 
-type CategoryKey = "SOAP" | "SCENTS" | "RAINBOW_ST" | "WEIBDEH";
+type CategoryKey = "SOAP_SCENTS" | "RAINBOW_ST" | "AMMAN" | "DESERT";
 
 type Tile = {
   id: string;
@@ -27,46 +27,47 @@ type Tile = {
 /* ------------------------------------------------------------------ */
 
 const CATEGORY_LABELS: Record<CategoryKey, Record<Locale, string>> = {
-  SOAP:       { en: "Soap ingredients",         ar: "مكوّنات الصابون"     },
-  SCENTS:     { en: "Rainbow Street scents",    ar: "عطور الرينبو"        },
-  RAINBOW_ST: { en: "Rainbow Street landmarks", ar: "معالم الرينبو"       },
-  WEIBDEH:    { en: "Al Weibdeh vibes",         ar: "أجواء الويبدة"       },
+  SOAP_SCENTS: { en: "Scents of Jordan",           ar: "عطور الأردن"          },
+  RAINBOW_ST:  { en: "Rainbow Street landmarks",  ar: "معالم الرينبو"        },
+  AMMAN:       { en: "Only in Amman",             ar: "في عمّان فقط"         },
+  DESERT:      { en: "Jordan desert",             ar: "صحراء الأردن"         },
 };
 
 const CATEGORY_DOT: Record<CategoryKey, string> = {
-  SOAP:       "bg-amber-500",
-  SCENTS:     "bg-purple-500",
-  RAINBOW_ST: "bg-blue-500",
-  WEIBDEH:    "bg-emerald-500",
+  SOAP_SCENTS: "bg-amber-500",
+  RAINBOW_ST:  "bg-blue-500",
+  AMMAN:       "bg-emerald-500",
+  DESERT:      "bg-rose-500",
 };
 
 const CATEGORY_PILL: Record<CategoryKey, string> = {
-  SOAP:       "border-amber-200 bg-amber-50 text-amber-900",
-  SCENTS:     "border-purple-200 bg-purple-50 text-purple-900",
-  RAINBOW_ST: "border-blue-200 bg-blue-50 text-blue-900",
-  WEIBDEH:    "border-emerald-200 bg-emerald-50 text-emerald-900",
+  SOAP_SCENTS: "border-amber-200 bg-amber-50 text-amber-900",
+  RAINBOW_ST:  "border-blue-200 bg-blue-50 text-blue-900",
+  AMMAN:       "border-emerald-200 bg-emerald-50 text-emerald-900",
+  DESERT:      "border-rose-200 bg-rose-50 text-rose-900",
 };
 
 const TILES: readonly Tile[] = [
-  { id: "OLIVE_OIL",      category: "SOAP",       label: { en: "Olive oil",       ar: "زيت الزيتون"   } },
-  { id: "LAUREL",         category: "SOAP",       label: { en: "Laurel",          ar: "غار"            } },
-  { id: "ASH",            category: "SOAP",       label: { en: "Ash",             ar: "رماد"           } },
-  { id: "SALT",           category: "SOAP",       label: { en: "Salt",            ar: "ملح"            } },
+  // Interleaved so no category is visually stacked in the grid
+  { id: "OLIVE_OIL",           category: "SOAP_SCENTS", label: { en: "Olive oil",           ar: "زيت الزيتون"   } },
+  { id: "ROOFTOP_VIEW",        category: "RAINBOW_ST",  label: { en: "Rooftop view",        ar: "منظر السطح"    } },
+  { id: "GAS_TRUCK",           category: "AMMAN",       label: { en: "Gas truck",           ar: "شاحنة الغاز"   } },
+  { id: "RED_SAND",            category: "DESERT",      label: { en: "Red sand",            ar: "رمال حمراء"    } },
 
-  { id: "JASMINE",        category: "SCENTS",     label: { en: "Jasmine",         ar: "ياسمين"         } },
-  { id: "ROSE_WATER",     category: "SCENTS",     label: { en: "Rose water",      ar: "ماء الورد"      } },
-  { id: "SAGE",           category: "SCENTS",     label: { en: "Sage",            ar: "مرمية"          } },
-  { id: "ORANGE_BLOSSOM", category: "SCENTS",     label: { en: "Orange blossom",  ar: "زهر البرتقال"   } },
+  { id: "JASMINE",             category: "SOAP_SCENTS", label: { en: "Jasmine",             ar: "ياسمين"         } },
+  { id: "HANGING_DECORATIONS", category: "RAINBOW_ST",  label: { en: "Hanging decorations", ar: "زينة معلّقة"    } },
+  { id: "YELLOW_TAXI",         category: "AMMAN",       label: { en: "Yellow taxi",         ar: "تاكسي أصفر"    } },
+  { id: "STARRY_NIGHT",        category: "DESERT",      label: { en: "Starry night",        ar: "ليلة نجوم"     } },
 
-  { id: "MURAL",          category: "RAINBOW_ST", label: { en: "Mural",           ar: "جداريّة"        } },
-  { id: "BOOKSHOP",       category: "RAINBOW_ST", label: { en: "Bookshop",        ar: "مكتبة"          } },
-  { id: "STONE_STEPS",    category: "RAINBOW_ST", label: { en: "Stone steps",     ar: "درج حجري"       } },
-  { id: "JUICE_BAR",      category: "RAINBOW_ST", label: { en: "Juice bar",       ar: "عصير"           } },
+  { id: "ORANGE_BLOSSOM",      category: "SOAP_SCENTS", label: { en: "Orange blossom",      ar: "زهر البرتقال"  } },
+  { id: "STONE_STEPS",         category: "RAINBOW_ST",  label: { en: "Stone steps",         ar: "درج حجري"      } },
+  { id: "WATER_TANKER",        category: "AMMAN",       label: { en: "Water tanker",        ar: "صهريج المياه"  } },
+  { id: "BEDOUIN_TENT",        category: "DESERT",      label: { en: "Bedouin tent",        ar: "خيمة بدوية"    } },
 
-  { id: "ART_GALLERY",    category: "WEIBDEH",    label: { en: "Art gallery",     ar: "غاليري فن"      } },
-  { id: "PIANO_BAR",      category: "WEIBDEH",    label: { en: "Piano bar",       ar: "بار البيانو"    } },
-  { id: "MOSAIC",         category: "WEIBDEH",    label: { en: "Mosaic",          ar: "فسيفساء"        } },
-  { id: "BALCONY",        category: "WEIBDEH",    label: { en: "Balcony",         ar: "شرفة"           } },
+  { id: "ROSE_WATER",          category: "SOAP_SCENTS", label: { en: "Rose water",          ar: "ماء الورد"     } },
+  { id: "JUICE_BAR",           category: "RAINBOW_ST",  label: { en: "Juice bar",           ar: "عصير"          } },
+  { id: "ROUNDABOUT",          category: "AMMAN",       label: { en: "Roundabout",          ar: "دوّار"          } },
+  { id: "CAMPFIRE",            category: "DESERT",      label: { en: "Campfire",            ar: "نار المخيّم"   } },
 ] as const;
 
 const SOAPHOUSE_MAP_URL =

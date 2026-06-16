@@ -20,8 +20,8 @@ const copy = {
       "Choose your adventure date. After checkout, you’ll receive a confirmation + the Portal access link.",
     experienceTitle: "Choose Your Experience",
     exp1Name: "Experience Rainbow Street",
-    exp1Desc: "A 6-stop culinary walk through Rainbow Street’s iconic cafés & eateries.",
-    exp1Stops: "6 stops",
+    exp1Desc: "A 7-stop culinary walk through Rainbow Street’s iconic cafés & eateries.",
+    exp1Stops: "7 stops",
     exp2Name: "Experience Al Weibdeh",
     exp2Desc: "A 7-stop food adventure through the historic Al Weibdeh neighbourhood.",
     exp2Stops: "7 stops",
@@ -54,8 +54,8 @@ const copy = {
       "اختر تاريخ التجربة. بعد الدفع ستصلك رسالة تأكيد + رابط الدخول إلى البوابة.",
     experienceTitle: "اختر تجربتك",
     exp1Name: "تجربة شارع الرينبو",
-    exp1Desc: "جولة ذواقة من ٦ محطات عبر المقاهي والمطاعم الأيقونية في شارع الرينبو.",
-    exp1Stops: "٦ محطات",
+    exp1Desc: "جولة ذواقة من ٧ محطات عبر المقاهي والمطاعم الأيقونية في شارع الرينبو.",
+    exp1Stops: "٧ محطات",
     exp2Name: "تجربة الويبدة",
     exp2Desc: "مغامرة طعام من ٧ محطات عبر حي الويبدة التاريخي.",
     exp2Stops: "٧ محطات",
@@ -88,8 +88,8 @@ const copy = {
       "Elige la fecha de tu experiencia. Tras el pago recibirás una confirmación + el enlace de acceso al Portal.",
     experienceTitle: "Elige tu Experiencia",
     exp1Name: "Experiencia Calle Rainbow",
-    exp1Desc: "Un recorrido gastronómico de 6 paradas por los cafés y restaurantes de Rainbow Street.",
-    exp1Stops: "6 paradas",
+    exp1Desc: "Un recorrido gastronómico de 7 paradas por los cafés y restaurantes de Rainbow Street.",
+    exp1Stops: "7 paradas",
     exp2Name: "Experiencia Al Weibdeh",
     exp2Desc: "Una aventura culinaria de 7 paradas por el histórico barrio de Al Weibdeh.",
     exp2Stops: "7 paradas",
@@ -155,7 +155,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
   const [loading, setLoading] = React.useState(false);
   const [codeMessage, setCodeMessage] = React.useState("");
 
-  const pricePerPerson = 20;
+  const pricePerPerson = 25;
 
   const subtotal = Math.max(1, qty) * pricePerPerson;
   const total = clamp(subtotal - discount, 0, 999999);
@@ -178,36 +178,21 @@ export default function BookingClient({ locale }: BookingClientProps) {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/checkout", {
+      const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           locale: effectiveLocale,
           date,
           qty: Math.max(1, qty),
-          code: code.trim() || undefined,
           experience,
         }),
       });
 
       const data = await res.json();
-      console.log("checkout response", data);
-
-      /* ---------- FREE CODE PATH ---------- */
-
-      if (res.ok && data?.free) {
-        window.location.href = data.url ?? `/success?${langParam}`;
-        return;
-      }
-
-      /* ---------- NORMAL STRIPE PATH ---------- */
 
       if (!res.ok || !data?.url) {
-        const msg = [data?.error, data?.code, data?.type]
-          .filter(Boolean)
-          .join(" · ");
-
-        throw new Error(msg || "Checkout failed");
+        throw new Error(data?.error || "Checkout failed");
       }
 
       window.location.href = data.url;

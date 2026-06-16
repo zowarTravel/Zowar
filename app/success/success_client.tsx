@@ -50,12 +50,21 @@ export default function SuccessClient({
     if (sessionId) localStorage.setItem("zowar_session_id", sessionId);
     if (experience) localStorage.setItem("zowar_experience", experience);
 
+    // Send confirmation email with magic link (fire-and-forget)
+    if (sessionId) {
+      fetch("/api/send-confirmation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: sessionId, locale, experience }),
+      }).catch(() => {});
+    }
+
     const timer = setTimeout(() => {
       router.replace(`${portalPath}?lang=${locale}`);
     }, 1800);
 
     return () => clearTimeout(timer);
-  }, [isAr, router, sessionId, experience, portalPath]);
+  }, [isAr, router, sessionId, experience, portalPath, locale]);
 
   return (
     <main

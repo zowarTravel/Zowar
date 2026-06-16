@@ -63,8 +63,8 @@ export function PortalGate({
         // network error — fall through
       }
 
-      // Step 2: try verifying session_id from localStorage
-      const sessionId = localStorage.getItem("zowar_session_id");
+      // Step 2: try session_id from URL (magic link) or localStorage
+      const sessionId = sp.get("session_id") || localStorage.getItem("zowar_session_id");
       if (sessionId) {
         try {
           const res = await fetch("/api/portal/verify", {

@@ -42,3 +42,6 @@ next-env.d.ts
 
 # claude code
 .claude/
+
+# finance data (JSON persistence — lives on server, not in git)
+/data/

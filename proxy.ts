@@ -17,7 +17,7 @@ async function makeAdminToken(password: string): Promise<string> {
     .join("");
 }
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith("/admin")) {
     if (req.nextUrl.pathname === "/admin/login") {
       return NextResponse.next();

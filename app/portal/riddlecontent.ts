@@ -149,7 +149,7 @@ export const riddle5 = {
   },
 
   finalInstruction: {
-    en: "Make your way to Flour & Fire — the pizza is waiting.",
-    ar: "توجّه إلى فلور آند فاير — البيتزا بانتظارك.",
+    en: "Make your way to Flour & Fire — your pastries are waiting for you.",
+    ar: "توجّه إلى فلور آند فاير — معجناتك بانتظارك.",
   },
 } as const;

@@ -149,6 +149,8 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     if (slotIndex < 0 || slotIndex >= total) return;
 
     if (selected === null) {
+      // Don't let the user pick a tile that's already locked in place
+      if (locked[slotIndex]) return;
       setSelected(slotIndex);
       return;
     }
@@ -158,12 +160,9 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
       return;
     }
 
-    setOrder((prev) => {
-      const next = [...prev];
-      [next[selected], next[slotIndex]] = [next[slotIndex], next[selected]];
-      return next;
-    });
-
+    const next = [...order];
+    [next[selected], next[slotIndex]] = [next[slotIndex], next[selected]];
+    setOrder(next);
     setSelected(null);
   }
 
@@ -328,16 +327,13 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                         shouldMerge
                           ? "rounded-none border-0 bg-transparent shadow-none"
                           : "rounded-2xl border border-black/10 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.10)]",
-                        solved ? "cursor-default" : "cursor-pointer",
-                        isSelected && !solved
-                          ? "scale-[0.985] ring-2 ring-z-orange glow-z-orange"
-                          : !solved
-                          ? "hover:-translate-y-[1px]"
-                          : "",
+                        solved ? "cursor-default" : "cursor-pointer active:scale-[0.97]",
+                        isSelected && !solved ? "scale-[0.97]" : !solved ? "hover:-translate-y-[1px]" : "",
                         hintRing,
                       ].join(" ")}
                       style={{
                         animation: shouldPulse ? `zowar-snap 240ms ease-out` : undefined,
+                        touchAction: "manipulation",
                       }}
                       aria-label={isAr ? `قطعة ${slotIndex + 1}` : `Tile ${slotIndex + 1}`}
                     >
@@ -348,7 +344,7 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                           backgroundSize: `${grid * 100}% ${grid * 100}%`,
                           backgroundPosition: `${bgPosX}% ${bgPosY}%`,
                           opacity: solved ? 1 : 0.98,
-                          transform: isSelected ? "scale(1.02)" : "scale(1)",
+                          transform: isSelected ? "scale(1.03)" : "scale(1)",
                           transition: "transform 160ms ease, opacity 300ms ease",
                         }}
                       />
@@ -362,10 +358,20 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                                 "inset 0 0 0 1px rgba(255,255,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08)",
                             }}
                           />
+                          {/* Selection indicator — inset so it isn't clipped by overflow-hidden */}
+                          {isSelected && !solved ? (
+                            <div
+                              className="pointer-events-none absolute inset-0 rounded-2xl"
+                              style={{
+                                boxShadow: "inset 0 0 0 3px #C8694A",
+                                background: "rgba(200,105,74,0.10)",
+                              }}
+                            />
+                          ) : null}
                           {showHintOverlay ? (
                             <div className={`pointer-events-none absolute inset-0 ${hintTint}`} />
                           ) : null}
-                          {isCorrect ? (
+                          {isCorrect && !isSelected ? (
                             <div className="pointer-events-none absolute inset-0 bg-emerald-400/10" />
                           ) : null}
                         </>

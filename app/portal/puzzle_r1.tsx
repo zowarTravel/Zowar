@@ -662,12 +662,12 @@ export default function PuzzleR1({
               <p>
                 {isAr
                   ? "بعيدًا عن الضجيج، تحتل ماجنتا مكانة مميزة كواحدة من أكثر المقاهي حيوية في عمّان — تُعرف بإبداعها وأعمالها الفنية وإطلالتها الهادئة على جبل عمّان."
-                  : "Tucked away from the chaos, Magenta is one of Amman's most vibrant cafés — known for its creativity and artwork along with its peaceful overview of Jabal Amman."}
+                  : "Magenta sits off the main stretch, up above Jabal Amman. Good coffee, walls worth looking at, and a view that earns a slower pace."}
               </p>
               <p>
                 {isAr
                   ? "الاسم كان التلميح. لقد وصلت — الآن جد مكانك واستمتع بالمنظر."
-                  : "The name was the clue. You've found it — now grab a seat and take in the view."}
+                  : "The name was the clue. You're here now. Order something and look out."}
               </p>
             </div>
           </div>

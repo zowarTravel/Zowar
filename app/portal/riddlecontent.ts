@@ -43,11 +43,11 @@ export const riddle1 = {
   aboutEyebrow: { en: "Your next stop", ar: "محطتك التالية" },
   aboutTitle: { en: "Ruman Collective", ar: "رمان كولكتيف" },
   aboutBody1: {
-    en: "Ruman — Arabic for pomegranate — gives this collective its name and its spirit. Rooted in the creative heart of Al Weibdeh, the space brings together Jordanian designers and makers whose work draws from the region's visual traditions: hand-printed textiles, ceramics, illustrated prints, and craft objects made within a few streets of where you're standing.",
+    en: "Ruman — Arabic for pomegranate — gives this collective its name and its spirit. Set in the middle of Al Weibdeh, the space brings together Jordanian designers and makers working from the region's craft traditions. Hand-printed textiles, ceramics, illustrated prints, objects made within a few streets of where you're standing.",
     ar: "رمان — وهو اسم الثمرة بالعربية — يُلهم هذا المجمّع ويمنحه روحه. يقع في قلب حي الويبدة المبدع، ويجمع مصمّمين وحرفيين أردنيين تستلهم أعمالهم من الموروث البصري للمنطقة: منسوجات مطبوعة يدوياً، وسيراميك، ومطبوعات مرسومة — كلٌّ منها صُنع على بعد خطوات من المكان الذي تقف فيه.",
   },
   aboutBody2: {
-    en: "What started as a shared studio has grown into one of Amman's quieter discoveries — the kind of place you tell friends about.",
+    en: "It started as a shared studio. Now it's on the short list of places in Amman worth going out of your way for.",
     ar: "بدأت رمان مساحةً للعمل المشترك لتتحوّل بهدوء إلى واحدة من اكتشافات عمّان الأكثر خصوصية — تلك الأماكن التي تُوصي بها أصدقاءك همساً.",
   },
 } as const;
@@ -102,7 +102,7 @@ export const riddle4 = {
     solved: { en: "Solved!", ar: "تم الحل!" },
   },
   finalInstruction: {
-    en: "Your next hidden gem is off the beaten path.",
+    en: "Your next stop is a little off the main drag.",
     ar: "جوهرتك التالية في طريق غير مطروق.",
   },
   aboutEyebrow: { en: "About this stop", ar: "عن هذه المحطة" },
@@ -112,7 +112,7 @@ export const riddle4 = {
     ar: "صناعة الصابون الشامي التقليدية واحدة من أقدم الحرف اليدوية في العالم العربي. خلافاً للصابون الصناعي، يعتمد الصابون الحلبي على مكوّنين لم يتغيرا منذ ألف عام: زيت الزيتون المعصور على البارد وزيت الغار، يُمزجان مع القلوي ويُتركان يتصلّب لأشهر حتى يلين قشره الصلب وتبرز جودته.",
   },
   aboutBody2: {
-    en: "The scent of laurel tells you everything. The higher the laurel content, the darker the bar — and the richer the lather. This tucked-away stop carries that tradition into the neighbourhood.",
+    en: "The scent of laurel tells you everything. The higher the laurel content, the darker the bar, the richer the lather. This small shop brings that tradition to the street.",
     ar: "عبير الغار يقول لك كل شيء. كلما ارتفعت نسبة الغار، كان الصابون أغمق لوناً — وأغنى رغوةً. هذه المحطة الصغيرة المختبئة تحمل ذلك الإرث إلى الحي.",
   },
 } as const;

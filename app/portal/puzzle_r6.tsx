@@ -58,9 +58,9 @@ const CONTENT = {
     storyEyebrow: "The story behind the sweet",
     storyTitle: "Al Yasmeenah",
     storyBody1:
-      "Named after the jasmine flower, Al Yasmeenah is one of Rainbow Street's sweetest rituals. This is the kind of knafeh people come back for: crisp golden pastry, soft melted cheese, warm syrup, and a finish of pistachio.",
+      "Al Yasmeenah takes its name from the jasmine flower. The knafeh is what people come back for: crisp pastry, soft cheese, warm syrup, pistachio on top.",
     storyBody2:
-      "Rooted in the Nablus tradition and carried from Palestine to the heart of Amman, it feels just as special to first-time visitors as it does to locals who already know the pull of a proper bite. Generous, comforting, and worth slowing down for, Al Yasmeenah is the kind of stop that turns a walk into a memory.",
+      "The recipe comes from Nablus, brought over and largely unchanged. Locals and first-timers tend to react the same way. Al Yasmeenah is worth slowing down for.",
     reset: "Reset",
   },
   ar: {

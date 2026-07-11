@@ -71,7 +71,7 @@ const COPY = {
       selectOne: "Select one logo to continue.",
       aboutTitle: "About this stop",
       aboutText:
-        "Al Quds Falafel has been serving its famous falafel sandwiches on Rainbow Street since 1966, making it one of Amman's oldest and most beloved street-food stops, enjoyed by even the Royal Family. It keeps things simple: crispy falafel tucked into sesame kaʿek with tahini and pickles.",
+        "Al Quds Falafel has been on Rainbow Street since 1966. One of the oldest food stops in Amman — the Royal Family has eaten here. The order is simple: falafel in sesame kaʿek with tahini and pickles.",
     },
   },
   ar: {

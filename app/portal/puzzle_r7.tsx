@@ -560,7 +560,7 @@ export default function PuzzleR7({
                 <p>
                   {isAr
                     ? "شكراً لمشيك مع زوّار. تتبّعت الألغاز عبر الطعام والواجهات والإطلالات والتفاصيل الصغيرة، وجمعت المدينة قطعةً قطعة. الآن الجلوس، والمنظر، واللقيمات — كل ذلك لك."
-                    : "Thank you for walking with Zowar. You followed clues through food, storefronts, views, and small details, and pieced the city together one stop at a time. Now the seat, the view, and the bites — they're all yours."}
+                    : "Thank you for walking with Zowar. Seven stops, one street, a lot of ground covered. The seat and the view up top are yours now."}
                 </p>
               </div>
 
@@ -619,7 +619,7 @@ export default function PuzzleR7({
                   <p className="mt-3 text-sm leading-7 text-neutral-700">
                     {isAr
                       ? "ميجانا هي النهاية التي كان هذا المسار يبني باتجاهها: مكان لتبطئ الخطى، تجلس فوق حركة الشارع، وتنظر إلى المدينة من زاوية جديدة. بعد تتبع الألغاز بين الطعام والواجهات والإطلالات والتفاصيل الصغيرة، تتحول هذه المحطة الأخيرة إلى لحظة راحة مستحقة."
-                      : "Mijana is the kind of ending this route was building toward: a place to slow down, sit above the movement of the street, and look back at the city from a new angle. After following clues through food, storefronts, views, and small details, this final stop emobodies all of these and gives an opportunity to relax and reflect."}
+                      : "Mijana sits up above Rainbow Street and gives you somewhere to land after a lot of walking. Get a table, order something, and take in the view. You've earned it."}
                   </p>
                 </div>
 
@@ -633,7 +633,7 @@ export default function PuzzleR7({
                   <p className="mt-3 text-sm leading-7 text-neutral-700">
                     {isAr
                       ? "حصل شارع الرينبو على اسمه من سينما الرينبو التي جعلت هذا التل ملتقىً للأهالي لأجيال. المباني الحجرية التي رافقتك طوال الطريق شُيِّدت في عشرينيات القرن الماضي لنخبة عمّان من سياسيين وسفراء وأفراد من الأسرة الحاكمة. مشروع إحياء في ٢٠٠٦ أعاد إليه ممشاه وإطلالاته. المحطات التي تتبّعتها للتو هي خريطة لذلك التاريخ المتراكم — الشارع ذاته، حقب مختلفة، كلها لا تزال هنا."
-                      : "Rainbow Street takes its name from the Rainbow Cinema, a neighbourhood theatre that made this hill a gathering place for generations. The stone buildings you passed were raised in the 1920s for Amman's elite — politicians, ambassadors, even royals. A 2006 restoration returned its walkways and overlooks to life. The stops you just traced are a map of that layered history: the same street, different eras, all still here."}
+                      : "Rainbow Street takes its name from the Rainbow Cinema, a neighbourhood theatre that made this hill a meeting point for generations. The stone buildings you walked past were built in the 1920s for Amman's politicians, ambassadors, and royals. A 2006 project brought the walkways and overlooks back. The stops you just visited sit inside that history: one street, different eras, all still here."}
                   </p>
                 </div>
               </div>

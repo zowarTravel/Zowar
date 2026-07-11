@@ -20,7 +20,7 @@ type MapPin = {
 const MAP_PINS: MapPin[] = [
   { id: "pin-a", top: "33.5%", left: "27.5%", isCorrect: false },
   { id: "pin-b", top: "43%", left: "38%", isCorrect: true },
-  { id: "pin-c", top: "12.5%", left: "53.5%", isCorrect: false },
+  { id: "pin-c", top: "12.5%", left: "54.5%", isCorrect: false },
   { id: "pin-d", top: "68.5%", left: "33.5%", isCorrect: false },
   { id: "pin-e", top: "76%", left: "59.5%", isCorrect: false },
   { id: "pin-f", top: "84%", left: "90.5%", isCorrect: false },
@@ -49,12 +49,12 @@ const CONTENT = {
       "Not quite — revisit the diagonal between First Circle and the decorated street, then try again.",
     successTitle: "Correct!",
     successBody: "You found Al Yasmeenah.",
-    aboutEyebrow: "About this stop",
-    aboutTitle: "Mijana",
+    aboutEyebrow: "Your next stop",
+    aboutTitle: "Flour & Fire",
     aboutBody1:
-      "Time to enjoy all the tasty bites and the magical Amman view at Mijana.",
+      "Time for something warm from the wood-fire oven. Flour & Fire is right around the corner.",
     aboutBody2:
-      "Make your way to Mijana — your table and the view are waiting.",
+      "Make your way there — your pastries are waiting.",
     storyEyebrow: "The story behind the sweet",
     storyTitle: "Al Yasmeenah",
     storyBody1:
@@ -85,12 +85,12 @@ const CONTENT = {
       "ليست هذه — ارجع إلى الخط القطري بين الدوار الأول والشارع المزيّن وحاول مجدداً.",
     successTitle: "إجابة صحيحة!",
     successBody: "لقد وجدت الياسمينة.",
-    aboutEyebrow: "عن هذه المحطة",
-    aboutTitle: "ميجانا",
+    aboutEyebrow: "محطتك التالية",
+    aboutTitle: "فلور آند فاير",
     aboutBody1:
-      "حان وقت الاستمتاع بكل اللقيمات اللذيذة والإطلالة الرائعة على عمّان في ميجانا.",
+      "حان وقت شيء دافئ من الفرن الحطبي — Flour & Fire على بُعد خطوات.",
     aboutBody2:
-      "توجّه إلى ميجانا — طاولتك والإطلالة بانتظارك.",
+      "توجّه إليها — المعجنات بانتظارك.",
     storyEyebrow: "قصة وراء الحلاوة",
     storyTitle: "الياسمينة",
     storyBody1:

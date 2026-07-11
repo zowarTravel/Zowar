@@ -16,15 +16,15 @@ const MAP_FRAMES = [
 const LOGO_OPTIONS = [
   {
     id: "f1",
-    src: "/images/puzzles/r3/Falafel 1.png",
+    src: "/images/puzzles/r3/Falafel 1-faded.png",
   },
   {
     id: "f2",
-    src: "/images/puzzles/r3/Falafel 2.png",
+    src: "/images/puzzles/r3/Falafel 2-faded.png",
   },
   {
     id: "f3",
-    src: "/images/puzzles/r3/Falafel 3.png",
+    src: "/images/puzzles/r3/Falafel 3-faded.png",
   },
 ] as const;
 

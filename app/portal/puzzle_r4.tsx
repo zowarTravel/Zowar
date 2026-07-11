@@ -8,23 +8,23 @@ import { setRoundSolved, serverSetRoundSolved } from "./progress";
 type Status = "idle" | "wrong" | "correct";
 
 const MAP_FRAMES = [
-  "/images/puzzles/r3/Destination Map 1.png",
-  "/images/puzzles/r3/Destination Map 2.png",
-  "/images/puzzles/r3/Destination Map 3.png",
+  "/images/puzzles/r3/Destination Map 1-Faded.png",
+  "/images/puzzles/r3/Destination Map 2-Faded.png",
+  "/images/puzzles/r3/Destination Map 3-Faded.png",
 ] as const;
 
 const LOGO_OPTIONS = [
   {
     id: "f1",
-    src: "/images/puzzles/r3/Falafel 1-faded.png",
+    src: "/images/puzzles/r3/Falafel 1.png",
   },
   {
     id: "f2",
-    src: "/images/puzzles/r3/Falafel 2-faded.png",
+    src: "/images/puzzles/r3/Falafel 2.png",
   },
   {
     id: "f3",
-    src: "/images/puzzles/r3/Falafel 3-faded.png",
+    src: "/images/puzzles/r3/Falafel 3.png",
   },
 ] as const;
 

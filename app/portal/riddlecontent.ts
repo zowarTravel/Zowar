@@ -144,12 +144,12 @@ export const riddle5 = {
   success: { en: "Perfect — image complete!", ar: "رائع — اكتملت الصورة!" },
 
   endCopy: {
-    en: "Time to enjoy all the tasty bites and the magical Amman view at Mijana.",
-    ar: "حان وقت الاستمتاع بكل اللقيمات اللذيذة والإطلالة الرائعة على عمّان في ميجانا.",
+    en: "Time for something warm from the wood-fire oven — Flour & Fire is your next stop.",
+    ar: "وقت شيء دافئ من فرن الحطب — فلور آند فاير محطتك القادمة.",
   },
 
   finalInstruction: {
-    en: "Make your way to Mijana — your table and the view are waiting.",
-    ar: "توجّه إلى ميجانا — طاولتك والإطلالة بانتظارك.",
+    en: "Make your way to Flour & Fire — the pizza is waiting.",
+    ar: "توجّه إلى فلور آند فاير — البيتزا بانتظارك.",
   },
 } as const;

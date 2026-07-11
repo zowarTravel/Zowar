@@ -175,9 +175,27 @@ export default function BookingClient({ locale }: BookingClientProps) {
   /* ---------------- Checkout ---------------- */
 
   async function startCheckout() {
-    try {
-      setLoading(true);
+    setLoading(true);
 
+    try {
+      // Free promo code path — bypass Stripe entirely
+      if (total === 0) {
+        const res = await fetch("/api/portal/free-unlock", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: code.trim().toLowerCase() }),
+        });
+        if (!res.ok) {
+          const d = await res.json().catch(() => ({}));
+          throw new Error(d?.error || "Invalid promo code.");
+        }
+        localStorage.setItem("zowar_unlocked", "1");
+        const portalPath = experience === "weibdeh" ? "/portal/weibdeh" : "/portal";
+        window.location.href = `${portalPath}?lang=${effectiveLocale}`;
+        return;
+      }
+
+      // Paid path — create Stripe checkout session
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -192,12 +210,13 @@ export default function BookingClient({ locale }: BookingClientProps) {
       const data = await res.json();
 
       if (!res.ok || !data?.url) {
-        throw new Error(data?.error || "Checkout failed");
+        throw new Error(data?.error || "Checkout failed. Please try again.");
       }
 
       window.location.href = data.url;
-    } catch (e: any) {
-      alert(e?.message ?? "Something went wrong.");
+    } catch (e: unknown) {
+      const err = e as { message?: string };
+      alert(err?.message ?? "Something went wrong. Please try again.");
       setLoading(false);
     }
   }

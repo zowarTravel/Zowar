@@ -55,7 +55,7 @@ const TILES: readonly Tile[] = [
   { id: "RED_SAND",            category: "DESERT",      label: { en: "Red sand",            ar: "رمال حمراء"    } },
 
   { id: "JASMINE",             category: "SOAP_SCENTS", label: { en: "Jasmine",             ar: "ياسمين"         } },
-  { id: "HANGING_DECORATIONS", category: "RAINBOW_ST",  label: { en: "Hanging decorations", ar: "زينة معلّقة"    } },
+  { id: "HANGING_DECORATIONS", category: "RAINBOW_ST",  label: { en: "Lanterns",           ar: "فوانيس"          } },
   { id: "YELLOW_TAXI",         category: "AMMAN",       label: { en: "Yellow taxi",         ar: "تاكسي أصفر"    } },
   { id: "STARRY_NIGHT",        category: "DESERT",      label: { en: "Starry night",        ar: "ليلة نجوم"     } },
 
@@ -72,6 +72,19 @@ const TILES: readonly Tile[] = [
 
 const SOAPHOUSE_MAP_URL =
   "https://maps.google.com/?q=Trinitae,+Rainbow+Street,+Amman,+Jordan";
+
+const HINTS: Record<Locale, readonly string[]> = {
+  en: [
+    "Think in themes, not geography. All 16 words connect to Jordan — your job is to find which specific theme each one belongs to.",
+    "One group is scents and ingredients used in traditional Jordanian soap-making. They're not just things you find in Jordan — they're specifically what goes into the soap at your next stop.",
+    "The Amman group is about the city's daily sounds and sights: the gas truck that drives through neighbourhoods, the yellow taxi, the water tanker, the roundabout. Things that are distinctly Amman — not Rainbow Street.",
+  ],
+  ar: [
+    "فكّر بمواضيع لا بجغرافية. الكلمات الستة عشر كلها مرتبطة بالأردن — مهمتك أن تكتشف الموضوع المشترك لكل مجموعة.",
+    "إحدى المجموعات تضم عطور ومكوّنات صناعة الصابون التقليدي الأردني. ليست مجرد أشياء موجودة في الأردن — بل هي تحديداً ما يدخل في صنع الصابون الذي ستجده في محطتك القادمة.",
+    "مجموعة عمّان تتعلق بأصوات ومشاهد المدينة اليومية: شاحنة الغاز التي تجوب الأحياء، التاكسي الأصفر، الصهريج، الدوّار — أشياء تميّز عمّان تحديداً، لا شارع الرينبو.",
+  ],
+};
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                            */
@@ -113,6 +126,7 @@ export function PuzzleR3({ locale, onSolved }: Props) {
   const [status, setStatus] = React.useState<"idle" | "correct" | "oneaway" | "wrong">("idle");
   const [nudge, setNudge] = React.useState(false);
   const [isSolved, setIsSolved] = React.useState(false);
+  const [hintsRevealed, setHintsRevealed] = React.useState<0 | 1 | 2 | 3 | 4>(0);
 
   const solvedOnceRef = React.useRef(false);
   const timerRef = React.useRef<number | null>(null);
@@ -270,6 +284,68 @@ export function PuzzleR3({ locale, onSolved }: Props) {
           </div>
         </div>
 
+        {/* Hints */}
+        {!isSolved && (
+          <div className="relative mt-4">
+            <div className="flex flex-wrap gap-2">
+              {hintsRevealed < 3 && (
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-z-orange bg-z-orange-soft px-4 py-2 text-sm font-semibold transition active:scale-[0.99] z-orange"
+                  onClick={() => setHintsRevealed((p) => Math.min(p + 1, 3) as 0 | 1 | 2 | 3 | 4)}
+                >
+                  {hintsRevealed === 0
+                    ? (isAr ? "أظهر تلميحاً" : "Show hint")
+                    : (isAr ? "التلميح التالي" : "Next hint")}
+                </button>
+              )}
+              {hintsRevealed === 3 && (
+                <button
+                  type="button"
+                  className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-800 transition active:scale-[0.99] hover:bg-amber-100"
+                  onClick={() => setHintsRevealed(4)}
+                >
+                  {isAr ? "كشف مجموعة" : "Solve a category"}
+                </button>
+              )}
+              {hintsRevealed > 0 && (
+                <button
+                  type="button"
+                  className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-neutral-900 shadow-sm transition hover:bg-neutral-50"
+                  onClick={() => setHintsRevealed(0)}
+                >
+                  {isAr ? "إخفاء التلميحات" : "Hide hints"}
+                </button>
+              )}
+            </div>
+            {hintsRevealed > 0 && (
+              <div className="mt-3 grid gap-2">
+                {HINTS[safeLocale].slice(0, Math.min(hintsRevealed, 3)).map((hint, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-2xl border border-black/8 bg-z-off-white p-3 text-sm leading-7 text-neutral-700"
+                  >
+                    <span className="mb-0.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-500">
+                      {isAr ? "تلميح" : "Hint"} {idx + 1}
+                    </span>
+                    {hint}
+                  </div>
+                ))}
+                {hintsRevealed === 4 && (
+                  <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm leading-7 text-amber-900">
+                    <span className="mb-0.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-amber-600">
+                      {isAr ? "مجموعة مكشوفة" : "Revealed group"}
+                    </span>
+                    {isAr
+                      ? "المجموعة المُضاءة أدناه هي معالم شارع الرينبو."
+                      : "The highlighted tiles below are Rainbow Street landmarks."}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Puzzle area */}
         <div className="mt-6">
           {!isSolved ? (
@@ -300,12 +376,17 @@ export function PuzzleR3({ locale, onSolved }: Props) {
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {remainingTiles.map((tile) => {
                     const isPicked = selected.includes(tile.id);
+                    const isRevealed = hintsRevealed === 4 && tile.category === "RAINBOW_ST";
                     return (
                       <button
                         key={tile.id}
                         type="button"
                         onClick={() => toggleTile(tile.id)}
-                        className={[tileBase, isPicked ? tileSelected : ""].join(" ")}
+                        className={[
+                          tileBase,
+                          isPicked ? tileSelected : "",
+                          isRevealed && !isPicked ? "border-amber-300 bg-amber-50 text-amber-900 ring-2 ring-amber-200" : "",
+                        ].join(" ")}
                         aria-pressed={isPicked}
                       >
                         {tile.label[safeLocale]}

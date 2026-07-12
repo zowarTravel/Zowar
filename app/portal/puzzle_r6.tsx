@@ -49,12 +49,12 @@ const CONTENT = {
       "Not quite — revisit the diagonal between First Circle and the decorated street, then try again.",
     successTitle: "Correct!",
     successBody: "You found Al Yasmeenah.",
-    aboutEyebrow: "Your next stop",
-    aboutTitle: "Flour & Fire",
+    aboutEyebrow: "About this stop",
+    aboutTitle: "Al Yasmeenah",
     aboutBody1:
-      "Time for something warm from the wood-fire oven. Flour & Fire is right around the corner.",
+      "You've arrived at Al Yasmeenah — named after the jasmine flower and one of the best knafeh spots on Rainbow Street.",
     aboutBody2:
-      "Make your way there — your pastries are waiting.",
+      "Order at the counter and take it in.",
     storyEyebrow: "The story behind the sweet",
     storyTitle: "Al Yasmeenah",
     storyBody1:
@@ -85,12 +85,12 @@ const CONTENT = {
       "ليست هذه — ارجع إلى الخط القطري بين الدوار الأول والشارع المزيّن وحاول مجدداً.",
     successTitle: "إجابة صحيحة!",
     successBody: "لقد وجدت الياسمينة.",
-    aboutEyebrow: "محطتك التالية",
-    aboutTitle: "فلور آند فاير",
+    aboutEyebrow: "عن هذه المحطة",
+    aboutTitle: "الياسمينة",
     aboutBody1:
-      "حان وقت شيء دافئ من الفرن الحطبي — Flour & Fire على بُعد خطوات.",
+      "وصلت إلى الياسمينة — مسمّاة على اسم زهرة الياسمين وتشتهر بكنافة لا تُنسى على شارع الرينبو.",
     aboutBody2:
-      "توجّه إليها — المعجنات بانتظارك.",
+      "اطلب من الكاونتر واستمتع باللحظة.",
     storyEyebrow: "قصة وراء الحلاوة",
     storyTitle: "الياسمينة",
     storyBody1:

@@ -43,8 +43,8 @@ export const riddle1 = {
   aboutEyebrow: { en: "Your next stop", ar: "محطتك التالية" },
   aboutTitle: { en: "Ruman Collective", ar: "رمان كولكتيف" },
   aboutBody1: {
-    en: "Ruman — Arabic for pomegranate — gives this collective its name and its spirit. Set in the middle of Al Weibdeh, the space brings together Jordanian designers and makers working from the region's craft traditions. Hand-printed textiles, ceramics, illustrated prints, objects made within a few streets of where you're standing.",
-    ar: "رمان — وهو اسم الثمرة بالعربية — يُلهم هذا المجمّع ويمنحه روحه. يقع في قلب حي الويبدة المبدع، ويجمع مصمّمين وحرفيين أردنيين تستلهم أعمالهم من الموروث البصري للمنطقة: منسوجات مطبوعة يدوياً، وسيراميك، ومطبوعات مرسومة — كلٌّ منها صُنع على بعد خطوات من المكان الذي تقف فيه.",
+    en: "Ruman — Arabic for pomegranate — gives this collective its name and its spirit. On Rainbow Street, the space brings together Jordanian designers and makers working from the region's craft traditions. Hand-printed textiles, ceramics, illustrated prints, objects made within a few streets of where you're standing.",
+    ar: "رمان — وهو اسم الثمرة بالعربية — يُلهم هذا المجمّع ويمنحه روحه. يقع على شارع الرينبو، ويجمع مصمّمين وحرفيين أردنيين تستلهم أعمالهم من الموروث البصري للمنطقة: منسوجات مطبوعة يدوياً، وسيراميك، ومطبوعات مرسومة — كلٌّ منها صُنع على بعد خطوات من المكان الذي تقف فيه.",
   },
   aboutBody2: {
     en: "It started as a shared studio. Now it's on the short list of places in Amman worth going out of your way for.",

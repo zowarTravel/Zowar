@@ -20,8 +20,8 @@ const CENTER_WORD_EN = "MAGENTA";
 const WORDS_EN: WordSpec[] = [
   { num: 1, answer: "AMMAN",   crossIndex: 1, clue: { en: "Jordan's capital city",     ar: "عاصمة الأردن" } },
   { num: 2, answer: "RAINBOW", crossIndex: 1, clue: { en: "Colorful arc after rain",   ar: "قوس ملوّن بعد المطر" } },
-  { num: 3, answer: "BEGIN",   crossIndex: 2, clue: { en: "What you're doing right now", ar: "ما تفعله في هذه اللحظة"  } },
-  { num: 4, answer: "STREET",  crossIndex: 3, clue: { en: "You walk down one",          ar: "تمشي فيه" } },
+  { num: 3, answer: "BEGIN",   crossIndex: 2, clue: { en: "The opposite of to end",      ar: "ما تفعله في هذه اللحظة"  } },
+  { num: 4, answer: "STREET",  crossIndex: 3, clue: { en: "Cars drive on these",         ar: "تمشي فيه" } },
   { num: 5, answer: "LEMON",   crossIndex: 4, clue: { en: "Sour and yellow",            ar: "حامض وأصفر" } },
   { num: 6, answer: "TOUM",    crossIndex: 0, clue: { en: "Garlicky white sauce in Shawerma",       ar: "صلصةالشاورمة" } },
   { num: 7, answer: "CAFE",    crossIndex: 1, clue: { en: "Where you go for coffee",    ar: "مكان القهوة" } },
@@ -666,8 +666,8 @@ export default function PuzzleR1({
               </p>
               <p>
                 {isAr
-                  ? "الاسم كان التلميح. لقد وصلت — الآن جد مكانك واستمتع بالمنظر."
-                  : "The name was the clue. You're here now. Order something and look out."}
+                  ? "الاسم كان التلميح. من هنا تبدأ رحلتك."
+                  : "The name was the clue. This is where your adventure will begin."}
               </p>
             </div>
           </div>

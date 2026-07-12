@@ -232,7 +232,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
     "rounded-xl border border-black/10 bg-white px-3 py-2 text-sm hover:bg-black/[0.03]";
 
   const inputClass =
-    "mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-z-orange";
+    "mt-2 block w-full max-w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-z-orange";
 
   const experienceCardBase =
     "relative rounded-2xl border p-4 text-start transition";
@@ -417,7 +417,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           {/* Left Card */}
 
-          <section className={`${glassCard} p-6`}>
+          <section className={`${glassCard} overflow-hidden p-6`}>
             <div className="text-base font-semibold">{t.nextStepsTitle}</div>
 
             <ul className="mt-4 space-y-2 text-sm text-neutral-700">
@@ -429,7 +429,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
               ))}
             </ul>
 
-            <div className="mt-6">
+            <div className="mt-6 min-w-0 overflow-hidden">
               <label className="text-sm text-neutral-600">
                 {t.chooseDate}
               </label>

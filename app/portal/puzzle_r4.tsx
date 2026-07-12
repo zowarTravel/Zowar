@@ -70,8 +70,11 @@ const COPY = {
         "Perfect. You found the classic — enjoy your bite at Al Quds Falafel.",
       selectOne: "Select one logo to continue.",
       aboutTitle: "About this stop",
-      aboutText:
-        "Al Quds Falafel has been on Rainbow Street since 1966. One of the oldest food stops in Amman — the Royal Family has eaten here. The order is simple: falafel in sesame kaʿek with tahini and pickles.",
+      aboutText: [
+        "Al Quds Falafel has been on Rainbow Street since 1966. The name means Jerusalem — and when this place opened, that name carried real weight. A generation had just arrived in Amman carrying it with them, and a falafel shop named Al Quds was both a meal and a statement.",
+        "Nearly sixty years on, the recipe hasn't changed. Falafel pressed and fried to order, served in sesame kaʿek with tahini and pickles. The Royal Family has eaten here. So have generations of Ammani regulars, students from these streets, and first-time visitors who came on someone's insistence.",
+        "The price is still what it should be. The falafel is still the point.",
+      ],
     },
   },
   ar: {
@@ -113,8 +116,11 @@ const COPY = {
         "ممتاز. لقد وجدت الكلاسيكي — استمتع بلقمتك في فلافل القدس.",
       selectOne: "اختر شعارًا واحدًا للمتابعة.",
       aboutTitle: "عن هذه المحطة",
-      aboutText:
-        "يقدّم فلافل القدس ساندويشات الفلافل الشهيرة على شارع الرينبو منذ عام 1966، مما يجعله من أقدم وأحبّ محلات الأكل الشعبي في عمّان. بساطته جزء من شهرته: فلافل مقرمشة داخل كعك بالسمسم مع الطحينة والمخلل.",
+      aboutText: [
+        "يقدّم فلافل القدس ساندويشاته الشهيرة على شارع الرينبو منذ عام 1966. الاسم وحده يختزل ذاكرة جيل كامل — القدس التي حمل الناس اسمها معهم إلى عمّان، وفتح هذا المحل على اسمها كان أكثر من مجرد بداية مشروع.",
+        "مرّت ستة عقود دون أن يتغير شيء جوهري: فلافل تُقلى على الطلب وتُقدَّم في كعك بالسمسم مع الطحينة والمخلل. أكل هنا أفراد من الأسرة الحاكمة، وزبائن عمّانيون لم يعرفوا بديلاً، وزوّار جاؤوا بتوصية شخص نشأ على هذا الشارع.",
+        "السعر لا يزال في متناول الجميع. الفلافل لا تزال هي المقصد.",
+      ],
     },
   },
 } as const;
@@ -452,9 +458,11 @@ export default function PuzzleR4({
                             {t.ui.aboutTitle}
                           </p>
 
-                          <p className="mt-2 text-sm leading-6">
-                            {t.ui.aboutText}
-                          </p>
+                          <div className="mt-2 space-y-3 text-sm leading-6">
+                            {(t.ui.aboutText as readonly string[]).map((p, i) => (
+                              <p key={i}>{p}</p>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     )}

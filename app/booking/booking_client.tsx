@@ -155,7 +155,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
   const [loading, setLoading] = React.useState(false);
   const [codeMessage, setCodeMessage] = React.useState("");
 
-  const pricePerPerson = 25;
+  const pricePerPerson = 28;
 
   const subtotal = Math.max(1, qty) * pricePerPerson;
   const total = clamp(subtotal - discount, 0, 999999);
@@ -195,25 +195,8 @@ export default function BookingClient({ locale }: BookingClientProps) {
         return;
       }
 
-      // Paid path — create Stripe checkout session
-      const res = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          locale: effectiveLocale,
-          date,
-          qty: Math.max(1, qty),
-          experience,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data?.url) {
-        throw new Error(data?.error || "Checkout failed. Please try again.");
-      }
-
-      window.location.href = data.url;
+      // Paid path — redirect to Stripe Payment Link
+      window.location.href = "https://buy.stripe.com/8x214mbrB6z74Vd9XNd7q00";
     } catch (e: unknown) {
       const err = e as { message?: string };
       alert(err?.message ?? "Something went wrong. Please try again.");

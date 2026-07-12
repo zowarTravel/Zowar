@@ -41,7 +41,7 @@ export async function POST(req: Request) {
               name: "Zowar Amman Experience",
               description: "Self-guided Amman food and puzzle walk",
             },
-            unit_amount: 3525, // $35.25 = 25 JOD
+            unit_amount: 3948, // $39.48 = 28 JOD
           },
           quantity: 1,
         },

@@ -62,8 +62,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const experienceDate = meta.date || undefined;
   const locale = meta.lang ?? "en";
 
-  // Revenue: 25 JOD per participant (fixed price at time of booking)
-  const pricePerPersonJOD = 25;
+  // Revenue: 28 JOD per participant (fixed price at time of booking)
+  const pricePerPersonJOD = 28;
   const grossRevenue = participants * pricePerPersonJOD;
 
   const partners = getPartners();

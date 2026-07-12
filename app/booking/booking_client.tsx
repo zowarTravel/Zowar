@@ -47,6 +47,7 @@ const copy = {
     home: "Home",
     portal: "Go to Portal",
     freeCodeApplied: "Free booking code applied",
+    halfOffApplied: "50% discount applied",
   },
   ar: {
     title: "الحجز",
@@ -81,6 +82,7 @@ const copy = {
     home: "الرئيسية",
     portal: "الذهاب إلى البوابة",
     freeCodeApplied: "تم تطبيق كود الحجز المجاني",
+    halfOffApplied: "تم تطبيق خصم ٥٠٪",
   },
   es: {
     title: "Reserva",
@@ -115,6 +117,7 @@ const copy = {
     home: "Inicio",
     portal: "Ir al Portal",
     freeCodeApplied: "Código de reserva gratuita aplicado",
+    halfOffApplied: "Descuento del 50% aplicado",
   },
 } as const;
 
@@ -166,6 +169,9 @@ export default function BookingClient({ locale }: BookingClientProps) {
     if (normalized === "zowarfree") {
       setDiscount(subtotal);
       setCodeMessage(t.freeCodeApplied);
+    } else if (normalized === "halfzowar") {
+      setDiscount(Math.floor(subtotal * 0.5));
+      setCodeMessage(t.halfOffApplied);
     } else {
       setDiscount(0);
       setCodeMessage("");
@@ -196,7 +202,10 @@ export default function BookingClient({ locale }: BookingClientProps) {
       }
 
       // Paid path — redirect to Stripe Payment Link
-      window.location.href = "https://buy.stripe.com/8x214mbrB6z74Vd9XNd7q00";
+      const FULL_PRICE_LINK = "https://buy.stripe.com/8x214mbrB6z74Vd9XNd7q00";
+      const HALF_OFF_LINK   = "https://buy.stripe.com/fZufZganxaPngDVd9Zd7q01";
+      const normalized = code.trim().toLowerCase();
+      window.location.href = normalized === "halfzowar" ? HALF_OFF_LINK : FULL_PRICE_LINK;
     } catch (e: unknown) {
       const err = e as { message?: string };
       alert(err?.message ?? "Something went wrong. Please try again.");

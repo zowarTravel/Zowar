@@ -14,7 +14,7 @@ type Props = {
   onSolved?: () => void;
 };
 
-type CategoryKey = "SOAP_SCENTS" | "JORDAN_DRINKS" | "AMMAN" | "DESERT";
+type CategoryKey = "SOAP_SCENTS" | "JORDAN_MEALS" | "AMMAN" | "DESERT";
 
 type Tile = {
   id: string;
@@ -28,21 +28,21 @@ type Tile = {
 
 const CATEGORY_LABELS: Record<CategoryKey, Record<Locale, string>> = {
   SOAP_SCENTS:   { en: "Scents of Jordan",       ar: "عطور الأردن"       },
-  JORDAN_DRINKS: { en: "Jordanian drinks",        ar: "مشروبات أردنية"   },
+  JORDAN_MEALS:  { en: "Jordanian meals",          ar: "أكلات أردنية"     },
   AMMAN:         { en: "Only in Amman",           ar: "في عمّان فقط"     },
   DESERT:        { en: "Jordan desert",           ar: "صحراء الأردن"     },
 };
 
 const CATEGORY_DOT: Record<CategoryKey, string> = {
   SOAP_SCENTS:   "bg-amber-500",
-  JORDAN_DRINKS: "bg-purple-500",
+  JORDAN_MEALS:  "bg-purple-500",
   AMMAN:         "bg-emerald-500",
   DESERT:        "bg-rose-500",
 };
 
 const CATEGORY_PILL: Record<CategoryKey, string> = {
   SOAP_SCENTS:   "border-amber-200 bg-amber-50 text-amber-900",
-  JORDAN_DRINKS: "border-purple-200 bg-purple-50 text-purple-900",
+  JORDAN_MEALS:  "border-purple-200 bg-purple-50 text-purple-900",
   AMMAN:         "border-emerald-200 bg-emerald-50 text-emerald-900",
   DESERT:        "border-rose-200 bg-rose-50 text-rose-900",
 };
@@ -50,22 +50,22 @@ const CATEGORY_PILL: Record<CategoryKey, string> = {
 const TILES: readonly Tile[] = [
   // Interleaved so no category is visually stacked in the grid
   { id: "OLIVE_OIL",      category: "SOAP_SCENTS",   label: { en: "Olive oil",       ar: "زيت الزيتون"  } },
-  { id: "LEMON_MINT",     category: "JORDAN_DRINKS", label: { en: "Lemon mint",      ar: "ليمون نعناع"  } },
+  { id: "MANSAF",          category: "JORDAN_MEALS",  label: { en: "Mansaf",          ar: "منسف"          } },
   { id: "GAS_TRUCK",      category: "AMMAN",         label: { en: "Gas truck",       ar: "شاحنة الغاز"  } },
   { id: "RED_SAND",       category: "DESERT",        label: { en: "Red sand",        ar: "رمال حمراء"   } },
 
   { id: "JASMINE",        category: "SOAP_SCENTS",   label: { en: "Jasmine",         ar: "ياسمين"        } },
-  { id: "MINT_TEA",       category: "JORDAN_DRINKS", label: { en: "Mint tea",        ar: "شاي نعناع"    } },
+  { id: "SHAWERMA",       category: "JORDAN_MEALS",  label: { en: "Shawerma",        ar: "شاورما"        } },
   { id: "YELLOW_TAXI",    category: "AMMAN",         label: { en: "Yellow taxi",     ar: "تاكسي أصفر"   } },
   { id: "STARRY_NIGHT",   category: "DESERT",        label: { en: "Starry night",    ar: "ليلة نجوم"    } },
 
   { id: "ORANGE_BLOSSOM", category: "SOAP_SCENTS",   label: { en: "Orange blossom",  ar: "زهر البرتقال" } },
-  { id: "SHANEENAH",      category: "JORDAN_DRINKS", label: { en: "Shaneenah",       ar: "شنينة"         } },
+  { id: "MANAKEESH",      category: "JORDAN_MEALS",  label: { en: "Manakeesh",       ar: "مناقيش"        } },
   { id: "WATER_TANKER",   category: "AMMAN",         label: { en: "Water tanker",    ar: "صهريج المياه" } },
   { id: "BEDOUIN_TENT",   category: "DESERT",        label: { en: "Bedouin tent",    ar: "خيمة بدوية"   } },
 
   { id: "ROSE_WATER",     category: "SOAP_SCENTS",   label: { en: "Rose water",      ar: "ماء الورد"    } },
-  { id: "TURKISH_COFFEE", category: "JORDAN_DRINKS", label: { en: "Turkish coffee",  ar: "قهوة تركية"   } },
+  { id: "FALAFEL",        category: "JORDAN_MEALS",  label: { en: "Falafel",         ar: "فلافل"         } },
   { id: "ROUNDABOUT",     category: "AMMAN",         label: { en: "Roundabout",      ar: "دوّار"         } },
   { id: "CAMPFIRE",       category: "DESERT",        label: { en: "Campfire",        ar: "نار المخيّم"  } },
 ] as const;
@@ -337,8 +337,8 @@ export function PuzzleR3({ locale, onSolved }: Props) {
                       {isAr ? "مجموعة مكشوفة" : "Revealed group"}
                     </span>
                     {isAr
-                      ? "المجموعة المُضاءة أدناه هي المشروبات الأردنية التقليدية."
-                      : "The highlighted tiles below are traditional Jordanian drinks."}
+                      ? "المجموعة المُضاءة أدناه هي أكلات أردنية شعبية."
+                      : "The highlighted tiles below are popular Jordanian meals."}
                   </div>
                 )}
               </div>
@@ -376,7 +376,7 @@ export function PuzzleR3({ locale, onSolved }: Props) {
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {remainingTiles.map((tile) => {
                     const isPicked = selected.includes(tile.id);
-                    const isRevealed = hintsRevealed === 4 && tile.category === "JORDAN_DRINKS";
+                    const isRevealed = hintsRevealed === 4 && tile.category === "JORDAN_MEALS";
                     return (
                       <button
                         key={tile.id}

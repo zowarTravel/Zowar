@@ -633,21 +633,6 @@ export default function PuzzleR1({
         </div>
       </div>
 
-      {allSolved ? (
-        <div
-          ref={solvedActionRef}
-          className="mt-6 rounded-3xl border border-z-orange bg-z-orange-soft p-3 sm:hidden"
-        >
-          <button
-            type="button"
-            onClick={() => onSolved?.()}
-            className="w-full rounded-2xl bg-z-orange px-4 py-3 text-sm font-semibold text-white shadow-sm"
-          >
-            {isAr ? "المتابعة إلى اللغز التالي" : "Continue to next puzzle"}
-          </button>
-        </div>
-      ) : null}
-
       {allSolved && (
         <div className="mt-4 space-y-4 animate-[zowarFadeUp_420ms_cubic-bezier(.22,1,.36,1)_1]">
           {/* About Magenta */}

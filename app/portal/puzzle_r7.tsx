@@ -47,6 +47,7 @@ export default function PuzzleR7({
   const [status, setStatus] = React.useState<"idle" | "correct" | "wrong">("idle");
   const [showHint, setShowHint] = React.useState(false);
   const [showHint2, setShowHint2] = React.useState(false);
+  const [showReveal, setShowReveal] = React.useState(false);
   const [showTestimonialForm, setShowTestimonialForm] = React.useState(false);
   const [confetti, setConfetti] = React.useState<Confetto[]>([]);
   const solvedRef = React.useRef(false);
@@ -457,8 +458,8 @@ export default function PuzzleR7({
                     <div className="font-semibold text-neutral-950">{isAr ? "التلميح" : "Hint"}</div>
                     <div className="mt-1 leading-7">
                       {isAr
-                        ? "كل طابع يخفي حرفاً واحداً داخل رسمته — اضغط عليه لتفحصه، ثم اقرأ الحروف من الطابع الأول إلى الأخير."
-                        : "Each stamp hides one letter in its artwork — tap to examine it closely, then read the letters from stamp one through six."}
+                        ? <>كل طابع يخفي <strong>حرفاً واحداً</strong> داخله — اضغط عليه وتفحّصه جيداً، ثم أدخل الحروف المخفية واحداً تلو الآخر ليتكشّف لك اسم وجهتك الأخيرة.</>
+                        : <>Each stamp is hiding <strong>one letter</strong> within it. Tap and examine each stamp closely, enter the hidden letters one by one to reveal the name of your final destination.</>}
                     </div>
                   </div>
 
@@ -471,14 +472,35 @@ export default function PuzzleR7({
                       {isAr ? "لا يزال غامضاً؟" : "Still stuck?"}
                     </button>
                   ) : (
-                    <div className="rounded-2xl border border-neutral-200 bg-white/80 p-4 text-sm text-neutral-800">
-                      <div className="font-semibold text-neutral-950">{isAr ? "تلميح إضافي" : "Extra hint"}</div>
-                      <div className="mt-1 leading-7">
-                        {isAr
-                          ? "الوجهة مكان بستة أحرف — مطعم على سطح يطلّ على شارع الرينبو، يقدّم لقيمات لبنانية مع أجمل إطلالة في الشارع."
-                          : "The destination is six letters — a rooftop restaurant overlooking Rainbow Street, known for its unique decorations and one of the best views on the street."}
+                    <>
+                      <div className="rounded-2xl border border-neutral-200 bg-white/80 p-4 text-sm text-neutral-800">
+                        <div className="font-semibold text-neutral-950">{isAr ? "تلميح إضافي" : "Extra hint"}</div>
+                        <div className="mt-1 leading-7">
+                          {isAr
+                            ? "الوجهة مكوّنة من ستة أحرف. مطعم شهير على سطح يطلّ على شارع الرينبو، معروف بزيناته المميزة وواحدة من أجمل الإطلالات في عمّان."
+                            : "The destination is six letters. A popular rooftop restaurant overlooking Rainbow Street, known for its unique decorations and one of the best views in Amman."}
+                        </div>
                       </div>
-                    </div>
+
+                      {!showReveal ? (
+                        <button
+                          type="button"
+                          onClick={() => setShowReveal(true)}
+                          className="text-[12px] font-medium text-neutral-400 underline underline-offset-2 transition hover:text-neutral-600"
+                        >
+                          {isAr ? "الكشف عن الإجابة" : "Reveal answer"}
+                        </button>
+                      ) : (
+                        <div className="rounded-2xl border border-neutral-200 bg-white/80 p-4 text-sm text-neutral-800">
+                          <div className="font-semibold text-neutral-950">{isAr ? "الإجابة" : "Reveal answer"}</div>
+                          <div className="mt-1 leading-7">
+                            {isAr
+                              ? "اكتب 'ميجانا' في حقل النص أدناه واستمتع بوجهتك النهائية المريحة!"
+                              : "Enter 'Mijana' in the text box below and enjoy your relaxing final destination!"}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               )}

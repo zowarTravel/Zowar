@@ -14,7 +14,7 @@ type Props = {
   onSolved?: () => void;
 };
 
-type CategoryKey = "SOAP_SCENTS" | "RAINBOW_ST" | "AMMAN" | "DESERT";
+type CategoryKey = "SOAP_SCENTS" | "JORDAN_DRINKS" | "AMMAN" | "DESERT";
 
 type Tile = {
   id: string;
@@ -27,47 +27,47 @@ type Tile = {
 /* ------------------------------------------------------------------ */
 
 const CATEGORY_LABELS: Record<CategoryKey, Record<Locale, string>> = {
-  SOAP_SCENTS: { en: "Scents of Jordan",           ar: "عطور الأردن"          },
-  RAINBOW_ST:  { en: "Rainbow Street landmarks",  ar: "معالم الرينبو"        },
-  AMMAN:       { en: "Only in Amman",             ar: "في عمّان فقط"         },
-  DESERT:      { en: "Jordan desert",             ar: "صحراء الأردن"         },
+  SOAP_SCENTS:   { en: "Scents of Jordan",       ar: "عطور الأردن"       },
+  JORDAN_DRINKS: { en: "Jordanian drinks",        ar: "مشروبات أردنية"   },
+  AMMAN:         { en: "Only in Amman",           ar: "في عمّان فقط"     },
+  DESERT:        { en: "Jordan desert",           ar: "صحراء الأردن"     },
 };
 
 const CATEGORY_DOT: Record<CategoryKey, string> = {
-  SOAP_SCENTS: "bg-amber-500",
-  RAINBOW_ST:  "bg-blue-500",
-  AMMAN:       "bg-emerald-500",
-  DESERT:      "bg-rose-500",
+  SOAP_SCENTS:   "bg-amber-500",
+  JORDAN_DRINKS: "bg-purple-500",
+  AMMAN:         "bg-emerald-500",
+  DESERT:        "bg-rose-500",
 };
 
 const CATEGORY_PILL: Record<CategoryKey, string> = {
-  SOAP_SCENTS: "border-amber-200 bg-amber-50 text-amber-900",
-  RAINBOW_ST:  "border-blue-200 bg-blue-50 text-blue-900",
-  AMMAN:       "border-emerald-200 bg-emerald-50 text-emerald-900",
-  DESERT:      "border-rose-200 bg-rose-50 text-rose-900",
+  SOAP_SCENTS:   "border-amber-200 bg-amber-50 text-amber-900",
+  JORDAN_DRINKS: "border-purple-200 bg-purple-50 text-purple-900",
+  AMMAN:         "border-emerald-200 bg-emerald-50 text-emerald-900",
+  DESERT:        "border-rose-200 bg-rose-50 text-rose-900",
 };
 
 const TILES: readonly Tile[] = [
   // Interleaved so no category is visually stacked in the grid
-  { id: "OLIVE_OIL",           category: "SOAP_SCENTS", label: { en: "Olive oil",           ar: "زيت الزيتون"   } },
-  { id: "ROOFTOP_VIEW",        category: "RAINBOW_ST",  label: { en: "Rooftop view",        ar: "منظر السطح"    } },
-  { id: "GAS_TRUCK",           category: "AMMAN",       label: { en: "Gas truck",           ar: "شاحنة الغاز"   } },
-  { id: "RED_SAND",            category: "DESERT",      label: { en: "Red sand",            ar: "رمال حمراء"    } },
+  { id: "OLIVE_OIL",      category: "SOAP_SCENTS",   label: { en: "Olive oil",       ar: "زيت الزيتون"  } },
+  { id: "LEMON_MINT",     category: "JORDAN_DRINKS", label: { en: "Lemon mint",      ar: "ليمون نعناع"  } },
+  { id: "GAS_TRUCK",      category: "AMMAN",         label: { en: "Gas truck",       ar: "شاحنة الغاز"  } },
+  { id: "RED_SAND",       category: "DESERT",        label: { en: "Red sand",        ar: "رمال حمراء"   } },
 
-  { id: "JASMINE",             category: "SOAP_SCENTS", label: { en: "Jasmine",             ar: "ياسمين"         } },
-  { id: "HANGING_DECORATIONS", category: "RAINBOW_ST",  label: { en: "Lanterns",           ar: "فوانيس"          } },
-  { id: "YELLOW_TAXI",         category: "AMMAN",       label: { en: "Yellow taxi",         ar: "تاكسي أصفر"    } },
-  { id: "STARRY_NIGHT",        category: "DESERT",      label: { en: "Starry night",        ar: "ليلة نجوم"     } },
+  { id: "JASMINE",        category: "SOAP_SCENTS",   label: { en: "Jasmine",         ar: "ياسمين"        } },
+  { id: "MINT_TEA",       category: "JORDAN_DRINKS", label: { en: "Mint tea",        ar: "شاي نعناع"    } },
+  { id: "YELLOW_TAXI",    category: "AMMAN",         label: { en: "Yellow taxi",     ar: "تاكسي أصفر"   } },
+  { id: "STARRY_NIGHT",   category: "DESERT",        label: { en: "Starry night",    ar: "ليلة نجوم"    } },
 
-  { id: "ORANGE_BLOSSOM",      category: "SOAP_SCENTS", label: { en: "Orange blossom",      ar: "زهر البرتقال"  } },
-  { id: "STONE_STEPS",         category: "RAINBOW_ST",  label: { en: "Stone steps",         ar: "درج حجري"      } },
-  { id: "WATER_TANKER",        category: "AMMAN",       label: { en: "Water tanker",        ar: "صهريج المياه"  } },
-  { id: "BEDOUIN_TENT",        category: "DESERT",      label: { en: "Bedouin tent",        ar: "خيمة بدوية"    } },
+  { id: "ORANGE_BLOSSOM", category: "SOAP_SCENTS",   label: { en: "Orange blossom",  ar: "زهر البرتقال" } },
+  { id: "SHANEENAH",      category: "JORDAN_DRINKS", label: { en: "Shaneenah",       ar: "شنينة"         } },
+  { id: "WATER_TANKER",   category: "AMMAN",         label: { en: "Water tanker",    ar: "صهريج المياه" } },
+  { id: "BEDOUIN_TENT",   category: "DESERT",        label: { en: "Bedouin tent",    ar: "خيمة بدوية"   } },
 
-  { id: "ROSE_WATER",          category: "SOAP_SCENTS", label: { en: "Rose water",          ar: "ماء الورد"     } },
-  { id: "JUICE_BAR",           category: "RAINBOW_ST",  label: { en: "Juice bar",           ar: "عصير"          } },
-  { id: "ROUNDABOUT",          category: "AMMAN",       label: { en: "Roundabout",          ar: "دوّار"          } },
-  { id: "CAMPFIRE",            category: "DESERT",      label: { en: "Campfire",            ar: "نار المخيّم"   } },
+  { id: "ROSE_WATER",     category: "SOAP_SCENTS",   label: { en: "Rose water",      ar: "ماء الورد"    } },
+  { id: "TURKISH_COFFEE", category: "JORDAN_DRINKS", label: { en: "Turkish coffee",  ar: "قهوة تركية"   } },
+  { id: "ROUNDABOUT",     category: "AMMAN",         label: { en: "Roundabout",      ar: "دوّار"         } },
+  { id: "CAMPFIRE",       category: "DESERT",        label: { en: "Campfire",        ar: "نار المخيّم"  } },
 ] as const;
 
 const SOAPHOUSE_MAP_URL =
@@ -77,12 +77,12 @@ const HINTS: Record<Locale, readonly string[]> = {
   en: [
     "Think in themes, not geography. All 16 words connect to Jordan — your job is to find which specific theme each one belongs to.",
     "One group is scents and ingredients used in traditional Jordanian soap-making. They're not just things you find in Jordan — they're specifically what goes into the soap at your next stop.",
-    "The Amman group is about the city's daily sounds and sights: the gas truck that drives through neighbourhoods, the yellow taxi, the water tanker, the roundabout. Things that are distinctly Amman — not Rainbow Street.",
+    "The Amman group is about the city's daily sounds and sights: the gas truck that drives through neighbourhoods, the yellow taxi, the water tanker, the roundabout. Things that are distinctly Amman.",
   ],
   ar: [
     "فكّر بمواضيع لا بجغرافية. الكلمات الستة عشر كلها مرتبطة بالأردن — مهمتك أن تكتشف الموضوع المشترك لكل مجموعة.",
     "إحدى المجموعات تضم عطور ومكوّنات صناعة الصابون التقليدي الأردني. ليست مجرد أشياء موجودة في الأردن — بل هي تحديداً ما يدخل في صنع الصابون الذي ستجده في محطتك القادمة.",
-    "مجموعة عمّان تتعلق بأصوات ومشاهد المدينة اليومية: شاحنة الغاز التي تجوب الأحياء، التاكسي الأصفر، الصهريج، الدوّار — أشياء تميّز عمّان تحديداً، لا شارع الرينبو.",
+    "مجموعة عمّان تتعلق بأصوات ومشاهد المدينة اليومية: شاحنة الغاز التي تجوب الأحياء، التاكسي الأصفر، الصهريج، الدوّار — أشياء تميّز عمّان تحديداً.",
   ],
 };
 
@@ -337,8 +337,8 @@ export function PuzzleR3({ locale, onSolved }: Props) {
                       {isAr ? "مجموعة مكشوفة" : "Revealed group"}
                     </span>
                     {isAr
-                      ? "المجموعة المُضاءة أدناه هي معالم شارع الرينبو."
-                      : "The highlighted tiles below are Rainbow Street landmarks."}
+                      ? "المجموعة المُضاءة أدناه هي المشروبات الأردنية التقليدية."
+                      : "The highlighted tiles below are traditional Jordanian drinks."}
                   </div>
                 )}
               </div>
@@ -376,7 +376,7 @@ export function PuzzleR3({ locale, onSolved }: Props) {
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {remainingTiles.map((tile) => {
                     const isPicked = selected.includes(tile.id);
-                    const isRevealed = hintsRevealed === 4 && tile.category === "RAINBOW_ST";
+                    const isRevealed = hintsRevealed === 4 && tile.category === "JORDAN_DRINKS";
                     return (
                       <button
                         key={tile.id}

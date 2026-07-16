@@ -103,8 +103,8 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
     if (!solved || solvedOnceRef.current) return;
     solvedOnceRef.current = true;
 
-    setRoundSolved("r6");
-    serverSetRoundSolved("r6");
+    setRoundSolved("r2");
+    serverSetRoundSolved("r2");
     onSolved?.();
 
     const count = 16;
@@ -426,21 +426,21 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
             {solved ? (
               <div className="mt-4 rounded-3xl border border-black/8 bg-z-off-white p-4 sm:p-5" style={{ animation: "zowar-snap 280ms ease-out" }}>
                 <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500">
-                  {isAr ? "عن هذه المحطة" : "About this stop"}
+                  {isAr ? "محطتك التالية" : "Your next stop"}
                 </div>
                 <h3 className="text-lg font-semibold text-neutral-950">
-                  {isAr ? "فلور آند فاير" : "Flour & Fire"}
+                  {isAr ? "مطبخ أسمى" : "Asma Kitchen"}
                 </h3>
                 <div className="mt-2 space-y-2 text-sm leading-7 text-neutral-700">
                   <p>
                     {isAr
-                      ? "فلور آند فاير مخبز حرفي على شارع الرينبو، وينسجم مع إيقاع الحي القائم على المشي والمشاركة والتوقف لتذوق شيء طازج خارج من الفرن."
-                      : "Flour & Fire is an artisan bakery on Rainbow Street, and it fits beautifully into the neighborhood's rhythm of walking, sharing, and stopping for something fresh from the oven."}
+                      ? "مطبخ محلي على بعد خطوات من ماجنتا. اطلب الحمص أو المتبّل — كلاهما طازج ويستحق التوقف."
+                      : "A neighbourhood kitchen a short walk from Magenta. Order the hummus or the mutabbal — both are made fresh and worth the stop."}
                   </p>
                   <p>
                     {isAr
-                      ? "تحتل المناقيش بالزعتر مكانة خاصة في الأردن وبلاد الشام — دافئة وعطِرة ومألوفة، وهي من تلك المخبوزات التي تجعل التوقف البسيط جزءاً من طقوس المدينة اليومية."
-                      : "Manakeesh topped with za'atar holds a special place across Jordan and the wider Levant — warm, aromatic, and deeply familiar, it is the kind of bakery staple that turns a simple stop into part of the city's daily ritual."}
+                      ? "خذ طبقك وتابع متابعة الدلائل."
+                      : "Pick up your plate and keep following the clues."}
                   </p>
                 </div>
               </div>

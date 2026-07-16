@@ -35,8 +35,8 @@ export default function PuzzleR2({
       solvedOnceRef.current = true;
 
       setStatus(nextStatus);
-      setRoundSolved("r2");
-      serverSetRoundSolved("r2"); // fire-and-forget server sync
+      setRoundSolved("r3");
+      serverSetRoundSolved("r3"); // fire-and-forget server sync
       onSolved?.();
     },
     [onSolved]
@@ -132,7 +132,7 @@ export default function PuzzleR2({
           <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
-                {isAr ? "الجولة ٢ · لغز" : "Round 2 · Riddle"}
+                {isAr ? "الجولة ٣ · لغز" : "Round 3 · Riddle"}
               </div>
               <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
                 {t.title[safeLocale]}

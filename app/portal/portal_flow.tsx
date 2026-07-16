@@ -85,11 +85,11 @@ type Round = "r1" | "r2" | "r3" | "r4" | "r5" | "r6" | "r7";
 const PROGRESS_KEY = "zowar_progress_v1";
 
 const ROUND_STAMP: Record<"r1" | "r2" | "r3" | "r4" | "r5" | "r6", StampId> = {
-  r1: "coffee",
-  r2: "rumman",
-  r3: "soap-house",
-  r4: "falafel-al-quds",
-  r5: "al-yasmeenah",
+  r1: "magenta",
+  r2: "asma-kitchen",
+  r3: "rumman",
+  r4: "trinitae",
+  r5: "falafel-al-quds",
   r6: "flour-fire",
 };
 
@@ -350,7 +350,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
       {activeRound === "r2" && (
         <div>
           {progress.r1 ? (
-            <PuzzleR2 locale={safeLocale} onSolved={onR2Solved} />
+            <PuzzleR5 locale={safeLocale} onSolved={onR2Solved} />
           ) : (
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
               {isAr ? "الجولة ٢ مقفلة." : "Round 2 is locked."}
@@ -372,7 +372,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
       {activeRound === "r3" && (
         <div>
           {progress.r2 ? (
-            <PuzzleR3 locale={safeLocale} onSolved={onR3Solved} />
+            <PuzzleR2 locale={safeLocale} onSolved={onR3Solved} />
           ) : (
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
               {isAr ? "الجولة ٣ مقفلة." : "Round 3 is locked."}
@@ -394,7 +394,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
       {activeRound === "r4" && (
         <div>
           {progress.r3 ? (
-            <PuzzleR4 locale={safeLocale} onSolved={onR4Solved} />
+            <PuzzleR3 locale={safeLocale} onSolved={onR4Solved} />
           ) : (
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
               {isAr ? "الجولة ٤ مقفلة." : "Round 4 is locked."}
@@ -416,7 +416,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
       {activeRound === "r5" && (
         <div>
           {progress.r4 ? (
-            <PuzzleR6 locale={safeLocale} onSolved={onR5Solved} />
+            <PuzzleR4 locale={safeLocale} onSolved={onR5Solved} />
           ) : (
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
               {isAr ? "الجولة ٥ مقفلة." : "Round 5 is locked."}
@@ -438,7 +438,7 @@ export default function PortalFlow({ locale }: { locale: Locale }) {
       {activeRound === "r6" && (
         <div>
           {progress.r5 ? (
-            <PuzzleR5 locale={safeLocale} onSolved={onR6Solved} />
+            <PuzzleR6 locale={safeLocale} onSolved={onR6Solved} />
           ) : (
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
               {isAr ? "الجولة ٦ مقفلة." : "Round 6 is locked."}

@@ -1,9 +1,9 @@
 export type StampId =
-  | "coffee"
+  | "magenta"
+  | "asma-kitchen"
   | "rumman"
-  | "soap-house"
+  | "trinitae"
   | "falafel-al-quds"
-  | "al-yasmeenah"
   | "flour-fire";
 
 export type PassportStampMeta = {
@@ -21,63 +21,63 @@ export type PassportStampMeta = {
 
 export const RAINBOW_STAMPS: readonly PassportStampMeta[] = [
   {
-    id: "coffee",
+    id: "magenta",
     stop: 1,
-    title: "Coffee Stop",
-    titleAr: "محطة القهوة",
+    title: "Magenta",
+    titleAr: "ماجنتا",
     subtitle: "The route begins",
     subtitleAr: "بداية المسار",
     hiddenLetter: "M",
     image: "/images/puzzles/r7/M.png",
-    alt: "Coffee Stop passport stamp",
+    alt: "Magenta passport stamp",
     roundKey: "r1",
   },
   {
-    id: "rumman",
+    id: "asma-kitchen",
     stop: 2,
-    title: "Rumman",
-    titleAr: "رمان",
-    subtitle: "Pomegranate clue",
-    subtitleAr: "الرمانة الدليل",
+    title: "Asma Kitchen",
+    titleAr: "مطبخ أسمى",
+    subtitle: "Hummus & mutabbal",
+    subtitleAr: "حمص ومتبّل",
     hiddenLetter: "I",
     image: "/images/puzzles/r7/I.png",
-    alt: "Rumman passport stamp",
+    alt: "Asma Kitchen passport stamp",
     roundKey: "r2",
   },
   {
-    id: "soap-house",
+    id: "rumman",
     stop: 3,
-    title: "Soap House",
-    titleAr: "دار الصابون",
-    subtitle: "Handmade local stop",
-    subtitleAr: "محطة يدوية محلية",
+    title: "Rumman Collective",
+    titleAr: "رمان كولكتيف",
+    subtitle: "Jordanian makers",
+    subtitleAr: "صنّاع أردنيون",
     hiddenLetter: "J",
     image: "/images/puzzles/r7/J.png",
-    alt: "Soap House passport stamp",
+    alt: "Rumman Collective passport stamp",
     roundKey: "r3",
   },
   {
-    id: "falafel-al-quds",
+    id: "trinitae",
     stop: 4,
+    title: "Trinitae",
+    titleAr: "ترينيتي",
+    subtitle: "Discovery stop",
+    subtitleAr: "محطة اكتشاف",
+    hiddenLetter: "A",
+    image: "/images/puzzles/r7/A1.png",
+    alt: "Trinitae passport stamp",
+    roundKey: "r4",
+  },
+  {
+    id: "falafel-al-quds",
+    stop: 5,
     title: "Falafel Al Quds",
     titleAr: "فلافل القدس",
     subtitle: "A crispy classic",
     subtitleAr: "كلاسيك مقرمش",
-    hiddenLetter: "A",
-    image: "/images/puzzles/r7/A1.png",
-    alt: "Falafel Al Quds passport stamp",
-    roundKey: "r4",
-  },
-  {
-    id: "al-yasmeenah",
-    stop: 5,
-    title: "Al Yasmeenah",
-    titleAr: "الياسمينة",
-    subtitle: "Knafeh stop",
-    subtitleAr: "محطة الكنافة",
     hiddenLetter: "N",
     image: "/images/puzzles/r7/N.png",
-    alt: "Al Yasmeenah passport stamp",
+    alt: "Falafel Al Quds passport stamp",
     roundKey: "r5",
   },
   {

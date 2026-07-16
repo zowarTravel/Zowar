@@ -29,74 +29,74 @@ const MAP_PINS: MapPin[] = [
 const CONTENT = {
   en: {
     kicker: "Round 6 · Map Puzzle",
-    title: "Find the Sweet Stop",
+    title: "Find the Bakery",
     subtitle:
       "Study the clue below, then tap the pin on the map that marks the right location.",
     clueLabel: "Clue",
     clueText:
-      "On the diagonal between First Circle and the street of colorful decorations waits a traditional sweet no Jordanian celebration is complete without.",
+      "On Rainbow Street, past the falafel and toward the heart of the street, a wood-fire bakery turns out manakeesh every morning.",
     showHint: "Show hint",
     nextHint: "Next hint",
     hideHints: "Hide hints",
     hintLabel: "Hint",
     hints: [
-      "Leave the colorful decorations hanging behind and walk towards First Circle.",
-      "Look for a knafeh spot named after an Arabic flower.",
-      "You're looking for Al Yasmeenah.",
+      "Stay on Rainbow Street and follow the smell of fresh bread from a wood-fire oven.",
+      "The place serves manakeesh — za'atar is the classic order.",
+      "You're looking for Flour & Fire.",
     ],
     mapInstruction: "Tap the pin that matches the clue.",
     wrong:
-      "Not quite — revisit the diagonal between First Circle and the decorated street, then try again.",
+      "Not quite — stay on Rainbow Street and look for the wood-fire bakery. Try again.",
     successTitle: "Correct!",
-    successBody: "You found Al Yasmeenah.",
-    aboutEyebrow: "About this stop",
-    aboutTitle: "Al Yasmeenah",
+    successBody: "You found Flour & Fire.",
+    aboutEyebrow: "Your next stop",
+    aboutTitle: "Flour & Fire",
     aboutBody1:
-      "You've arrived at Al Yasmeenah — named after the jasmine flower and one of the best knafeh spots on Rainbow Street.",
+      "Head inside and order manakeesh from the wood-fire oven. Za'atar is the classic — warm, aromatic, and the kind of thing you'll think about long after the walk is done.",
     aboutBody2:
-      "Order at the counter and take it in.",
-    storyEyebrow: "The story behind the sweet",
-    storyTitle: "Al Yasmeenah",
+      "This is the last puzzle stop before the final destination.",
+    storyEyebrow: "About this stop",
+    storyTitle: "Flour & Fire",
     storyBody1:
-      "Al Yasmeenah takes its name from the jasmine flower. The knafeh is what people come back for: crisp pastry, soft cheese, warm syrup, pistachio on top.",
+      "Flour & Fire is an artisan bakery on Rainbow Street. The manakeesh comes out of a wood-fire oven, and it fits perfectly into the neighbourhood's rhythm of walking, sharing, and stopping for something fresh.",
     storyBody2:
-      "The recipe comes from Nablus, brought over and largely unchanged. Locals and first-timers tend to react the same way. Al Yasmeenah is worth slowing down for.",
+      "Za'atar holds a special place across Jordan and the Levant — warm, aromatic, and deeply familiar. A simple stop that becomes part of the city's daily ritual.",
     reset: "Reset",
   },
   ar: {
     kicker: "الجولة ٦ · لغز الخريطة",
-    title: "اعثر على محطة الحلوى",
+    title: "اعثر على المخبزة",
     subtitle:
       "اقرأ الدليل أدناه، ثم اضغط على الدبوس الذي يُشير إلى الموقع الصحيح.",
     clueLabel: "الدليل",
     clueText:
-      "على الخط القطري بين الدوار الأول والشارع المزيّن بالألوان تنتظرك حلوى تقليدية لا تكتمل أي مناسبة أردنية من دونها.",
+      "على شارع الرينبو، بعد الفلافل وباتجاه قلب الشارع، مخبزة بفرن حطب تُعدّ مناقيش كل صباح.",
     showHint: "إظهار تلميح",
     nextHint: "التلميح التالي",
     hideHints: "إخفاء التلميحات",
     hintLabel: "تلميح",
     hints: [
-      "اترك الزينة الملوّنة المعلّقة خلفك وامشِ باتجاه الدوار الأول.",
-      "ابحث عن محل كنافة اسمه مأخوذ من زهرة عربية.",
-      "أنت تبحث عن الياسمينة.",
+      "ابقَ على شارع الرينبو واتبع رائحة الخبز الطازج من فرن الحطب.",
+      "المكان يقدّم المناقيش — الزعتر هو الطلب الكلاسيكي.",
+      "أنت تبحث عن فلور آند فاير.",
     ],
     mapInstruction: "اضغط على الدبوس الذي يطابق الدليل.",
     wrong:
-      "ليست هذه — ارجع إلى الخط القطري بين الدوار الأول والشارع المزيّن وحاول مجدداً.",
+      "ليست هذه — ابقَ على شارع الرينبو وابحث عن مخبزة فرن الحطب. حاول مجدداً.",
     successTitle: "إجابة صحيحة!",
-    successBody: "لقد وجدت الياسمينة.",
-    aboutEyebrow: "عن هذه المحطة",
-    aboutTitle: "الياسمينة",
+    successBody: "لقد وجدت فلور آند فاير.",
+    aboutEyebrow: "محطتك التالية",
+    aboutTitle: "فلور آند فاير",
     aboutBody1:
-      "وصلت إلى الياسمينة — مسمّاة على اسم زهرة الياسمين وتشتهر بكنافة لا تُنسى على شارع الرينبو.",
+      "ادخل واطلب مناقيش من فرن الحطب. الزعتر هو الكلاسيكي — دافئ وعطِر، ومن النوع الذي لن تنساه بعد انتهاء المشوار.",
     aboutBody2:
-      "اطلب من الكاونتر واستمتع باللحظة.",
-    storyEyebrow: "قصة وراء الحلاوة",
-    storyTitle: "الياسمينة",
+      "هذه هي آخر محطة لغز قبل الوجهة النهائية.",
+    storyEyebrow: "عن هذه المحطة",
+    storyTitle: "فلور آند فاير",
     storyBody1:
-      "مسمّاة على اسم زهرة الياسمين، الياسمينة من أطيب وقفات شارع الرينبو. هون بتلاقي كنافة بتنطلب عن خاطر: قرشة ذهبية، جبنة سايحة، قطر دافئ، ولمسة فستق بتكمّل الطعمة.",
+      "فلور آند فاير مخبزة حرفية على شارع الرينبو. المناقيش تخرج من فرن الحطب، وتنسجم مع إيقاع الحي القائم على المشي والمشاركة والتوقف لشيء طازج.",
     storyBody2:
-      "مستوحاة من تقاليد كنافة نابلس ومنقولة من فلسطين لقلب عمّان، وبتحسّها مميزة للسائح وللواحد اللي بعرفها من زمان بنفس الوقت. زاكية، مشبعة، وبتستاهل توقف إلها — من هالنوع اللي بخلّي المشوار ذكرى حلوة.",
+      "الزعتر يحمل مكانة خاصة في الأردن وبلاد الشام — دافئ وعطِر ومألوف. وقفة بسيطة تتحول إلى جزء من طقوس المدينة اليومية.",
     reset: "إعادة",
   },
 } as const;

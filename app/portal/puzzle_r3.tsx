@@ -138,8 +138,8 @@ export function PuzzleR3({ locale, onSolved }: Props) {
   function finishOnce() {
     if (solvedOnceRef.current) return;
     solvedOnceRef.current = true;
-    setRoundSolved("r3");
-    serverSetRoundSolved("r3");
+    setRoundSolved("r4");
+    serverSetRoundSolved("r4");
     onSolved?.();
   }
 
@@ -218,7 +218,7 @@ export function PuzzleR3({ locale, onSolved }: Props) {
   if (locked) {
     return (
       <div className="rounded-3xl border border-neutral-200 bg-white p-5">
-        <h2 className="text-xl font-semibold">{isAr ? "الجولة ٣ مقفلة" : "Round 3 Locked"}</h2>
+        <h2 className="text-xl font-semibold">{isAr ? "الجولة ٤ مقفلة" : "Round 4 Locked"}</h2>
         <p className="mt-2 text-neutral-700">
           {isAr ? "حل الجولة ٢ أولاً لفتح هذه الجولة." : "Solve Round 2 first to unlock this puzzle."}
         </p>
@@ -258,7 +258,7 @@ export function PuzzleR3({ locale, onSolved }: Props) {
         <div className="relative flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold z-orange">
-              <span className="opacity-80">{isAr ? "الجولة ٣" : "Round 3"}</span>
+              <span className="opacity-80">{isAr ? "الجولة ٤" : "Round 4"}</span>
               <span className="h-3 w-px bg-neutral-300" />
               <span className="opacity-90">{isAr ? "ترابط المجموعات" : "Connections"}</span>
             </div>

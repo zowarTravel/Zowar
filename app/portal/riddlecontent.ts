@@ -122,8 +122,8 @@ export const riddle4 = {
 /* ------------------------------------------------------------------ */
 
 export const riddle5 = {
-  title: { en: "Round 6: Assemble the Image", ar: "الجولة ٦: رتّب الصورة" },
-  kicker: { en: "Round 6", ar: "الجولة ٦" },
+  title: { en: "Round 2: Assemble the Image", ar: "الجولة ٢: رتّب الصورة" },
+  kicker: { en: "Round 2", ar: "الجولة ٢" },
   prompt: {
     en: "Tap two tiles to swap them. Complete the image to reveal your next destination.",
     ar: "اضغط على قطعتين لتبديل مكانهما. عند اكتمال الصورة ستظهر وجهتك التالية.",
@@ -144,12 +144,12 @@ export const riddle5 = {
   success: { en: "Perfect — image complete!", ar: "رائع — اكتملت الصورة!" },
 
   endCopy: {
-    en: "Time for something warm from the wood-fire oven — Flour & Fire is your next stop.",
-    ar: "وقت شيء دافئ من فرن الحطب — فلور آند فاير محطتك القادمة.",
+    en: "Your next stop is Asma Kitchen — a short walk from here.",
+    ar: "محطتك التالية هي مطبخ أسمى — على بعد خطوات من هنا.",
   },
 
   finalInstruction: {
-    en: "Make your way to Flour & Fire — your pastries are waiting for you.",
-    ar: "توجّه إلى فلور آند فاير — معجناتك بانتظارك.",
+    en: "Make your way to Asma Kitchen.",
+    ar: "توجّه إلى مطبخ أسمى.",
   },
 } as const;

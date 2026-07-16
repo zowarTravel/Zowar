@@ -32,7 +32,7 @@ const CORRECT_LOGO_ID = "f1";
 
 const COPY = {
   en: {
-    title: "Round 4: Follow the Clue",
+    title: "Round 5: Follow the Clue",
     subtitle:
       "Study the map, use the hints if needed, then confirm the real sign when you arrive.",
     mapTitle: "Clue map",
@@ -78,7 +78,7 @@ const COPY = {
     },
   },
   ar: {
-    title: "الجولة ٤: اتبع الدليل",
+    title: "الجولة ٥: اتبع الدليل",
     subtitle:
       "ادرس الخريطة، استخدم التلميحات إذا احتجت، ثم أكّد اللافتة الحقيقية عندما تصل.",
     mapTitle: "خريطة الدليل",
@@ -245,8 +245,8 @@ export default function PuzzleR4({
 
     if (!solvedRef.current) {
       solvedRef.current = true;
-      setRoundSolved("r4");
-      serverSetRoundSolved("r4");
+      setRoundSolved("r5");
+      serverSetRoundSolved("r5");
       onSolved?.();
     }
   }

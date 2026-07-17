@@ -53,8 +53,6 @@ const CONTENT = {
     aboutTitle: "Flour & Fire",
     aboutBody1:
       "Head inside and order manakeesh from the wood-fire oven. Za'atar is the classic — warm, aromatic, and the kind of thing you'll think about long after the walk is done.",
-    aboutBody2:
-      "This is the last puzzle stop before the final destination.",
     storyEyebrow: "About this stop",
     storyTitle: "Flour & Fire",
     storyBody1:
@@ -89,8 +87,6 @@ const CONTENT = {
     aboutTitle: "فلور آند فاير",
     aboutBody1:
       "ادخل واطلب مناقيش من فرن الحطب. الزعتر هو الكلاسيكي — دافئ وعطِر، ومن النوع الذي لن تنساه بعد انتهاء المشوار.",
-    aboutBody2:
-      "هذه هي آخر محطة لغز قبل الوجهة النهائية.",
     storyEyebrow: "عن هذه المحطة",
     storyTitle: "فلور آند فاير",
     storyBody1:
@@ -313,9 +309,8 @@ export default function PuzzleR6({ locale, onSolved }: Props) {
                   {t.aboutEyebrow}
                 </div>
                 <h3 className="text-lg font-semibold text-neutral-950">{t.aboutTitle}</h3>
-                <div className="mt-2 space-y-2 text-sm leading-7 text-neutral-700">
+                <div className="mt-2 text-sm leading-7 text-neutral-700">
                   <p>{t.aboutBody1}</p>
-                  <p>{t.aboutBody2}</p>
                 </div>
               </div>
 

@@ -640,8 +640,8 @@ export default function PuzzleR7({
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-neutral-700">
                     {isAr
-                      ? "ميجانا هي النهاية التي كان هذا المسار يبني باتجاهها: مكان لتبطئ الخطى، تجلس فوق حركة الشارع، وتنظر إلى المدينة من زاوية جديدة. بعد تتبع الألغاز بين الطعام والواجهات والإطلالات والتفاصيل الصغيرة، تتحول هذه المحطة الأخيرة إلى لحظة راحة مستحقة."
-                      : "Mijana sits up above Rainbow Street and gives you somewhere to land after a lot of walking. Get a table, order something, and take in the view. You've earned it."}
+                      ? "ميجانا هي المكان المثالي فوق شارع الرينبو للاستمتاع بالتجربة وتذوّق كل ما جمعته على طول المسار. إطلالة خلابة على عمّان وحلوى دافئة بانتظارك!"
+                      : "Mijana is the perfect place above Rainbow Street to soak in the experience and enjoy all the items you picked up along the way. Your stunning view of Amman and a sweet dessert await you!"}
                   </p>
                 </div>
 

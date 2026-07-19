@@ -646,8 +646,8 @@ export default function PuzzleR1({
             <div className="mt-3 space-y-3 text-sm leading-7 text-neutral-700">
               <p>
                 {isAr
-                  ? "بعيدًا عن الضجيج، تحتل ماجنتا مكانة مميزة كواحدة من أكثر المقاهي حيوية في عمّان — تُعرف بإبداعها وأعمالها الفنية وإطلالتها الهادئة على جبل عمّان."
-                  : "Magenta sits off the main stretch, up above Jabal Amman. Good coffee, walls worth looking at, and a view that earns a slower pace."}
+                  ? "بعيدًا عن صخب الشارع، تختبئ ماجنتا كجوهرة حيّة في قلب عمّان — واحدة من أكثر مقاهيها إلهامًا، تُعرف بالأعمال الفنية والخط العربي الإبداعي التي تُزيّن جدرانها، وبإطلالتها الساحرة على جبل عمّان. البداية المثالية لشحن روحك قبل المغامرة التي تنتظرك."
+                  : "Tucked away from the chaos, Magenta is one of Amman's most vibrant cafes, known for its creative artwork and calligraphy that accompany the overview of Jabal Amman. The perfect start to energise your adventure ahead."}
               </p>
               <p>
                 {isAr

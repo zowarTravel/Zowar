@@ -424,6 +424,14 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
             </div>
 
             {solved ? (
+              <div className="mt-4 rounded-2xl border border-z-orange/25 bg-z-orange-soft px-4 py-3 text-sm leading-7 text-neutral-800" style={{ animation: "zowar-snap 280ms ease-out" }}>
+                {isAr
+                  ? "اتجه إلى الأسفل واتبع الممر الحجري حتى تجد الواجهة التي ظهرت في الصورة."
+                  : "Head downhill and follow the stoney trail until you find the storefront shown in the image above."}
+              </div>
+            ) : null}
+
+            {solved ? (
               <div className="mt-4 rounded-3xl border border-black/8 bg-z-off-white p-4 sm:p-5" style={{ animation: "zowar-snap 280ms ease-out" }}>
                 <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500">
                   {isAr ? "محطتك التالية" : "Your next stop"}

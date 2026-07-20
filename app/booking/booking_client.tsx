@@ -36,6 +36,13 @@ const copy = {
     exp2Desc: "A 7-stop food adventure through the historic Al Weibdeh neighbourhood.",
     exp2Stops: "7 stops",
     exp2Soon: "Coming soon",
+    includedTitle: "What's included",
+    included: [
+      "A curated interactive puzzle walk through the neighbourhood",
+      "An assortment of tastings along the way",
+      "Curated items from local shops",
+      "A rewarding end to the adventure",
+    ],
     nextStepsTitle: "Next steps",
     nextSteps: [
       "Complete checkout",
@@ -73,6 +80,13 @@ const copy = {
     exp2Desc: "مغامرة طعام من ٧ محطات عبر حي الويبدة التاريخي.",
     exp2Stops: "٧ محطات",
     exp2Soon: "قريباً",
+    includedTitle: "ماذا يشمل حجزك",
+    included: [
+      "جولة ألغاز تفاعلية منتقاة عبر الحي",
+      "مجموعة من التذوقات على طول المسار",
+      "منتجات مختارة من المحلات المحلية",
+      "نهاية مجزية تُكلّل المغامرة",
+    ],
     nextStepsTitle: "الخطوات التالية",
     nextSteps: [
       "إتمام الدفع",
@@ -110,6 +124,13 @@ const copy = {
     exp2Desc: "Una aventura culinaria de 7 paradas por el histórico barrio de Al Weibdeh.",
     exp2Stops: "7 paradas",
     exp2Soon: "Próximamente",
+    includedTitle: "Qué incluye",
+    included: [
+      "Un recorrido interactivo de puzzles por el barrio",
+      "Una selección de degustaciones en el camino",
+      "Artículos seleccionados de tiendas locales",
+      "Un final gratificante para la aventura",
+    ],
     nextStepsTitle: "Próximos pasos",
     nextSteps: [
       "Completar el pago",
@@ -434,6 +455,23 @@ export default function BookingClient({ locale }: BookingClientProps) {
               </div>
             </button>
           </div>
+        </div>
+
+        {/* What's included */}
+        <div className={`mt-6 ${glassCard} p-6`}>
+          <div className="text-base font-semibold">{t.includedTitle}</div>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            {t.included.map((item, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-z-orange-soft">
+                  <svg viewBox="0 0 24 24" className="h-3 w-3 z-orange" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </span>
+                <span className="text-sm leading-relaxed text-neutral-700">{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Layout */}

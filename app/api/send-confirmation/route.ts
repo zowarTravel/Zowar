@@ -114,7 +114,7 @@ function buildEmail({
         </td></tr>
         <tr><td style="padding:28px 32px;border-top:1px solid #f0ede8;direction:rtl;text-align:right">
           <p style="margin:0 0 8px;color:#111;font-size:15px;font-weight:700">قبل يوم مغامرتك</p>
-          <p style="margin:0;color:#444;font-size:15px;line-height:1.6">افتح بوابتك وحلّ اللغز الأول — سيكشف لك بالضبط أين تبدأ عند وصولك. احتفظ ببقية الألغاز لليوم الكبير!</p>
+          <p style="margin:0;color:#444;font-size:15px;line-height:1.6">افتح بوابتك و<strong>حلّ اللغز الأول</strong> — سيكشف لك بالضبط أين تبدأ عند وصولك. <strong>احتفظ ببقية الألغاز لليوم الكبير!</strong></p>
         </td></tr>
         <tr><td style="padding:0 32px 28px;direction:rtl;text-align:right">
           <p style="margin:0 0 12px;color:#111;font-size:15px;font-weight:700">ماذا تحضر معك</p>
@@ -157,7 +157,7 @@ function buildEmail({
         </td></tr>
         <tr><td style="padding:28px 32px;border-top:1px solid #f0ede8">
           <p style="margin:0 0 8px;color:#111;font-size:15px;font-weight:700">Before your adventure begins</p>
-          <p style="margin:0;color:#444;font-size:15px;line-height:1.6">Open your portal and solve the first puzzle — it reveals exactly where to head when you arrive. Save the rest for the day itself!</p>
+          <p style="margin:0;color:#444;font-size:15px;line-height:1.6">Open your portal and <strong>solve the first puzzle</strong> — it reveals exactly where to head when you arrive. <strong>Save the rest for the day itself!</strong></p>
         </td></tr>
         <tr><td style="padding:0 32px 28px">
           <p style="margin:0 0 12px;color:#111;font-size:15px;font-weight:700">What to bring</p>

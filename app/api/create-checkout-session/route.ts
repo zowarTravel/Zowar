@@ -16,11 +16,13 @@ function getStripe(): Stripe {
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { date, qty, locale = "en", experience = "rainbow" } = body as {
+    const { date, timeSlot, qty, locale = "en", experience = "rainbow", halfOff = false } = body as {
       date?: string;
+      timeSlot?: string;
       qty?: number;
       locale?: string;
       experience?: string;
+      halfOff?: boolean;
     };
 
     const origin =
@@ -41,7 +43,7 @@ export async function POST(req: Request) {
               name: "Zowar Amman Experience",
               description: "Self-guided Amman food and puzzle walk",
             },
-            unit_amount: 3948, // $39.48 = 28 JOD
+            unit_amount: halfOff ? 1974 : 3948, // $39.48 = 28 JOD, half = $19.74
           },
           quantity: 1,
         },
@@ -50,6 +52,7 @@ export async function POST(req: Request) {
       cancel_url: `${origin}/booking?lang=${locale}`,
       metadata: {
         date: date ?? "",
+        timeSlot: timeSlot ?? "",
         qty: String(qty ?? 1),
         experience: experience ?? "rainbow",
         lang: locale,

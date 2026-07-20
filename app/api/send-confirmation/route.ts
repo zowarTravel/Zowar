@@ -55,7 +55,7 @@ export async function POST(req: Request) {
     const resend = new Resend(resendKey);
 
     const { error } = await resend.emails.send({
-      from: "Zowar <onboarding@resend.dev>",
+      from: "Zowar <hello@zowar.net>",
       to: email,
       subject:
         locale === "ar"
@@ -112,6 +112,18 @@ function buildEmail({
           </td></tr></table>
           <p style="margin:28px 0 0;color:#888;font-size:12px;word-break:break-all">أو انسخ هذا الرابط: ${magicLink}</p>
         </td></tr>
+        <tr><td style="padding:28px 32px;border-top:1px solid #f0ede8;direction:rtl;text-align:right">
+          <p style="margin:0 0 8px;color:#111;font-size:15px;font-weight:700">قبل يوم مغامرتك</p>
+          <p style="margin:0;color:#444;font-size:15px;line-height:1.6">افتح بوابتك وحلّ اللغز الأول — سيكشف لك بالضبط أين تبدأ عند وصولك. احتفظ ببقية الألغاز لليوم الكبير!</p>
+        </td></tr>
+        <tr><td style="padding:0 32px 28px;direction:rtl;text-align:right">
+          <p style="margin:0 0 12px;color:#111;font-size:15px;font-weight:700">ماذا تحضر معك</p>
+          <table cellpadding="0" cellspacing="0">
+            <tr><td style="padding:4px 0;color:#444;font-size:15px;line-height:1.6">&#10003;&nbsp;&nbsp;اتصال إنترنت موثوق</td></tr>
+            <tr><td style="padding:4px 0;color:#444;font-size:15px;line-height:1.6">&#10003;&nbsp;&nbsp;حذاء مريح للمشي</td></tr>
+            <tr><td style="padding:4px 0;color:#444;font-size:15px;line-height:1.6">&#10003;&nbsp;&nbsp;روح مغامِرة</td></tr>
+          </table>
+        </td></tr>
         <tr><td style="padding:20px 32px;border-top:1px solid #f0ede8;text-align:center">
           <p style="margin:0;color:#aaa;font-size:12px">© زُوّار عمّان</p>
         </td></tr>
@@ -142,6 +154,18 @@ function buildEmail({
             <a href="${magicLink}" style="display:inline-block;background:#C8694A;color:#fff;text-decoration:none;padding:16px 32px;border-radius:14px;font-weight:700;font-size:16px">Enter the Portal</a>
           </td></tr></table>
           <p style="margin:28px 0 0;color:#888;font-size:12px;word-break:break-all">Or copy this link: ${magicLink}</p>
+        </td></tr>
+        <tr><td style="padding:28px 32px;border-top:1px solid #f0ede8">
+          <p style="margin:0 0 8px;color:#111;font-size:15px;font-weight:700">Before your adventure begins</p>
+          <p style="margin:0;color:#444;font-size:15px;line-height:1.6">Open your portal and solve the first puzzle — it reveals exactly where to head when you arrive. Save the rest for the day itself!</p>
+        </td></tr>
+        <tr><td style="padding:0 32px 28px">
+          <p style="margin:0 0 12px;color:#111;font-size:15px;font-weight:700">What to bring</p>
+          <table cellpadding="0" cellspacing="0">
+            <tr><td style="padding:4px 0;color:#444;font-size:15px;line-height:1.6">&#10003;&nbsp;&nbsp;A reliable internet connection</td></tr>
+            <tr><td style="padding:4px 0;color:#444;font-size:15px;line-height:1.6">&#10003;&nbsp;&nbsp;Comfortable shoes</td></tr>
+            <tr><td style="padding:4px 0;color:#444;font-size:15px;line-height:1.6">&#10003;&nbsp;&nbsp;An adventurous spirit</td></tr>
+          </table>
         </td></tr>
         <tr><td style="padding:20px 32px;border-top:1px solid #f0ede8;text-align:center">
           <p style="margin:0;color:#aaa;font-size:12px">© Zowar Amman</p>

@@ -13,11 +13,21 @@ interface BookingClientProps {
 
 /* ---------------- Copy ---------------- */
 
+const SLOTS = {
+  morning:   { en: "Early Morning", ar: "الصباح الباكر", es: "Mañana temprana", time: "8am – 12pm"  },
+  afternoon: { en: "Mid Afternoon",  ar: "منتصف النهار",  es: "Tarde",          time: "12pm – 4pm" },
+  sunset:    { en: "Sunset",         ar: "الغروب",        es: "Atardecer",      time: "4pm – 8pm"  },
+} as const;
+
+type SlotKey = keyof typeof SLOTS;
+
 const copy = {
   en: {
     title: "Booking",
     subtitle:
       "Choose your adventure date. After checkout, you’ll receive a confirmation + the Portal access link.",
+    chooseTime: "Choose a time frame",
+    timeNote: "Your walk takes 2–3 hours. This window simply lets our stops know when to expect you.",
     experienceTitle: "Choose Your Experience",
     exp1Name: "Experience Rainbow Street",
     exp1Desc: "A 7-stop culinary walk through Rainbow Street’s iconic cafés & eateries.",
@@ -53,6 +63,8 @@ const copy = {
     title: "الحجز",
     subtitle:
       "اختر تاريخ التجربة. بعد الدفع ستصلك رسالة تأكيد + رابط الدخول إلى البوابة.",
+    chooseTime: "اختر الوقت المناسب",
+    timeNote: "تستغرق الجولة ٢–٣ ساعات. هذه النافذة الزمنية تُعلم محطاتنا بوقت زيارتك.",
     experienceTitle: "اختر تجربتك",
     exp1Name: "تجربة شارع الرينبو",
     exp1Desc: "جولة ذواقة من ٧ محطات عبر المقاهي والمطاعم الأيقونية في شارع الرينبو.",
@@ -88,6 +100,8 @@ const copy = {
     title: "Reserva",
     subtitle:
       "Elige la fecha de tu experiencia. Tras el pago recibirás una confirmación + el enlace de acceso al Portal.",
+    chooseTime: "Elige un horario",
+    timeNote: "Tu recorrido dura 2–3 horas. Esta ventana simplemente avisa a nuestras paradas cuándo esperarte.",
     experienceTitle: "Elige tu Experiencia",
     exp1Name: "Experiencia Calle Rainbow",
     exp1Desc: "Un recorrido gastronómico de 7 paradas por los cafés y restaurantes de Rainbow Street.",
@@ -146,6 +160,8 @@ export default function BookingClient({ locale }: BookingClientProps) {
     "rainbow"
   );
 
+  const [timeSlot, setTimeSlot] = React.useState<SlotKey>("morning");
+
   const [date, setDate] = React.useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
@@ -201,11 +217,27 @@ export default function BookingClient({ locale }: BookingClientProps) {
         return;
       }
 
-      // Paid path — redirect to Stripe Payment Link
-      const FULL_PRICE_LINK = "https://buy.stripe.com/8x214mbrB6z74Vd9XNd7q00";
-      const HALF_OFF_LINK   = "https://buy.stripe.com/fZufZganxaPngDVd9Zd7q01";
+      // Paid path — custom checkout session (carries date, timeSlot, qty, experience metadata)
       const normalized = code.trim().toLowerCase();
-      window.location.href = normalized === "halfzowar" ? HALF_OFF_LINK : FULL_PRICE_LINK;
+      const res = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date,
+          timeSlot,
+          qty,
+          locale: effectiveLocale,
+          experience,
+          halfOff: normalized === "halfzowar",
+        }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error((d as { error?: string }).error || "Checkout failed. Please try again.");
+      }
+      const { url } = await res.json() as { url?: string };
+      if (!url) throw new Error("No checkout URL returned.");
+      window.location.href = url;
     } catch (e: unknown) {
       const err = e as { message?: string };
       alert(err?.message ?? "Something went wrong. Please try again.");
@@ -432,6 +464,30 @@ export default function BookingClient({ locale }: BookingClientProps) {
                 onChange={(e) => setDate(e.target.value)}
                 className={inputClass}
               />
+            </div>
+
+            <div className="mt-6">
+              <label className="text-sm font-medium text-neutral-700">{t.chooseTime}</label>
+              <p className="mt-0.5 text-xs text-neutral-400">{t.timeNote}</p>
+              <div className="mt-3 flex flex-col gap-2">
+                {(Object.keys(SLOTS) as SlotKey[]).map((slot) => (
+                  <button
+                    key={slot}
+                    type="button"
+                    onClick={() => setTimeSlot(slot)}
+                    className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-sm transition ${
+                      timeSlot === slot
+                        ? "border-z-orange bg-z-orange-soft"
+                        : "border-black/10 bg-white hover:bg-black/[0.02]"
+                    }`}
+                  >
+                    <span className={`font-medium ${timeSlot === slot ? "z-orange" : "text-neutral-800"}`}>
+                      {SLOTS[slot][effectiveLocale === "ar" ? "ar" : effectiveLocale === "es" ? "es" : "en"]}
+                    </span>
+                    <span className="text-neutral-400">{SLOTS[slot].time}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="mt-6">

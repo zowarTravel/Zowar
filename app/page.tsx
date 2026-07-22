@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     description:
       "A self-guided city experience in Amman, Jordan. Solve puzzles, taste iconic bites, and discover the city at your own pace.",
     url: "https://zowar.net",
-    images: [{ url: "/og-home.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/logo.png", width: 1200, height: 630 }],
   },
 };
 
@@ -30,7 +30,7 @@ const localBusinessSchema = {
     "Self-guided food puzzle walks in Amman, Jordan. Solve clues, taste iconic bites, and discover the city at your own pace.",
   url: "https://zowar.net",
   logo: "https://zowar.net/logo.png",
-  image: "https://zowar.net/og-home.jpg",
+  image: "https://zowar.net/logo.png",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Amman",

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Zowar",
     locale: "en_US",
-    images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/logo.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",

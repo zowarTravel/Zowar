@@ -18,6 +18,6 @@ export const metadata: Metadata = {
     description:
       "Pick a date, secure your spot, and unlock the Puzzle Portal for your Zowar experience.",
     url: "https://zowar.net/booking",
-    images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/logo.png", width: 1200, height: 630 }],
   },
 }; type Locale = "en" | "ar" | "es"; export default async function BookingPage({ searchParams, }: { searchParams: Promise<{ lang?: string }>; }) { const { lang } = await searchParams; const normalizedLang = (lang ?? "").toLowerCase(); const locale: Locale = normalizedLang.startsWith("ar") ? "ar" : normalizedLang.startsWith("es") ? "es" : "en"; return <BookingClient locale={locale} />; }

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE = "https://zowar.jo";
+const BASE = "https://zowar.net";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

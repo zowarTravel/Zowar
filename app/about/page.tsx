@@ -10,18 +10,18 @@ export const metadata: Metadata = {
   description:
     "Learn about Zowar — the team behind Amman's self-guided food puzzle walks. Discover our story, mission, and the local spots we partner with.",
   alternates: {
-    canonical: "https://zowar.jo/about",
+    canonical: "https://zowar.net/about",
     languages: {
-      en: "https://zowar.jo/about?lang=en",
-      ar: "https://zowar.jo/about?lang=ar",
-      es: "https://zowar.jo/about?lang=es",
+      en: "https://zowar.net/about?lang=en",
+      ar: "https://zowar.net/about?lang=ar",
+      es: "https://zowar.net/about?lang=es",
     },
   },
   openGraph: {
     title: "About Zowar",
     description:
       "Learn about Zowar — the team behind Amman's self-guided food puzzle walks.",
-    url: "https://zowar.jo/about",
+    url: "https://zowar.net/about",
     images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
   },
 };

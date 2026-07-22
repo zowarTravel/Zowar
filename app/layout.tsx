@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://zowar.jo"),
+  metadataBase: new URL("https://zowar.net"),
   title: {
     default: "Zowar | Food Puzzle Walks in Amman",
     template: "%s | Zowar",

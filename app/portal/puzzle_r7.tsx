@@ -603,8 +603,8 @@ export default function PuzzleR7({
                   <a
                     href={`https://wa.me/?text=${encodeURIComponent(
                       isAr
-                        ? "حليت لغز زوّار على شارع الرينبو في عمّان 🗺️ — ٧ محطات وطابع في كل محطة وكلمة مخفية تنتظرك. جرّب: zowar.jo"
-                        : "I just solved the Zowar puzzle trail on Rainbow Street, Amman 🗺️ — 7 stops, 6 stamps, and one hidden word to find. Try it: zowar.jo"
+                        ? "حليت لغز زوّار على شارع الرينبو في عمّان 🗺️ — ٧ محطات وطابع في كل محطة وكلمة مخفية تنتظرك. جرّب: zowar.net"
+                        : "I just solved the Zowar puzzle trail on Rainbow Street, Amman 🗺️ — 7 stops, 6 stamps, and one hidden word to find. Try it: zowar.net"
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"

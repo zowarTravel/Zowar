@@ -6,18 +6,18 @@ export const metadata: Metadata = {
   description:
     "A self-guided city experience in Amman, Jordan. Solve puzzles, taste iconic bites, and discover the city at your own pace.",
   alternates: {
-    canonical: "https://zowar.jo",
+    canonical: "https://zowar.net",
     languages: {
-      en: "https://zowar.jo/?lang=en",
-      ar: "https://zowar.jo/?lang=ar",
-      es: "https://zowar.jo/?lang=es",
+      en: "https://zowar.net/?lang=en",
+      ar: "https://zowar.net/?lang=ar",
+      es: "https://zowar.net/?lang=es",
     },
   },
   openGraph: {
     title: "Zowar | Food Puzzle Walks in Amman",
     description:
       "A self-guided city experience in Amman, Jordan. Solve puzzles, taste iconic bites, and discover the city at your own pace.",
-    url: "https://zowar.jo",
+    url: "https://zowar.net",
     images: [{ url: "/og-home.jpg", width: 1200, height: 630 }],
   },
 };
@@ -28,9 +28,9 @@ const localBusinessSchema = {
   name: "Zowar",
   description:
     "Self-guided food puzzle walks in Amman, Jordan. Solve clues, taste iconic bites, and discover the city at your own pace.",
-  url: "https://zowar.jo",
-  logo: "https://zowar.jo/logo.png",
-  image: "https://zowar.jo/og-home.jpg",
+  url: "https://zowar.net",
+  logo: "https://zowar.net/logo.png",
+  image: "https://zowar.net/og-home.jpg",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Amman",

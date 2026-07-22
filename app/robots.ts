@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/portal/", "/success/", "/cancel/", "/api/"],
     },
-    sitemap: "https://zowar.jo/sitemap.xml",
+    sitemap: "https://zowar.net/sitemap.xml",
   };
 }

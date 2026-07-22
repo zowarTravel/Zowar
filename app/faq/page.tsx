@@ -7,18 +7,18 @@ export const metadata: Metadata = {
   description:
     "Answers to common questions about Zowar's food puzzle walks in Amman — booking, routes, dietary needs, and more.",
   alternates: {
-    canonical: "https://zowar.jo/faq",
+    canonical: "https://zowar.net/faq",
     languages: {
-      en: "https://zowar.jo/faq?lang=en",
-      ar: "https://zowar.jo/faq?lang=ar",
-      es: "https://zowar.jo/faq?lang=es",
+      en: "https://zowar.net/faq?lang=en",
+      ar: "https://zowar.net/faq?lang=ar",
+      es: "https://zowar.net/faq?lang=es",
     },
   },
   openGraph: {
     title: "FAQ | Zowar",
     description:
       "Answers to common questions about Zowar's food puzzle walks in Amman.",
-    url: "https://zowar.jo/faq",
+    url: "https://zowar.net/faq",
     images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
   },
 };

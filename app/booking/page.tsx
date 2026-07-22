@@ -6,18 +6,18 @@ export const metadata: Metadata = {
   description:
     "Book your self-guided food puzzle walk in Amman. Pick a date, secure your spot, and unlock the Puzzle Portal.",
   alternates: {
-    canonical: "https://zowar.jo/booking",
+    canonical: "https://zowar.net/booking",
     languages: {
-      en: "https://zowar.jo/booking?lang=en",
-      ar: "https://zowar.jo/booking?lang=ar",
-      es: "https://zowar.jo/booking?lang=es",
+      en: "https://zowar.net/booking?lang=en",
+      ar: "https://zowar.net/booking?lang=ar",
+      es: "https://zowar.net/booking?lang=es",
     },
   },
   openGraph: {
     title: "Book a Food Puzzle Walk in Amman",
     description:
       "Pick a date, secure your spot, and unlock the Puzzle Portal for your Zowar experience.",
-    url: "https://zowar.jo/booking",
+    url: "https://zowar.net/booking",
     images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
   },
 }; type Locale = "en" | "ar" | "es"; export default async function BookingPage({ searchParams, }: { searchParams: Promise<{ lang?: string }>; }) { const { lang } = await searchParams; const normalizedLang = (lang ?? "").toLowerCase(); const locale: Locale = normalizedLang.startsWith("ar") ? "ar" : normalizedLang.startsWith("es") ? "es" : "en"; return <BookingClient locale={locale} />; }

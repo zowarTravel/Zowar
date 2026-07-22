@@ -23,11 +23,11 @@ export async function generateMetadata({
       ? "تعاون مع زوّار وأضف محلك لمسارات تجربة الطعام في عمّان."
       : "Partner your Amman café, restaurant, or food spot with Zowar's guided food puzzle walks.",
     alternates: {
-      canonical: "https://zowar.jo/collaborate",
+      canonical: "https://zowar.net/collaborate",
       languages: {
-        en: "https://zowar.jo/collaborate?lang=en",
-        ar: "https://zowar.jo/collaborate?lang=ar",
-        es: "https://zowar.jo/collaborate?lang=es",
+        en: "https://zowar.net/collaborate?lang=en",
+        ar: "https://zowar.net/collaborate?lang=ar",
+        es: "https://zowar.net/collaborate?lang=es",
       },
     },
     openGraph: {
@@ -35,7 +35,7 @@ export async function generateMetadata({
       description: isAr
         ? "تعاون مع زوّار وأضف محلك لمسارات تجربة الطعام في عمّان."
         : "Partner your Amman café, restaurant, or food spot with Zowar's guided food puzzle walks.",
-      url: "https://zowar.jo/collaborate",
+      url: "https://zowar.net/collaborate",
       images: [{ url: "/og-collaborate.jpg" }],
     },
   };

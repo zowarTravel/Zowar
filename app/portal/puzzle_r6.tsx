@@ -40,9 +40,9 @@ const CONTENT = {
     storyEyebrow: "About this stop",
     storyTitle: "Flour & Fire",
     storyBody1:
-      "Flour & Fire is an artisan bakery on Rainbow Street. The manakeesh comes out of a wood-fire oven, and it fits perfectly into the neighbourhood's rhythm of walking, sharing, and stopping for something fresh.",
+      "An artisan bakery on Rainbow Street. Manakeesh from the wood-fire oven.",
     storyBody2:
-      "Za'atar holds a special place across Jordan and the Levant — warm, aromatic, and deeply familiar. A simple stop that becomes part of the city's daily ritual.",
+      "Za'atar is the classic — warm, aromatic, and not easy to forget.",
   },
   ar: {
     kicker: "الجولة ٦ · مطابقة الكلمات",
@@ -58,9 +58,9 @@ const CONTENT = {
     storyEyebrow: "عن هذه المحطة",
     storyTitle: "فلور آند فاير",
     storyBody1:
-      "فلور آند فاير مخبزة حرفية على شارع الرينبو. المناقيش تخرج من فرن الحطب، وتنسجم مع إيقاع الحي القائم على المشي والمشاركة والتوقف لشيء طازج.",
+      "مخبزة حرفية على شارع الرينبو. مناقيش من فرن الحطب.",
     storyBody2:
-      "الزعتر يحمل مكانة خاصة في الأردن وبلاد الشام — دافئ وعطِر ومألوف. وقفة بسيطة تتحول إلى جزء من طقوس المدينة اليومية.",
+      "الزعتر هو الكلاسيكي — دافئ وعطِر، لن تنساه بسهولة.",
   },
 } as const;
 

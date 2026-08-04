@@ -71,9 +71,7 @@ const COPY = {
       selectOne: "Select one logo to continue.",
       aboutTitle: "About this stop",
       aboutText: [
-        "Al Quds Falafel has been on Rainbow Street since 1966. Al Quds meaning Jerusalem alludes to their origins, before bringing over their delicious recipe and finding a new home on Rainbow Street.",
-        "Nearly 60 years later, the recipe still hasn't changed. Falafel pressed and fried to order, served in a traditional sesame Ka'ek with tahini and pickles.",
-        "This place is frequented by the Royal Family and locals alike. A true staple on Rainbow Street and in Amman as a whole.",
+        "On Rainbow Street since 1966. The name nods to Jerusalem, where the recipe came from. Falafel pressed and fried to order, served in a sesame ka'ek with tahini and pickles. Frequented by the Royal Family and locals alike.",
       ],
     },
   },
@@ -117,9 +115,7 @@ const COPY = {
       selectOne: "اختر شعارًا واحدًا للمتابعة.",
       aboutTitle: "عن هذه المحطة",
       aboutText: [
-        "يتواجد فلافل القدس على شارع الرينبو منذ عام 1966. القدس — وهي اسم المدينة المقدسة — تُلمّح إلى أصول أصحابه، الذين حملوا وصفتهم اللذيذة ووجدوا لها وطناً جديداً على شارع الرينبو.",
-        "بعد ما يقارب الستين عاماً، لم تتغير الوصفة. فلافل تُعجن وتُقلى عند الطلب، تُقدَّم في كعك سمسمي تقليدي مع الطحينة والمخلل.",
-        "يرتاد هذا المكان أفراد من الأسرة الحاكمة والسكان المحليون على حدٍّ سواء. ركيزة حقيقية على شارع الرينبو وفي عمّان بأسرها.",
+        "على شارع الرينبو منذ 1966. الاسم إشارة إلى القدس، مصدر الوصفة الأصلية. فلافل تُعجن وتُقلى عند الطلب في كعك سمسمي مع الطحينة والمخلل. يرتاده أفراد الأسرة الحاكمة والسكان على حدٍّ سواء.",
       ],
     },
   },

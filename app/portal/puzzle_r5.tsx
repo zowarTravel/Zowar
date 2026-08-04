@@ -439,23 +439,11 @@ export default function PuzzleR5({ locale, onSolved }: Props) {
                 <h3 className="text-lg font-semibold text-neutral-950">
                   {isAr ? "مطبخ أسمى" : "Asma Kitchen"}
                 </h3>
-                <div className="mt-2 space-y-3 text-sm leading-7 text-neutral-700">
-                  <p>
-                    {isAr
-                      ? "بعض الأماكن تطعمك كزبون. أخرى تشعرك أن عائلة ما أفسحت لك مكاناً على طاولتها."
-                      : "Some places feed you like a customer. Others feel like someone's family made room for you at the table."}
-                  </p>
-                  <p>
-                    {isAr
-                      ? "مطبخ أسمى من النوع الثاني. طعامه متجذّر في الطبخ العربي البيتي، بأطباق مألوفة ووصفات تتناقلها الأجيال عبر دروس مثل تجربة صنع الكنافة."
-                      : "Asma Kitchen belongs to the second kind. Their food is rooted in home-style Arabic cooking, with familiar dishes and recipes passed on through classes like their knafeh-making experience."}
-                  </p>
-                  <p>
-                    {isAr
-                      ? "محطتك هنا بسيطة: اطلب حمصاً أو متبّلاً، استمتع بطعم صغير من ذلك المطبخ، وتابع مشوارك."
-                      : "Here, your stop is simple: pick up hummus or mutabbal, enjoy a small taste of that kitchen, and keep walking."}
-                  </p>
-                </div>
+                <p className="mt-2 text-sm leading-7 text-neutral-700">
+                  {isAr
+                    ? "طبخ عربي بيتي في قلب شارع الرينبو. هذا ليس مطعماً — بل هو أشبه بمشاهدة أحد أفراد العائلة وهو يُعدّ لك وجبة تقليدية ويرحّب بك في مطبخه الخاص."
+                    : "Home-style Arabic cooking in the middle of Rainbow Street. This isn't a restaurant — it is truly like watching a family member prepare you a traditional meal and welcoming you into their private kitchen."}
+                </p>
               </div>
             ) : null}
 

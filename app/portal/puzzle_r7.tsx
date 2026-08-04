@@ -657,8 +657,8 @@ export default function PuzzleR7({
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-neutral-700">
                     {isAr
-                      ? "ميجانا هي المكان المثالي فوق شارع الرينبو للاستمتاع بالتجربة وتذوّق كل ما جمعته على طول المسار. إطلالة خلابة على عمّان وحلوى دافئة بانتظارك!"
-                      : "Mijana is the perfect place above Rainbow Street to soak in the experience and enjoy all the items you picked up along the way. Your stunning view of Amman and a sweet dessert await you!"}
+                      ? "نهاية الجولة. إطلالة على عمّان وحلوى دافئة مع كل ما جمعته على طول المسار."
+                      : "The end of the walk. A view over Amman and a sweet dessert with everything you collected along the way."}
                   </p>
                 </div>
 
@@ -671,8 +671,8 @@ export default function PuzzleR7({
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-neutral-700">
                     {isAr
-                      ? "حصل شارع الرينبو على اسمه من سينما الرينبو التي جعلت هذا التل ملتقىً للأهالي لأجيال. المباني الحجرية التي رافقتك طوال الطريق شُيِّدت في عشرينيات القرن الماضي لنخبة عمّان من سياسيين وسفراء وأفراد من الأسرة الحاكمة. مشروع إحياء في ٢٠٠٦ أعاد إليه ممشاه وإطلالاته. المحطات التي تتبّعتها للتو هي خريطة لذلك التاريخ المتراكم — الشارع ذاته، حقب مختلفة، كلها لا تزال هنا."
-                      : "Rainbow Street takes its name from the Rainbow Cinema, a neighbourhood theatre that made this hill a meeting point for generations. The stone buildings you walked past were built in the 1920s for Amman's politicians, ambassadors, and royals. A 2006 project brought the walkways and overlooks back. The stops you just visited sit inside that history: one street, different eras, all still here."}
+                      ? "شارع الرينبو أخذ اسمه من سينما الرينبو. مبانيه الحجرية من عشرينيات القرن الماضي — شُيِّدت لسياسيين وسفراء وأفراد من الأسرة الحاكمة. المحطات التي زرتها للتو جزء من ذلك التاريخ."
+                      : "Rainbow Street takes its name from the Rainbow Cinema. The stone buildings date to the 1920s — built for politicians, ambassadors, and royals. The stops you just visited sit inside that same history."}
                   </p>
                 </div>
               </div>

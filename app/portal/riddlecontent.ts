@@ -43,12 +43,12 @@ export const riddle1 = {
   aboutEyebrow: { en: "Your next stop", ar: "محطتك التالية" },
   aboutTitle: { en: "Ruman Collective", ar: "رمان كولكتيف" },
   aboutBody1: {
-    en: "Ruman — Arabic for pomegranate — gives this collective its name and its spirit. On Rainbow Street, the space brings together Jordanian designers and makers working from the region's craft traditions. Hand-printed textiles, ceramics, illustrated prints, objects made within a few streets of where you're standing.",
-    ar: "رمان — وهو اسم الثمرة بالعربية — يُلهم هذا المجمّع ويمنحه روحه. يقع على شارع الرينبو، ويجمع مصمّمين وحرفيين أردنيين تستلهم أعمالهم من الموروث البصري للمنطقة: منسوجات مطبوعة يدوياً، وسيراميك، ومطبوعات مرسومة — كلٌّ منها صُنع على بعد خطوات من المكان الذي تقف فيه.",
+    en: "A collective of Jordanian designers and makers on Rainbow Street. Hand-printed textiles, ceramics, illustrated prints — made within a few streets of where you're standing.",
+    ar: "مجمّع مصمّمين وحرفيين أردنيين على شارع الرينبو. منسوجات مطبوعة يدوياً وسيراميك ومطبوعات — كلها صُنعت على بعد خطوات من هنا.",
   },
   aboutBody2: {
-    en: "It started as a shared studio. Now it's on the short list of places in Amman worth going out of your way for.",
-    ar: "بدأت رمان مساحةً للعمل المشترك لتتحوّل بهدوء إلى واحدة من اكتشافات عمّان الأكثر خصوصية — تلك الأماكن التي تُوصي بها أصدقاءك همساً.",
+    en: "Started as a shared studio. Now one of the better stops on this street.",
+    ar: "بدأت مساحةً مشتركة للعمل. الآن إحدى محطات الشارع الأكثر قيمة.",
   },
 } as const;
 
@@ -108,12 +108,12 @@ export const riddle4 = {
   aboutEyebrow: { en: "About this stop", ar: "عن هذه المحطة" },
   aboutTitle: { en: "The Soaphouse", ar: "دار الصابون" },
   aboutBody1: {
-    en: "Traditional Levantine soap-making is one of the oldest craft traditions in the Arab world. Unlike mass-produced soap, handmade Aleppo-style soap uses two ingredients that have barely changed in a thousand years: cold-pressed olive oil and laurel berry oil, mixed with lye and left to cure for months until the hard outer shell softens into a rich, gentle bar.",
-    ar: "صناعة الصابون الشامي التقليدية واحدة من أقدم الحرف اليدوية في العالم العربي. خلافاً للصابون الصناعي، يعتمد الصابون الحلبي على مكوّنين لم يتغيرا منذ ألف عام: زيت الزيتون المعصور على البارد وزيت الغار، يُمزجان مع القلوي ويُتركان يتصلّب لأشهر حتى يلين قشره الصلب وتبرز جودته.",
+    en: "Handmade Aleppo-style soap: cold-pressed olive oil and laurel berry oil, cured for months. Two ingredients unchanged for a thousand years.",
+    ar: "صابون حلبي يدوي الصنع: زيت زيتون معصور بارداً وزيت غار، يتصلّب لأشهر. مكوّنان لم يتغيرا منذ ألف عام.",
   },
   aboutBody2: {
-    en: "The scent of laurel tells you everything. The higher the laurel content, the darker the bar, the richer the lather. This small shop brings that tradition to the street.",
-    ar: "عبير الغار يقول لك كل شيء. كلما ارتفعت نسبة الغار، كان الصابون أغمق لوناً — وأغنى رغوةً. هذه المحطة الصغيرة المختبئة تحمل ذلك الإرث إلى الحي.",
+    en: "The higher the laurel content, the darker the bar and the richer the lather.",
+    ar: "كلما ارتفعت نسبة الغار، كان الصابون أغمق لوناً وأغنى رغوةً.",
   },
 } as const;
 

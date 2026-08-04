@@ -11,23 +11,57 @@ interface BookingClientProps {
   locale: Locale;
 }
 
+/* ---------------- Slot helpers ---------------- */
+
+// 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat
+const AVAILABLE_DAYS = new Set([2, 3, 4, 5, 6]);
+
+function nextValidDate(): string {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  while (!AVAILABLE_DAYS.has(d.getDay())) d.setDate(d.getDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+function generateSlots(startH: number, startM: number): string[] {
+  const slots: string[] = [];
+  let h = startH, m = startM;
+  while (h < 16 || (h === 16 && m <= 30)) {
+    slots.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+    m += 30;
+    if (m >= 60) { h++; m -= 60; }
+  }
+  return slots;
+}
+
+function getSlotsForDate(dateStr: string): string[] {
+  const d = new Date(dateStr + "T12:00:00");
+  // Friday starts at 10:30; all other days (incl. unavailable) use 9:30
+  return d.getDay() === 5 ? generateSlots(10, 30) : generateSlots(9, 30);
+}
+
+function isDayAvailable(dateStr: string): boolean {
+  return AVAILABLE_DAYS.has(new Date(dateStr + "T12:00:00").getDay());
+}
+
+function formatSlot(time: string): string {
+  const [h, m] = time.split(":").map(Number);
+  const suffix = h >= 12 ? "PM" : "AM";
+  const h12 = h > 12 ? h - 12 : h === 0 ? 12 : h;
+  return `${h12}:${String(m).padStart(2, "0")} ${suffix}`;
+}
+
 /* ---------------- Copy ---------------- */
-
-const SLOTS = {
-  morning:   { en: "Early Morning", ar: "الصباح الباكر", es: "Mañana temprana", time: "8am – 12pm"  },
-  afternoon: { en: "Mid Afternoon",  ar: "منتصف النهار",  es: "Tarde",          time: "12pm – 4pm" },
-  sunset:    { en: "Sunset",         ar: "الغروب",        es: "Atardecer",      time: "4pm – 8pm"  },
-} as const;
-
-type SlotKey = keyof typeof SLOTS;
 
 const copy = {
   en: {
     title: "Booking",
     subtitle:
       "Choose your adventure date. After checkout, you’ll receive a confirmation + the Portal access link.",
-    chooseTime: "Choose a time frame",
-    timeNote: "Your walk takes 2–3 hours. This window simply lets our stops know when to expect you.",
+    chooseTime: "Select a start time",
+    timeNote: "Slots every 30 min · Walk takes 2–3 hours",
+    unavailableDay: "Not available on this day — experiences run Tue–Sat",
+    checkingSlots: "Checking availability…",
     experienceTitle: "Choose Your Experience",
     exp1Name: "Experience Rainbow Street",
     exp1Desc: "A 7-stop culinary walk through Rainbow Street’s iconic cafés & eateries.",
@@ -36,6 +70,7 @@ const copy = {
     exp2Desc: "A 7-stop food adventure through the historic Al Weibdeh neighbourhood.",
     exp2Stops: "7 stops",
     exp2Soon: "Coming soon",
+    exp2Notify: "Get notified → follow @zowar.jo on Instagram",
     includedTitle: "What's included",
     included: [
       "A curated interactive puzzle walk through the neighbourhood",
@@ -70,8 +105,10 @@ const copy = {
     title: "الحجز",
     subtitle:
       "اختر تاريخ التجربة. بعد الدفع ستصلك رسالة تأكيد + رابط الدخول إلى البوابة.",
-    chooseTime: "اختر الوقت المناسب",
-    timeNote: "تستغرق الجولة ٢–٣ ساعات. هذه النافذة الزمنية تُعلم محطاتنا بوقت زيارتك.",
+    chooseTime: "اختر وقت البداية",
+    timeNote: "مواعيد كل ٣٠ دقيقة · الجولة تستغرق ٢–٣ ساعات",
+    unavailableDay: "لا تتوفر تجارب في هذا اليوم — متاح الثلاثاء والأربعاء والخميس والجمعة والسبت",
+    checkingSlots: "جارٍ التحقق من المواعيد…",
     experienceTitle: "اختر تجربتك",
     exp1Name: "تجربة شارع الرينبو",
     exp1Desc: "جولة ذواقة من ٧ محطات عبر المقاهي والمطاعم الأيقونية في شارع الرينبو.",
@@ -80,6 +117,7 @@ const copy = {
     exp2Desc: "مغامرة طعام من ٧ محطات عبر حي الويبدة التاريخي.",
     exp2Stops: "٧ محطات",
     exp2Soon: "قريباً",
+    exp2Notify: "تابع @zowar.jo على إنستغرام للاطلاع على المستجدات",
     includedTitle: "ماذا يشمل حجزك",
     included: [
       "جولة ألغاز تفاعلية منتقاة عبر الحي",
@@ -114,8 +152,10 @@ const copy = {
     title: "Reserva",
     subtitle:
       "Elige la fecha de tu experiencia. Tras el pago recibirás una confirmación + el enlace de acceso al Portal.",
-    chooseTime: "Elige un horario",
-    timeNote: "Tu recorrido dura 2–3 horas. Esta ventana simplemente avisa a nuestras paradas cuándo esperarte.",
+    chooseTime: "Selecciona tu hora de inicio",
+    timeNote: "Turnos cada 30 min · El recorrido dura 2–3 horas",
+    unavailableDay: "No disponible este día — experiencias disponibles mar, mié, jue, vie y sáb",
+    checkingSlots: "Comprobando disponibilidad…",
     experienceTitle: "Elige tu Experiencia",
     exp1Name: "Experiencia Calle Rainbow",
     exp1Desc: "Un recorrido gastronómico de 7 paradas por los cafés y restaurantes de Rainbow Street.",
@@ -124,6 +164,7 @@ const copy = {
     exp2Desc: "Una aventura culinaria de 7 paradas por el histórico barrio de Al Weibdeh.",
     exp2Stops: "7 paradas",
     exp2Soon: "Próximamente",
+    exp2Notify: "Recibe novedades → sigue @zowar.jo en Instagram",
     includedTitle: "Qué incluye",
     included: [
       "Un recorrido interactivo de puzzles por el barrio",
@@ -181,19 +222,31 @@ export default function BookingClient({ locale }: BookingClientProps) {
     "rainbow"
   );
 
-  const [timeSlot, setTimeSlot] = React.useState<SlotKey>("morning");
+  const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
+  const [bookedSlots, setBookedSlots] = React.useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = React.useState(false);
 
-  const [date, setDate] = React.useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().slice(0, 10);
-  });
+  const [date, setDate] = React.useState(nextValidDate);
 
   const [qty, setQty] = React.useState(2);
   const [code, setCode] = React.useState("");
   const [discount, setDiscount] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [codeMessage, setCodeMessage] = React.useState("");
+
+  const daySlots = React.useMemo(() => getSlotsForDate(date), [date]);
+  const dayAvailable = isDayAvailable(date);
+
+  React.useEffect(() => {
+    setSelectedTime(null);
+    if (!dayAvailable) { setBookedSlots([]); return; }
+    setLoadingSlots(true);
+    fetch(`/api/availability?date=${date}`)
+      .then((r) => r.json())
+      .then((data) => setBookedSlots((data as { booked: string[] }).booked ?? []))
+      .catch(() => setBookedSlots([]))
+      .finally(() => setLoadingSlots(false));
+  }, [date, dayAvailable]);
 
   const pricePerPerson = 28;
 
@@ -245,7 +298,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           date,
-          timeSlot,
+          timeSlot: selectedTime,
           qty,
           locale: effectiveLocale,
           experience,
@@ -395,34 +448,10 @@ export default function BookingClient({ locale }: BookingClientProps) {
               </div>
             </button>
 
-            {/* Al Weibdeh */}
+            {/* Al Weibdeh — coming soon */}
 
-            <button
-              type="button"
-              onClick={() => setExperience("weibdeh")}
-              className={`${experienceCardBase} ${
-                experience === "weibdeh"
-                  ? "border-z-orange bg-z-orange-soft"
-                  : "border-black/10 bg-white hover:bg-black/[0.02]"
-              }`}
-            >
-              {experience === "weibdeh" && (
-                <div className="absolute end-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-z-orange">
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="h-3 w-3 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M20 6 9 17l-5-5" />
-                  </svg>
-                </div>
-              )}
-
-              <div className="flex items-center gap-4 pe-6">
+            <div className={`${experienceCardBase} cursor-not-allowed border-black/10 bg-white opacity-60`}>
+              <div className="flex items-center gap-4">
                 <div className={experienceImageClass}>
                   <Image
                     src="/Weibdeh.png"
@@ -442,18 +471,28 @@ export default function BookingClient({ locale }: BookingClientProps) {
                     {t.exp2Desc}
                   </div>
 
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
                     <div className="inline-flex items-center rounded-full border border-z-orange bg-z-orange-soft px-2.5 py-0.5 text-xs font-semibold z-orange">
                       {t.exp2Stops}
                     </div>
 
-                    <span className="text-xs text-neutral-400">
+                    <span className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-semibold text-neutral-500">
                       {t.exp2Soon}
                     </span>
                   </div>
+
+                  <a
+                    href="https://www.instagram.com/zowar.jo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-block cursor-pointer text-xs font-medium text-neutral-500 underline decoration-neutral-300 hover:text-neutral-800"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {t.exp2Notify}
+                  </a>
                 </div>
               </div>
-            </button>
+            </div>
           </div>
         </div>
 
@@ -507,25 +546,41 @@ export default function BookingClient({ locale }: BookingClientProps) {
             <div className="mt-6">
               <label className="text-sm font-medium text-neutral-700">{t.chooseTime}</label>
               <p className="mt-0.5 text-xs text-neutral-400">{t.timeNote}</p>
-              <div className="mt-3 flex flex-col gap-2">
-                {(Object.keys(SLOTS) as SlotKey[]).map((slot) => (
-                  <button
-                    key={slot}
-                    type="button"
-                    onClick={() => setTimeSlot(slot)}
-                    className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-sm transition ${
-                      timeSlot === slot
-                        ? "border-z-orange bg-z-orange-soft"
-                        : "border-black/10 bg-white hover:bg-black/[0.02]"
-                    }`}
-                  >
-                    <span className={`font-medium ${timeSlot === slot ? "z-orange" : "text-neutral-800"}`}>
-                      {SLOTS[slot][effectiveLocale === "ar" ? "ar" : effectiveLocale === "es" ? "es" : "en"]}
-                    </span>
-                    <span className="text-neutral-400">{SLOTS[slot].time}</span>
-                  </button>
-                ))}
-              </div>
+
+              {!dayAvailable ? (
+                <p className="mt-3 rounded-2xl border border-neutral-100 bg-neutral-50 px-4 py-3 text-sm text-neutral-500">
+                  {t.unavailableDay}
+                </p>
+              ) : loadingSlots ? (
+                <p className="mt-3 text-sm text-neutral-400">{t.checkingSlots}</p>
+              ) : (
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {daySlots.map((slot) => {
+                    const booked = bookedSlots.includes(slot);
+                    const selected = selectedTime === slot;
+                    return (
+                      <button
+                        key={slot}
+                        type="button"
+                        disabled={booked}
+                        onClick={() => setSelectedTime(slot)}
+                        className={`rounded-xl border py-2.5 text-xs font-medium transition ${
+                          booked
+                            ? "cursor-not-allowed border-neutral-100 bg-neutral-50 text-neutral-300"
+                            : selected
+                              ? "border-z-orange bg-z-orange-soft z-orange"
+                              : "border-black/10 bg-white text-neutral-700 hover:border-z-orange/40"
+                        }`}
+                      >
+                        {formatSlot(slot)}
+                        {booked && (
+                          <span className="block text-[10px] text-neutral-300">Booked</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             <div className="mt-6">
@@ -602,7 +657,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
             <button
               onClick={startCheckout}
-              disabled={loading}
+              disabled={loading || !dayAvailable || !selectedTime}
               className="bg-z-orange glow-z-orange mt-6 w-full rounded-2xl px-5 py-4 font-semibold text-neutral-950 disabled:opacity-60"
             >
               {loading ? t.loading : t.pay}

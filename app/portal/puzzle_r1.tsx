@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { riddle2, type Locale } from "./riddlecontent";
+import type { Locale } from "./riddlecontent";
 import { setRoundSolved, serverSetRoundSolved } from "./progress";
 
 type WordSpec = {
@@ -15,404 +15,446 @@ type RowState = "idle" | "correct" | "wrong";
 
 const VIRTUAL_CENTER_COL = 12;
 
-/** ---------- ENGLISH ---------- */
 const CENTER_WORD_EN = "MAGENTA";
 const WORDS_EN: WordSpec[] = [
-  { num: 1, answer: "AMMAN",   crossIndex: 1, clue: { en: "Jordan's capital city",     ar: "عاصمة الأردن" } },
-  { num: 2, answer: "RAINBOW", crossIndex: 1, clue: { en: "Colorful arc after rain",   ar: "قوس ملوّن بعد المطر" } },
-  { num: 3, answer: "BEGIN",   crossIndex: 2, clue: { en: "The opposite of to end",      ar: "ما تفعله في هذه اللحظة"  } },
-  { num: 4, answer: "STREET",  crossIndex: 3, clue: { en: "Cars drive on these",         ar: "تمشي فيه" } },
-  { num: 5, answer: "LEMON",   crossIndex: 4, clue: { en: "Sour and yellow",            ar: "حامض وأصفر" } },
-  { num: 6, answer: "TOUM",    crossIndex: 0, clue: { en: "Garlicky white sauce in Shawerma",       ar: "صلصةالشاورمة" } },
-  { num: 7, answer: "CAFE",    crossIndex: 1, clue: { en: "Where you go for coffee",    ar: "مكان القهوة" } },
+  { num: 1, answer: "AMMAN",   crossIndex: 1, clue: { en: "Jordan's capital city",                    ar: "عاصمة الأردن" } },
+  { num: 2, answer: "RAINBOW", crossIndex: 1, clue: { en: "Colourful arc in the sky after rain",       ar: "قوس ملوّن بعد المطر" } },
+  { num: 3, answer: "FLAG",    crossIndex: 3, clue: { en: "Red, white, green and black with a star",   ar: "أحمر وأبيض وأخضر وأسود مع نجمة" } },
+  { num: 4, answer: "OLIVE",   crossIndex: 4, clue: { en: "Small fruit pressed into the region's most used oil", ar: "ثمرة صغيرة تُعصر لتصنع أشهر زيوت المنطقة" } },
+  { num: 5, answer: "LEMON",   crossIndex: 4, clue: { en: "Sour and yellow fruit",                      ar: "حامض وأصفر" } },
+  { num: 6, answer: "FATTOUSH", crossIndex: 2, clue: { en: "Traditional Arab salad with fried crispy pitta bread", ar: "سلطة عربية بالخبز المحمّص" } },
+  { num: 7, answer: "PETRA",   crossIndex: 4, clue: { en: "Ancient city carved into rose-red rock",    ar: "مدينة أثرية منحوتة في الصخر الوردي" } },
 ];
 
-/** ---------- ARABIC ---------- */
 const CENTER_WORD_AR = "ماجنتا";
 const WORDS_AR: WordSpec[] = [
-  { num: 1, answer: "عمان",    crossIndex: 1, clue: { en: "Jordan's capital",           ar: "عاصمة الأردن" } },
-  { num: 2, answer: "ياسمين", crossIndex: 1, clue: { en: "A fragrant white flower",    ar: "زهرة عطرة بيضاء" } },
-  { num: 3, answer: "درج",    crossIndex: 2, clue: { en: "You'll climb many on this street", ar: "ستصعد عليه كثيرًا في هذا الشارع" } },
-  { num: 4, answer: "ليمون",  crossIndex: 4, clue: { en: "Sour yellow fruit",           ar: "فاكهة صفراء حامضة" } },
-  { num: 5, answer: "توم",    crossIndex: 0, clue: { en: "Garlic sauce",                ar: "صلصةالشاورمة" } },
-  { num: 6, answer: "شارع",   crossIndex: 1, clue: { en: "A road in the city",          ar: "طريق في المدينة" } },
+  { num: 1, answer: "عمان",    crossIndex: 1, clue: { en: "Jordan's capital",                          ar: "عاصمة الأردن" } },
+  { num: 2, answer: "ياسمين", crossIndex: 1, clue: { en: "A fragrant white flower",                   ar: "زهرة عطرة بيضاء" } },
+  { num: 3, answer: "درج",    crossIndex: 2, clue: { en: "You'll climb many on this street",           ar: "ستصعد عليه كثيرًا في هذا الشارع" } },
+  { num: 4, answer: "ليمون",  crossIndex: 4, clue: { en: "Sour yellow fruit",                         ar: "فاكهة صفراء حامضة" } },
+  { num: 5, answer: "فتوش",   crossIndex: 1, clue: { en: "Arab salad with fried crispy pitta bread",   ar: "سلطة عربية بالخبز المحمّص" } },
+  { num: 6, answer: "بتراء",  crossIndex: 3, clue: { en: "Ancient city carved into rose-red rock",    ar: "مدينة أثرية منحوتة في الصخر الوردي" } },
 ];
 
-type Cell = {
-  r: number;
-  c: number;
-  kind: "input" | "center";
-  rowIndex: number;
-  letterIndex: number;
-};
-
-function keyFor(r: number, c: number) {
-  return `${r}:${c}`;
-}
-
-function isLatinLetter(ch: string) {
-  return /^[A-Za-z]$/.test(ch);
-}
-function isArabicLetter(ch: string) {
-  return /^[؀-ۿ]$/.test(ch);
-}
+function keyFor(r: number, c: number) { return `${r}:${c}`; }
+function isLatinLetter(ch: string) { return /^[A-Za-z]$/.test(ch); }
+function isArabicLetter(ch: string) { return /^[؀-ۿ]$/.test(ch); }
 
 function buildLayout(words: WordSpec[]) {
-  const rows = words.length;
-  const starts = words.map((w) => VIRTUAL_CENTER_COL - w.crossIndex);
-
-  let minC = Infinity;
-  let maxC = -Infinity;
-
-  for (let r = 0; r < rows; r++) {
-    const start = starts[r];
-    const end = start + words[r].answer.length - 1;
-    minC = Math.min(minC, start);
-    maxC = Math.max(maxC, end);
+  const starts = words.map(w => VIRTUAL_CENTER_COL - w.crossIndex);
+  let minC = Infinity, maxC = -Infinity;
+  for (let r = 0; r < words.length; r++) {
+    minC = Math.min(minC, starts[r]);
+    maxC = Math.max(maxC, starts[r] + words[r].answer.length - 1);
   }
-
-  const cols = maxC - minC + 1;
-
-  const cells: Record<string, Cell> = {};
-  for (let r = 0; r < rows; r++) {
-    const w = words[r];
-    const start = starts[r];
-    for (let i = 0; i < w.answer.length; i++) {
-      const globalC = start + i;
-      cells[keyFor(r, globalC)] = {
-        r,
-        c: globalC,
-        kind: i === w.crossIndex ? "center" : "input",
-        rowIndex: r,
+  const cells: Record<string, { kind: "input" | "center"; letterIndex: number }> = {};
+  for (let r = 0; r < words.length; r++) {
+    for (let i = 0; i < words[r].answer.length; i++) {
+      cells[keyFor(r, starts[r] + i)] = {
+        kind: i === words[r].crossIndex ? "center" : "input",
         letterIndex: i,
       };
     }
   }
-
-  return { starts, minC, maxC, cols, cells, rows };
+  return { starts, minC, maxC, cols: maxC - minC + 1, cells, rows: words.length };
 }
 
-export default function PuzzleR1({
-  locale,
-  onSolved,
-}: {
-  locale: Locale;
-  onSolved?: () => void;
-}) {
+function getAmmanWeekday(routeDate?: string): string {
+  const date = routeDate
+    ? new Date(`${routeDate}T12:00:00+03:00`)
+    : new Date();
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Amman",
+    weekday: "long",
+  }).format(date);
+}
+
+export default function PuzzleR1({ locale, onSolved, routeDate }: { locale: Locale; onSolved?: () => void; routeDate?: string }) {
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
   const isAr = safeLocale === "ar";
-  const t = riddle2;
 
   const words = isAr ? WORDS_AR : WORDS_EN;
   const centerWord = isAr ? CENTER_WORD_AR : CENTER_WORD_EN;
-
   const layout = React.useMemo(() => buildLayout(words), [words]);
   const ROWS = layout.rows;
 
-  const inputRefs = React.useRef<Record<string, HTMLInputElement | null>>({});
+  const cardInputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
   const solvedOnceRef = React.useRef(false);
-  const rootRef = React.useRef<HTMLDivElement | null>(null);
-  const solvedActionRef = React.useRef<HTMLDivElement | null>(null);
-
-  const [showHint, setShowHint] = React.useState(false);
-  const [showCluesMobile, setShowCluesMobile] = React.useState(false);
-  const gridRef = React.useRef<HTMLDivElement | null>(null);
-
-  const scrollerRef = React.useRef<HTMLDivElement | null>(null);
-  const overlayRef = React.useRef<HTMLDivElement | null>(null);
-  const startCellRefs = React.useRef<Record<number, HTMLDivElement | null>>({});
-
-  const [labelPos, setLabelPos] = React.useState<
-    { row: number; num: number; x: number; y: number }[]
-  >([]);
 
   const [values, setValues] = React.useState<Record<string, string>>(() => {
     const init: Record<string, string> = {};
     for (let r = 0; r < ROWS; r++) {
       const w = words[r];
-      const start = layout.starts[r];
-      for (let i = 0; i < w.answer.length; i++) init[keyFor(r, start + i)] = "";
+      const s = layout.starts[r];
+      for (let i = 0; i < w.answer.length; i++) init[keyFor(r, s + i)] = "";
     }
     return init;
   });
 
-  const [checked, setChecked] = React.useState(false);
   const [rowState, setRowState] = React.useState<RowState[]>(
     Array.from({ length: ROWS }, () => "idle")
   );
-
+  const [activeRow, setActiveRow] = React.useState(0);
   const [allSolved, setAllSolved] = React.useState(false);
-  const [glowStep, setGlowStep] = React.useState(0);
-  const [status, setStatus] = React.useState<"idle" | "correct" | "wrong">("idle");
-  const [scrollEdge, setScrollEdge] = React.useState({ left: false, right: false });
+  const [isTuesdayRoute, setIsTuesdayRoute] = React.useState(false);
 
-  function normalizeChar(ch: string) {
-    return isAr ? ch : ch.toUpperCase();
+  React.useEffect(() => {
+    setIsTuesdayRoute(getAmmanWeekday(routeDate) === "Tuesday");
+  }, [routeDate]);
+
+  const normalizeChar = (ch: string) => isAr ? ch : ch.toUpperCase();
+
+  // Focus first card input when active row changes
+  React.useEffect(() => {
+    cardInputRefs.current = [];
+    const id = window.setTimeout(() => cardInputRefs.current[0]?.focus(), 80);
+    return () => window.clearTimeout(id);
+  }, [activeRow]);
+
+  function triggerAllSolved() {
+    if (solvedOnceRef.current) return;
+    solvedOnceRef.current = true;
+    setAllSolved(true);
+    setRoundSolved("r1");
+    serverSetRoundSolved("r1");
+    onSolved?.();
   }
 
-  function setCell(rowIndex: number, globalC: number, next: string) {
-    setValues((prev) => ({ ...prev, [keyFor(rowIndex, globalC)]: next }));
-    setChecked(false);
-    setRowState((s) => s.map(() => "idle"));
-    if (!allSolved) setStatus("idle");
-  }
-
-  function focusNextInRow(rowIndex: number, currentGlobalC: number) {
-    for (let c = currentGlobalC + 1; c <= layout.maxC; c++) {
-      if (layout.cells[keyFor(rowIndex, c)]) {
-        inputRefs.current[keyFor(rowIndex, c)]?.focus();
-        return;
-      }
+  function advanceRow(currentRow: number, states: RowState[]) {
+    for (let j = currentRow + 1; j < ROWS; j++) {
+      if (states[j] !== "correct") { setActiveRow(j); return; }
+    }
+    for (let j = 0; j < currentRow; j++) {
+      if (states[j] !== "correct") { setActiveRow(j); return; }
     }
   }
 
-  function focusPrevInRow(rowIndex: number, currentGlobalC: number) {
-    for (let c = currentGlobalC - 1; c >= layout.minC; c--) {
-      if (layout.cells[keyFor(rowIndex, c)]) {
-        inputRefs.current[keyFor(rowIndex, c)]?.focus();
-        return;
-      }
-    }
-  }
+  function handleCellInput(r: number, i: number, raw: string) {
+    if (solvedOnceRef.current) return;
+    if (rowState[r] === "correct") return;
 
-  function isRowCorrect(r: number) {
     const w = words[r];
     const start = layout.starts[r];
+    const ch = raw.slice(-1);
+    if (ch && !(isAr ? isArabicLetter(ch) : isLatinLetter(ch))) return;
+    const val = ch ? normalizeChar(ch) : "";
+
+    const newVals = { ...values, [keyFor(r, start + i)]: val };
+    setValues(newVals);
+
+    if (rowState[r] === "wrong") {
+      setRowState(prev => prev.map((s, idx) => idx === r ? "idle" : s));
+      if (val && i < w.answer.length - 1) {
+        window.setTimeout(() => cardInputRefs.current[i + 1]?.focus(), 10);
+      }
+      return;
+    }
+
+    if (val && i < w.answer.length - 1) {
+      window.setTimeout(() => cardInputRefs.current[i + 1]?.focus(), 10);
+    }
+
+    const complete = w.answer.split("").every((_, idx) => (newVals[keyFor(r, start + idx)] ?? "") !== "");
+    if (!complete) return;
+
+    const correct = w.answer.split("").every((letter, idx) =>
+      normalizeChar(newVals[keyFor(r, start + idx)]) === normalizeChar(letter)
+    );
+
+    const newStates = rowState.map((s, idx) => idx === r ? (correct ? "correct" : "wrong") : s) as RowState[];
+    setRowState(newStates);
+
+    if (!correct) return;
+
+    const allDone = newStates.every(s => s === "correct");
+    if (allDone) { window.setTimeout(triggerAllSolved, 350); return; }
+    window.setTimeout(() => advanceRow(r, newStates), 500);
+  }
+
+  function handleKeyDown(r: number, i: number, e: React.KeyboardEvent<HTMLInputElement>) {
+    if (rowState[r] === "correct") return;
+    const start = layout.starts[r];
+    if (e.key === "Backspace") {
+      const cur = values[keyFor(r, start + i)] ?? "";
+      if (cur) {
+        const newVals = { ...values, [keyFor(r, start + i)]: "" };
+        setValues(newVals);
+        if (rowState[r] === "wrong") setRowState(prev => prev.map((s, idx) => idx === r ? "idle" : s));
+      } else if (i > 0) {
+        const newVals = { ...values, [keyFor(r, start + i - 1)]: "" };
+        setValues(newVals);
+        window.setTimeout(() => cardInputRefs.current[i - 1]?.focus(), 10);
+      }
+    }
+  }
+
+  function revealRow(r: number) {
+    if (solvedOnceRef.current) return;
+    const w = words[r];
+    const start = layout.starts[r];
+    const newVals = { ...values };
     for (let i = 0; i < w.answer.length; i++) {
-      const expected = normalizeChar(w.answer[i]);
-      const v = normalizeChar(values[keyFor(r, start + i)] ?? "");
-      if (!v || v !== expected) return false;
+      newVals[keyFor(r, start + i)] = normalizeChar(w.answer[i]);
     }
-    return true;
-  }
-
-  function solveRow(r: number, closeAfter = false) {
-    if (allSolved) return;
-
-    const w = words[r];
-    const start = layout.starts[r];
-
-    setValues((prev) => {
-      const next = { ...prev };
-      for (let i = 0; i < w.answer.length; i++) next[keyFor(r, start + i)] = normalizeChar(w.answer[i]);
-      return next;
-    });
-
-    setChecked(false);
-    setRowState((s) => s.map(() => "idle"));
-    setStatus("idle");
-
-    if (closeAfter) {
-      setShowCluesMobile(false);
-      window.setTimeout(() => {
-        gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 60);
-    }
+    setValues(newVals);
+    const newStates = rowState.map((s, idx) => idx === r ? "correct" : s) as RowState[];
+    setRowState(newStates);
+    if (newStates.every(s => s === "correct")) { window.setTimeout(triggerAllSolved, 350); return; }
+    window.setTimeout(() => advanceRow(r, newStates), 400);
   }
 
   function reset() {
     const cleared: Record<string, string> = {};
     for (let r = 0; r < ROWS; r++) {
       const w = words[r];
-      const start = layout.starts[r];
-      for (let i = 0; i < w.answer.length; i++) cleared[keyFor(r, start + i)] = "";
+      const s = layout.starts[r];
+      for (let i = 0; i < w.answer.length; i++) cleared[keyFor(r, s + i)] = "";
     }
     setValues(cleared);
-    setChecked(false);
     setRowState(Array.from({ length: ROWS }, () => "idle"));
+    setActiveRow(0);
     setAllSolved(false);
-    setGlowStep(0);
-    setStatus("idle");
     solvedOnceRef.current = false;
   }
 
-  function celebrate() {
-    setGlowStep(0);
-    for (let i = 1; i <= centerWord.length; i++) {
-      window.setTimeout(() => setGlowStep(i), 120 * i);
-    }
-  }
-
-  function check() {
-    if (solvedOnceRef.current) return;
-
-    setChecked(true);
-
-    const states: RowState[] = words.map((_, r) => (isRowCorrect(r) ? "correct" : "wrong"));
-    setRowState(states);
-
-    const all = states.every((s) => s === "correct");
-    if (!all) {
-      setStatus("wrong");
-      return;
-    }
-
-    setStatus("correct");
-    setAllSolved(true);
-    celebrate();
-
-    solvedOnceRef.current = true;
-    setRoundSolved("r1");
-    serverSetRoundSolved("r1");
-    onSolved?.();
-
-    window.setTimeout(() => {
-      solvedActionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 220);
-  }
-
-  function closeCluesAndReturnToGrid() {
-    setShowCluesMobile(false);
-    window.setTimeout(() => {
-      gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 50);
-  }
-
-  function focusRowStart(r: number) {
-    const start = layout.starts[r];
-    const k = keyFor(r, start);
-    window.setTimeout(() => inputRefs.current[k]?.focus(), 80);
-  }
-
-  const recomputeLabels = React.useCallback(() => {
-    const overlay = overlayRef.current;
-    const scroller = scrollerRef.current;
-    if (!overlay || !scroller) return;
-
-    const overlayRect = overlay.getBoundingClientRect();
-    const out: { row: number; num: number; x: number; y: number }[] = [];
-
-    for (let r = 0; r < words.length; r++) {
-      const el = startCellRefs.current[r];
-      if (!el) continue;
-
-      const cellRect = el.getBoundingClientRect();
-      const cellSize = cellRect.width;
-
-      const gap = Math.max(6, Math.round(cellSize * 0.2));
-      const x = isAr
-        ? cellRect.right - overlayRect.left + gap
-        : cellRect.left - overlayRect.left - gap;
-
-      const y = cellRect.top - overlayRect.top + cellRect.height / 2;
-
-      out.push({ row: r, num: words[r].num, x, y });
-    }
-
-    setLabelPos(out);
-  }, [isAr, words]);
-
-  React.useEffect(() => {
-    recomputeLabels();
-    const onResize = () => recomputeLabels();
-    window.addEventListener("resize", onResize);
-
-    const scroller = scrollerRef.current;
-    if (scroller) {
-      const onScroll = () => {
-        recomputeLabels();
-        const el = scrollerRef.current;
-        if (el) setScrollEdge({ left: el.scrollLeft > 8, right: el.scrollLeft < el.scrollWidth - el.clientWidth - 8 });
-      };
-      scroller.addEventListener("scroll", onScroll, { passive: true });
-      return () => {
-        window.removeEventListener("resize", onResize);
-        scroller.removeEventListener("scroll", onScroll);
-      };
-    }
-
-    return () => window.removeEventListener("resize", onResize);
-  }, [recomputeLabels]);
-
-  React.useEffect(() => {
-    const t = window.setTimeout(() => recomputeLabels(), 50);
-    return () => window.clearTimeout(t);
-  }, [recomputeLabels]);
-
-  React.useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const update = () =>
-      setScrollEdge({ left: el.scrollLeft > 8, right: el.scrollWidth - el.clientWidth > 8 });
-    update();
-    const id = window.setTimeout(update, 200);
-    return () => window.clearTimeout(id);
-  }, []);
-
-  const cardGlow =
-    status === "correct"
-      ? "ring-2 ring-green-300 shadow-[0_0_0_6px_rgba(34,197,94,0.12)]"
-      : status === "wrong"
-      ? "ring-2 ring-red-200 shadow-[0_0_0_6px_rgba(239,68,68,0.08)]"
-      : "ring-1 ring-neutral-200";
+  const activeWord = words[activeRow];
+  const activeStart = layout.starts[activeRow];
+  const solvedCount = rowState.filter(s => s === "correct").length;
 
   return (
     <div
-      ref={rootRef}
-      className={[
-        "relative overflow-x-hidden rounded-3xl",
-        "bg-[linear-gradient(180deg,#fafaf9_0%,#ffffff_100%)]",
-        "p-5 pb-[calc(9.5rem+env(safe-area-inset-bottom))] shadow-sm transition-all sm:p-6 sm:pb-6",
-        cardGlow,
-      ].join(" ")}
+      dir={isAr ? "rtl" : "ltr"}
+      className="relative rounded-3xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6"
     >
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="max-w-xl">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
-            {safeLocale === "ar" ? "الجولة ١ · كلمات متقاطعة" : "Round 1 · Crossword"}
-          </div>
-          <h2 className="text-xl font-semibold text-neutral-950">{t.title[safeLocale]}</h2>
-          <p className="mt-1 text-neutral-700">{t.prompt[safeLocale]}</p>
+      {/* ── Header ── */}
+      <div className="mb-5">
+        <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
+          {isAr ? "الجولة ١ · الكلمة المخفية" : "Round 1 · Hidden Word"}
         </div>
-
-        <div className="flex flex-wrap gap-2 sm:justify-end">
-          <button
-            type="button"
-            onClick={() => setShowHint((v) => !v)}
-            className="rounded-2xl border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50"
-          >
-            {showHint
-              ? safeLocale === "en"
-                ? "Hide hint"
-                : "إخفاء التلميح"
-              : safeLocale === "en"
-              ? "Show hint"
-              : "إظهار التلميح"}
-          </button>
-
-          <div className="hidden gap-2 sm:flex">
-            <button
-              onClick={check}
-              className="rounded-2xl bg-z-orange px-4 py-2 text-sm font-medium text-white hover:opacity-90"
-            >
-              {t.ui.check[safeLocale]}
-            </button>
-            <button
-              onClick={reset}
-              className="rounded-2xl border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-50"
-            >
-              {t.ui.reset[safeLocale]}
-            </button>
-          </div>
-        </div>
+        <h2 className="text-xl font-semibold text-neutral-950">
+          {isAr ? "اكشف وجهتك الأولى" : "Decode your first stop"}
+        </h2>
+        <p className="mt-1 text-sm leading-6 text-neutral-600">
+          {isAr
+            ? "حلّ كل سؤال — الحروف البرتقالية تكشف اسم المكان الذي ستتوجّه إليه."
+            : "Solve each clue — the orange letters reveal the name of where you're headed."}
+        </p>
       </div>
 
-      {showHint && (
-        <div className="mt-4 rounded-2xl border border-black/8 bg-z-off-white p-4 text-sm text-neutral-700">
-          {safeLocale === "en"
-            ? "Use the clues to complete each row. When a row is right, the crossing center letters reveal the hidden word."
-            : "استخدم التلميحات لإكمال كل سطر. عندما يكون السطر صحيحًا، تكشف الحروف الوسطية عن الكلمة المخفية."}
+      {/* ── Hidden word strip ── */}
+      <div className="mb-5 flex items-center justify-center gap-1.5">
+        {centerWord.split("").map((letter, i) => {
+          const revealed = i < rowState.length && rowState[i] === "correct";
+          return (
+            <div
+              key={i}
+              className={[
+                "flex h-10 w-10 items-center justify-center rounded-xl border-2 text-sm font-bold transition-all duration-500",
+                revealed
+                  ? "border-z-orange bg-z-orange text-white shadow-[0_0_16px_rgba(200,105,74,0.4)]"
+                  : "border-neutral-200 bg-neutral-50 text-neutral-300",
+              ].join(" ")}
+            >
+              {revealed ? letter : "·"}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── Compact display grid ── */}
+      <div className="mb-5 rounded-2xl border border-neutral-100 bg-neutral-50 px-3 py-3">
+        <div className="flex justify-center" style={{ direction: isAr ? "rtl" : "ltr" }}>
+          <div
+            className="inline-grid"
+            style={{ gridTemplateColumns: `repeat(${layout.cols}, 22px)`, gap: "3px" }}
+          >
+            {Array.from({ length: ROWS }).flatMap((_, r) =>
+              Array.from({ length: layout.cols }).map((__, cc) => {
+                const globalC = layout.minC + cc;
+                const cell = layout.cells[keyFor(r, globalC)];
+
+                if (!cell) {
+                  return <div key={`e-${r}-${cc}`} style={{ width: 22, height: 22 }} />;
+                }
+
+                const val = values[keyFor(r, globalC)] ?? "";
+                const isCenter = cell.kind === "center";
+                const isActive = r === activeRow;
+                const isCorrect = rowState[r] === "correct";
+                const isWrong = rowState[r] === "wrong";
+
+                return (
+                  <button
+                    key={`g-${r}-${cc}`}
+                    type="button"
+                    onClick={() => setActiveRow(r)}
+                    style={{ width: 22, height: 22 }}
+                    className={[
+                      "flex items-center justify-center rounded-[5px] text-[9px] font-bold transition-all duration-200",
+                      isCenter && isCorrect ? "bg-z-orange text-white" :
+                      isCenter ? "border border-z-orange/50 bg-z-orange/12 text-z-orange" :
+                      isCorrect ? "bg-green-100 text-green-700" :
+                      isWrong ? "bg-red-50 text-red-400" :
+                      isActive ? "border border-z-orange/40 bg-white text-neutral-700 shadow-sm" :
+                      "border border-neutral-200 bg-white text-neutral-500",
+                    ].join(" ")}
+                  >
+                    {val}
+                  </button>
+                );
+              })
+            )}
+          </div>
+        </div>
+        <p className="mt-2 text-center text-[10px] text-neutral-400">
+          {isAr ? "اضغط على أي سطر للانتقال إليه" : "Tap any row to jump to it"}
+        </p>
+      </div>
+
+      {/* ── Active clue card ── */}
+      {!allSolved && (
+        <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
+          {/* Progress dots */}
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-400">
+              {isAr
+                ? `${solvedCount} من ${ROWS} مكتملة`
+                : `${solvedCount} of ${ROWS} solved`}
+            </span>
+            <div className="flex gap-1">
+              {Array.from({ length: ROWS }).map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setActiveRow(i)}
+                  className={[
+                    "h-1.5 rounded-full transition-all duration-300",
+                    i === activeRow
+                      ? "w-5 bg-z-orange"
+                      : rowState[i] === "correct"
+                      ? "w-1.5 bg-green-400"
+                      : "w-1.5 bg-neutral-300",
+                  ].join(" ")}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Clue text */}
+          <p className="mb-4 text-base font-medium leading-6 text-neutral-900">
+            <span className="mr-1.5 text-sm font-semibold text-z-orange">{activeWord.num}.</span>
+            {isAr ? activeWord.clue.ar : activeWord.clue.en}
+            <span className="ml-1.5 text-sm font-normal text-neutral-400">
+              ({activeWord.answer.length})
+            </span>
+          </p>
+
+          {/* Letter boxes */}
+          <div
+            className="mb-4 flex flex-wrap justify-center gap-2"
+            style={{ direction: isAr ? "rtl" : "ltr" }}
+          >
+            {activeWord.answer.split("").map((_, i) => {
+              const globalC = activeStart + i;
+              const isCenter = activeWord.crossIndex === i;
+              const val = values[keyFor(activeRow, globalC)] ?? "";
+              const isCorrect = rowState[activeRow] === "correct";
+              const isWrong = rowState[activeRow] === "wrong";
+
+              return (
+                <input
+                  key={i}
+                  ref={el => { cardInputRefs.current[i] = el; }}
+                  value={val}
+                  readOnly={isCorrect}
+                  onChange={e => {
+                    const raw = e.target.value;
+                    if (!raw.slice(-1)) return;
+                    handleCellInput(activeRow, i, raw);
+                  }}
+                  onKeyDown={e => handleKeyDown(activeRow, i, e)}
+                  inputMode="text"
+                  maxLength={2}
+                  className={[
+                    "h-12 w-12 rounded-xl border-2 text-center text-lg font-bold outline-none transition-all duration-200",
+                    !isAr ? "uppercase" : "",
+                    isCenter
+                      ? isCorrect
+                        ? "border-z-orange bg-z-orange text-white"
+                        : "border-z-orange bg-z-orange/10 text-neutral-900 focus:ring-2 focus:ring-z-orange/25"
+                      : isCorrect
+                        ? "border-green-300 bg-green-50 text-green-700"
+                        : isWrong && val
+                          ? "border-red-300 bg-red-50 text-red-700"
+                          : "border-neutral-300 bg-white text-neutral-900 focus:border-z-orange focus:ring-2 focus:ring-z-orange/20",
+                  ].join(" ")}
+                />
+              );
+            })}
+          </div>
+
+          {/* Status */}
+          {rowState[activeRow] === "correct" && (
+            <p className="mb-3 text-center text-sm font-medium text-green-700">
+              ✓ {isAr ? "صحيح!" : "Correct!"}
+              {solvedCount < ROWS && (
+                <span className="font-normal text-neutral-500">
+                  {" "}{isAr ? "— تابع الحل" : "— keep going"}
+                </span>
+              )}
+            </p>
+          )}
+          {rowState[activeRow] === "wrong" && (
+            <p className="mb-3 text-center text-sm font-medium text-red-600">
+              {isAr ? "ليس هذا — حاول مرة أخرى" : "Not quite — try again"}
+            </p>
+          )}
+
+          {/* Navigation */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setActiveRow(r => (r - 1 + ROWS) % ROWS)}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-600 hover:bg-neutral-100"
+            >
+              {isAr ? "›" : "‹"}
+            </button>
+            <button
+              type="button"
+              onClick={() => revealRow(activeRow)}
+              className="flex-1 rounded-xl border border-neutral-200 bg-neutral-50 py-2 text-xs font-semibold text-neutral-500 hover:bg-neutral-100"
+            >
+              {isAr ? "كشف الإجابة" : "Reveal"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveRow(r => (r + 1) % ROWS)}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-600 hover:bg-neutral-100"
+            >
+              {isAr ? "‹" : "›"}
+            </button>
+          </div>
+
+          {/* Reset */}
+          <button
+            type="button"
+            onClick={reset}
+            className="mt-3 w-full text-center text-xs text-neutral-400 hover:text-neutral-600"
+          >
+            {isAr ? "إعادة الضبط" : "Reset all"}
+          </button>
         </div>
       )}
 
-      <div className="mt-4 space-y-3">
-        {status === "correct" && (
-          <>
-            <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800">
-              {isAr ? "أحسنت! الكلمة المخفية هي:" : "All correct! The hidden word is:"}
-            </div>
-            <div className="flex items-center justify-center gap-1.5">
-              {(isAr ? ["م","ا","ج","ن","ت","ا"] : ["M","A","G","E","N","T","A"]).map((letter, i) => (
+      {/* ── All solved ── */}
+      {allSolved && (
+        <div className="space-y-4" style={{ animation: "r1FadeUp 420ms cubic-bezier(.22,1,.36,1) both" }}>
+          <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-center">
+            <p className="text-sm font-semibold text-green-800">
+              {isAr ? "ممتاز! وجهتك الأولى هي:" : "All correct! Your first stop is:"}
+            </p>
+            <div className="mt-2 flex items-center justify-center gap-1.5">
+              {centerWord.split("").map((letter, i) => (
                 <span
                   key={i}
                   className="flex h-9 w-9 items-center justify-center rounded-xl border border-amber-200 bg-gradient-to-b from-[#FFFCF6] to-[#FEF0D2] text-sm font-bold text-amber-900 shadow-sm"
@@ -421,221 +463,8 @@ export default function PuzzleR1({
                 </span>
               ))}
             </div>
-          </>
-        )}
-        {status === "wrong" && (
-          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">
-            {isAr ? "بعض الكلمات غير صحيحة — حاول مرة أخرى." : "Some words are wrong — try again."}
           </div>
-        )}
-      </div>
 
-      <div className="mt-4 sm:hidden">
-        <button
-          type="button"
-          onClick={() => setShowCluesMobile(true)}
-          className="w-full rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-left text-sm font-semibold text-neutral-900 shadow-sm"
-        >
-          {isAr ? "عرض التلميحات" : "View clues"}
-        </button>
-      </div>
-
-      <div className="mt-6 flex justify-center">
-        <div className="w-full">
-          <div
-            ref={gridRef}
-            className="relative rounded-3xl border border-black/5 bg-[radial-gradient(circle_at_20%_10%,rgba(200,105,74,0.08),transparent_45%),radial-gradient(circle_at_80%_90%,rgba(59,130,246,0.06),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.96),rgba(255,255,255,0.90))] p-4 sm:p-6"
-          >
-            {scrollEdge.left && (
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-10 rounded-l-3xl bg-gradient-to-r from-white/90 to-transparent" />
-            )}
-            {scrollEdge.right && (
-              <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-10 rounded-r-3xl bg-gradient-to-l from-white/90 to-transparent" />
-            )}
-            <div ref={scrollerRef} className="relative w-full overflow-x-auto">
-              <div ref={overlayRef} className="pointer-events-none absolute inset-0 z-10">
-                {labelPos.map((p) => (
-                  <div
-                    key={`lbl-${p.row}`}
-                    className="absolute -translate-y-1/2 text-[11px] font-bold text-neutral-700"
-                    style={{
-                      left: p.x,
-                      top: p.y,
-                      transform: `translate(${isAr ? "0%" : "-100%"}, -50%)`,
-                    }}
-                  >
-                    {p.num}
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex justify-center" style={{ minWidth: "fit-content" }}>
-                <div
-                  className="inline-grid"
-                  style={{
-                    ["--cell" as any]: "clamp(26px, 7vw, 36px)",
-                    ["--gap" as any]: "clamp(4px, 1vw, 6px)",
-                    gap: "var(--gap)",
-                    gridTemplateColumns: `repeat(${layout.cols}, var(--cell))`,
-                    direction: isAr ? "rtl" : "ltr",
-                    padding: "4px 22px",
-                  }}
-                >
-                  {Array.from({ length: ROWS }).flatMap((_, r) =>
-                    Array.from({ length: layout.cols }).map((__, cc) => {
-                      const globalC = layout.minC + cc;
-                      const cell = layout.cells[keyFor(r, globalC)];
-
-                      if (!cell) {
-                        return (
-                          <div
-                            key={`e-${r}-${globalC}`}
-                            style={{ width: "var(--cell)", height: "var(--cell)" }}
-                          />
-                        );
-                      }
-
-                      const start = layout.starts[r];
-                      const isStartCell = globalC === start;
-
-                      const rowGood = checked && rowState[r] === "correct";
-                      const rowBad = checked && rowState[r] === "wrong";
-
-                      const isCenter = cell.kind === "center";
-                      const shouldGlow = isCenter && allSolved && glowStep > r;
-
-                      const baseBox = rowGood
-                        ? "border-green-200 bg-green-50/70"
-                        : rowBad
-                        ? "border-red-200 bg-red-50/70"
-                        : "border-neutral-300 bg-white";
-
-                      const animateGlow = shouldGlow
-                        ? "shadow-[0_0_0_6px_rgba(34,197,94,0.14)] ring-2 ring-green-300"
-                        : "";
-
-                      const k = keyFor(r, globalC);
-
-                      const displayValue =
-                        checked && isCenter && rowGood ? centerWord[r] ?? "" : values[k] ?? "";
-
-                      const textTint =
-                        checked && isCenter
-                          ? rowGood
-                            ? "text-green-700"
-                            : rowBad
-                            ? "text-red-600"
-                            : "text-neutral-900"
-                          : "text-neutral-900";
-
-                      return (
-                        <div
-                          key={`cell-${r}-${globalC}`}
-                          ref={(el) => {
-                            if (isStartCell) startCellRefs.current[r] = el;
-                          }}
-                          className={[
-                            "relative overflow-hidden rounded-xl border transition-all duration-300",
-                            baseBox,
-                            animateGlow,
-                          ].join(" ")}
-                          style={{ width: "var(--cell)", height: "var(--cell)" }}
-                        >
-                          <input
-                            ref={(el) => {
-                              inputRefs.current[k] = el;
-                            }}
-                            value={displayValue}
-                            onChange={(e) => {
-                              if (solvedOnceRef.current) return;
-
-                              const raw = e.target.value;
-                              const last = raw.slice(-1);
-
-                              if (!last) {
-                                setCell(r, globalC, "");
-                                return;
-                              }
-
-                              const ok = isAr ? isArabicLetter(last) : isLatinLetter(last);
-                              if (!ok) return;
-
-                              setCell(r, globalC, normalizeChar(last));
-                              focusNextInRow(r, globalC);
-                            }}
-                            onKeyDown={(e) => {
-                              if (solvedOnceRef.current) return;
-
-                              if (e.key === "Backspace") {
-                                const v = values[k] ?? "";
-                                if (v) setCell(r, globalC, "");
-                                else focusPrevInRow(r, globalC);
-                              }
-                              if (e.key === "Enter") check();
-                            }}
-                            inputMode="text"
-                            maxLength={1}
-                            className={[
-                              "h-full w-full bg-transparent text-center font-extrabold outline-none focus:ring-2 focus:ring-neutral-900",
-                              "text-[clamp(14px,3.8vw,18px)]",
-                              !isAr ? "uppercase" : "",
-                              textTint,
-                            ].join(" ")}
-                            aria-label={`cell ${r + 1}-${globalC + 1}`}
-                          />
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4 text-center text-xs text-neutral-500">
-              {isAr
-                ? "اضغط تحقق لرؤية الكلمات الصحيحة والخاطئة."
-                : "Press Check to see which words are right or wrong."}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6 hidden sm:block">
-        <div className="mb-3 text-sm font-semibold text-neutral-950">
-          {isAr ? "التلميحات" : "Clues"}
-        </div>
-        <div className="space-y-2">
-          {words.map((w, idx) => (
-            <div
-              key={w.num}
-              className="flex items-center justify-between gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3"
-            >
-              <button
-                type="button"
-                onClick={() => focusRowStart(idx)}
-                className="min-w-0 flex-1 text-left"
-              >
-                <span className="text-sm text-neutral-900">
-                  <span className="font-semibold">{w.num}.</span>{" "}
-                  {isAr ? w.clue.ar : w.clue.en}{" "}
-                  <span className="text-neutral-400">({w.answer.length})</span>
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => solveRow(idx)}
-                className="shrink-0 rounded-xl border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 hover:bg-neutral-100"
-              >
-                {isAr ? "حل السطر" : "Solve row"}
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {allSolved && (
-        <div className="mt-4 space-y-4 animate-[zowarFadeUp_420ms_cubic-bezier(.22,1,.36,1)_1]">
-          {/* About Magenta */}
           <div className="overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-5">
             <div className="text-xs font-semibold uppercase tracking-[0.2em] text-z-orange">
               {isAr ? "محطتك التالية" : "Your next stop"}
@@ -643,21 +472,26 @@ export default function PuzzleR1({
             <h3 className="mt-2 text-xl font-semibold text-neutral-950">
               {isAr ? "ماجنتا" : "Magenta"}
             </h3>
-            <div className="mt-3 space-y-3 text-sm leading-7 text-neutral-700">
-              <p>
+            {isTuesdayRoute ? (
+              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-amber-700">
+                  {isAr ? "ملاحظة ليوم الثلاثاء" : "A small Tuesday detour"}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-amber-900">
+                  {isAr
+                    ? "ماجنتا مغلقة أيام الثلاثاء، لكن جولتك ما زالت تبدأ من هنا. توجّه إلى واجهة المقهى وابدأ من الخارج — لا حاجة للدخول. مشروب الترحيب بانتظارك في محطة لاحقة من الجولة."
+                    : "Magenta takes Tuesdays off, but your route still begins here. Head to the storefront and begin from outside—there is no need to enter. Your welcome drink will be waiting for you later in the route."}
+                </p>
+              </div>
+            ) : (
+              <p className="mt-3 text-sm leading-7 text-neutral-700">
                 {isAr
                   ? "بعيدًا عن صخب الشارع، تختبئ ماجنتا كجوهرة حيّة في قلب عمّان — واحدة من أكثر مقاهيها إلهامًا، تُعرف بالأعمال الفنية والخط العربي الإبداعي التي تُزيّن جدرانها، وبإطلالتها الساحرة على جبل عمّان. البداية المثالية لشحن روحك قبل المغامرة التي تنتظرك."
-                  : "Tucked away from the chaos, Magenta is one of Amman's most vibrant cafes, known for its creative artwork and calligraphy that accompany the overview of Jabal Amman. The perfect start to energise your adventure ahead."}
+                  : "Tucked away from the chaos, Magenta is one of Amman's most vibrant cafes, known for its creative artwork and calligraphy that line the walls, and a stunning overlook of Jabal Amman. The perfect start to energise your adventure ahead."}
               </p>
-              <p>
-                {isAr
-                  ? "الاسم كان التلميح. من هنا تبدأ رحلتك."
-                  : "The name was the clue. This is where your adventure will begin."}
-              </p>
-            </div>
+            )}
           </div>
 
-          {/* Nearby tip: Jeld */}
           <div className="rounded-3xl border border-neutral-200 bg-white p-5">
             <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-400">
               {isAr ? "بالجوار" : "Nearby"}
@@ -669,106 +503,16 @@ export default function PuzzleR1({
             <p className="mt-2 text-sm leading-6 text-neutral-600">
               {isAr
                 ? "مباشرةً بجانبك — جِلد محل مستقل يحمل تشكيلة منتخبة من المنتجات المحلية. المكان أنيق وجدير بالاكتشاف."
-                : "Right next door — Jeld is an independent local store with a carefully chosen selection of locally made goods. Not part of the tour, but the space is elegantly curated and worth discovering."}
+                : "Right next door — Jeld is an independent local store with a curated selection of locally made goods. Not part of the tour, but worth a look."}
             </p>
           </div>
         </div>
       )}
 
-      {showCluesMobile && (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <button
-            className="absolute inset-0 bg-black/30"
-            aria-label={isAr ? "إغلاق" : "Close"}
-            onClick={closeCluesAndReturnToGrid}
-          />
-          <div className="absolute bottom-0 left-0 right-0 max-h-[75vh] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-xl">
-            <div className="mb-3 flex items-center justify-between">
-              <div className="text-sm font-semibold text-neutral-950">{isAr ? "التلميحات" : "Clues"}</div>
-              <button
-                className="rounded-xl border border-neutral-200 px-3 py-2 text-sm font-semibold text-neutral-900"
-                onClick={closeCluesAndReturnToGrid}
-              >
-                {isAr ? "إغلاق" : "Close"}
-              </button>
-            </div>
-
-            <div className="space-y-3">
-              {words.map((w, idx) => (
-                <div
-                  key={w.num}
-                  className="flex items-start justify-between gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 px-3 py-2"
-                >
-                  <button
-                    type="button"
-                    onClick={() => {
-                      closeCluesAndReturnToGrid();
-                      focusRowStart(idx);
-                    }}
-                    className="min-w-0 text-left"
-                  >
-                    <div className="text-sm text-neutral-900">
-                      <span className="font-semibold">{w.num}.</span>{" "}
-                      {isAr ? w.clue.ar : w.clue.en}{" "}
-                      <span className="text-neutral-500">({w.answer.length})</span>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => solveRow(idx, true)}
-                    className="shrink-0 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 hover:bg-neutral-100"
-                  >
-                    {isAr ? "حل السطر" : "Solve row"}
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {!allSolved ? (
-        <div className="sm:hidden">
-          <div
-            className="fixed bottom-0 left-0 right-0 z-30 border-t border-neutral-200 bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.06)]"
-            style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
-          >
-            <div className="mx-auto max-w-3xl px-4 py-3">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={check}
-                  className="flex-1 rounded-2xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white hover:opacity-90"
-                >
-                  {t.ui.check[safeLocale]}
-                </button>
-
-                <button
-                  onClick={reset}
-                  className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50"
-                >
-                  {t.ui.reset[safeLocale]}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setShowCluesMobile(true)}
-                  className="rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50"
-                >
-                  {isAr ? "تلميحات" : "Clues"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="h-[calc(2rem+env(safe-area-inset-bottom))] sm:hidden" />
-      )}
-
       <style jsx>{`
-        @keyframes zowarFadeUp {
-          0% { opacity: 0; transform: translateY(10px); }
-          100% { opacity: 1; transform: translateY(0); }
+        @keyframes r1FadeUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </div>

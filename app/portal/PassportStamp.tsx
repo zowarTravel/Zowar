@@ -10,16 +10,23 @@ type Props = {
 
 export default function PassportStamp({ stamp, unlocked, locale = "en" }: Props) {
   const isAr = locale === "ar";
+  const scale = stamp.scale ?? 1;
 
   return (
     <div className="relative aspect-square w-full overflow-hidden rounded-xl">
       {unlocked ? (
-        <img
-          src={stamp.image}
-          alt={stamp.alt}
-          className="h-full w-full object-contain p-1"
-          draggable={false}
-        />
+        <div className="flex h-full w-full items-center justify-center">
+          <img
+            src={stamp.image}
+            alt={stamp.alt}
+            draggable={false}
+            style={{
+              width: `${scale * 100}%`,
+              height: `${scale * 100}%`,
+              objectFit: "contain",
+            }}
+          />
+        </div>
       ) : (
         <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-100/50">
           <svg

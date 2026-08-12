@@ -3,6 +3,8 @@
 import React from "react";
 import { setRoundSolved, serverSetRoundSolved, readProgress } from "./progress";
 import { riddle1 } from "./riddlecontent";
+
+const RUMMAN_MAP_URL = "https://maps.app.goo.gl/KzWjZf4eBSDNX1WQA";
 import type { Locale } from "./riddlecontent";
 
 /* -------------------- COMPONENT -------------------- */
@@ -35,8 +37,8 @@ export default function PuzzleR2({
       solvedOnceRef.current = true;
 
       setStatus(nextStatus);
-      setRoundSolved("r3");
-      serverSetRoundSolved("r3"); // fire-and-forget server sync
+      setRoundSolved("r2");
+      serverSetRoundSolved("r2"); // fire-and-forget server sync
       onSolved?.();
     },
     [onSolved]
@@ -256,11 +258,25 @@ export default function PuzzleR2({
                 {t.aboutEyebrow[safeLocale]}
               </div>
               <h3 className="mt-2 text-xl font-semibold text-neutral-950">
-                {t.aboutTitle[safeLocale]}
+                <a
+                  href={RUMMAN_MAP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-z-orange underline-offset-2 hover:opacity-80"
+                >
+                  {t.aboutTitle[safeLocale]}
+                </a>
               </h3>
               <div className="mt-3 space-y-3 text-sm leading-7 text-neutral-700">
                 <p>{t.aboutBody1[safeLocale]}</p>
                 <p>{t.aboutBody2[safeLocale]}</p>
+              </div>
+              <div className="mt-4 rounded-2xl border border-z-orange/20 bg-white px-4 py-3">
+                <p className="text-sm leading-6 text-neutral-800">
+                  {safeLocale === "ar"
+                    ? "توجّه إلى رمان كولكتيف، استكشف الحرف المحلية، ثم اصعد إلى الطابق العلوي لاستلام طلبك من المطعم."
+                    : "Head to Ruman Collective, explore the local crafts, and head upstairs for your item from the restaurant."}
+                </p>
               </div>
             </div>
           )}

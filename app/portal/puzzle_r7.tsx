@@ -46,7 +46,8 @@ export default function PuzzleR7({
 
   const [collectedIds, setCollectedIds] = React.useState<StampId[]>([]);
   const [zoomed, setZoomed] = React.useState<PassportStampMeta | null>(null);
-  const [answer, setAnswer] = React.useState("");
+  const [letters, setLetters] = React.useState<string[]>(Array(6).fill(""));
+  const letterRefs = React.useRef<(HTMLInputElement | null)[]>([]);
   const [status, setStatus] = React.useState<"idle" | "correct" | "wrong">("idle");
   const [showHint, setShowHint] = React.useState(false);
   const [showHint2, setShowHint2] = React.useState(false);
@@ -71,7 +72,7 @@ export default function PuzzleR7({
 
   function handleCheck() {
     if (solvedRef.current) return;
-    const norm = normalizeAnswer(answer);
+    const norm = normalizeAnswer(letters.join(""));
     if (!norm) return;
     const accepted = isAr ? ACCEPTED_AR : ACCEPTED_EN;
     if (accepted.includes(norm)) {
@@ -100,10 +101,27 @@ export default function PuzzleR7({
   }
 
   function handleReset() {
-    setAnswer("");
+    setLetters(Array(6).fill(""));
     setStatus("idle");
     setShowHint(false);
     setShowHint2(false);
+  }
+
+  function handleLetterChange(index: number, raw: string) {
+    const char = raw.replace(/[^a-zA-Z؀-ۿ]/g, "").slice(-1).toUpperCase();
+    const next = [...letters];
+    next[index] = char;
+    setLetters(next);
+    setStatus("idle");
+    if (char && index < RAINBOW_STAMPS.length - 1) {
+      window.setTimeout(() => letterRefs.current[index + 1]?.focus(), 0);
+    }
+  }
+
+  function handleLetterKeyDown(index: number, e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Backspace" && !letters[index] && index > 0) {
+      letterRefs.current[index - 1]?.focus();
+    }
   }
 
   /* ------------------------------------------------------------------ */
@@ -346,64 +364,96 @@ export default function PuzzleR7({
 
           {/* ── Stamps zone ── */}
           <div className="relative px-8 pb-8 pt-5 sm:px-10">
-            <p className="mb-5 text-center text-[11px] font-medium tracking-wide text-slate-400/80">
-              {isAr
-                ? "اضغط على أي طابع لفحصه عن قرب"
-                : "Tap any stamp to examine it closely"}
-            </p>
+            <div className="mb-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-neutral-300/50" />
+              <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400/80">
+                <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="8.5" cy="8.5" r="5" />
+                  <path d="M12.5 12.5L16 16" strokeLinecap="round" />
+                </svg>
+                {isAr ? "اضغط لفحص الطابع" : "Tap to inspect"}
+              </div>
+              <div className="h-px flex-1 bg-neutral-300/50" />
+            </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {RAINBOW_STAMPS.map((stamp, i) => {
                 const unlocked = collectedIds.includes(stamp.id);
                 const rotation = ROTATIONS[i] ?? 0;
 
                 return (
-                  <button
-                    key={stamp.id}
-                    type="button"
-                    disabled={!unlocked}
-                    onClick={() => unlocked && setZoomed(stamp)}
-                    className={[
-                      "group relative transition-all duration-200",
-                      unlocked
-                        ? "cursor-zoom-in hover:scale-[1.07] hover:z-10"
-                        : "cursor-default opacity-30",
-                    ].join(" ")}
-                    style={{ transform: `rotate(${unlocked ? rotation : 0}deg)` }}
-                  >
-                    {unlocked ? (
-                      /* Stamp image sits directly on parchment */
-                      <div className="relative aspect-square w-full">
-                        <img
-                          src={stamp.image}
-                          alt={stamp.alt}
-                          className="h-full w-full object-contain drop-shadow-sm"
-                          draggable={false}
-                        />
-                        {/* Zoom hint on hover */}
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-150 group-hover:bg-black/10">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-150 group-hover:opacity-100">
-                            <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="2">
+                  <div key={stamp.id} className="flex flex-col items-center gap-2">
+                    {/* Stamp — rotation applied only here so the input stays level */}
+                    <button
+                      type="button"
+                      disabled={!unlocked}
+                      onClick={() => unlocked && setZoomed(stamp)}
+                      className={[
+                        "group relative w-full transition-all duration-200",
+                        unlocked
+                          ? "cursor-zoom-in hover:scale-[1.07] hover:z-10"
+                          : "cursor-default opacity-30",
+                      ].join(" ")}
+                      style={{ transform: `rotate(${unlocked ? rotation : 0}deg)` }}
+                    >
+                      {unlocked ? (
+                        <div className="relative aspect-square w-full">
+                          <img
+                            src={stamp.image}
+                            alt={stamp.alt}
+                            className="h-full w-full object-contain drop-shadow-sm"
+                            draggable={false}
+                          />
+                          {/* Corner inspect badge — always visible, lifts on hover */}
+                          <div className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white/80 shadow-sm backdrop-blur-sm transition-all duration-200 group-hover:bg-white group-hover:shadow-md">
+                            <svg viewBox="0 0 20 20" className="h-3 w-3 text-neutral-500 transition-colors duration-200 group-hover:text-neutral-800" fill="none" stroke="currentColor" strokeWidth="2">
                               <circle cx="8.5" cy="8.5" r="5" />
                               <path d="M12.5 12.5L16 16" strokeLinecap="round" />
-                              <path d="M8.5 6.5v4M6.5 8.5h4" strokeLinecap="round" />
                             </svg>
                           </div>
+                          {/* Subtle hover tint — desktop polish */}
+                          <div className="absolute inset-0 bg-black/0 transition-all duration-150 group-hover:bg-black/5" />
                         </div>
-                      </div>
-                    ) : (
-                      /* Locked placeholder */
-                      <div className="flex aspect-square w-full flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-neutral-300/40">
-                        <svg viewBox="0 0 20 20" className="h-4 w-4 text-neutral-300" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <rect x="3.5" y="9" width="13" height="9" rx="1.5" />
-                          <path d="M7 9V6.5a3 3 0 016 0V9" strokeLinecap="round" />
-                        </svg>
-                        <span className="text-[9px] font-semibold uppercase tracking-wider text-neutral-300">
-                          {isAr ? `محطة ${stamp.stop}` : `Stop ${stamp.stop}`}
-                        </span>
-                      </div>
-                    )}
-                  </button>
+                      ) : (
+                        <div className="flex aspect-square w-full flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-neutral-300/40">
+                          <svg viewBox="0 0 20 20" className="h-4 w-4 text-neutral-300" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <rect x="3.5" y="9" width="13" height="9" rx="1.5" />
+                            <path d="M7 9V6.5a3 3 0 016 0V9" strokeLinecap="round" />
+                          </svg>
+                          <span className="text-[9px] font-semibold uppercase tracking-wider text-neutral-300">
+                            {isAr ? `محطة ${stamp.stop}` : `Stop ${stamp.stop}`}
+                          </span>
+                        </div>
+                      )}
+                    </button>
+
+                    {/* Letter input — one character per stamp */}
+                    <input
+                      ref={el => { letterRefs.current[i] = el; }}
+                      type="text"
+                      maxLength={1}
+                      value={letters[i]}
+                      onChange={e => handleLetterChange(i, e.target.value)}
+                      onKeyDown={e => handleLetterKeyDown(i, e)}
+                      disabled={!unlocked || status === "correct"}
+                      className={[
+                        "h-10 w-10 rounded-xl border-2 text-center text-base font-bold uppercase transition",
+                        "focus:outline-none focus:border-z-orange focus:ring-4 focus:ring-[rgba(200,105,74,0.12)]",
+                        status === "correct" && letters[i]
+                          ? "border-emerald-300 bg-emerald-50 text-emerald-700"
+                          : letters[i]
+                          ? "border-z-orange/40 bg-z-orange-soft text-neutral-900"
+                          : "border-neutral-300 bg-white text-neutral-900",
+                        (!unlocked || status === "correct") ? "cursor-not-allowed opacity-50" : "",
+                      ].join(" ")}
+                      aria-label={isAr ? `حرف المحطة ${stamp.stop}` : `Stop ${stamp.stop} letter`}
+                      inputMode="text"
+                      autoCapitalize="characters"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      spellCheck={false}
+                    />
+                  </div>
                 );
               })}
             </div>
@@ -439,8 +489,8 @@ export default function PuzzleR7({
             <div className="px-6 py-5">
               <p className="text-sm leading-7 text-neutral-800">
                 {isAr
-                  ? "جمعت المدينة في أجزاء. داخل كل طابع حرفٌ مخفي — اعثر عليها بالترتيب واتبعها نحو المكان الذي يجسّد روح هذا الشارع."
-                  : "You have collected the city in pieces. Each stamp holds one hidden letter — find them in order and follow them to the place that embodies the character of this street."}
+                  ? "داخل كل طابع حرفٌ مخفي. اضغط على الطابع لفحصه عن قرب، ثم أدخل الحرف الذي تجده في الخانة أسفله."
+                  : "Each stamp holds one hidden letter. Tap a stamp to examine it closely, then type the letter you find in the box below it."}
               </p>
 
               <div className="mt-4">
@@ -498,8 +548,8 @@ export default function PuzzleR7({
                           <div className="font-semibold text-neutral-950">{isAr ? "الإجابة" : "Reveal answer"}</div>
                           <div className="mt-1 leading-7">
                             {isAr
-                              ? "اكتب 'ميجانا' في حقل النص أدناه واستمتع بوجهتك النهائية المريحة!"
-                              : "Enter 'Mijana' in the text box below and enjoy your relaxing final destination!"}
+                              ? "أدخل الحروف م-ي-ج-ا-ن-ا في الخانات أسفل الطوابع واضغط تحقق."
+                              : "Enter M-I-J-A-N-A, one letter per box below each stamp, then hit Submit."}
                           </div>
                         </div>
                       )}
@@ -508,34 +558,44 @@ export default function PuzzleR7({
                 </div>
               )}
 
+              {/* Combined answer — populates as letters are entered above */}
               <div className="mt-5">
-                <label className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
-                  {isAr ? "الوجهة" : "Destination"}
-                </label>
-                <input
-                  value={answer}
-                  onChange={(e) => { setAnswer(e.target.value); setStatus("idle"); }}
-                  onKeyDown={(e) => e.key === "Enter" && handleCheck()}
-                  placeholder={isAr ? "اكتب اسم الوجهة الأخيرة" : "Type the final destination"}
-                  className="mt-2 w-full rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-base text-neutral-950 outline-none placeholder:text-neutral-400 focus:border-z-orange focus:ring-4 focus:ring-[rgba(200,105,74,0.12)]"
-                />
-                <div className="mt-3 flex flex-wrap gap-3">
-                  <button
-                    type="button"
-                    onClick={handleCheck}
-                    disabled={!answer.trim()}
-                    className="rounded-2xl bg-z-orange px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 disabled:opacity-50"
-                  >
-                    {isAr ? "تحقق" : "Check"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleReset}
-                    className="rounded-2xl border border-neutral-300 bg-white px-5 py-3 text-sm font-medium text-neutral-900 transition hover:bg-neutral-50"
-                  >
-                    {isAr ? "إعادة" : "Reset"}
-                  </button>
+                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                  {isAr ? "إجابتك" : "Your answer"}
                 </div>
+                <div className="mt-2 flex items-center justify-center gap-1.5">
+                  {letters.map((letter, i) => (
+                    <div
+                      key={i}
+                      className={[
+                        "flex h-10 w-10 items-center justify-center rounded-xl border-2 text-base font-bold uppercase transition",
+                        letter
+                          ? "border-z-orange/40 bg-z-orange-soft text-neutral-900"
+                          : "border-neutral-200 bg-neutral-50 text-neutral-300",
+                      ].join(" ")}
+                    >
+                      {letter || "·"}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={handleCheck}
+                  disabled={letters.every(l => !l)}
+                  className="rounded-2xl bg-z-orange px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 disabled:opacity-50"
+                >
+                  {isAr ? "تحقق" : "Submit"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="rounded-2xl border border-neutral-300 bg-white px-5 py-3 text-sm font-medium text-neutral-900 transition hover:bg-neutral-50"
+                >
+                  {isAr ? "إعادة" : "Reset"}
+                </button>
               </div>
 
               {status === "wrong" && (

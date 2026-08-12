@@ -1,462 +1,520 @@
 "use client";
 
 import React from "react";
-import { setRoundSolved, serverSetRoundSolved } from "./progress";
+import Image from "next/image";
 import type { Locale } from "./riddlecontent";
-import { riddle5 } from "./riddlecontent";
+import { setRoundSolved, serverSetRoundSolved } from "./progress";
 
-/* -------------------- HELPERS -------------------- */
+/* ------------------------------------------------------------------ */
+/* Constants                                                           */
+/* ------------------------------------------------------------------ */
 
-function clamp(n: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, n));
-}
+// Must stay "r5" — matches portal_flow ROUND_STAMP.r5 and zowar_progress_v1
+const ROUND_KEY = "r5" as const;
+const CORRECT_ANSWER = "MAISA";
+const ANSWER_LENGTH = 5;
+// 4 dots: Mango Stairs + Rainbow Street always visible, then 2 user-triggered phases
+const TOTAL_PHASES = 4;
 
-function isSolved(order: number[]) {
-  for (let i = 0; i < order.length; i++) if (order[i] !== i) return false;
-  return true;
-}
+/* ------------------------------------------------------------------ */
+/* Copy                                                                */
+/* ------------------------------------------------------------------ */
 
-function shuffled(total: number) {
-  const arr = Array.from({ length: total }, (_, i) => i);
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  if (isSolved(arr) && arr.length >= 2) [arr[0], arr[1]] = [arr[1], arr[0]];
-  return arr;
-}
+const COPY = {
+  en: {
+    badge: "Round 5 · Visual Journey",
+    title: "Visual Journey",
+    intro: "Leave Tabrizi and follow the route.",
 
-/* -------------------- COMPONENT -------------------- */
+    // Phase 0 — Mango Stairs (always visible, no CTA)
+    p0Label: "Start here",
+    p0Head:  "Climb the colorful steps",
+    p0Body:  "Make your way up the painted staircase.",
+    p0Hint:  "The bright painted staircase is just beside Tabrizi.",
 
-type Props = {
-  locale: Locale;
-  onSolved?: () => void;
-};
+    // Phase 1 — Rainbow Street sign (always visible, CTA reveals sensory)
+    p1Label: "Rainbow Street",
+    p1Head:  "Back on Rainbow? Turn right and keep walking.",
+    p1Body:  "You're in Jabal Amman. Now find its name written high above the street.",
+    // NOTE: clue references the Jabal Amman Hotel sign — update if landmark changes
+    p1Hint:  "Look up as you walk. The name of this neighbourhood is mounted on the hotel building facade above street level — big letters, easy to miss if you're not looking up.",
+    p1CTA:   "Found it",
 
-type Spark = {
-  id: string;
-  x: number;
-  y: number;
-};
+    // Phase 2 — sensory
+    p2Label:  "Getting closer",
+    p2Line1:  "Found it? You're close.",
+    p2Line2:  "Now let another sense take over.",
+    p2Line3:  "Follow the smell of fries hitting hot oil.",
+    p2Hint:   "Head away from First Circle, back toward Ruman Collective. The smell will reach you before you see the sign — just keep walking and trust your nose. Look for a sign that says Batata.",
+    p2CTA:    "I can smell it",
 
-export default function PuzzleR5({ locale, onSolved }: Props) {
-  const safeLocale: Locale = locale === "ar" ? "ar" : "en";
-  const isAr = safeLocale === "ar";
+    // Phase 3 — sign puzzle
+    p3Label:  "Now look carefully",
+    p3Clue1:  "One sign.",
+    p3Clue2:  "Five letters. Four dots. On wood.",
+    p3Q:      "What did you find?",
+    p3Hint:   "Right next door from Batata, the wooden sign hangs at the entrance. The name of the place is your answer — type it letter by letter.",
 
-  const t: any = riddle5 ?? {};
-  const grid = clamp(t.gridSize ?? 3, 2, 5);
-  const total = grid * grid;
+    hintBtn:  "Need a hint?",
+    wrongMsg: "Not quite — look again at the sign.",
 
-  const imageSrc: string = typeof t.imageSrc === "string" ? t.imageSrc : "";
-  const canShowImage = Boolean(imageSrc);
+    // Success
+    successEyebrow: "Your next stop",
+    successHead:    "You found Maisa",
+    // NOTE: tasting description — update here seasonally
+    successBody:    "Step inside for a surprise rotating tasting based on what is in season!",
+    successInst:    "Go inside and show this screen.",
 
-  const [order, setOrder] = React.useState<number[]>(() => shuffled(total));
-  const [selected, setSelected] = React.useState<number | null>(null);
+    aboutEyebrow: "About this stop",
+    aboutTitle:   "Maisa Space",
+    // NOTE: about copy — update here if Maisa's concept changes
+    aboutBody:    "Maisa Space brings together homemade flavors, pantry staples, and seasonal produce inspired by the way food has long been prepared and preserved in Jordanian homes. What you find on the shelves can change with the season — from jams and pickles to other small-batch creations made from what's fresh. Don't forget to explore the boutique shop as well!",
+  },
+  ar: {
+    badge: "الجولة ٥ · رحلة بصرية",
+    title: "رحلة بصرية",
+    intro: "غادر تبريزي واتبع الطريق.",
 
-  const [locked, setLocked] = React.useState<boolean[]>(() =>
-    Array.from({ length: total }, () => false)
-  );
+    p0Label: "ابدأ من هنا",
+    p0Head:  "اصعد الدرج الملوّن",
+    p0Body:  "اصعد الدرج المرسوم.",
+    p0Hint:  "الدرج الملوّن المرسوم موجود بجانب تبريزي مباشرة.",
 
-  const prevLockedRef = React.useRef<boolean[]>(Array.from({ length: total }, () => false));
-  const [snapPulse, setSnapPulse] = React.useState<number[]>(() =>
-    Array.from({ length: total }, () => 0)
-  );
+    p1Label: "شارع الرينبو",
+    p1Head:  "عُدت إلى الرينبو؟ انعطف يميناً وتابع المشي.",
+    p1Body:  "أنت في جبل عمّان. الآن اعثر على اسمه مكتوباً فوق الشارع.",
+    // NOTE: تلميح يشير إلى لافتة فندق جبل عمّان — عدّله إن تغيّر المعلم
+    p1Hint:  "انظر إلى الأعلى وأنت تمشي. اسم هذا الحي مثبّت على واجهة مبنى الفندق فوق مستوى الشارع — حروف كبيرة، سهل إغفالها إن لم تنظر للأعلى.",
+    p1CTA:   "وجدته",
 
-  const [showHint, setShowHint] = React.useState(false);
-  const [solved, setSolved] = React.useState(false);
+    p2Label:  "تقترب أكثر",
+    p2Line1:  "وجدته؟ أنت قريب.",
+    p2Line2:  "الآن دع حاسة أخرى تتولّى الأمر.",
+    p2Line3:  "اتبع رائحة البطاطا المقلية.",
+    p2Hint:   "ابتعد عن الدوار الأول وعُد باتجاه رمان كولكتيف. الرائحة ستصلك قبل أن ترى اللافتة — فقط تابع المشي وثق بأنفك. ابحث عن لافتة مكتوب عليها Batata‏.",
+    p2CTA:    "أشمّها",
 
-  const [merged, setMerged] = React.useState(false);
-  const mergeTimerRef = React.useRef<number | null>(null);
+    p3Label:  "الآن تمعّن جيداً",
+    p3Clue1:  "لافتة واحدة.",
+    p3Clue2:  "خمسة أحرف. أربع نقاط. على خشب.",
+    p3Q:      "ماذا وجدت؟",
+    p3Hint:   "مجاور مباشرةً لـ Batata‏، اللافتة الخشبية معلّقة عند المدخل. اسم المكان هو الإجابة — أدخله حرفاً حرفاً.",
 
-  const [sparks, setSparks] = React.useState<Spark[]>([]);
-  const sparkTimerRef = React.useRef<number | null>(null);
+    hintBtn:  "تحتاج إلى تلميح؟",
+    wrongMsg: "ليست هذه — انظر إلى اللافتة مرة أخرى.",
 
-  const solvedOnceRef = React.useRef(false);
+    successEyebrow: "محطتك التالية",
+    successHead:    "وجدت ميسا",
+    // NOTE: وصف التذوّق — عدّله هنا موسمياً
+    successBody:    "ادخل لتجربة تذوّق دوّارة مفاجئة تعتمد على ما هو في موسمه‏!",
+    successInst:    "ادخل واعرض هذه الشاشة.",
 
-  /* -------------------- EFFECTS -------------------- */
+    aboutEyebrow: "عن هذه المحطة",
+    aboutTitle:   "ميسا سبيس",
+    // NOTE: نص عن المحطة — عدّله هنا إن تغيّر مفهوم ميسا
+    aboutBody:    "تجمع ميسا سبيس نكهات بيتية ومؤناً أساسية ومنتجات موسمية مستوحاة من طريقة تحضير الطعام وحفظه في البيوت الأردنية منذ أمد بعيد. ما تجده على الرفوف يتغيّر مع الموسم — من المربّيات والمخلّلات إلى إبداعات صغيرة الحجم مصنوعة مما هو طازج. ولا تنسَ استكشاف المتجر البوتيك أيضاً‏!",
+  },
+} as const;
 
-  React.useEffect(() => {
-    const nextLocked = order.map((pieceId, slotIndex) => pieceId === slotIndex);
+/* ------------------------------------------------------------------ */
+/* Hint box                                                            */
+/* ------------------------------------------------------------------ */
 
-    const prev = prevLockedRef.current;
-    const nextPulse = [...snapPulse];
-    let changed = false;
-
-    for (let i = 0; i < total; i++) {
-      if (!prev[i] && nextLocked[i]) {
-        nextPulse[i] = Date.now();
-        changed = true;
-      }
-    }
-
-    prevLockedRef.current = nextLocked;
-    setLocked(nextLocked);
-    if (changed) setSnapPulse(nextPulse);
-
-    if (!solved && isSolved(order)) {
-      setSolved(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [order, solved]);
-
-  React.useEffect(() => {
-    if (!solved || solvedOnceRef.current) return;
-    solvedOnceRef.current = true;
-
-    setRoundSolved("r2");
-    serverSetRoundSolved("r2");
-    onSolved?.();
-
-    const count = 16;
-    setSparks(
-      Array.from({ length: count }, (_, i) => ({
-        id: `${Date.now()}_${i}`,
-        x: 15 + Math.random() * 70,
-        y: 12 + Math.random() * 70,
-      }))
-    );
-
-    if (sparkTimerRef.current) window.clearTimeout(sparkTimerRef.current);
-    sparkTimerRef.current = window.setTimeout(() => setSparks([]), 900);
-
-    setMerged(false);
-    if (mergeTimerRef.current) window.clearTimeout(mergeTimerRef.current);
-    mergeTimerRef.current = window.setTimeout(() => setMerged(true), 600);
-  }, [solved, onSolved]);
-
-  React.useEffect(() => {
-    return () => {
-      if (sparkTimerRef.current) window.clearTimeout(sparkTimerRef.current);
-      if (mergeTimerRef.current) window.clearTimeout(mergeTimerRef.current);
-    };
-  }, []);
-
-
-  function reset() {
-    setSelected(null);
-    setSolved(false);
-    setMerged(false);
-    solvedOnceRef.current = false;
-
-    prevLockedRef.current = Array.from({ length: total }, () => false);
-    setLocked(Array.from({ length: total }, () => false));
-    setSparks([]);
-    setOrder(shuffled(total));
-  }
-
-  function onTileClick(slotIndex: number) {
-    if (solved) return;
-    if (slotIndex < 0 || slotIndex >= total) return;
-
-    if (selected === null) {
-      // Don't let the user pick a tile that's already locked in place
-      if (locked[slotIndex]) return;
-      setSelected(slotIndex);
-      return;
-    }
-
-    if (selected === slotIndex) {
-      setSelected(null);
-      return;
-    }
-
-    const next = [...order];
-    [next[selected], next[slotIndex]] = [next[slotIndex], next[selected]];
-    setOrder(next);
-    setSelected(null);
-  }
-
-  /* -------------------- COPY -------------------- */
-
-  const title: string =
-    t.title?.[safeLocale] ?? (isAr ? "الجولة ٥: رتّب الصورة" : "Round 5: Assemble the Image");
-
-  const kicker: string = t.kicker?.[safeLocale] ?? (isAr ? "الجولة ٥" : "ROUND 5");
-
-  const prompt: string =
-    t.prompt?.[safeLocale] ??
-    (isAr
-      ? "اضغط على قطعتين لتبديل مكانهما. أكمل الصورة لتكشف وجهتك التالية."
-      : "Tap two tiles to swap them. Complete the image to reveal your next destination.");
-
-  const uiCheckTiles: string = isAr ? "تحقق من القطع" : "Check tiles";
-  const uiHideCheck: string = isAr ? "إخفاء التحقق" : "Hide check";
-  const uiReset: string = t.ui?.reset?.[safeLocale] ?? (isAr ? "إعادة" : "Reset");
-  const uiProgressLabel: string =
-    t.ui?.progressLabel?.[safeLocale] ?? (isAr ? "القطع المثبّتة:" : "Locked pieces:");
-
-  const success: string =
-    t.success?.[safeLocale] ??
-    (isAr ? "نعم! اكتملت الصورة بالكامل! ✨" : "Yes! You completed the image! ✨");
-
-  const finalInstruction: string =
-    t.finalInstruction?.[safeLocale] ??
-    (safeLocale === "en"
-      ? "You've walked the city and cracked every puzzle. Head to Mijana — the best view in Amman is yours."
-      : "قطعتَ الشوارع وحللتَ كل الألغاز. اذهب إلى ميجانا — أجمل إطلالة في عمّان في انتظارك.");
-
-  const endCopy: string =
-    t.endCopy?.[safeLocale] ??
-    (safeLocale === "en"
-      ? "Time to enjoy all the tasty bites and the magical Amman view at Mijana."
-      : "حان وقت الاستمتاع بكل اللقيمات اللذيذة والإطلالة الرائعة على عمّان في ميجانا.");
-
-  const correctCount = locked.filter(Boolean).length;
-
-  /* -------------------- STYLES -------------------- */
-
-  const card =
-    "rounded-3xl border border-black/10 " +
-    "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))] " +
-    "shadow-[0_16px_50px_rgba(0,0,0,0.10)]";
-
-  const btn =
-    "rounded-2xl px-4 py-2 text-sm font-medium transition active:scale-[0.99] " +
-    "border border-black/10 bg-white text-neutral-900 shadow-sm hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed";
-
-  const btnOrange =
-    "rounded-2xl px-4 py-2 text-sm font-semibold transition active:scale-[0.99] " +
-    "border border-z-orange bg-z-orange-soft text-neutral-900 glow-z-orange";
-
-  const shouldMerge = solved && merged;
-  const gap = shouldMerge ? 0 : grid >= 4 ? 10 : 12;
-  const pad = shouldMerge ? 0 : 14;
-
+function HintBox({ text, isAr }: { text: string; isAr: boolean }) {
   return (
-    <div dir={isAr ? "rtl" : "ltr"} className="mx-auto w-full max-w-5xl px-4 py-8 sm:py-10">
-      <style>{`
-        @keyframes zowar-snap {
-          0%   { transform: scale(1); }
-          45%  { transform: scale(1.05); }
-          100% { transform: scale(1); }
-        }
-        @keyframes zowar-spark {
-          0%   { transform: translateY(6px) scale(0.9); opacity: 0; }
-          25%  { opacity: 1; }
-          100% { transform: translateY(-18px) scale(1.08); opacity: 0; }
-        }
-      `}</style>
-
-      <div className={`${card} p-5 sm:p-6`}>
-        <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
-        <div className="pointer-events-none absolute -bottom-8 right-[-10px] h-36 w-36 rounded-full bg-white blur-3xl opacity-30" />
-
-        <div className="relative flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-2xl">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">{kicker}</div>
-            <h1 className="text-2xl font-semibold text-neutral-950 sm:text-3xl">{title}</h1>
-            <p className="mt-2 text-sm leading-relaxed text-neutral-700">{prompt}</p>
-          </div>
-
-          <div className="flex items-center gap-2 pt-2 sm:pt-0">
-            <button className={btn} onClick={() => setShowHint((v) => !v)} disabled={solved}>
-              {showHint ? uiHideCheck : uiCheckTiles}
-            </button>
-            <button className={btn} onClick={reset}>
-              {uiReset}
-            </button>
-          </div>
-        </div>
-
-        {showHint && !solved ? (
-          <div className="mt-4 rounded-2xl border border-black/8 bg-z-off-white p-4 text-sm text-neutral-700">
-            {isAr
-              ? "القطع الصحيحة تظهر بإطار أخضر، والقطع غير الصحيحة بإطار أحمر. بدّل بين قطعتين في كل مرة."
-              : "Correct pieces show a green outline, and incorrect pieces show a red outline. Swap two pieces at a time."}
-          </div>
-        ) : null}
-
-        <div className="mt-6">
-          <div className="relative mx-auto w-full max-w-[720px]">
-            <div
-              dir="ltr"
-              className={[
-                "relative aspect-square overflow-hidden border border-black/10 bg-white",
-                shouldMerge ? "rounded-3xl" : "rounded-[28px]",
-              ].join(" ")}
-              style={{ boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.04)" }}
-            >
-              {!shouldMerge ? (
-                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.20),rgba(255,255,255,0)),linear-gradient(0deg,rgba(0,0,0,0.06),rgba(0,0,0,0))]" />
-              ) : null}
-
-              <div
-                dir="ltr"
-                className="absolute inset-0 grid transition-all duration-500 ease-out"
-                style={{
-                  padding: pad,
-                  gap,
-                  gridTemplateColumns: `repeat(${grid}, minmax(0, 1fr))`,
-                  gridTemplateRows: `repeat(${grid}, minmax(0, 1fr))`,
-                }}
-              >
-                {order.map((pieceId, slotIndex) => {
-                  const isSelected = selected === slotIndex;
-                  const isCorrect = pieceId === slotIndex;
-
-                  const pieceRow = Math.floor(pieceId / grid);
-                  const pieceCol = pieceId % grid;
-
-                  const bgPosX = grid === 1 ? 0 : (pieceCol / (grid - 1)) * 100;
-                  const bgPosY = grid === 1 ? 0 : (pieceRow / (grid - 1)) * 100;
-
-                  const pulseKey = snapPulse[slotIndex];
-                  const shouldPulse = Boolean(pulseKey) && isCorrect && !shouldMerge;
-
-                  const showHintOverlay = showHint && !solved;
-                  const hintRing = showHintOverlay
-                    ? isCorrect
-                      ? "ring-2 ring-emerald-400/80"
-                      : "ring-2 ring-rose-400/70"
-                    : "";
-
-                  const hintTint = showHintOverlay
-                    ? isCorrect
-                      ? "bg-emerald-400/10"
-                      : "bg-rose-400/10"
-                    : "";
-
-                  return (
-                    <button
-                      key={slotIndex}
-                      type="button"
-                      onClick={() => onTileClick(slotIndex)}
-                      disabled={solved}
-                      className={[
-                        "group relative overflow-hidden transition-transform duration-150 ease-out focus:outline-none",
-                        shouldMerge
-                          ? "rounded-none border-0 bg-transparent shadow-none"
-                          : "rounded-2xl border border-black/10 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.10)]",
-                        solved ? "cursor-default" : "cursor-pointer active:scale-[0.97]",
-                        isSelected && !solved ? "scale-[0.97]" : !solved ? "hover:-translate-y-[1px]" : "",
-                        hintRing,
-                      ].join(" ")}
-                      style={{
-                        animation: shouldPulse ? `zowar-snap 240ms ease-out` : undefined,
-                        touchAction: "manipulation",
-                      }}
-                      aria-label={isAr ? `قطعة ${slotIndex + 1}` : `Tile ${slotIndex + 1}`}
-                    >
-                      <div
-                        className="absolute inset-0"
-                        style={{
-                          backgroundImage: canShowImage ? `url(${imageSrc})` : undefined,
-                          backgroundSize: `${grid * 100}% ${grid * 100}%`,
-                          backgroundPosition: `${bgPosX}% ${bgPosY}%`,
-                          opacity: solved ? 1 : 0.98,
-                          transform: isSelected ? "scale(1.03)" : "scale(1)",
-                          transition: "transform 160ms ease, opacity 300ms ease",
-                        }}
-                      />
-
-                      {!shouldMerge ? (
-                        <>
-                          <div
-                            className="pointer-events-none absolute inset-0"
-                            style={{
-                              boxShadow:
-                                "inset 0 0 0 1px rgba(255,255,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08)",
-                            }}
-                          />
-                          {/* Selection indicator — inset so it isn't clipped by overflow-hidden */}
-                          {isSelected && !solved ? (
-                            <div
-                              className="pointer-events-none absolute inset-0 rounded-2xl"
-                              style={{
-                                boxShadow: "inset 0 0 0 3px #C8694A",
-                                background: "rgba(200,105,74,0.10)",
-                              }}
-                            />
-                          ) : null}
-                          {showHintOverlay ? (
-                            <div className={`pointer-events-none absolute inset-0 ${hintTint}`} />
-                          ) : null}
-                          {isCorrect && !isSelected ? (
-                            <div className="pointer-events-none absolute inset-0 bg-emerald-400/10" />
-                          ) : null}
-                        </>
-                      ) : null}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {sparks.length ? (
-                <div className="pointer-events-none absolute inset-0">
-                  {sparks.map((s) => (
-                    <span
-                      key={s.id}
-                      className="absolute block h-2.5 w-2.5 rounded-full"
-                      style={{
-                        left: `${s.x}%`,
-                        top: `${s.y}%`,
-                        background: "rgba(255,255,255,0.85)",
-                        boxShadow:
-                          "0 0 0 1px rgba(200,105,74,0.20), 0 10px 24px rgba(200,105,74,0.12)",
-                        animation: "zowar-spark 820ms ease-out forwards",
-                      }}
-                    />
-                  ))}
-                </div>
-              ) : null}
-
-              {solved ? (
-                <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center px-3">
-                  <div className="rounded-2xl border border-emerald-200 bg-white/95 px-4 py-2 shadow-sm">
-                    <div className="text-center text-sm font-semibold text-emerald-700">{success}</div>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-
-            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-sm text-neutral-700">
-                {solved ? (
-                  <span className="font-semibold text-emerald-700">{endCopy}</span>
-                ) : (
-                  <span>
-                    {uiProgressLabel} <span className="font-semibold">{correctCount}/{total}</span>
-                  </span>
-                )}
-              </div>
-
-              {solved ? <div className={`${btnOrange} cursor-default`}>{finalInstruction}</div> : null}
-            </div>
-
-            {solved ? (
-              <div className="mt-4 rounded-2xl border border-z-orange/25 bg-z-orange-soft px-4 py-3 text-sm leading-7 text-neutral-800" style={{ animation: "zowar-snap 280ms ease-out" }}>
-                {isAr
-                  ? "اتجه إلى الأسفل واتبع الممر الحجري حتى تجد الواجهة التي ظهرت في الصورة."
-                  : "Head downhill and follow the stoney trail until you find the storefront shown in the image above."}
-              </div>
-            ) : null}
-
-            {solved ? (
-              <div className="mt-4 rounded-3xl border border-black/8 bg-z-off-white p-4 sm:p-5" style={{ animation: "zowar-snap 280ms ease-out" }}>
-                <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500">
-                  {isAr ? "محطتك التالية" : "Your next stop"}
-                </div>
-                <h3 className="text-lg font-semibold text-neutral-950">
-                  {isAr ? "مطبخ أسمى" : "Asma Kitchen"}
-                </h3>
-                <p className="mt-2 text-sm leading-7 text-neutral-700">
-                  {isAr
-                    ? "طبخ عربي بيتي في قلب شارع الرينبو. هذا ليس مطعماً — بل هو أشبه بمشاهدة أحد أفراد العائلة وهو يُعدّ لك وجبة تقليدية ويرحّب بك في مطبخه الخاص."
-                    : "Home-style Arabic cooking in the middle of Rainbow Street. This isn't a restaurant — it is truly like watching a family member prepare you a traditional meal and welcoming you into their private kitchen."}
-                </p>
-              </div>
-            ) : null}
-
-            {!canShowImage ? (
-              <div className="mt-3 text-xs text-amber-700">
-                {isAr ? "ملاحظة: لم يتم العثور على imageSrc في riddle5." : "Note: riddle5.imageSrc is missing."}
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </div>
+    <div className="mt-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3.5">
+      <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-amber-600">
+        {isAr ? "تلميح" : "Hint"}
+      </p>
+      <p className="text-sm leading-6 text-amber-900">{text}</p>
     </div>
   );
 }
 
-export { PuzzleR5 };
+/* ------------------------------------------------------------------ */
+/* Hint toggle button                                                  */
+/* ------------------------------------------------------------------ */
+
+function HintToggle({ open, onToggle, label }: { open: boolean; onToggle: () => void; label: string }) {
+  return (
+    <button
+      type="button"
+      aria-expanded={open}
+      onClick={onToggle}
+      className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700 transition hover:bg-amber-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-z-orange"
+    >
+      <span aria-hidden="true">{open ? "↑" : "?"}</span>
+      <span>{label}</span>
+    </button>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* CTA button                                                          */
+/* ------------------------------------------------------------------ */
+
+function StepCTA({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group relative mt-5 inline-flex items-center gap-2 overflow-hidden rounded-2xl bg-z-orange px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 active:scale-[0.98]"
+    >
+      <span className="relative z-10">{label}</span>
+      <span className="relative z-10 transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+      <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+    </button>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Component                                                           */
+/* ------------------------------------------------------------------ */
+
+export default function PuzzleR5({
+  locale,
+  onSolved,
+}: {
+  locale: Locale;
+  onSolved?: () => void;
+}) {
+  const safeLocale: Locale = locale === "ar" ? "ar" : "en";
+  const isAr = safeLocale === "ar";
+  const t = COPY[safeLocale];
+
+  const solvedRef  = React.useRef(false);
+  const successRef = React.useRef<HTMLDivElement>(null);
+  const inputRefs  = React.useRef<(HTMLInputElement | null)[]>([]);
+  // phaseRefs[0]=stairs phaseRefs[1]=street phaseRefs[2]=sensory phaseRefs[3]=sign
+  const phaseRefs  = React.useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
+
+  // Phases 0 and 1 are always visible on load. "phase" tracks which
+  // user-triggered card is currently the furthest revealed.
+  // 1 = street visible (initial), 2 = sensory revealed, 3 = sign revealed
+  const [phase,   setPhase]   = React.useState(1);
+  const [letters, setLetters] = React.useState<string[]>(Array(ANSWER_LENGTH).fill(""));
+  const [status,  setStatus]  = React.useState<"idle" | "wrong" | "correct">("idle");
+  const [solved,  setSolved]  = React.useState(false);
+
+  const [showHint0, setShowHint0] = React.useState(false);
+  const [showHint1, setShowHint1] = React.useState(false);
+  const [showHint2, setShowHint2] = React.useState(false);
+  const [showHint3, setShowHint3] = React.useState(false);
+  const [showAnswer, setShowAnswer] = React.useState(false);
+
+  function advanceTo(next: number) {
+    setPhase(next);
+    window.setTimeout(() => {
+      phaseRefs.current[next]?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  }
+
+  function handleLetterChange(index: number, raw: string) {
+    const char = raw.replace(/[^a-zA-Z؀-ۿ]/g, "").slice(-1).toUpperCase();
+    const next = [...letters];
+    next[index] = char;
+    setLetters(next);
+    setStatus("idle");
+    if (char && index < ANSWER_LENGTH - 1) {
+      window.setTimeout(() => inputRefs.current[index + 1]?.focus(), 0);
+    }
+  }
+
+  function handleKeyDown(index: number, e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Backspace" && !letters[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+    if (e.key === "Enter") handleSubmit();
+  }
+
+  function handleSubmit() {
+    if (solved) return;
+    const answer = letters.join("").toUpperCase();
+    if (answer === CORRECT_ANSWER) {
+      setStatus("correct");
+      setSolved(true);
+      if (!solvedRef.current) {
+        solvedRef.current = true;
+        setRoundSolved(ROUND_KEY);
+        serverSetRoundSolved(ROUND_KEY);
+        onSolved?.();
+      }
+      window.setTimeout(() => {
+        successRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 300);
+    } else {
+      setStatus("wrong");
+    }
+  }
+
+  function handleReset() {
+    setLetters(Array(ANSWER_LENGTH).fill(""));
+    setStatus("idle");
+    inputRefs.current[0]?.focus();
+  }
+
+  function revealAnswer() {
+    const chars = CORRECT_ANSWER.split("");
+    setLetters(chars);
+    setStatus("correct");
+    setSolved(true);
+    if (!solvedRef.current) {
+      solvedRef.current = true;
+      setRoundSolved(ROUND_KEY);
+      serverSetRoundSolved(ROUND_KEY);
+      onSolved?.();
+    }
+    window.setTimeout(() => {
+      successRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 300);
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Render                                                            */
+  /* ---------------------------------------------------------------- */
+
+  return (
+    <div dir={isAr ? "rtl" : "ltr"} className="w-full space-y-4">
+
+      {/* ── Header ── */}
+      <div className="rounded-3xl border border-neutral-200 bg-white p-5 sm:p-6">
+        <div className="flex items-center justify-between gap-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
+            {t.badge}
+          </div>
+          {/* Progress dots — always LTR */}
+          <div dir="ltr" className="flex items-center gap-1.5" aria-hidden="true">
+            {Array.from({ length: TOTAL_PHASES }).map((_, i) => (
+              <div
+                key={i}
+                className={[
+                  "h-2 rounded-full transition-all duration-500",
+                  i <= phase ? "w-6 bg-z-orange" : "w-2 bg-neutral-200",
+                ].join(" ")}
+              />
+            ))}
+          </div>
+        </div>
+        <h2 className="mt-3 text-xl font-semibold text-neutral-950">{t.title}</h2>
+        <p className="mt-1 text-sm leading-6 text-neutral-600">{t.intro}</p>
+      </div>
+
+      {/* ── Phase 0: Mango Stairs — always visible, no CTA ── */}
+      <div
+        ref={el => { phaseRefs.current[0] = el; }}
+        className="overflow-hidden rounded-3xl border border-neutral-200 bg-white"
+      >
+        <div className="relative aspect-[4/3] w-full bg-neutral-100">
+          <Image
+            src="/images/puzzles/Al%20Quds/Mango%20Stairs.JPG"
+            alt={isAr ? "درج ملوّن مرسوم يؤدي إلى الأعلى" : "Colorfully painted staircase leading uphill."}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 700px"
+            priority
+          />
+        </div>
+        <div className="p-5">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-z-orange">{t.p0Label}</p>
+          <h3 className="text-base font-semibold text-neutral-950">{t.p0Head}</h3>
+          <p className="mt-1 text-sm leading-6 text-neutral-600">{t.p0Body}</p>
+          <HintToggle open={showHint0} onToggle={() => setShowHint0(v => !v)} label={t.hintBtn} />
+          {showHint0 && <HintBox text={t.p0Hint} isAr={isAr} />}
+        </div>
+      </div>
+
+      {/* ── Phase 1: Rainbow Street sign — always visible, CTA reveals sensory ── */}
+      <div
+        ref={el => { phaseRefs.current[1] = el; }}
+        className="overflow-hidden rounded-3xl border border-neutral-200 bg-white"
+      >
+        <div className="relative aspect-[4/3] w-full bg-neutral-100">
+          <Image
+            src="/images/puzzles/Al%20Quds/Rainbowstreet.jpg"
+            alt={isAr ? "لافتة شارع الرينبو" : "Rainbow Street sign."}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 700px"
+          />
+        </div>
+        <div className="p-5">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-z-orange">{t.p1Label}</p>
+          <h3 className="text-base font-semibold text-neutral-950">{t.p1Head}</h3>
+          <p className="mt-2 text-sm leading-6 text-neutral-600">{t.p1Body}</p>
+          <HintToggle open={showHint1} onToggle={() => setShowHint1(v => !v)} label={t.hintBtn} />
+          {showHint1 && <HintBox text={t.p1Hint} isAr={isAr} />}
+          {phase === 1 && <StepCTA label={t.p1CTA} onClick={() => advanceTo(2)} />}
+        </div>
+      </div>
+
+      {/* ── Phase 2: Sensory clue ── */}
+      {phase >= 2 && (
+        <div
+          ref={el => { phaseRefs.current[2] = el; }}
+          className="rounded-3xl border border-z-orange/15 bg-[linear-gradient(150deg,rgba(200,105,74,0.07)_0%,rgba(250,247,242,0.97)_60%)] p-6"
+          style={{ animation: "r5FadeUp 420ms cubic-bezier(.22,1,.36,1) both" }}
+        >
+          <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.22em] text-z-orange">{t.p2Label}</p>
+
+          <div className="space-y-4">
+            <p className="text-xl font-semibold leading-snug text-neutral-950">{t.p2Line1}</p>
+            <p className="text-sm leading-6 text-neutral-500">{t.p2Line2}</p>
+            <p className="text-base font-medium leading-6 text-neutral-800">{t.p2Line3}</p>
+          </div>
+
+          <HintToggle open={showHint2} onToggle={() => setShowHint2(v => !v)} label={t.hintBtn} />
+          {showHint2 && <HintBox text={t.p2Hint} isAr={isAr} />}
+          {phase === 2 && <StepCTA label={t.p2CTA} onClick={() => advanceTo(3)} />}
+        </div>
+      )}
+
+      {/* ── Phase 3: MAISA sign puzzle ── */}
+      {phase >= 3 && (
+        <div
+          ref={el => { phaseRefs.current[3] = el; }}
+          className="rounded-3xl border border-neutral-200 bg-white p-5"
+          style={{ animation: "r5FadeUp 420ms cubic-bezier(.22,1,.36,1) both" }}
+        >
+          <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.22em] text-z-orange">{t.p3Label}</p>
+
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-neutral-900">{t.p3Clue1}</p>
+            <p className="text-xl font-bold tracking-wide text-neutral-950">{t.p3Clue2}</p>
+          </div>
+
+          <HintToggle open={showHint3} onToggle={() => setShowHint3(v => !v)} label={t.hintBtn} />
+          {showHint3 && (
+            <>
+              <HintBox text={t.p3Hint} isAr={isAr} />
+              {!solved && (
+                <button
+                  type="button"
+                  onClick={() => setShowAnswer(v => !v)}
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-500 transition hover:bg-neutral-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-z-orange"
+                >
+                  {showAnswer
+                    ? (isAr ? "↑ إخفاء الإجابة" : "↑ Hide answer")
+                    : (isAr ? "👁 أرني الإجابة" : "👁 Show answer")}
+                </button>
+              )}
+              {showAnswer && !solved && (
+                <div className="mt-2 flex items-center gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3">
+                  <span className="font-mono text-base font-bold tracking-[0.25em] text-neutral-800">
+                    {CORRECT_ANSWER}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={revealAnswer}
+                    className="ml-auto rounded-xl bg-z-orange px-3 py-1.5 text-xs font-semibold text-white transition hover:opacity-90"
+                  >
+                    {isAr ? "حلّ التحدي" : "Solve for me"}
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+
+          <p className="mt-5 text-sm font-medium text-neutral-900">{t.p3Q}</p>
+
+          {/* 5-letter inputs — always LTR so English word reads left-to-right */}
+          <div
+            dir="ltr"
+            className="mt-3 flex items-center gap-2"
+            role="group"
+            aria-label={isAr ? "أدخل الإجابة" : "Enter your answer"}
+          >
+            {Array.from({ length: ANSWER_LENGTH }).map((_, i) => (
+              <input
+                key={i}
+                ref={el => { inputRefs.current[i] = el; }}
+                type="text"
+                maxLength={1}
+                value={letters[i]}
+                onChange={e => handleLetterChange(i, e.target.value)}
+                onKeyDown={e => handleKeyDown(i, e)}
+                disabled={solved}
+                className={[
+                  "h-12 w-12 rounded-2xl border-2 text-center text-lg font-bold uppercase transition",
+                  "focus:outline-none focus:ring-4 focus:ring-[rgba(200,105,74,0.12)]",
+                  status === "correct" && letters[i]
+                    ? "border-green-400 bg-green-50 text-green-700"
+                    : status === "wrong"
+                    ? "border-red-300 bg-red-50 text-red-700"
+                    : letters[i]
+                    ? "border-z-orange/40 bg-z-orange-soft focus:border-z-orange text-neutral-900"
+                    : "border-neutral-300 bg-white focus:border-z-orange text-neutral-900",
+                  solved ? "cursor-not-allowed" : "",
+                ].join(" ")}
+                aria-label={isAr ? `الحرف ${i + 1}` : `Letter ${i + 1}`}
+                inputMode="text"
+                autoCapitalize="characters"
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+            ))}
+          </div>
+
+          <div aria-live="polite" aria-atomic="true" className="mt-3 min-h-[2rem]">
+            {status === "wrong" && (
+              <p className="rounded-2xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-medium text-red-700">
+                {t.wrongMsg}
+              </p>
+            )}
+          </div>
+
+          {!solved && (
+            <div className="mt-4 flex gap-3">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={letters.every(l => !l)}
+                className="rounded-2xl bg-z-orange px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 disabled:opacity-50"
+              >
+                {isAr ? "تحقق" : "Submit"}
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="rounded-2xl border border-neutral-300 bg-white px-5 py-2.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
+              >
+                {isAr ? "إعادة" : "Reset"}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Success ── */}
+      {solved && (
+        <div
+          ref={successRef}
+          className="space-y-4"
+          style={{ animation: "r5FadeUp 420ms cubic-bezier(.22,1,.36,1) both" }}
+        >
+          <div className="rounded-3xl border border-z-orange/20 bg-z-orange-soft p-5">
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] z-orange">{t.successEyebrow}</p>
+            <h3 className="mt-2 text-xl font-semibold text-neutral-950">{t.successHead}</h3>
+            <p className="mt-2 text-sm leading-6 text-neutral-700">{t.successBody}</p>
+            <div className="mt-3 rounded-2xl border border-z-orange/20 bg-white/70 px-3 py-2.5">
+              <p className="text-sm font-medium text-neutral-800">{t.successInst}</p>
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-neutral-200 bg-white p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] z-orange">{t.aboutEyebrow}</p>
+            <h4 className="mt-2 text-lg font-semibold text-neutral-950">{t.aboutTitle}</h4>
+            <p className="mt-2 text-sm leading-7 text-neutral-700">{t.aboutBody}</p>
+          </div>
+        </div>
+      )}
+
+      <style jsx>{`
+        @keyframes r5FadeUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+    </div>
+  );
+}

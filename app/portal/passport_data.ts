@@ -17,6 +17,8 @@ export type PassportStampMeta = {
   readonly image: string;
   readonly alt: string;
   readonly roundKey: "r1" | "r2" | "r3" | "r4" | "r5" | "r6";
+  /** Visual scale applied to the stamp image inside its cell. Default 1. */
+  readonly scale?: number;
 };
 
 export const RAINBOW_STAMPS: readonly PassportStampMeta[] = [
@@ -31,6 +33,7 @@ export const RAINBOW_STAMPS: readonly PassportStampMeta[] = [
     image: "/images/puzzles/r7/M.png",
     alt: "Magenta passport stamp",
     roundKey: "r1",
+    scale: 1,
   },
   {
     id: "asma-kitchen",
@@ -43,6 +46,7 @@ export const RAINBOW_STAMPS: readonly PassportStampMeta[] = [
     image: "/images/puzzles/r7/I.png",
     alt: "Asma Kitchen passport stamp",
     roundKey: "r2",
+    scale: 1,
   },
   {
     id: "rumman",
@@ -55,18 +59,20 @@ export const RAINBOW_STAMPS: readonly PassportStampMeta[] = [
     image: "/images/puzzles/r7/J.png",
     alt: "Rumman Collective passport stamp",
     roundKey: "r3",
+    scale: 1,
   },
   {
     id: "trinitae",
     stop: 4,
-    title: "Trinitae",
-    titleAr: "ترينيتي",
+    title: "Tabrizi",
+    titleAr: "تبريزي",
     subtitle: "Discovery stop",
     subtitleAr: "محطة اكتشاف",
     hiddenLetter: "A",
     image: "/images/puzzles/r7/A1.png",
-    alt: "Trinitae passport stamp",
+    alt: "Tabrizi passport stamp",
     roundKey: "r4",
+    scale: 1,
   },
   {
     id: "falafel-al-quds",
@@ -79,17 +85,19 @@ export const RAINBOW_STAMPS: readonly PassportStampMeta[] = [
     image: "/images/puzzles/r7/N.png",
     alt: "Falafel Al Quds passport stamp",
     roundKey: "r5",
+    scale: 1,
   },
   {
     id: "flour-fire",
     stop: 6,
-    title: "Flour & Fire",
-    titleAr: "طحين ونار",
-    subtitle: "Manakeesh stop",
-    subtitleAr: "محطة المناقيش",
+    title: "The Overlook",
+    titleAr: "الإطلالة",
+    subtitle: "Downtown Amman view",
+    subtitleAr: "إطلالة على وسط البلد",
     hiddenLetter: "A",
     image: "/images/puzzles/r7/A2.png",
-    alt: "Flour & Fire passport stamp",
+    alt: "Monument overlook passport stamp",
     roundKey: "r6",
+    scale: 1,
   },
 ];

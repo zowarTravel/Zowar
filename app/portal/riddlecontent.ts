@@ -106,14 +106,14 @@ export const riddle4 = {
     ar: "جوهرتك التالية في طريق غير مطروق.",
   },
   aboutEyebrow: { en: "About this stop", ar: "عن هذه المحطة" },
-  aboutTitle: { en: "The Soaphouse", ar: "دار الصابون" },
+  aboutTitle: { en: "Tabrizi", ar: "تبريزي" },
   aboutBody1: {
-    en: "Handmade Aleppo-style soap: cold-pressed olive oil and laurel berry oil, cured for months. Two ingredients unchanged for a thousand years.",
-    ar: "صابون حلبي يدوي الصنع: زيت زيتون معصور بارداً وزيت غار، يتصلّب لأشهر. مكوّنان لم يتغيرا منذ ألف عام.",
+    en: "A handmade goods shop on Omar Bin Al-Khattab Street. Perfumes, soaps, natural incense, and ceramics — all made in their own workshop.",
+    ar: "محل منتجات يدوية في شارع عمر بن الخطاب. عطور وصابون وبخور طبيعي وسيراميك — كلها تُصنع في مشغلهم الخاص.",
   },
   aboutBody2: {
-    en: "The higher the laurel content, the darker the bar and the richer the lather.",
-    ar: "كلما ارتفعت نسبة الغار، كان الصابون أغمق لوناً وأغنى رغوةً.",
+    en: "The nicest smelling store in all of Amman is waiting for you!",
+    ar: "أعطر محل في عمّان كلها بانتظارك!",
   },
 } as const;
 
@@ -122,8 +122,8 @@ export const riddle4 = {
 /* ------------------------------------------------------------------ */
 
 export const riddle5 = {
-  title: { en: "Round 2: Assemble the Image", ar: "الجولة ٢: رتّب الصورة" },
-  kicker: { en: "Round 2", ar: "الجولة ٢" },
+  title: { en: "Round 3: Assemble the Image", ar: "الجولة ٣: رتّب الصورة" },
+  kicker: { en: "Round 3", ar: "الجولة ٣" },
   prompt: {
     en: "Tap two tiles to swap them. Complete the image to reveal your next destination.",
     ar: "اضغط على قطعتين لتبديل مكانهما. عند اكتمال الصورة ستظهر وجهتك التالية.",

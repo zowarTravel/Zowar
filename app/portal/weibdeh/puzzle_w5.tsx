@@ -1,41 +1,318 @@
 "use client";
 
 import React from "react";
+import { setWeibdehRoundSolved } from "./progress_weibdeh";
 
 type Locale = "en" | "ar";
 
+/* ------------------------------------------------------------------ */
+/* Data                                                                */
+/* ------------------------------------------------------------------ */
+
+type Pair = { a: string; b: string };
+
+const PAIRS: Record<"en" | "ar", Pair[]> = {
+  en: [
+    { a: "Olive",   b: "Oil"     },
+    { a: "Jabal",   b: "Amman"   },
+    { a: "Morning", b: "Coffee"  },
+    { a: "Open",    b: "Air"     },
+    { a: "Flour",   b: "Fire"    },
+  ],
+  ar: [
+    { a: "زيت",     b: "زيتون"  },
+    { a: "جبل",     b: "عمّان"  },
+    { a: "صباح",    b: "قهوة"   },
+    { a: "هواء",    b: "طلق"    },
+    { a: "دقيق",    b: "نار"    },
+  ],
+};
+
+const CONTENT = {
+  en: {
+    kicker:       "Round 5 · Word Match",
+    title:        "Find the Pair",
+    subtitle:     "Match each word with its partner. The last pair reveals your next stop.",
+    successTitle: "You got it!",
+    successBody:  "Flour & Fire — a wood-fire bakery on Rainbow Street.",
+    aboutEyebrow: "Your next stop",
+    aboutTitle:   "Flour & Fire",
+    aboutBody:    "Head inside and order manakeesh from the wood-fire oven. Za'atar is the classic — warm, aromatic, and the kind of thing you'll think about long after the walk is done.",
+    storyEyebrow: "About this stop",
+    storyTitle:   "Flour & Fire",
+    storyBody1:   "An artisan bakery on Rainbow Street. Manakeesh from the wood-fire oven.",
+    storyBody2:   "Za'atar is the classic — warm, aromatic, and not easy to forget.",
+  },
+  ar: {
+    kicker:       "الجولة ٥ · مطابقة الكلمات",
+    title:        "اعثر على الزوج",
+    subtitle:     "طابق كل كلمة مع شريكتها. الزوج الأخير يكشف محطتك التالية.",
+    successTitle: "أجدت!",
+    successBody:  "فلور آند فاير — مخبزة بفرن حطب على شارع الرينبو.",
+    aboutEyebrow: "محطتك التالية",
+    aboutTitle:   "فلور آند فاير",
+    aboutBody:    "ادخل واطلب مناقيش من فرن الحطب. الزعتر هو الكلاسيكي — دافئ وعطِر، ومن النوع الذي لن تنساه بعد انتهاء المشوار.",
+    storyEyebrow: "عن هذه المحطة",
+    storyTitle:   "فلور آند فاير",
+    storyBody1:   "مخبزة حرفية على شارع الرينبو. مناقيش من فرن الحطب.",
+    storyBody2:   "الزعتر هو الكلاسيكي — دافئ وعطِر، لن تنساه بسهولة.",
+  },
+} as const;
+
+/* ------------------------------------------------------------------ */
+/* Helpers                                                             */
+/* ------------------------------------------------------------------ */
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+type Line = { key: string; x1: number; y1: number; x2: number; y2: number };
+
+/* ------------------------------------------------------------------ */
+/* Component                                                           */
+/* ------------------------------------------------------------------ */
+
 export default function PuzzleW5({
   locale,
+  onSolved,
 }: {
   locale: Locale;
   onSolved?: () => void;
 }) {
-  const isAr = locale === "ar";
+  const safeLocale: Locale = locale === "ar" ? "ar" : "en";
+  const isAr = safeLocale === "ar";
+  const t = CONTENT[safeLocale];
+  const pairs = PAIRS[safeLocale];
+
+  const [colA] = React.useState(() => shuffle(pairs.map(p => p.a)));
+  const [colB] = React.useState(() => shuffle(pairs.map(p => p.b)));
+
+  const [selected,   setSelected]   = React.useState<{ word: string; col: "a" | "b" } | null>(null);
+  const [matched,    setMatched]    = React.useState<Map<string, string>>(new Map());
+  const [wrongFlash, setWrongFlash] = React.useState<[string, string] | null>(null);
+  const [solved,     setSolved]     = React.useState(false);
+  const solvedRef = React.useRef(false);
+
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const tileRefs     = React.useRef(new Map<string, HTMLDivElement>());
+  const [lines, setLines] = React.useState<Line[]>([]);
+
+  function isWordMatched(word: string): boolean {
+    for (const [a, b] of matched) {
+      if (a === word || b === word) return true;
+    }
+    return false;
+  }
+
+  function isWrongWord(word: string): boolean {
+    return wrongFlash !== null && (wrongFlash[0] === word || wrongFlash[1] === word);
+  }
+
+  function handleClick(word: string, col: "a" | "b") {
+    if (solved || isWordMatched(word)) return;
+
+    if (!selected) {
+      setSelected({ word, col });
+      return;
+    }
+
+    if (selected.col === col) {
+      setSelected({ word, col });
+      return;
+    }
+
+    const aWord = col === "b" ? selected.word : word;
+    const bWord = col === "b" ? word : selected.word;
+    const isMatch = pairs.some(p => p.a === aWord && p.b === bWord);
+
+    if (isMatch) {
+      const next = new Map(matched);
+      next.set(aWord, bWord);
+      setMatched(next);
+      setSelected(null);
+
+      if (next.size === pairs.length) {
+        setTimeout(() => {
+          setSolved(true);
+          if (!solvedRef.current) {
+            solvedRef.current = true;
+            setWeibdehRoundSolved("w5");
+            onSolved?.();
+          }
+        }, 600);
+      }
+    } else {
+      setWrongFlash([aWord, bWord]);
+      setSelected(null);
+      setTimeout(() => setWrongFlash(null), 500);
+    }
+  }
+
+  // Recompute dotted-line positions after each match
+  React.useEffect(() => {
+    if (!containerRef.current || matched.size === 0) return;
+    const cr = containerRef.current.getBoundingClientRect();
+    const next: Line[] = [];
+
+    for (const [aWord, bWord] of matched) {
+      const aEl = tileRefs.current.get(`a-${aWord}`);
+      const bEl = tileRefs.current.get(`b-${bWord}`);
+      if (!aEl || !bEl) continue;
+      const ar = aEl.getBoundingClientRect();
+      const br = bEl.getBoundingClientRect();
+      next.push({
+        key: `${aWord}-${bWord}`,
+        x1: isAr ? ar.left - cr.left : ar.right - cr.left,
+        y1: ar.top + ar.height / 2 - cr.top,
+        x2: isAr ? br.right - cr.left : br.left - cr.left,
+        y2: br.top + br.height / 2 - cr.top,
+      });
+    }
+
+    setLines(next);
+  }, [matched, isAr]);
+
+  function tileClass(word: string, col: "a" | "b"): string {
+    const base =
+      "rounded-2xl border px-4 py-3 text-sm font-medium text-center transition-all duration-150 select-none";
+    if (isWordMatched(word))
+      return `${base} cursor-default border-emerald-200 bg-emerald-50 text-emerald-700`;
+    if (isWrongWord(word))
+      return `${base} cursor-pointer border-red-300 bg-red-50 text-red-600`;
+    if (selected?.word === word && selected?.col === col)
+      return `${base} cursor-pointer border-z-orange bg-z-orange-soft z-orange font-semibold`;
+    return `${base} cursor-pointer border-black/10 bg-white text-neutral-800 hover:border-z-orange/40 active:scale-[0.98]`;
+  }
+
+  const card =
+    "rounded-3xl border border-black/10 " +
+    "bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))] " +
+    "shadow-[0_16px_50px_rgba(0,0,0,0.10)]";
 
   return (
-    <div dir={isAr ? "rtl" : "ltr"} className="w-full">
-      <div className="relative mx-auto mt-8 max-w-2xl px-1 sm:px-0">
+    <div dir={isAr ? "rtl" : "ltr"} className="mx-auto w-full max-w-5xl px-4 py-8 sm:py-10">
+      <style>{`
+        @keyframes w5-fade-up {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes w5-line-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+      `}</style>
+
+      <div className={`${card} relative p-5 sm:p-6`}>
         <div className="pointer-events-none absolute -top-6 left-[-10px] h-32 w-32 rounded-full bg-z-orange-soft blur-3xl opacity-40" />
 
-        <section className="relative overflow-hidden rounded-3xl border border-black/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,247,242,0.94))] p-5 sm:p-6 shadow-[0_16px_50px_rgba(0,0,0,0.10)] ring-1 ring-black/8">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.45),rgba(255,255,255,0))]" />
+        <div className="relative">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
+            {t.kicker}
+          </div>
+          <h1 className="text-2xl font-semibold text-neutral-950 sm:text-3xl">{t.title}</h1>
+          <p className="mt-2 text-sm leading-relaxed text-neutral-700">{t.subtitle}</p>
+        </div>
 
-          <div className="relative">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
-              {isAr ? "الجولة ٥ · قريباً" : "Round 5 · Coming Soon"}
+        {/* Matching grid */}
+        <div className="relative mt-6" ref={containerRef}>
+          {/* Dotted lines overlay */}
+          <svg
+            className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+            aria-hidden="true"
+          >
+            {lines.map(line => (
+              <line
+                key={line.key}
+                x1={line.x1}
+                y1={line.y1}
+                x2={line.x2}
+                y2={line.y2}
+                stroke="#C8694A"
+                strokeWidth="2"
+                strokeDasharray="5 4"
+                strokeLinecap="round"
+                opacity="0.55"
+                style={{ animation: "w5-line-in 0.3s ease-out" }}
+              />
+            ))}
+          </svg>
+
+          <div className="grid grid-cols-2 gap-4">
+            {/* Column A */}
+            <div className="flex flex-col gap-2">
+              {colA.map(word => (
+                <div
+                  key={word}
+                  ref={el => { if (el) tileRefs.current.set(`a-${word}`, el); }}
+                  onClick={() => handleClick(word, "a")}
+                  className={tileClass(word, "a")}
+                >
+                  {word}
+                </div>
+              ))}
             </div>
 
-            <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
-              {isAr ? "الويبدة – المحطة ٥" : "Al Weibdeh – Stop 5"}
-            </h2>
-
-            <p className="mt-3 text-sm leading-7 text-neutral-600">
-              {isAr
-                ? "هذا اللغز قيد الإعداد. ترقبوا تجربة لا تُنسى في حي الويبدة."
-                : "This puzzle is being crafted. Check back soon for an unforgettable experience through Al Weibdeh neighbourhood."}
-            </p>
+            {/* Column B */}
+            <div className="flex flex-col gap-2">
+              {colB.map(word => (
+                <div
+                  key={word}
+                  ref={el => { if (el) tileRefs.current.set(`b-${word}`, el); }}
+                  onClick={() => handleClick(word, "b")}
+                  className={tileClass(word, "b")}
+                >
+                  {word}
+                </div>
+              ))}
+            </div>
           </div>
-        </section>
+        </div>
+
+        {/* Success cards */}
+        {solved && (
+          <>
+            <div
+              className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3"
+              style={{ animation: "w5-fade-up .22s ease-out" }}
+            >
+              <div className="text-sm font-semibold text-emerald-800">{t.successTitle}</div>
+              <div className="mt-1 text-sm leading-6 text-emerald-700">{t.successBody}</div>
+            </div>
+
+            <div
+              className="mt-4 rounded-3xl border border-black/8 bg-z-off-white p-4 sm:p-5"
+              style={{ animation: "w5-fade-up .28s ease-out" }}
+            >
+              <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500">
+                {t.aboutEyebrow}
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-950">{t.aboutTitle}</h3>
+              <div className="mt-2 text-sm leading-7 text-neutral-700">
+                <p>{t.aboutBody}</p>
+              </div>
+            </div>
+
+            <div
+              className="mt-3 rounded-3xl border border-z-orange/20 bg-[linear-gradient(160deg,rgba(200,105,74,0.06),rgba(250,247,242,0.80))] p-4 sm:p-5"
+              style={{ animation: "w5-fade-up .34s ease-out" }}
+            >
+              <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-z-orange/70">
+                {t.storyEyebrow}
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-950">{t.storyTitle}</h3>
+              <div className="mt-2 space-y-3 text-sm leading-7 text-neutral-700">
+                <p>{t.storyBody1}</p>
+                <p>{t.storyBody2}</p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

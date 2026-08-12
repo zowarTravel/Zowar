@@ -15,6 +15,8 @@ type RowState = "idle" | "correct" | "wrong";
 
 const VIRTUAL_CENTER_COL = 12;
 
+const MAGENTA_MAP_URL = "https://maps.app.goo.gl/k8J77ZhXpBVAgmHg9";
+
 const CENTER_WORD_EN = "MAGENTA";
 const WORDS_EN: WordSpec[] = [
   { num: 1, answer: "AMMAN",   crossIndex: 1, clue: { en: "Jordan's capital city",                    ar: "عاصمة الأردن" } },
@@ -106,7 +108,6 @@ export default function PuzzleR1({ locale, onSolved, routeDate }: { locale: Loca
 
   // Focus first card input when active row changes
   React.useEffect(() => {
-    cardInputRefs.current = [];
     const id = window.setTimeout(() => cardInputRefs.current[0]?.focus(), 80);
     return () => window.clearTimeout(id);
   }, [activeRow]);
@@ -470,7 +471,14 @@ export default function PuzzleR1({ locale, onSolved, routeDate }: { locale: Loca
               {isAr ? "محطتك التالية" : "Your next stop"}
             </div>
             <h3 className="mt-2 text-xl font-semibold text-neutral-950">
-              {isAr ? "ماجنتا" : "Magenta"}
+              <a
+                href={MAGENTA_MAP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-z-orange underline-offset-2 hover:opacity-80"
+              >
+                {isAr ? "ماجنتا" : "Magenta"}
+              </a>
             </h3>
             {isTuesdayRoute ? (
               <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4">

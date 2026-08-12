@@ -225,6 +225,7 @@ function StoneStage({
   }
 
   function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    e.preventDefault();
     if (solved) return;
     const rect = stageRef.current!.getBoundingClientRect();
     const dist = ptrDist(e.nativeEvent, rect);
@@ -239,12 +240,12 @@ function StoneStage({
     if (!ring) return;
 
     e.currentTarget.setPointerCapture(e.pointerId);
-    e.preventDefault();
     dragRef.current = { ring, lastAngle: ptrAngle(e.nativeEvent, rect) };
     setDragging(true);
   }
 
   function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    e.preventDefault();
     if (!dragRef.current) return;
     const rect = stageRef.current!.getBoundingClientRect();
     const newA = ptrAngle(e.nativeEvent, rect);
@@ -269,7 +270,7 @@ function StoneStage({
       : undefined;
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center" style={{ touchAction: "none" }}>
       <div
         ref={stageRef}
         className="relative select-none"

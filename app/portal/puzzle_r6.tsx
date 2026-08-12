@@ -12,7 +12,7 @@ const BASE       = "/images/puzzles/Al%20Quds";
 const IMG_OUTER  = `${BASE}/03_outer_rotating_ring.png`;
 const IMG_INNER  = `${BASE}/02_inner_rotating_ring.png`;
 const IMG_CENTER = `${BASE}/01_stationary_center_real_diamond.png`;
-const IMG_VIEW   = `${BASE}/overlook.jpeg`;
+const IMG_VIEW   = `${BASE}/Overlook.JPEG`;
 const IMG_AXON   = `${BASE}/Monument%20Axon.JPG`;
 
 /* ------------------------------------------------------------------ */

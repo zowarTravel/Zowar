@@ -23,7 +23,7 @@ const TOTAL_PHASES = 4;
 const COPY = {
   en: {
     badge: "Round 5 · Visual Journey",
-    title: "Visual Journey",
+    title: "Allow your senses and sense of exploration to guide you to the next stop.",
     intro: "Leave Tabrizi and follow the route.",
 
     // Phase 0 — Mango Stairs (always visible, no CTA)
@@ -72,7 +72,7 @@ const COPY = {
   },
   ar: {
     badge: "الجولة ٥ · رحلة بصرية",
-    title: "رحلة بصرية",
+    title: "دع حواسك وروح الاستكشاف لديك تقودانك إلى المحطة التالية.",
     intro: "غادر تبريزي واتبع الطريق.",
 
     p0Label: "ابدأ من هنا",

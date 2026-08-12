@@ -60,7 +60,7 @@ const COPY = {
 
     // Success
     successEyebrow: "Your next stop",
-    successHead:    "You found Maisa",
+    successHead:    "You found Maisa Space",
     // NOTE: tasting description — update here seasonally
     successBody:    "Step inside for a surprise rotating tasting based on what is in season!",
     successInst:    "Go inside and show this screen.",
@@ -104,7 +104,7 @@ const COPY = {
     wrongMsg: "ليست هذه — انظر إلى اللافتة مرة أخرى.",
 
     successEyebrow: "محطتك التالية",
-    successHead:    "وجدت ميسا",
+    successHead:    "وجدت مساحة ميسا",
     // NOTE: وصف التذوّق — عدّله هنا موسمياً
     successBody:    "ادخل لتجربة تذوّق دوّارة مفاجئة تعتمد على ما هو في موسمه‏!",
     successInst:    "ادخل واعرض هذه الشاشة.",

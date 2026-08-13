@@ -16,9 +16,16 @@ interface BookingClientProps {
 // 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat
 const AVAILABLE_DAYS = new Set([2, 3, 4, 5, 6]);
 
+// Earliest bookable date: 24 hours from now, expressed in Amman time (UTC+3).
+// String comparison works for YYYY-MM-DD format.
+function minBookableDate(): string {
+  const earliest = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  return earliest.toLocaleDateString("en-CA", { timeZone: "Asia/Amman" });
+}
+
 function nextValidDate(): string {
-  const d = new Date();
-  d.setDate(d.getDate() + 1);
+  const min = minBookableDate();
+  const d = new Date(min + "T12:00:00");
   while (!AVAILABLE_DAYS.has(d.getDay())) d.setDate(d.getDate() + 1);
   return d.toISOString().slice(0, 10);
 }
@@ -41,6 +48,7 @@ function getSlotsForDate(dateStr: string): string[] {
 }
 
 function isDayAvailable(dateStr: string): boolean {
+  if (dateStr < minBookableDate()) return false;
   return AVAILABLE_DAYS.has(new Date(dateStr + "T12:00:00").getDay());
 }
 
@@ -538,6 +546,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
               <input
                 type="date"
                 value={date}
+                min={minBookableDate()}
                 onChange={(e) => setDate(e.target.value)}
                 className={inputClass}
               />

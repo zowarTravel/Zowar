@@ -30,6 +30,18 @@ export async function POST(req: Request) {
       process.env.NEXT_PUBLIC_SITE_URL ||
       "http://localhost:3000";
 
+    // Enforce 24-hour minimum booking window (Amman time, UTC+3)
+    if (date) {
+      const minDate = new Date(Date.now() + 24 * 60 * 60 * 1000)
+        .toLocaleDateString("en-CA", { timeZone: "Asia/Amman" });
+      if (date < minDate) {
+        return Response.json(
+          { error: "Bookings must be made at least 24 hours in advance." },
+          { status: 400 }
+        );
+      }
+    }
+
     const stripe = getStripe();
 
     const session = await stripe.checkout.sessions.create({

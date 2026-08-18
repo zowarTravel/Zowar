@@ -10,6 +10,7 @@ export type PortalProgress = {
   r3: boolean;
   r4: boolean;
   r5: boolean;
+  r5b: boolean;
   r6: boolean;
   r7: boolean;
 };
@@ -27,6 +28,7 @@ function freshDefault(): PortalProgress {
     r3: false,
     r4: false,
     r5: false,
+    r5b: false,
     r6: false,
     r7: false,
   };
@@ -64,6 +66,7 @@ export function readProgress(): PortalProgress {
     r3: parsed.r3 === true,
     r4: parsed.r4 === true,
     r5: parsed.r5 === true,
+    r5b: parsed.r5b === true,
     r6: parsed.r6 === true,
     r7: parsed.r7 === true,
   };
@@ -101,6 +104,7 @@ export async function syncProgress(): Promise<PortalProgress> {
       r3: local.r3 || server.r3,
       r4: local.r4 || server.r4,
       r5: local.r5 || server.r5,
+      r5b: local.r5b || (server.r5b ?? false),
       r6: local.r6 || (server.r6 ?? false),
       r7: local.r7 || (server.r7 ?? false),
     };

@@ -50,7 +50,7 @@ function snapNearest(angle: number): number {
 
 const COPY = {
   en: {
-    badge:    "Round 6 · Monument",
+    badge:    "Round 7 · Monument",
     title:    "Reassemble the iconic stone monument to unlock the next location.",
     subtitle: "Drag each ring to rotate it. Align both to restore the stone.",
 
@@ -83,7 +83,7 @@ const COPY = {
     outroLine:    "Take in the view and solve your next puzzle right here.",
   },
   ar: {
-    badge:    "الجولة ٦ · المعلم",
+    badge:    "الجولة ٧ · المعلم",
     title:    "أعِد تجميع المعلم الحجري الشهير لفتح موقعك التالي.",
     subtitle: "اسحب كل حلقة لتدويرها. اضبط كلتيهما لاستعادة الحجر.",
 

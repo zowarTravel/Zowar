@@ -31,7 +31,7 @@ const WORDS_EN: WordSpec[] = [
 const CENTER_WORD_AR = "ماجنتا";
 const WORDS_AR: WordSpec[] = [
   { num: 1, answer: "عمان",    crossIndex: 1, clue: { en: "Jordan's capital",                          ar: "عاصمة الأردن" } },
-  { num: 2, answer: "ياسمين", crossIndex: 1, clue: { en: "A fragrant white flower",                   ar: "زهرة عطرة بيضاء" } },
+  { num: 2, answer: "ياسمين", crossIndex: 1, clue: { en: "A fragrant white flower",                   ar: "زهرة عطرة بيضاء تتسلق كل شوارع عمّان" } },
   { num: 3, answer: "درج",    crossIndex: 2, clue: { en: "You'll climb many on this street",           ar: "ستصعد عليه كثيرًا في هذا الشارع" } },
   { num: 4, answer: "ليمون",  crossIndex: 4, clue: { en: "Sour yellow fruit",                         ar: "فاكهة صفراء حامضة" } },
   { num: 5, answer: "فتوش",   crossIndex: 1, clue: { en: "Arab salad with fried crispy pitta bread",   ar: "سلطة عربية بالخبز المحمّص" } },

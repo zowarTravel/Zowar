@@ -11,6 +11,12 @@ const R1: Record<string, string[]> = {
   es: ["granada", "una granada"],
 };
 
+const R5B: Record<string, string[]> = {
+  en: ["camel", "a camel"],
+  ar: ["جمل", "الجمل"],
+  es: ["camello", "un camello"],
+};
+
 function normalize(s: string): string {
   return s.toLowerCase().trim().replace(/\s+/g, " ").replace(/[^\p{L}\p{N}\s]/gu, "");
 }
@@ -41,6 +47,20 @@ export async function POST(req: NextRequest) {
   if (round === "r2") {
     const lang = locale === "ar" ? "ar" : locale === "es" ? "es" : "en";
     const accepted = R1[lang];
+    const norm = normalize(answer ?? "");
+    if (!norm) return Response.json({ result: "wrong" });
+
+    const accNorm = accepted.map(normalize);
+    if (accNorm.includes(norm)) return Response.json({ result: "correct" });
+
+    const maxEdits = norm.length <= 5 ? 1 : 2;
+    const close = accNorm.some((a) => levenshtein(norm, a) <= maxEdits);
+    return Response.json({ result: close ? "close" : "wrong" });
+  }
+
+  if (round === "r5b") {
+    const lang = locale === "ar" ? "ar" : locale === "es" ? "es" : "en";
+    const accepted = R5B[lang];
     const norm = normalize(answer ?? "");
     if (!norm) return Response.json({ result: "wrong" });
 

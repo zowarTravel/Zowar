@@ -27,6 +27,9 @@ type Confetto = { id: number; x: number; color: string; delay: number; dur: numb
 /* Fixed subtle rotations — authentic passport feel */
 const ROTATIONS = [-2.2, 1.6, -0.8, 2.4, -1.5, 1.1] as const;
 
+/* Only stamps that contribute a letter to the word puzzle */
+const WORD_STAMPS = RAINBOW_STAMPS.filter((s) => s.wordLetter !== false);
+
 /* ------------------------------------------------------------------ */
 /* Component                                                          */
 /* ------------------------------------------------------------------ */
@@ -46,7 +49,7 @@ export default function PuzzleR7({
 
   const [collectedIds, setCollectedIds] = React.useState<StampId[]>([]);
   const [zoomed, setZoomed] = React.useState<PassportStampMeta | null>(null);
-  const [letters, setLetters] = React.useState<string[]>(Array(6).fill(""));
+  const [letters, setLetters] = React.useState<string[]>(Array(WORD_STAMPS.length).fill(""));
   const letterRefs = React.useRef<(HTMLInputElement | null)[]>([]);
   const [status, setStatus] = React.useState<"idle" | "correct" | "wrong">("idle");
   const [showHint, setShowHint] = React.useState(false);
@@ -113,7 +116,7 @@ export default function PuzzleR7({
     next[index] = char;
     setLetters(next);
     setStatus("idle");
-    if (char && index < RAINBOW_STAMPS.length - 1) {
+    if (char && index < WORD_STAMPS.length - 1) {
       window.setTimeout(() => letterRefs.current[index + 1]?.focus(), 0);
     }
   }
@@ -358,7 +361,7 @@ export default function PuzzleR7({
 
             {/* Round badge — keep Zowar brand orange */}
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
-              {isAr ? "الجولة ٧ · المحطة الأخيرة" : "Round 7 · Final Stop"}
+              {isAr ? "الجولة ٨ · المحطة الأخيرة" : "Round 8 · Final Stop"}
             </div>
           </div>
 
@@ -377,7 +380,7 @@ export default function PuzzleR7({
             </div>
 
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              {RAINBOW_STAMPS.map((stamp, i) => {
+              {WORD_STAMPS.map((stamp, i) => {
                 const unlocked = collectedIds.includes(stamp.id);
                 const rotation = ROTATIONS[i] ?? 0;
 

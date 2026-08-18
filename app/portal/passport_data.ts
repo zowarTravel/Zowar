@@ -4,6 +4,7 @@ export type StampId =
   | "rumman"
   | "trinitae"
   | "falafel-al-quds"
+  | "mlabbas"
   | "flour-fire";
 
 export type PassportStampMeta = {
@@ -16,9 +17,11 @@ export type PassportStampMeta = {
   readonly hiddenLetter: string;
   readonly image: string;
   readonly alt: string;
-  readonly roundKey: "r1" | "r2" | "r3" | "r4" | "r5" | "r6";
+  readonly roundKey: "r1" | "r2" | "r3" | "r4" | "r5" | "r5b" | "r6";
   /** Visual scale applied to the stamp image inside its cell. Default 1. */
   readonly scale?: number;
+  /** If false, stamp is collected on solve but excluded from the r7 word puzzle. Default true. */
+  readonly wordLetter?: boolean;
 };
 
 export const RAINBOW_STAMPS: readonly PassportStampMeta[] = [
@@ -85,19 +88,33 @@ export const RAINBOW_STAMPS: readonly PassportStampMeta[] = [
     image: "/images/puzzles/r7/N.png",
     alt: "Falafel Al Quds passport stamp",
     roundKey: "r5",
+    scale: 1.25,
+  },
+  {
+    id: "mlabbas",
+    stop: 6,
+    title: "Mlabbas",
+    titleAr: "ملبّس",
+    subtitle: "The camel that never leaves",
+    subtitleAr: "الجمل الذي لا يغادر",
+    hiddenLetter: "A",
+    image: "/images/puzzles/r7/A2.png",
+    alt: "Mlabbas passport stamp",
+    roundKey: "r5b",
     scale: 1,
   },
   {
     id: "flour-fire",
-    stop: 6,
+    stop: 7,
     title: "The Overlook",
     titleAr: "الإطلالة",
     subtitle: "Downtown Amman view",
     subtitleAr: "إطلالة على وسط البلد",
-    hiddenLetter: "A",
-    image: "/images/puzzles/r7/A2.png",
-    alt: "Monument overlook passport stamp",
+    hiddenLetter: "",
+    image: "/images/puzzles/r7/Rainbow Street.png",
+    alt: "Rainbow Street passport stamp",
     roundKey: "r6",
     scale: 1,
+    wordLetter: false,
   },
 ];

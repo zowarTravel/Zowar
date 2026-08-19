@@ -44,6 +44,9 @@ export async function POST(req: Request) {
 
     const stripe = getStripe();
 
+    const safeQty = Math.max(1, qty ?? 1);
+    const unitAmountCents = halfOff ? 1974 : 3948; // 28 JOD per person ($39.48), half = $19.74
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       currency: "usd",
@@ -53,11 +56,11 @@ export async function POST(req: Request) {
             currency: "usd",
             product_data: {
               name: "Zowar Amman Experience",
-              description: "Self-guided Amman food and puzzle walk",
+              description: `Self-guided Amman food and puzzle walk · ${safeQty} guest${safeQty > 1 ? "s" : ""}`,
             },
-            unit_amount: halfOff ? 1974 : 3948, // $39.48 = 28 JOD, half = $19.74
+            unit_amount: unitAmountCents,
           },
-          quantity: 1,
+          quantity: safeQty,
         },
       ],
       success_url: `${origin}/success?lang=${locale}&session_id={CHECKOUT_SESSION_ID}&experience=${experience}`,

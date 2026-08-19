@@ -379,7 +379,7 @@ export default function PuzzleR7({
               <div className="h-px flex-1 bg-neutral-300/50" />
             </div>
 
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <div dir="ltr" className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {WORD_STAMPS.map((stamp, i) => {
                 const unlocked = collectedIds.includes(stamp.id);
                 const rotation = ROTATIONS[i] ?? 0;

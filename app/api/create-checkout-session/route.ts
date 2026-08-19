@@ -8,7 +8,10 @@ function getStripe(): Stripe {
   if (!_stripe) {
     const key = process.env.STRIPE_SECRET_KEY;
     if (!key) throw new Error("Missing STRIPE_SECRET_KEY — check your server environment variables.");
-    _stripe = new Stripe(key, { maxNetworkRetries: 3 });
+    _stripe = new Stripe(key, {
+      maxNetworkRetries: 1,
+      httpClient: Stripe.createFetchHttpClient(),
+    });
   }
   return _stripe;
 }

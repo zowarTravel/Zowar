@@ -6,6 +6,8 @@ import type { Locale } from "./riddlecontent";
 
 const ROUND_KEY = "r5b" as const;
 
+const MLABBAS_MAPS_URL = "https://maps.app.goo.gl/mvcWNqW99AdLjq3r6";
+
 const COPY = {
   en: {
     badge: "Round 6 · Riddle",
@@ -33,6 +35,9 @@ const COPY = {
     revealTitle: "Mlabbas",
     revealAbout: "Mlabbas is a playful Jordanian design shop filled with locally inspired clothing, gifts, and unexpected details. Keep an eye out for its larger-than-life camel, built from bicycle parts and standing watch over Rainbow Street.",
     revealPrompt: "Now look around and find the camel that never leaves its post.",
+    camelHintBtn: "Can't find the camel?",
+    camelHint: "The mechanical camel is inside your next stop at ",
+    camelHintLink: "Mlabbas",
   },
   ar: {
     badge: "الجولة ٦ · لغز",
@@ -60,6 +65,9 @@ const COPY = {
     revealTitle: "ملبّس",
     revealAbout: "ملبّس محل تصميم أردني مرح مليء بالملابس والهدايا المستوحاة من البيئة المحلية وتفاصيل غير متوقعة. تفقّد جمله الضخم المصنوع من قطع الدراجات الهوائية والمرابط في مدخله يحرس شارع الرينبو.",
     revealPrompt: "الآن انظر حولك وابحث عن الجمل الذي لا يغادر مكانه.",
+    camelHintBtn: "لا تستطيع إيجاد الجمل؟",
+    camelHint: "الجمل الميكانيكي موجود داخل محطتك التالية في ",
+    camelHintLink: "ملبّس",
   },
 } as const;
 
@@ -80,6 +88,7 @@ export default function PuzzleR5b({
   const [answer, setAnswer] = React.useState("");
   const [showHint, setShowHint] = React.useState(false);
   const [showAnswer, setShowAnswer] = React.useState(false);
+  const [showCamelHint, setShowCamelHint] = React.useState(false);
   const [status, setStatus] = React.useState<"idle" | "correct" | "close" | "wrong">("idle");
   const [isChecking, setIsChecking] = React.useState(false);
 
@@ -322,6 +331,26 @@ export default function PuzzleR5b({
               </div>
               <div className="mt-4 rounded-2xl border border-z-orange/20 bg-white px-4 py-3">
                 <p className="text-sm leading-6 text-neutral-800">{t.revealPrompt}</p>
+                <button
+                  type="button"
+                  onClick={() => setShowCamelHint((v) => !v)}
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700 transition hover:bg-amber-100"
+                >
+                  {t.camelHintBtn}
+                </button>
+                {showCamelHint && (
+                  <p className="mt-2 text-sm leading-6 text-amber-900">
+                    {t.camelHint}
+                    <a
+                      href={MLABBAS_MAPS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold underline decoration-amber-400 hover:decoration-amber-600"
+                    >
+                      {t.camelHintLink}
+                    </a>
+                  </p>
+                )}
               </div>
               </div>
             </div>

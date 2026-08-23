@@ -205,6 +205,140 @@ const copy = {
   },
 } as const;
 
+/* ---------------- Calendar picker ---------------- */
+
+const MONTH_NAMES_EN = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December",
+];
+const MONTH_NAMES_AR = [
+  "يناير","فبراير","مارس","أبريل","مايو","يونيو",
+  "يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر",
+];
+const DAY_HEADERS_EN = ["Su","Mo","Tu","We","Th","Fr","Sa"];
+const DAY_HEADERS_AR = ["أح","إث","ث","أر","خ","ج","س"];
+
+function CalendarPicker({
+  value,
+  onChange,
+  isAr,
+}: {
+  value: string;
+  onChange: (d: string) => void;
+  isAr: boolean;
+}) {
+  const minDate = minBookableDate();
+  const todayStr = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Amman" });
+
+  const seed = value || nextValidDate();
+  const seedDate = new Date(seed + "T12:00:00");
+  const [viewYear, setViewYear] = React.useState(seedDate.getFullYear());
+  const [viewMonth, setViewMonth] = React.useState(seedDate.getMonth());
+
+  function fmtDate(y: number, m: number, d: number) {
+    return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+  }
+
+  function prevMonth() {
+    if (viewMonth === 0) { setViewMonth(11); setViewYear((y) => y - 1); }
+    else setViewMonth((m) => m - 1);
+  }
+  function nextMonth() {
+    if (viewMonth === 11) { setViewMonth(0); setViewYear((y) => y + 1); }
+    else setViewMonth((m) => m + 1);
+  }
+
+  const firstDow = new Date(viewYear, viewMonth, 1).getDay();
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  const cells: (number | null)[] = [
+    ...Array(firstDow).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  const monthNames = isAr ? MONTH_NAMES_AR : MONTH_NAMES_EN;
+  const dayHeaders = isAr ? DAY_HEADERS_AR : DAY_HEADERS_EN;
+
+  return (
+    <div dir="ltr" className="mt-2 overflow-hidden rounded-2xl border border-black/10 bg-white">
+      {/* Month navigation */}
+      <div className="flex items-center justify-between border-b border-black/6 px-3 py-2.5">
+        <button
+          type="button"
+          onClick={prevMonth}
+          className="flex h-7 w-7 items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100"
+          aria-label="Previous month"
+        >
+          ‹
+        </button>
+        <span className="text-sm font-semibold text-neutral-800">
+          {monthNames[viewMonth]} {viewYear}
+        </span>
+        <button
+          type="button"
+          onClick={nextMonth}
+          className="flex h-7 w-7 items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100"
+          aria-label="Next month"
+        >
+          ›
+        </button>
+      </div>
+
+      <div className="p-3">
+        {/* Day headers */}
+        <div className="mb-1 grid grid-cols-7">
+          {dayHeaders.map((h, i) => (
+            <div
+              key={i}
+              className={`py-1 text-center text-[10px] font-bold uppercase tracking-wide ${
+                i === 0 || i === 1 ? "text-neutral-300" : "text-neutral-400"
+              }`}
+            >
+              {h}
+            </div>
+          ))}
+        </div>
+
+        {/* Date cells */}
+        <div className="grid grid-cols-7 gap-y-0.5">
+          {cells.map((day, i) => {
+            if (!day) return <div key={i} />;
+            const dateStr = fmtDate(viewYear, viewMonth, day);
+            const disabled = !isDayAvailable(dateStr);
+            const past = dateStr < minDate;
+            const selected = dateStr === value;
+            const isToday = dateStr === todayStr;
+
+            return (
+              <button
+                key={i}
+                type="button"
+                disabled={disabled || past}
+                onClick={() => onChange(dateStr)}
+                className={[
+                  "mx-auto flex h-8 w-8 items-center justify-center rounded-full text-sm transition",
+                  selected
+                    ? "bg-z-orange font-semibold text-white"
+                    : disabled || past
+                    ? "cursor-not-allowed text-neutral-300"
+                    : "text-neutral-800 hover:bg-z-orange-soft hover:text-z-orange",
+                  isToday && !selected
+                    ? "ring-1 ring-z-orange/30"
+                    : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                {day}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- Helpers ---------------- */
 
 function clamp(n: number, min: number, max: number) {
@@ -236,7 +370,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
   const [date, setDate] = React.useState(nextValidDate);
 
-  const [qty, setQty] = React.useState(2);
+  const [qty, setQty] = React.useState(1);
   const [code, setCode] = React.useState("");
   const [discount, setDiscount] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
@@ -542,14 +676,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
               <label className="text-sm text-neutral-600">
                 {t.chooseDate}
               </label>
-
-              <input
-                type="date"
-                value={date}
-                min={minBookableDate()}
-                onChange={(e) => setDate(e.target.value)}
-                className={inputClass}
-              />
+              <CalendarPicker value={date} onChange={setDate} isAr={isAr} />
             </div>
 
             <div className="mt-6">

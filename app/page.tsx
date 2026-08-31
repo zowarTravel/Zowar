@@ -2,19 +2,20 @@ import type { Metadata } from "next";
 import HomeClient from "./home_client";
 
 export const metadata: Metadata = {
-  title: "Zowar – Self-Guided Food & Puzzle Walk in Amman, Jordan",
+  title: "Zowar | Self-Guided Food & Puzzle Experience in Amman",
   description:
     "Explore Amman's iconic Rainbow Street on a self-guided food and puzzle adventure. Discover local restaurants, solve clues, and taste Jordanian flavors. From 30 JOD per person.",
   alternates: {
     canonical: "https://zowar.net",
     languages: {
+      "x-default": "https://zowar.net",
       en: "https://zowar.net/?lang=en",
       ar: "https://zowar.net/?lang=ar",
       es: "https://zowar.net/?lang=es",
     },
   },
   openGraph: {
-    title: "Zowar – Self-Guided Food & Puzzle Walk in Amman, Jordan",
+    title: "Zowar | Self-Guided Food & Puzzle Experience in Amman",
     description:
       "Explore Amman's iconic Rainbow Street on a self-guided food and puzzle adventure. Discover local restaurants, solve clues, and taste Jordanian flavors.",
     url: "https://zowar.net",

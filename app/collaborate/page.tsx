@@ -25,6 +25,7 @@ export async function generateMetadata({
     alternates: {
       canonical: "https://zowar.net/collaborate",
       languages: {
+        "x-default": "https://zowar.net/collaborate",
         en: "https://zowar.net/collaborate?lang=en",
         ar: "https://zowar.net/collaborate?lang=ar",
         es: "https://zowar.net/collaborate?lang=es",

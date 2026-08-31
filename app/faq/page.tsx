@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://zowar.net/faq",
     languages: {
+      "x-default": "https://zowar.net/faq",
       en: "https://zowar.net/faq?lang=en",
       ar: "https://zowar.net/faq?lang=ar",
       es: "https://zowar.net/faq?lang=es",
@@ -178,6 +179,11 @@ const content: Record<
               "Only if you choose them. If you decide to buy extra food, drinks, or other items outside what is included in your package, those purchases are separate and optional.",
           },
           {
+            question: "What is included in the price?",
+            answer:
+              "Your Zowar booking gives you access to the digital Puzzle Portal, which guides you through a curated route of 7 stops. The experience includes over 25 JOD worth of food tastings and a Jordanian gift at the final stop. You pay once at checkout — there are no additional Zowar charges during the experience.",
+          },
+          {
             question: "Can I reschedule my booking?",
             answer:
               "If your plans change, contact Zowar as early as possible and we will do our best to help based on availability.",
@@ -201,6 +207,11 @@ const content: Record<
             question: "Can I do the experience with friends or family?",
             answer:
               "Yes. It works especially well for couples, friends, and small groups.",
+          },
+          {
+            question: "How many people can do it together?",
+            answer:
+              "Zowar works best for groups of 2 to 6 people. Larger groups are welcome — contact us in advance and we will do our best to accommodate you.",
           },
           {
             question: "Can I do it alone?",
@@ -256,6 +267,11 @@ const content: Record<
             question: "What happens after I book?",
             answer:
               "After checkout, you will receive the information needed for your experience so you can arrive prepared and start with confidence.",
+          },
+          {
+            question: "What is the best time to do the experience?",
+            answer:
+              "The experience runs Tuesday through Saturday. Morning starts — around 10 AM — give you the coolest weather and the freshest food at each stop. Afternoon starts also work well. We recommend checking the weather and wearing comfortable shoes regardless of when you go.",
           },
           {
             question: "Why should I book Zowar instead of exploring on my own?",
@@ -374,6 +390,11 @@ const content: Record<
               "فقط إذا اخترتها بنفسك. إذا رغبت في شراء أطعمة أو مشروبات أو منتجات إضافية خارج ما هو مشمول في باقتك، فستكون تلك المشتريات منفصلة واختيارية.",
           },
           {
+            question: "ما الذي يشمله السعر؟",
+            answer:
+              "عند حجزك مع زوار ستحصل على دخول لبوابة الألغاز الرقمية، التي ترشدك عبر مسار محدد يتضمن 7 محطات. تشمل التجربة تذوّقات طعام بقيمة تتجاوز 25 دينارًا أردنيًا، إضافة إلى هدية أردنية في المحطة الأخيرة. الدفع يتم مرة واحدة فقط عند الحجز — ولا توجد أي رسوم إضافية لزوار أثناء التجربة.",
+          },
+          {
             question: "هل يمكنني إعادة جدولة حجزي؟",
             answer:
               "إذا تغيرت خططك، تواصل مع زوار في أقرب وقت ممكن وسنبذل جهدنا للمساعدة حسب التوفر.",
@@ -397,6 +418,11 @@ const content: Record<
             question: "هل يمكنني القيام بالتجربة مع الأصدقاء أو العائلة؟",
             answer:
               "نعم. وهي مناسبة بشكل خاص للأزواج، والأصدقاء، والمجموعات الصغيرة.",
+          },
+          {
+            question: "كم عدد الأشخاص الذين يمكنهم المشاركة معًا؟",
+            answer:
+              "زوار مناسبة بشكل مثالي لمجموعات من 2 إلى 6 أشخاص. المجموعات الأكبر مرحب بها — تواصل معنا مسبقًا وسنبذل جهدنا لتلبية احتياجاتك.",
           },
           {
             question: "هل يمكنني القيام بها وحدي؟",
@@ -452,6 +478,11 @@ const content: Record<
             question: "ماذا يحدث بعد أن أحجز؟",
             answer:
               "بعد إتمام الدفع ستصلك المعلومات التي تحتاجها لتكون مستعدًا وتبدأ التجربة بثقة.",
+          },
+          {
+            question: "ما هو أفضل وقت للقيام بالتجربة؟",
+            answer:
+              "تتوفر التجربة من الثلاثاء إلى السبت. الانطلاق في الصباح — حوالي الساعة 10 صباحًا — يمنحك أجواءً أكثر برودة وطعامًا أكثر طزاجة في كل محطة. البدء بعد الظهر يعمل بشكل جيد أيضًا. نوصي بالتحقق من حالة الطقس وارتداء حذاء مريح بغض النظر عن وقت انطلاقك.",
           },
           {
             question: "لماذا أحجز زوار بدلًا من الاستكشاف بنفسي؟",
@@ -570,6 +601,11 @@ const content: Record<
               "Solo si los eliges tú. Si decides comprar comida extra, bebidas u otros artículos fuera de lo incluido en tu paquete, esas compras son separadas y opcionales.",
           },
           {
+            question: "¿Qué incluye el precio?",
+            answer:
+              "Tu reserva de Zowar te da acceso al Portal de Puzzles digital, que te guía por una ruta curada de 7 paradas. La experiencia incluye más de 25 JOD en degustaciones de comida y un regalo jordano en la última parada. Pagas una sola vez al reservar — sin cargos adicionales de Zowar durante la experiencia.",
+          },
+          {
             question: "¿Puedo reprogramar mi reserva?",
             answer:
               "Si tus planes cambian, contacta con Zowar lo antes posible y haremos todo lo posible para ayudarte según la disponibilidad.",
@@ -582,7 +618,7 @@ const content: Record<
           {
             question: "¿Cuánto dura la experiencia?",
             answer:
-              "La mayoría de los grupos pueden esperar que la experiencia dure entre 2 y 3 horas según el ritmo de caminata y el tiempo en cada parada.",
+              "La mayoría de los grupos pueden esperar que la experiencia dure entre 3 y 4 horas — aproximadamente medio día — según el ritmo de caminata y el tiempo en cada parada.",
           },
           {
             question: "¿Cuánto hay que caminar?",
@@ -593,6 +629,11 @@ const content: Record<
             question: "¿Puedo hacer la experiencia con amigos o familia?",
             answer:
               "Sí. Funciona especialmente bien para parejas, amigos y grupos pequeños.",
+          },
+          {
+            question: "¿Cuántas personas pueden hacerlo juntas?",
+            answer:
+              "Zowar funciona mejor para grupos de 2 a 6 personas. Los grupos más grandes son bienvenidos — contáctanos con antelación y haremos todo lo posible para adaptarnos.",
           },
           {
             question: "¿Puedo hacerla solo?",
@@ -648,6 +689,11 @@ const content: Record<
             question: "¿Qué pasa después de reservar?",
             answer:
               "Tras el pago recibirás la información necesaria para tu experiencia y podrás llegar preparado y comenzar con confianza.",
+          },
+          {
+            question: "¿Cuál es el mejor momento para hacer la experiencia?",
+            answer:
+              "La experiencia está disponible de martes a sábado. Empezar por la mañana — alrededor de las 10 AM — te da el clima más fresco y la comida más fresca en cada parada. Los inicios por la tarde también funcionan bien. Te recomendamos revisar el tiempo y llevar zapatos cómodos independientemente de cuándo vayas.",
           },
           {
             question: "¿Por qué reservar Zowar en lugar de explorar por mi cuenta?",
@@ -975,11 +1021,6 @@ export default async function FAQPage({
                       {c.footer.contact}
                     </a>
                   </li>
-                  <li>
-                    <a className="hover:text-white/90 transition" href="#">
-                      {c.footer.privacy}
-                    </a>
-                  </li>
                 </ul>
               </div>
 
@@ -1016,13 +1057,9 @@ export default async function FAQPage({
           <div className="mt-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-white/60">
             <span>{c.footer.city}</span>
             <div className="flex items-center gap-4">
-              <a href="#" className="hover:text-white transition">
-                {c.footer.terms}
-              </a>
+              <span>{c.footer.terms}</span>
               <span className="opacity-30">|</span>
-              <a href="#" className="hover:text-white transition">
-                {c.footer.privacy}
-              </a>
+              <span>{c.footer.privacy}</span>
             </div>
           </div>
         </div>

@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { PortalGate } from "../portal_gate";
 import PortalFlowWeibdeh from "./portal_flow_weibdeh";
+
+export const metadata: Metadata = {
+  title: "Puzzle Portal – Weibdeh",
+  robots: { index: false, follow: false },
+};
 
 export default async function WeibdehPortalPage({
   searchParams,

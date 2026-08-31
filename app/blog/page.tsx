@@ -5,7 +5,10 @@ export const metadata: Metadata = {
   title: "Journal – Amman Food & Travel Guides",
   description:
     "Guides to eating, exploring, and experiencing Amman and Jordan — from the best breakfast spots to neighbourhood walks, hummus recipes, and the history of Rainbow Street.",
-  alternates: { canonical: "https://zowar.net/blog" },
+  alternates: {
+    canonical: "https://zowar.net/blog",
+    languages: { "x-default": "https://zowar.net/blog" },
+  },
   openGraph: {
     title: "Zowar Journal – Amman Food & Travel Guides",
     description:

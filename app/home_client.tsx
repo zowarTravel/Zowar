@@ -291,7 +291,7 @@ export default function HomeClient() {
     {
       iconSrc: "/images/Icons/Clock.png",
       iconAlt: tr("Clock icon", "أيقونة الوقت", "Icono de reloj"),
-      label: tr("2–3 hrs", "٢–٣ ساعات", "2–3 hrs"),
+      label: tr("3–4 hrs", "٣–٤ ساعات", "3–4 hrs"),
     },
     {
       iconSrc: "/images/Icons/Walking.png",
@@ -551,7 +551,7 @@ export default function HomeClient() {
 
             <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-lg text-white/90">
               {tr(
-                "A self-guided city experience where you solve puzzles, taste iconic bites, and discover Amman at your own pace.",
+                "A self-guided food and puzzle experience in Amman where you solve clues, taste iconic local bites, and discover the city at your own pace.",
                 "تجربة مدينة ذاتية الإرشاد حيث تحل الألغاز، وتتذوّق لقمات أيقونية، وتكتشف عمّان على وتيرتك.",
                 "Una experiencia urbana autoguiada donde resuelves puzzles, pruebas bocados icónicos y descubres Amán a tu ritmo."
               )}
@@ -607,9 +607,36 @@ export default function HomeClient() {
         </div>
       </section>
 
+      {/* ==================== A DIFFERENT WAY ==================== */}
+      <section className="bg-white/60 py-10 sm:py-12">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">
+            {tr(
+              "A Different Way to Explore Amman",
+              "طريقة مختلفة لاستكشاف عمّان",
+              "Una forma diferente de explorar Amán"
+            )}
+          </h2>
+          <p className="mt-4 text-base text-neutral-600 leading-relaxed">
+            {tr(
+              "Zowar is a self-guided food and puzzle experience on Rainbow Street in Amman — built for tourists, locals, couples, and small groups who want more than a checklist. You follow clues at your own pace, stop at curated local spots, and taste some of the best food Amman has to offer. No tour guide. No fixed schedule. Just the city, your phone, and a route designed to surprise you.",
+              "زوّار تجربة ذاتية الإرشاد للطعام والألغاز في شارع الرينبو بعمّان — مصممة للسياح والسكان المحليين والأزواج والمجموعات الصغيرة الذين يريدون أكثر من مجرد قائمة أماكن. تتبع الإشارات على وتيرتك، وتتوقف في محطات محلية منتقاة بعناية، وتتذوّق أفضل ما تقدمه عمّان من طعام. لا مرشد سياحي، ولا جدول زمني ثابت. فقط المدينة وهاتفك ومسار مصمم ليفاجئك.",
+              "Zowar es una experiencia autoguiada de comida y puzzles en Rainbow Street, Amán — creada para turistas, locales, parejas y grupos pequeños que quieren más que una lista de lugares. Sigues las pistas a tu ritmo, te detienes en paradas locales seleccionadas y pruebas algo de la mejor comida que ofrece Amán. Sin guía turístico, sin horario fijo. Solo la ciudad, tu teléfono y una ruta diseñada para sorprenderte."
+            )}
+          </p>
+        </div>
+      </section>
+
       {/* ==================== SNAPSHOT ROW ==================== */}
       <section className="py-10 sm:py-12 bg-transparent">
         <div className="max-w-7xl mx-auto px-6">
+          <p className="text-center text-sm text-neutral-500 mb-6">
+            {tr(
+              "Ideal for visitors, couples, and first-timers — no tour guide needed.",
+              "مثالية للزوار والأزواج والمبتدئين — لا حاجة لمرشد سياحي.",
+              "Ideal para visitantes, parejas y principiantes — sin guía turístico."
+            )}
+          </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {snapshotItems.map((x) => (
               <div
@@ -786,11 +813,6 @@ export default function HomeClient() {
                       {tr(footer.links.contact.en, footer.links.contact.ar, footer.links.contact.es)}
                     </a>
                   </li>
-                  <li>
-                    <a className="hover:text-white/90 transition" href="#">
-                      {tr(footer.links.privacy.en, footer.links.privacy.ar, footer.links.privacy.es)}
-                    </a>
-                  </li>
                 </ul>
               </div>
 
@@ -805,11 +827,6 @@ export default function HomeClient() {
                   <li>
                     <a className="hover:text-white/90 transition" href="/blog">
                       {tr(footer.links.blog.en, footer.links.blog.ar, footer.links.blog.es)}
-                    </a>
-                  </li>
-                  <li>
-                    <a className="hover:text-white/90 transition" href="#">
-                      {tr(footer.links.newsletter.en, footer.links.newsletter.ar, footer.links.newsletter.es)}
                     </a>
                   </li>
                   <li>
@@ -830,19 +847,6 @@ export default function HomeClient() {
 
                   <div className="mt-4 flex items-center gap-4">
                     <a
-                      href="#"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 hover:border-z-orange hover:text-white transition"
-                      aria-label="Facebook"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          fill="currentColor"
-                          d="M13 22v-8h3l1-4h-4V7c0-1.1.3-2 2-2h2V1h-3c-3.4 0-5 2-5 5v4H8v4h3v8h2Z"
-                        />
-                      </svg>
-                    </a>
-
-                    <a
                       href="https://www.instagram.com/zowar.jo/"
                       target="_blank"
                       rel="noreferrer"
@@ -853,19 +857,6 @@ export default function HomeClient() {
                         <path
                           fill="currentColor"
                           d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4a4 4 0 1 1 0 8a4 4 0 0 1 0-8Zm0 2a2 2 0 1 0 0 4a2 2 0 0 0 0-4Zm5.2-.9a1.1 1.1 0 1 1-2.2 0a1.1 1.1 0 0 1 2.2 0Z"
-                        />
-                      </svg>
-                    </a>
-
-                    <a
-                      href="#"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 hover:border-z-orange hover:text-white transition"
-                      aria-label="TikTok"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          fill="currentColor"
-                          d="M14 3c.7 2.4 2.3 4 4.7 4.4V10c-1.9-.1-3.4-.8-4.7-2v7.1c0 3.1-2.5 5.6-5.6 5.6S3 18.2 3 15.1s2.5-5.6 5.6-5.6c.4 0 .8 0 1.1.1v3.1c-.3-.1-.7-.2-1.1-.2-1.4 0-2.6 1.2-2.6 2.6s1.2 2.6 2.6 2.6 2.6-1.2 2.6-2.6V3h2Z"
                         />
                       </svg>
                     </a>
@@ -883,13 +874,9 @@ export default function HomeClient() {
           <div className="mt-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-white/60">
             <span>{t.sections.footerCity}</span>
             <div className="flex items-center gap-4">
-              <a href="#" className="hover:text-white transition">
-                {tr(footer.terms.en, footer.terms.ar, footer.terms.es)}
-              </a>
+              <span>{tr(footer.terms.en, footer.terms.ar, footer.terms.es)}</span>
               <span className="opacity-30">|</span>
-              <a href="#" className="hover:text-white transition">
-                {tr(footer.links.privacy.en, footer.links.privacy.ar, footer.links.privacy.es)}
-              </a>
+              <span>{tr(footer.links.privacy.en, footer.links.privacy.ar, footer.links.privacy.es)}</span>
             </div>
           </div>
         </div>

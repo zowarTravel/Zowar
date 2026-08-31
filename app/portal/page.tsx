@@ -1,7 +1,13 @@
 // app/portal/page.tsx
+import type { Metadata } from "next";
 import type { Locale } from "./riddlecontent";
 import PortalFlow from "./portal_flow";
 import { PortalGate } from "./portal_gate";
+
+export const metadata: Metadata = {
+  title: "Puzzle Portal",
+  robots: { index: false, follow: false },
+};
 
 export default async function PortalPage({
   searchParams,

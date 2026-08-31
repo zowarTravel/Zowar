@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://zowar.net"),
   title: {
-    default: "Zowar – Self-Guided Food & Puzzle Walk in Amman, Jordan",
+    default: "Zowar | Self-Guided Food & Puzzle Experience in Amman",
     template: "%s | Zowar",
   },
   description:

@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://zowar.net/about",
     languages: {
+      "x-default": "https://zowar.net/about",
       en: "https://zowar.net/about?lang=en",
       ar: "https://zowar.net/about?lang=ar",
       es: "https://zowar.net/about?lang=es",
@@ -51,6 +52,7 @@ const copy = {
     home: "Home",
     body: [
       `The first time I showed my wife — who isn’t from Jordan — around Amman, I wasn’t taking her to the "top 10" tourist spots — I was taking her to the places I grew up with. The falafel shop you only know because someone in your family swears by it. The perfect rooftop to enjoy magical late Amman nights.`,
+      `Today, Zowar is a self-guided food and puzzle experience on Rainbow Street in Amman — a route through some of the city’s most iconic spots, designed so anyone can experience the real Amman without needing a local friend to show them around.`,
       `Watching her experience Jordan for the first time made me realize something:`,
       `If I wasn’t local, she would have never seen this side of it.`,
       `Not the real atmosphere. Not the hidden gems`,

@@ -70,6 +70,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       },
     },
     {
+      url: `${BASE}/experiences/rainbow-street`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
       url: `${BASE}/blog`,
       lastModified: new Date(),
       changeFrequency: "weekly",

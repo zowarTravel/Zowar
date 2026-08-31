@@ -198,7 +198,8 @@ export default function HummusRecipe() {
                 src="/images/blog/hummus-and-zowar-puzzle.jpg"
                 alt="Hummus with olive oil and fresh bread on a table alongside a phone showing the Zowar puzzle experience"
                 fill
-                className="object-cover object-top"
+                className="object-cover"
+                style={{ objectPosition: "center 55%" }}
                 sizes="(max-width: 768px) 100vw, 768px"
                 priority
               />

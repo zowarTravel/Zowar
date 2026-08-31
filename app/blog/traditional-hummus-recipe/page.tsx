@@ -195,15 +195,15 @@ export default function HummusRecipe() {
           <figure className="mb-10">
             <div className="relative h-64 w-full overflow-hidden rounded-3xl sm:h-80">
               <Image
-                src="/images/blog/tabbouleh-jordanian-food.jpg"
-                alt="Tabbouleh salad with pomegranate on a black plate — a typical dish at a Jordanian breakfast spread"
+                src="/images/blog/hummus-and-zowar-puzzle.jpg"
+                alt="Hummus with olive oil and fresh bread on a table alongside a phone showing the Zowar puzzle experience"
                 fill
-                className="object-cover object-center"
+                className="object-cover object-top"
                 sizes="(max-width: 768px) 100vw, 768px"
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">A Jordanian breakfast spread — hummus sits alongside tabbouleh, labneh, and warm bread</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-400">Hummus with olive oil and fresh khubz — the way it should always be served</figcaption>
           </figure>
 
           {/* Intro */}

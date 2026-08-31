@@ -3,9 +3,9 @@ import { Fredoka, Tajawal } from "next/font/google";
 import LangDropdown from "@/app/components/lang-dropdown";
 
 export const metadata: Metadata = {
-  title: "FAQ",
+  title: "FAQ – Zowar Food & Puzzle Walks in Amman",
   description:
-    "Answers to common questions about Zowar's food puzzle walks in Amman — booking, routes, dietary needs, and more.",
+    "Common questions about Zowar's self-guided food puzzle walk in Amman — booking, what to expect, Rainbow Street stops, pricing, and more.",
   alternates: {
     canonical: "https://zowar.net/faq",
     languages: {

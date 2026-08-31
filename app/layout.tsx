@@ -21,11 +21,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://zowar.net"),
   title: {
-    default: "Zowar | Food Puzzle Walks in Amman",
+    default: "Zowar – Self-Guided Food & Puzzle Walk in Amman, Jordan",
     template: "%s | Zowar",
   },
   description:
-    "Zowar offers self-guided food puzzle walks in Amman, Jordan. Explore local restaurants, solve clues, and taste your way through the city.",
+    "Explore Amman's iconic Rainbow Street on a self-guided food and puzzle adventure. Discover local restaurants, solve clues, and taste Jordanian flavors. From 28 JOD per person.",
   openGraph: {
     type: "website",
     siteName: "Zowar",

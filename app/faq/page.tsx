@@ -190,7 +190,7 @@ const content: Record<
           {
             question: "How long does the experience take?",
             answer:
-              "Most groups can expect the experience to take around 2 to 3 hours depending on walking pace and time spent at each stop.",
+              "Most groups can expect the experience to take around 3 to 4 hours — about half a day — depending on walking pace and time spent at each stop.",
           },
           {
             question: "How much walking is involved?",
@@ -386,7 +386,7 @@ const content: Record<
           {
             question: "كم تستغرق التجربة؟",
             answer:
-              "يمكن لمعظم المجموعات أن تتوقع أن تستغرق التجربة حوالي ساعتين إلى ثلاث ساعات، بحسب سرعة المشي والوقت الذي تقضيه في كل محطة.",
+              "يمكن لمعظم المجموعات أن تتوقع أن تستغرق التجربة حوالي ثلاث إلى أربع ساعات — نصف يوم تقريباً — بحسب سرعة المشي والوقت الذي تقضيه في كل محطة.",
           },
           {
             question: "كم مقدار المشي المطلوب؟",

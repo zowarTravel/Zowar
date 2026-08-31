@@ -803,7 +803,7 @@ export default function HomeClient() {
                 </div>
                 <ul className="mt-4 space-y-3 text-sm">
                   <li>
-                    <a className="hover:text-white/90 transition" href="#">
+                    <a className="hover:text-white/90 transition" href="/blog">
                       {tr(footer.links.blog.en, footer.links.blog.ar, footer.links.blog.es)}
                     </a>
                   </li>

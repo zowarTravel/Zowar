@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     const stripe = getStripe();
 
     const safeQty = Math.max(1, qty ?? 1);
-    const unitAmountCents = halfOff ? 1974 : 3948; // 28 JOD per person ($39.48), half = $19.74
+    const unitAmountCents = halfOff ? 2115 : 4230; // 30 JOD per person ($42.30), half = $21.15
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",

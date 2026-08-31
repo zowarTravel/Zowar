@@ -67,13 +67,14 @@ const copy = {
     subtitle:
       "Choose your adventure date. After checkout, you’ll receive a confirmation + the Portal access link.",
     chooseTime: "Select a start time",
-    timeNote: "Slots every 30 min · Walk takes 2–3 hours",
+    timeNote: "Slots every 30 min · 3–4 hours · Half a day on Rainbow Street",
     unavailableDay: "Not available on this day — experiences run Tue–Sat",
     checkingSlots: "Checking availability…",
     experienceTitle: "Choose Your Experience",
     exp1Name: "Experience Rainbow Street",
     exp1Desc: "A 7-stop culinary walk through Rainbow Street’s iconic cafés & eateries.",
     exp1Stops: "7 stops",
+    exp1Value: "Over 25 JD in tastings & gifts included",
     exp2Name: "Experience Al Weibdeh",
     exp2Desc: "A 7-stop food adventure through the historic Al Weibdeh neighbourhood.",
     exp2Stops: "7 stops",
@@ -114,13 +115,14 @@ const copy = {
     subtitle:
       "اختر تاريخ التجربة. بعد الدفع ستصلك رسالة تأكيد + رابط الدخول إلى البوابة.",
     chooseTime: "اختر وقت البداية",
-    timeNote: "مواعيد كل ٣٠ دقيقة · الجولة تستغرق ٢–٣ ساعات",
+    timeNote: "مواعيد كل ٣٠ دقيقة · ٣–٤ ساعات · نصف يوم في شارع الرينبو",
     unavailableDay: "لا تتوفر تجارب في هذا اليوم — متاح الثلاثاء والأربعاء والخميس والجمعة والسبت",
     checkingSlots: "جارٍ التحقق من المواعيد…",
     experienceTitle: "اختر تجربتك",
     exp1Name: "تجربة شارع الرينبو",
     exp1Desc: "جولة ذواقة من ٧ محطات عبر المقاهي والمطاعم الأيقونية في شارع الرينبو.",
     exp1Stops: "٧ محطات",
+    exp1Value: "أكثر من ٢٥ دينار في التذوقات والهدايا",
     exp2Name: "تجربة الويبدة",
     exp2Desc: "مغامرة طعام من ٧ محطات عبر حي الويبدة التاريخي.",
     exp2Stops: "٧ محطات",
@@ -161,13 +163,14 @@ const copy = {
     subtitle:
       "Elige la fecha de tu experiencia. Tras el pago recibirás una confirmación + el enlace de acceso al Portal.",
     chooseTime: "Selecciona tu hora de inicio",
-    timeNote: "Turnos cada 30 min · El recorrido dura 2–3 horas",
+    timeNote: "Turnos cada 30 min · 3–4 horas · Medio día en Rainbow Street",
     unavailableDay: "No disponible este día — experiencias disponibles mar, mié, jue, vie y sáb",
     checkingSlots: "Comprobando disponibilidad…",
     experienceTitle: "Elige tu Experiencia",
     exp1Name: "Experiencia Calle Rainbow",
     exp1Desc: "Un recorrido gastronómico de 7 paradas por los cafés y restaurantes de Rainbow Street.",
     exp1Stops: "7 paradas",
+    exp1Value: "Más de 25 JOD en degustaciones y regalos incluidos",
     exp2Name: "Experiencia Al Weibdeh",
     exp2Desc: "Una aventura culinaria de 7 paradas por el histórico barrio de Al Weibdeh.",
     exp2Stops: "7 paradas",
@@ -390,7 +393,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
       .finally(() => setLoadingSlots(false));
   }, [date, dayAvailable]);
 
-  const pricePerPerson = 28;
+  const pricePerPerson = 30;
 
   const subtotal = Math.max(1, qty) * pricePerPerson;
   const total = clamp(subtotal - discount, 0, 999999);
@@ -585,6 +588,9 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
                   <div className="mt-3 inline-flex items-center rounded-full border border-z-orange bg-z-orange-soft px-2.5 py-0.5 text-xs font-semibold z-orange">
                     {t.exp1Stops}
+                  </div>
+                  <div className="mt-2 text-xs font-medium text-emerald-700">
+                    ✓ {t.exp1Value}
                   </div>
                 </div>
               </div>

@@ -619,11 +619,21 @@ export default function HomeClient() {
           </h2>
           <p className="mt-4 text-base text-neutral-600 leading-relaxed">
             {tr(
-              "Zowar is a self-guided food and puzzle experience on Rainbow Street in Amman — built for tourists, locals, couples, and small groups who want more than a checklist. You follow clues at your own pace, stop at curated local spots, and taste some of the best food Amman has to offer. No tour guide. No fixed schedule. Just the city, your phone, and a route designed to surprise you.",
-              "زوّار تجربة ذاتية الإرشاد للطعام والألغاز في شارع الرينبو بعمّان — مصممة للسياح والسكان المحليين والأزواج والمجموعات الصغيرة الذين يريدون أكثر من مجرد قائمة أماكن. تتبع الإشارات على وتيرتك، وتتوقف في محطات محلية منتقاة بعناية، وتتذوّق أفضل ما تقدمه عمّان من طعام. لا مرشد سياحي، ولا جدول زمني ثابت. فقط المدينة وهاتفك ومسار مصمم ليفاجئك.",
-              "Zowar es una experiencia autoguiada de comida y puzzles en Rainbow Street, Amán — creada para turistas, locales, parejas y grupos pequeños que quieren más que una lista de lugares. Sigues las pistas a tu ritmo, te detienes en paradas locales seleccionadas y pruebas algo de la mejor comida que ofrece Amán. Sin guía turístico, sin horario fijo. Solo la ciudad, tu teléfono y una ruta diseñada para sorprenderte."
+              "Zowar is a self-guided food and puzzle walk through Rainbow Street and Jabal Amman — designed for travelers and locals who want to discover the city beyond the usual sightseeing checklist. You follow clues at your own pace, stop at independent local businesses, collect food tastings along the way, and piece together a side of Amman that most visitors never find.",
+              "زوّار مسيرة ألغاز وطعام ذاتية الإرشاد عبر شارع الرينبو وجبل عمّان — مصمّمة للمسافرين والسكان المحليين الذين يريدون اكتشاف المدينة بعيدًا عن قائمة المعالم المعتادة. تتبع الإشارات على وتيرتك، وتتوقف في محلات محلية مستقلة، وتجمع تذوّقات طعام على طول الطريق، وتكتشف جانبًا من عمّان لا يجده معظم الزوار.",
+              "Zowar es un recorrido autoguiado de comida y puzzles por Rainbow Street y Jabal Amman — diseñado para viajeros y locales que quieren descubrir la ciudad más allá de la lista habitual de atracciones. Sigues las pistas a tu ritmo, te detienes en negocios locales independientes, recoges degustaciones de comida por el camino y descubres un lado de Amán que la mayoría de los visitantes nunca encuentra."
             )}
           </p>
+          <a
+            href="/experiences/rainbow-street"
+            className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#c8694a] hover:opacity-80 transition"
+          >
+            {tr(
+              "Explore the Rainbow Street experience →",
+              "اكتشف تجربة شارع الرينبو ←",
+              "Explorar la experiencia de Rainbow Street →"
+            )}
+          </a>
         </div>
       </section>
 

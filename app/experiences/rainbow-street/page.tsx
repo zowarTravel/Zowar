@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Rainbow Street Experience – Self-Guided Food & Puzzle Walk in Amman",
+  title: "Rainbow Street Food & Puzzle Walk in Amman",
   description:
-    "Explore Rainbow Street in Amman on a self-guided food and puzzle walk. 7 curated stops, 3–4 hours, over 25 JOD in tastings and gifts. Book from 30 JOD per person.",
+    "Explore Rainbow Street and Jabal Amman through a self-guided food and puzzle experience with local tastings, hidden details, independent businesses and city views.",
   alternates: {
     canonical: "https://zowar.net/experiences/rainbow-street",
     languages: {
@@ -12,9 +12,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Rainbow Street Experience – Zowar, Amman",
+    title: "Rainbow Street Food & Puzzle Walk in Amman",
     description:
-      "A self-guided food and puzzle walk through Amman's iconic Rainbow Street. Solve clues, taste local bites, discover the city at your own pace.",
+      "Explore Rainbow Street and Jabal Amman through a self-guided food and puzzle experience with local tastings, hidden details, independent businesses and city views.",
     url: "https://zowar.net/experiences/rainbow-street",
     images: [{ url: "/logo.png", width: 1200, height: 630 }],
   },
@@ -184,9 +184,10 @@ export default function RainbowStreetExperiencePage() {
                 stuck.
               </li>
               <li>
-                <strong className="text-neutral-900">Taste and discover</strong> — at each stop
-                you taste something iconic and learn something new about Amman. The final stop
-                includes a Jordanian gift.
+                <strong className="text-neutral-900">Taste and discover</strong> — at select
+                stops, you&apos;ll enjoy a local tasting or surprise while discovering the people and
+                places behind the neighbourhood. Along the way, selected stops include tastings
+                and small surprises.
               </li>
             </ol>
           </section>
@@ -194,15 +195,19 @@ export default function RainbowStreetExperiencePage() {
           <section className="mb-10 rounded-3xl border border-black/8 bg-white p-8">
             <h2 className="text-xl font-semibold text-neutral-900 mb-4">About Rainbow Street</h2>
             <p className="text-neutral-600 leading-relaxed">
-              Rainbow Street — officially Al-Rainbow Street — runs through Jabal Al-Weibdeh, one
-              of Amman&apos;s oldest and most atmospheric hillside neighbourhoods. The street earned its
-              name from the Rainbow Cinema, which opened here in 1957 and became a cultural landmark
-              for generations of Ammanis. Today the cinema is gone, but Rainbow Street remains one
-              of the city&apos;s most beloved destinations — lined with local restaurants, cafés, craft
-              shops, and panoramic views over Amman&apos;s hills.
+              Rainbow Street — historically known as Abu Bakr Al-Siddiq Street — runs through
+              Jabal Amman, one of Amman&apos;s oldest and most atmospheric neighborhoods. The street
+              became known as Rainbow Street after the Rainbow Cinema, which opened in 1957 and
+              became a familiar local landmark.
             </p>
             <p className="mt-4 text-neutral-600 leading-relaxed">
-              It is the kind of street that rewards curiosity — the more you look, the more you
+              The historic cinema building still stands, and the name it gave the street has
+              endured for generations. Today, Rainbow Street is one of Amman&apos;s best-known gathering
+              places, lined with cafés, restaurants, shops and cultural spaces, with side streets
+              opening toward views across the city&apos;s hills.
+            </p>
+            <p className="mt-4 text-neutral-600 leading-relaxed">
+              It&apos;s the kind of street that rewards curiosity — the more you look, the more you
               find. The Zowar experience is designed around exactly that idea.
             </p>
           </section>

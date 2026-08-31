@@ -398,10 +398,10 @@ export default function RainbowStreetGuide() {
                 Book the experience →
               </Link>
               <Link
-                href="/blog/best-breakfast-amman"
+                href="/experiences/rainbow-street"
                 className="inline-flex items-center gap-2 rounded-2xl border border-black/10 bg-white px-5 py-2.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
               >
-                Best breakfast on Rainbow Street →
+                Discover the Rainbow Street walk →
               </Link>
             </div>
           </section>

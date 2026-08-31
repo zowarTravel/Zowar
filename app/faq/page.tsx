@@ -136,7 +136,7 @@ const content: Record<
           {
             question: "What is Zowar?",
             answer:
-              "Zowar is a self-guided food and puzzle experience through Amman. Using your phone, you follow clues, solve simple challenges, and discover curated local stops along the way.",
+              "Zowar is a self-guided food and puzzle walk through Rainbow Street in Amman. Using your phone, you follow clues, solve simple challenges, and discover curated local stops along the way.",
           },
           {
             question: "Is Zowar a tour or a game?",

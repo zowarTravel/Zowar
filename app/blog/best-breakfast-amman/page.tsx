@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     "Al-Quds Falafel",
     "Abu Jbara Amman",
     "Khashoka Amman",
+    "Hashem Restaurant Amman",
     "Shams Al Balad Amman",
     "Blue Fig Amman",
     "Rumi Cafe Amman",
@@ -63,7 +64,7 @@ const articleSchema = {
     {
       "@type": "ItemList",
       name: "Traditional Breakfast Places in Amman",
-      numberOfItems: 5,
+      numberOfItems: 6,
       itemListElement: [
         {
           "@type": "ListItem",
@@ -123,6 +124,19 @@ const articleSchema = {
             address: { "@type": "PostalAddress", addressLocality: "Amman", addressCountry: "JO" },
             servesCuisine: "Jordanian",
             priceRange: "$",
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 6,
+          item: {
+            "@type": "Restaurant",
+            name: "Hashem Restaurant",
+            description: "A Jordanian institution open since 1952 on King Faisal Street in downtown Amman. Open 24 hours, no printed menu, wholly vegetarian — falafel, hummus, ful medames, and moutabel served from open-air sidewalk tables. Listed on the World's 50 Best Discovery.",
+            address: { "@type": "PostalAddress", streetAddress: "King Faisal Street", addressLocality: "Downtown Amman", addressCountry: "JO" },
+            servesCuisine: "Jordanian",
+            priceRange: "$",
+            openingHours: "Mo-Su 00:00-23:59",
           },
         },
       ],
@@ -263,6 +277,19 @@ In a city where many breakfast spots have been smoothed out for broader appeal, 
 The limited seating means it never feels crowded, but it also means you cannot always get a table without arriving early or accepting a wait. Most regulars consider that a worthwhile trade.`,
     order: "Whatever they are making that morning. Ask what is fresh.",
     tip: "Cash only. Two tables means limited space — go early or expect to wait.",
+  },
+  {
+    name: "Hashem Restaurant",
+    nameAr: "مطعم هاشم",
+    neighborhood: "King Faisal Street, Downtown Amman",
+    highlight: "Open since 1952, open 24 hours — Amman's most legendary falafel institution",
+    description: `Hashem is not a restaurant in the conventional sense. There is no printed menu — the same dishes have been served every day since the place opened on King Faisal Street in downtown Amman in 1952, and no one has felt the need to write them down. Falafel, hummus, ful medames, moutabel, fattet hummus. That is the offer, and it has been enough to make Hashem one of the most visited breakfast spots in Jordan for over seventy years.
+
+The setup is entirely outdoors: long tables along the sidewalk set between two downtown buildings, with white plastic chairs that fill quickly in the morning. The falafel here is the stuffed Jordanian variety — deep-fried until the exterior is dark and crisp, with a filling of spiced onion and coriander that sets it apart from simpler versions found elsewhere. Everything on the menu is vegetarian, and there is nothing that costs more than a few dinars.
+
+The crowd at Hashem has always been indifferent to status. Jordanian royals have eaten here — something Amman knows and repeats — and so have backpackers, taxi drivers, food journalists, and everyone in between. Hashem is listed on the World's 50 Best Discovery and has been featured in Saveur magazine, but it carries none of the affectation that tends to accompany that kind of recognition. It is open at midnight and still open at dawn, which makes it equally valid as a very late dinner or the first meal of the day.`,
+    order: "The stuffed Jordanian falafel. Add hummus and ful medames for the full spread.",
+    tip: "Open 24 hours — the falafel is freshest between 6 and 9 AM. Cash only, prices are extremely low.",
   },
 ];
 

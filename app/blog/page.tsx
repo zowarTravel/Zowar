@@ -28,6 +28,30 @@ const posts = [
     readTime: "12 min read",
   },
   {
+    slug: "things-to-do-amman",
+    title: "Things to Do in Amman, Jordan",
+    description:
+      "The Citadel, Roman Theatre, Jordan Museum, Darat Al Funun, Rainbow Street, Weibdeh, and the Zowar experience — the complete local guide to Amman's best places to spend time.",
+    tag: "Travel Guide",
+    readTime: "16 min read",
+  },
+  {
+    slug: "things-to-do-amman-locals",
+    title: "Things to Do in Amman – Local Experiences",
+    description:
+      "Pottery workshops, free outdoor cinema above the city, live music in Weibdeh, a Friday market on Rainbow Street, and a self-guided food walk through the neighbourhood.",
+    tag: "Local Guide",
+    readTime: "12 min read",
+  },
+  {
+    slug: "best-restaurants-rainbow-street",
+    title: "Best Restaurants on Rainbow Street, Amman",
+    description:
+      "From Sufra and Shams Al Balad to Maisa Space, Namliyeh, Wild Jordan Café, Books@Café, and Al-Quds Falafel — where to eat on Rainbow Street.",
+    tag: "Food Guide",
+    readTime: "14 min read",
+  },
+  {
     slug: "best-breakfast-amman",
     title: "Best Breakfast Places in Amman, Jordan",
     description:

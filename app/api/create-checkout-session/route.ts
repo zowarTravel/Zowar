@@ -19,13 +19,14 @@ function getStripe(): Stripe {
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { date, timeSlot, qty, locale = "en", experience = "rainbow", halfOff = false } = body as {
+    const { date, timeSlot, qty, locale = "en", experience = "rainbow", halfOff = false, qottob15 = false } = body as {
       date?: string;
       timeSlot?: string;
       qty?: number;
       locale?: string;
       experience?: string;
       halfOff?: boolean;
+      qottob15?: boolean;
     };
 
     const origin =
@@ -48,7 +49,8 @@ export async function POST(req: Request) {
     const stripe = getStripe();
 
     const safeQty = Math.max(1, qty ?? 1);
-    const unitAmountCents = halfOff ? 2115 : 4230; // 30 JOD per person ($42.30), half = $21.15
+    const promoCode = qottob15 ? "qottob15" : halfOff ? "halfzowar" : "";
+    const unitAmountCents = qottob15 ? 2996 : halfOff ? 1763 : 3525; // 25 JOD per person ($35.25); 15% off = $29.96; half = $17.63
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -74,6 +76,7 @@ export async function POST(req: Request) {
         qty: String(qty ?? 1),
         experience: experience ?? "rainbow",
         lang: locale,
+        promo_code: promoCode,
       },
     });
 

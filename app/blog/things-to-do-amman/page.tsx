@@ -212,7 +212,7 @@ It is worth planning an hour or two to walk the streets rather than arriving wit
 The experience runs for 3 to 4 hours and covers 7 curated stops across the neighbourhood — independent local businesses that you might not find on your own, with the kind of insider knowledge usually reserved for people who have been coming for years. Over 25 JOD in tastings and a Jordanian gift are included in the price. The experience is available in English and Arabic, Tuesday to Saturday.
 
 It is designed to be done at any pace — some groups take the full morning, others move more quickly. If you are spending time on Rainbow Street anyway, which you should, the Zowar walk is the most rewarding way to structure it. The route starts and ends on the street, and most of the restaurants and cafés in this guide are within easy walking distance of the stops along the way.`,
-    know: "30 JOD per person. Includes 25+ JOD in tastings and gifts. Available Tue–Sat. Book at zowar.net.",
+    know: "25 JOD per person. Includes tastings and gifts. Available Tue–Sat. Book at zowar.net.",
     tip: "Tuesday to Thursday mornings are quieter than weekends. Go before 10am for the freshest food stops.",
   },
 ];

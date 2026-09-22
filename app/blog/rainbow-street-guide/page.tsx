@@ -387,7 +387,7 @@ export default function RainbowStreetGuide() {
             <p className="mt-3 text-sm leading-7 text-neutral-700">
               Zowar is a self-guided puzzle experience that takes you through Rainbow Street
               and Weibdeh with stops at local venues for tastings and discoveries. Over 25 JOD
-              in food and gifts are included across a half-day adventure — starting from 30 JOD
+              in food and gifts are included across a half-day adventure — starting from 25 JOD
               per person.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">

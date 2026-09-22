@@ -476,7 +476,7 @@ export default function ThreeDaysInAmman() {
               Zowar is the best way to spend your first morning in Amman — a self-guided
               puzzle experience through Rainbow Street and Weibdeh with stops at local
               venues for tastings and cultural discoveries. 3 to 4 hours, over 25 JOD in
-              food and gifts included, starting from 30 JOD per person. No guide required,
+              food and gifts included, starting from 25 JOD per person. No guide required,
               available Tuesday to Saturday.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">

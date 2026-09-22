@@ -40,7 +40,7 @@ const schema = {
       },
       offers: {
         "@type": "Offer",
-        price: "30",
+        price: "25",
         priceCurrency: "JOD",
         availability: "https://schema.org/InStock",
         url: "https://zowar.net/booking",
@@ -75,7 +75,7 @@ const schema = {
           name: "How much does the Rainbow Street experience cost?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "The Zowar Rainbow Street experience starts at 30 JOD per person, and includes over 25 JOD worth of food tastings and a Jordanian gift at the final stop.",
+            text: "The Zowar Rainbow Street experience starts at 25 JOD per person, and includes food tastings and a Jordanian gift at the final stop.",
           },
         },
         {
@@ -147,7 +147,7 @@ export default function RainbowStreetExperiencePage() {
               {[
                 { label: "Duration", value: "3–4 hours" },
                 { label: "Stops", value: "7 curated spots" },
-                { label: "Price", value: "30 JOD / person" },
+                { label: "Price", value: "25 JOD / person" },
                 { label: "Included", value: "25+ JOD in tastings & gifts" },
                 { label: "Days", value: "Tuesday – Saturday" },
                 { label: "Language", value: "English & Arabic" },
@@ -254,7 +254,7 @@ export default function RainbowStreetExperiencePage() {
               Ready to explore Rainbow Street?
             </h2>
             <p className="mt-2 text-neutral-600">
-              Book your spot for 30 JOD per person. Over 25 JOD in tastings and gifts included.
+              Book your spot for 25 JOD per person. Tastings and gifts included.
             </p>
             <Link
               href="/booking"

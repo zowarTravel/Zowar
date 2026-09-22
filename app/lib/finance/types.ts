@@ -16,6 +16,7 @@ export interface Booking {
   experience: string;        // "rainbow" | "weibdeh"
   status: BookingStatus;
   totalPartnerCost: number;  // sum of all active standard-route partners × participants
+  promoCode?: string;
   notes?: string;
   createdAt: string;         // ISO datetime
 }

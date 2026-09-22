@@ -399,6 +399,47 @@ export default function FinanceClient() {
           )}
         </section>
 
+        {/* ── Promo Code Usage ─────────────────────────────────── */}
+        {(() => {
+          const usage = bookings.reduce<Record<string, { uses: number; pax: number }>>((acc, b) => {
+            if (b.promoCode) {
+              if (!acc[b.promoCode]) acc[b.promoCode] = { uses: 0, pax: 0 };
+              acc[b.promoCode].uses += 1;
+              acc[b.promoCode].pax += b.numberOfParticipants;
+            }
+            return acc;
+          }, {});
+          const rows = Object.entries(usage).sort((a, b) => b[1].uses - a[1].uses);
+          if (rows.length === 0) return null;
+          return (
+            <section className="mb-10">
+              <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-neutral-400">
+                Promo Code Usage
+              </h2>
+              <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-neutral-100 text-left">
+                      <th className="px-4 py-3 font-semibold text-neutral-500">Code</th>
+                      <th className="px-4 py-3 text-center font-semibold text-neutral-500">Bookings</th>
+                      <th className="px-4 py-3 text-center font-semibold text-neutral-500">Participants</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map(([code, stats], i) => (
+                      <tr key={code} className={`border-b border-neutral-50 last:border-0 ${i % 2 === 0 ? "" : "bg-neutral-50/40"}`}>
+                        <td className="px-4 py-3 font-mono font-semibold text-[#C8694A]">{code}</td>
+                        <td className="px-4 py-3 text-center text-neutral-700">{stats.uses}</td>
+                        <td className="px-4 py-3 text-center text-neutral-700">{stats.pax}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          );
+        })()}
+
         {/* ── Bookings ──────────────────────────────────────────── */}
         <section className="mb-10">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-neutral-400">
@@ -410,7 +451,7 @@ export default function FinanceClient() {
             </div>
           ) : (
             <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
-              <table className="w-full min-w-[740px] text-sm">
+              <table className="w-full min-w-[860px] text-sm">
                 <thead>
                   <tr className="border-b border-neutral-100 text-left">
                     <th className="px-4 py-3 font-semibold text-neutral-500">Date</th>
@@ -419,6 +460,7 @@ export default function FinanceClient() {
                     <th className="px-4 py-3 text-center font-semibold text-neutral-500">Pax</th>
                     <th className="px-4 py-3 text-right font-semibold text-neutral-500">Revenue</th>
                     <th className="px-4 py-3 text-right font-semibold text-neutral-500">Partner Cost</th>
+                    <th className="px-4 py-3 font-semibold text-neutral-500">Code</th>
                     <th className="px-4 py-3 font-semibold text-neutral-500">Status</th>
                     <th className="px-4 py-3 font-semibold text-neutral-500">Exp. Date</th>
                   </tr>
@@ -443,6 +485,15 @@ export default function FinanceClient() {
                       </td>
                       <td className="px-4 py-3 text-right text-neutral-500">
                         {jod(b.totalPartnerCost)}
+                      </td>
+                      <td className="px-4 py-3">
+                        {b.promoCode ? (
+                          <span className="rounded-full bg-[#C8694A]/10 px-2.5 py-0.5 font-mono text-xs font-semibold text-[#C8694A]">
+                            {b.promoCode}
+                          </span>
+                        ) : (
+                          <span className="text-neutral-300">—</span>
+                        )}
                       </td>
                       <td className="px-4 py-3">
                         <span

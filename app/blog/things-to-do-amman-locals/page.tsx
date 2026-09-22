@@ -92,7 +92,7 @@ const activities: Activity[] = [
 The experience runs for 3 to 4 hours and covers 7 curated stops — independent local businesses that reward the kind of attention most city visits don't allow time for. Over 25 JOD in tastings and a Jordanian gift are included in the price. It is available in English and Arabic, Tuesday to Saturday, and is designed to work for solo travellers, couples, families, and groups.
 
 It is the kind of activity that works precisely because it is not passive. You are solving something, moving through the city, stopping to eat, talking to the people who run the places along the route. It is a morning that stays with you longer than a tour does.`,
-    know: "30 JOD per person. Includes 25+ JOD in tastings and gifts. Available Tue–Sat. Book at zowar.net/booking.",
+    know: "25 JOD per person. Includes tastings and gifts. Available Tue–Sat. Book at zowar.net/booking.",
     tip: "Weekday mornings are quieter than Fridays. Start before 10am to get the freshest food at the early stops.",
   },
   {

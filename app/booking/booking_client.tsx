@@ -109,6 +109,7 @@ const copy = {
     portal: "Go to Portal",
     freeCodeApplied: "Free booking code applied",
     halfOffApplied: "50% discount applied",
+    qottob15Applied: "15% discount applied",
   },
   ar: {
     title: "الحجز",
@@ -157,6 +158,7 @@ const copy = {
     portal: "الذهاب إلى البوابة",
     freeCodeApplied: "تم تطبيق كود الحجز المجاني",
     halfOffApplied: "تم تطبيق خصم ٥٠٪",
+    qottob15Applied: "تم تطبيق خصم ١٥٪",
   },
   es: {
     title: "Reserva",
@@ -205,6 +207,7 @@ const copy = {
     portal: "Ir al Portal",
     freeCodeApplied: "Código de reserva gratuita aplicado",
     halfOffApplied: "Descuento del 50% aplicado",
+    qottob15Applied: "Descuento del 15% aplicado",
   },
 } as const;
 
@@ -393,7 +396,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
       .finally(() => setLoadingSlots(false));
   }, [date, dayAvailable]);
 
-  const pricePerPerson = 30;
+  const pricePerPerson = 25;
 
   const subtotal = Math.max(1, qty) * pricePerPerson;
   const total = clamp(subtotal - discount, 0, 999999);
@@ -401,12 +404,15 @@ export default function BookingClient({ locale }: BookingClientProps) {
   function applyCode() {
     const normalized = code.trim().toLowerCase();
 
-    if (normalized === "zowarfree") {
+    if (code.trim() === "BESTOFAMMANFREE") {
       setDiscount(subtotal);
       setCodeMessage(t.freeCodeApplied);
     } else if (normalized === "halfzowar") {
       setDiscount(Math.floor(subtotal * 0.5));
       setCodeMessage(t.halfOffApplied);
+    } else if (normalized === "qottob15") {
+      setDiscount(Math.floor(subtotal * 0.15));
+      setCodeMessage(t.qottob15Applied);
     } else {
       setDiscount(0);
       setCodeMessage("");
@@ -424,7 +430,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
         const res = await fetch("/api/portal/free-unlock", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code: code.trim().toLowerCase() }),
+          body: JSON.stringify({ code: code.trim() }),
         });
         if (!res.ok) {
           const d = await res.json().catch(() => ({}));
@@ -448,6 +454,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
           locale: effectiveLocale,
           experience,
           halfOff: normalized === "halfzowar",
+          qottob15: normalized === "qottob15",
         }),
       });
       if (!res.ok) {

@@ -5,14 +5,14 @@ import { signPayload } from "@/app/lib/portal-token";
 const NINETY_DAYS = 90 * 24 * 3600;
 
 // Add more codes here as needed
-const FREE_CODES = new Set(["zowarfree"]);
+const FREE_CODES = new Set(["BESTOFAMMANFREE"]);
 
 export async function POST(req: Request) {
   try {
     const { code } = (await req.json()) as { code?: string };
-    const normalized = (code ?? "").trim().toLowerCase();
+    const raw = (code ?? "").trim();
 
-    if (!FREE_CODES.has(normalized)) {
+    if (!FREE_CODES.has(raw)) {
       return Response.json({ error: "Invalid code" }, { status: 400 });
     }
 

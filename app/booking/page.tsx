@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import BookingClient from "./booking_client";
 
 export const metadata: Metadata = {
-  title: "Book the Rainbow Street Experience – From 30 JOD per Person",
+  title: "Book the Rainbow Street Experience – From 25 JOD per Person",
   description:
     "Book your self-guided food and puzzle walk on Rainbow Street, Amman. Pick a date, pay securely, and unlock the Puzzle Portal. Over 25 JOD in tastings and gifts included.",
   alternates: {

@@ -61,6 +61,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const experience = meta.experience ?? "rainbow";
   const experienceDate = meta.date || undefined;
   const locale = meta.lang ?? "en";
+  const promoCode = meta.promo_code || undefined;
 
   // Revenue: 28 JOD per participant (fixed price at time of booking)
   const pricePerPersonJOD = 28;
@@ -87,6 +88,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     experience,
     status: "paid",
     totalPartnerCost: partnerCost,
+    promoCode,
     notes: `locale:${locale}`,
     createdAt: now,
   };

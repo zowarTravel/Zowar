@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s | Zowar",
   },
   description:
-    "Explore Amman's iconic Rainbow Street on a self-guided food and puzzle adventure. Discover local restaurants, solve clues, and taste Jordanian flavors. From 30 JOD per person.",
+    "Explore Amman's iconic Rainbow Street on a self-guided food and puzzle adventure. Discover local restaurants, solve clues, and taste Jordanian flavors. From 25 JOD per person.",
   openGraph: {
     type: "website",
     siteName: "Zowar",

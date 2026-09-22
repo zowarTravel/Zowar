@@ -4,7 +4,7 @@ import HomeClient from "./home_client";
 export const metadata: Metadata = {
   title: "Zowar | Self-Guided Food & Puzzle Experience in Amman",
   description:
-    "Explore Amman's iconic Rainbow Street on a self-guided food and puzzle adventure. Discover local restaurants, solve clues, and taste Jordanian flavors. From 30 JOD per person.",
+    "Explore Amman's iconic Rainbow Street on a self-guided food and puzzle adventure. Discover local restaurants, solve clues, and taste Jordanian flavors. From 25 JOD per person.",
   alternates: {
     canonical: "https://zowar.net",
     languages: {
@@ -75,7 +75,7 @@ const schema = {
       category: "Tours & Experiences",
       offers: {
         "@type": "Offer",
-        price: "30",
+        price: "25",
         priceCurrency: "JOD",
         availability: "https://schema.org/InStock",
         url: "https://zowar.net/booking",

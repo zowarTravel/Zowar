@@ -14,7 +14,7 @@ type ReqBody = {
   experience?: string;
 };
 
-const PRICE_PER_PERSON_JOD = 20.0;
+const PRICE_PER_PERSON_JOD = 25.0;
 const USD_PER_JOD = 1.41;
 const USD_CENTS = 100;
 

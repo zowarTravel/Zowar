@@ -20,9 +20,9 @@ const IMG_AXON   = `${BASE}/Monument%20Axon.JPG`;
 /* ------------------------------------------------------------------ */
 
 const ROUND_KEY   = "r6" as const;
-const OUTER_START = 72;    // deg off solved
-const INNER_START = -44;   // deg off solved
-const SNAP_DEG    = 5;     // snap to 0 when within ±5°
+const OUTER_START = 45;    // deg off solved
+const INNER_START = -28;   // deg off solved
+const SNAP_DEG    = 9;     // snap to 0 when within ±9°
 
 // Fraction of stage half-width defining drag zones.
 // Tune these if the ring hit areas feel off after checking the PNGs.
@@ -441,8 +441,8 @@ export default function PuzzleR6({
   const oDist   = outerLocked ? 0 : distFromZero(outerAngle);
   const iDist   = innerLocked ? 0 : distFromZero(innerAngle);
   const warmth  =
-    Math.max(0, 1 - oDist / 30) * 0.5 +
-    Math.max(0, 1 - iDist / 30) * 0.5;
+    Math.max(0, 1 - oDist / 50) * 0.5 +
+    Math.max(0, 1 - iDist / 50) * 0.5;
 
   // Keep live angle refs in sync so dwell timeouts read fresh values
   React.useEffect(() => { outerAngleRef.current = outerAngle; }, [outerAngle]);

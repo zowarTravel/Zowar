@@ -271,11 +271,14 @@ export default function PuzzleR2({
                 <p>{t.aboutBody1[safeLocale]}</p>
                 <p>{t.aboutBody2[safeLocale]}</p>
               </div>
-              <div className="mt-4 rounded-2xl border border-z-orange/20 bg-white px-4 py-3">
-                <p className="text-sm leading-6 text-neutral-800">
+              <div className="mt-4 rounded-2xl border border-z-orange/30 bg-z-orange-soft px-4 py-3.5">
+                <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-z-orange">
+                  {isAr ? "في هذه المحطة" : "At this stop"}
+                </div>
+                <p className="text-sm font-medium leading-6 text-neutral-800">
                   {safeLocale === "ar"
-                    ? "توجّه إلى رمان كولكتيف، استكشف الحرف المحلية، ثم اصعد إلى الطابق العلوي لاستلام طلبك من المطعم."
-                    : "Head to Ruman Collective, explore the local crafts, and head upstairs for your item from the restaurant."}
+                    ? "تكلّم مع المضيف، أخبره أنك مع زوّار، واستمتع بأطباقك المجانية."
+                    : "Speak to the host, let them know you're with Zowar, and enjoy your complimentary dishes."}
                 </p>
               </div>
             </div>

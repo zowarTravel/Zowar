@@ -400,11 +400,12 @@ export default function PuzzleR7({
                       style={{ transform: `rotate(${unlocked ? rotation : 0}deg)` }}
                     >
                       {unlocked ? (
-                        <div className="relative aspect-square w-full">
+                        <div className="relative aspect-square w-full overflow-hidden">
                           <img
                             src={stamp.image}
                             alt={stamp.alt}
                             className="h-full w-full object-contain drop-shadow-sm"
+                            style={stamp.scale && stamp.scale !== 1 ? { transform: `scale(${stamp.scale})` } : undefined}
                             draggable={false}
                           />
                           {/* Corner inspect badge — always visible, lifts on hover */}
@@ -492,7 +493,7 @@ export default function PuzzleR7({
             <div className="px-6 py-5">
               <p className="text-sm leading-7 text-neutral-800">
                 {isAr
-                  ? "داخل كل طابع حرفٌ مخفي. اضغط على الطابع لفحصه عن قرب، ثم أدخل الحرف الذي تجده في الخانة أسفله."
+                  ? "داخل كل طابع حرفٌ إنجليزي مخفي. اضغط على الطابع لفحصه عن قرب، ثم أدخل الحرف الإنجليزي الذي تجده في الخانة أسفله — ستتكوّن منها مجتمعةً اسم محطتك الأخيرة."
                   : "Each stamp holds one hidden letter. Tap a stamp to examine it closely, then type the letter you find in the box below it."}
               </p>
 
@@ -514,7 +515,7 @@ export default function PuzzleR7({
                     <div className="font-semibold text-neutral-950">{isAr ? "التلميح" : "Hint"}</div>
                     <div className="mt-1 leading-7">
                       {isAr
-                        ? <>كل طابع يخفي <strong>حرفاً واحداً</strong> داخله — اضغط عليه وتفحّصه جيداً، ثم أدخل الحروف المخفية واحداً تلو الآخر ليتكشّف لك اسم وجهتك الأخيرة.</>
+                        ? <>كل طابع يخفي <strong>حرفاً إنجليزياً واحداً</strong> داخله — اضغط عليه وتفحّصه جيداً، ثم أدخل الحروف الإنجليزية المخفية واحداً تلو الآخر لتكتشف اسم وجهتك الأخيرة.</>
                         : <>Each stamp is hiding <strong>one letter</strong> within it. Tap and examine each stamp closely, enter the hidden letters one by one to reveal the name of your final destination.</>}
                     </div>
                   </div>
@@ -551,7 +552,7 @@ export default function PuzzleR7({
                           <div className="font-semibold text-neutral-950">{isAr ? "الإجابة" : "Reveal answer"}</div>
                           <div className="mt-1 leading-7">
                             {isAr
-                              ? "أدخل الحروف م-ي-ج-ا-ن-ا في الخانات أسفل الطوابع واضغط تحقق."
+                              ? "أدخل الحروف الإنجليزية M-I-J-A-N-A في الخانات أسفل الطوابع واضغط تحقق."
                               : "Enter M-I-J-A-N-A, one letter per box below each stamp, then hit Submit."}
                           </div>
                         </div>
@@ -566,7 +567,7 @@ export default function PuzzleR7({
                 <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
                   {isAr ? "إجابتك" : "Your answer"}
                 </div>
-                <div className="mt-2 flex items-center justify-center gap-1.5">
+                <div dir="ltr" className="mt-2 flex items-center justify-center gap-1.5">
                   {letters.map((letter, i) => (
                     <div
                       key={i}
@@ -618,6 +619,7 @@ export default function PuzzleR7({
             >
               {/* Answer reveal */}
               <div
+                dir="ltr"
                 className="flex items-center justify-center gap-1.5"
                 style={{ animation: "r7-fade 350ms ease-out 500ms both" }}
               >
@@ -723,6 +725,16 @@ export default function PuzzleR7({
                       ? "نهاية الجولة. إطلالة على عمّان وحلوى دافئة مع كل ما جمعته على طول المسار."
                       : "The end of the walk. A view over Amman and a sweet dessert with everything you collected along the way."}
                   </p>
+                  <div className="mt-4 rounded-2xl border border-z-orange/30 bg-z-orange-soft px-4 py-3.5">
+                    <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-z-orange">
+                      {isAr ? "في هذه المحطة" : "At this stop"}
+                    </div>
+                    <p className="text-sm font-medium leading-6 text-neutral-800">
+                      {isAr
+                        ? "أخبر المضيف أنك مع زوّار لتُجلَس وتحظى بحلوى — مكافأة مستحقة بعد كل هذا الاستكشاف."
+                        : "Tell the host you're with Zowar to be seated and treated to a dessert — a well-earned reward for all your exploring."}
+                    </p>
+                  </div>
                 </div>
 
                 <div className="rounded-3xl border border-neutral-200 bg-white p-5">

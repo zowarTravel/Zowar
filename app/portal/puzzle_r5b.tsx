@@ -329,6 +329,16 @@ export default function PuzzleR5b({
               <div className="mt-3 space-y-3 text-sm leading-7 text-neutral-700">
                 <p>{t.revealAbout}</p>
               </div>
+              <div className="mt-4 rounded-2xl border border-z-orange/30 bg-z-orange-soft px-4 py-3.5">
+                <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-z-orange">
+                  {isAr ? "في هذه المحطة" : "At this stop"}
+                </div>
+                <p className="text-sm font-medium leading-6 text-neutral-800">
+                  {isAr
+                    ? "أخبر الكاشير أنك مع زوّار — اختر ملصقاً أو دبوساً من اختيارك على حسابنا."
+                    : "Tell the cashier you're with Zowar — pick your choice of sticker or pin on us."}
+                </p>
+              </div>
               <div className="mt-4 rounded-2xl border border-z-orange/20 bg-white px-4 py-3">
                 <p className="text-sm leading-6 text-neutral-800">{t.revealPrompt}</p>
                 <button

@@ -492,11 +492,23 @@ export default function PuzzleR1({ locale, onSolved, routeDate }: { locale: Loca
                 </p>
               </div>
             ) : (
-              <p className="mt-3 text-sm leading-7 text-neutral-700">
-                {isAr
-                  ? "بعيدًا عن صخب الشارع، تختبئ ماجنتا كجوهرة حيّة في قلب عمّان — واحدة من أكثر مقاهيها إلهامًا، تُعرف بالأعمال الفنية والخط العربي الإبداعي التي تُزيّن جدرانها، وبإطلالتها الساحرة على جبل عمّان. البداية المثالية لشحن روحك قبل المغامرة التي تنتظرك."
-                  : "Tucked away from the chaos, Magenta is one of Amman's most vibrant cafes, known for its creative artwork and calligraphy that line the walls, and a stunning overlook of Jabal Amman. The perfect start to energise your adventure ahead."}
-              </p>
+              <>
+                <p className="mt-3 text-sm leading-7 text-neutral-700">
+                  {isAr
+                    ? "بعيدًا عن صخب الشارع، تختبئ ماجنتا كجوهرة حيّة في قلب عمّان — واحدة من أكثر مقاهيها إلهامًا، تُعرف بالأعمال الفنية والخط العربي الإبداعي التي تُزيّن جدرانها، وبإطلالتها الساحرة على جبل عمّان. البداية المثالية لشحن روحك قبل المغامرة التي تنتظرك."
+                    : "Tucked away from the chaos, Magenta is one of Amman's most vibrant cafes, known for its creative artwork and calligraphy that line the walls, and a stunning overlook of Jabal Amman. The perfect start to energise your adventure ahead."}
+                </p>
+                <div className="mt-4 rounded-2xl border border-z-orange/30 bg-z-orange-soft px-4 py-3.5">
+                  <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-z-orange">
+                    {isAr ? "في هذه المحطة" : "At this stop"}
+                  </div>
+                  <p className="text-sm font-medium leading-6 text-neutral-800">
+                    {isAr
+                      ? "أخبر الباريستا أنك مع زوّار واختر أي مشروب من القائمة — وقود لمغامرتك القادمة."
+                      : "Tell your barista you're with Zowar and choose any drink from the menu — fuel for the adventure ahead."}
+                  </p>
+                </div>
+              </>
             )}
           </div>
 

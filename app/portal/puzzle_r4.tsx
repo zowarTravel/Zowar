@@ -464,7 +464,7 @@ export function PuzzleR4({ locale, onSolved }: Props) {
                 <p className="mt-2 text-neutral-700">
                   {isAr ? (
                     <>
-                      توجّه إلى{" "}
+                      خذ الدرج مباشرةً أمام مطبخ أسمى صعودًا إلى شارع عمر بن الخطاب، ثم توجّه إلى{" "}
                       <a
                         href={TABRIZI_MAP_URL}
                         target="_blank"
@@ -472,12 +472,12 @@ export function PuzzleR4({ locale, onSolved }: Props) {
                         className="font-semibold underline decoration-z-orange underline-offset-2 z-orange hover:opacity-80"
                       >
                         تبريزي
-                      </a>{" "}
-                      في شارع عمر بن الخطاب.
+                      </a>
+                      .
                     </>
                   ) : (
                     <>
-                      Head to{" "}
+                      Take the stairs directly in front of Asma&rsquo;s Kitchen up to Omar Bin Al-Khattab Street, then head to{" "}
                       <a
                         href={TABRIZI_MAP_URL}
                         target="_blank"
@@ -485,8 +485,8 @@ export function PuzzleR4({ locale, onSolved }: Props) {
                         className="font-semibold underline decoration-z-orange underline-offset-2 z-orange hover:opacity-80"
                       >
                         Tabrizi
-                      </a>{" "}
-                      on Omar Bin Al-Khattab Street.
+                      </a>
+                      .
                     </>
                   )}
                 </p>
@@ -505,6 +505,18 @@ export function PuzzleR4({ locale, onSolved }: Props) {
                     <p>{t.aboutBody1[safeLocale]}</p>
                     <p>{t.aboutBody2[safeLocale]}</p>
                   </div>
+                </div>
+
+                {/* Staff CTA */}
+                <div className="mt-5 rounded-2xl border border-z-orange/30 bg-z-orange-soft px-4 py-3.5">
+                  <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-z-orange">
+                    {isAr ? "في هذه المحطة" : "At this stop"}
+                  </div>
+                  <p className="text-sm font-medium leading-6 text-neutral-800">
+                    {isAr
+                      ? "أخبر الموظفين أنك مع زوّار — هديتك العطرية التقليدية المجانية بانتظارك."
+                      : "Let the staff know you're with Zowar — your complimentary traditional scented gift is waiting for you."}
+                  </p>
                 </div>
 
                 {/* Jacaranda Images nearby card */}

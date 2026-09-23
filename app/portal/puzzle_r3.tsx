@@ -444,6 +444,16 @@ export default function PuzzleR3({ locale, onSolved }: Props) {
                     ? "طبخ عربي بيتي في قلب شارع الرينبو. هذا ليس مطعماً — بل هو أشبه بمشاهدة أحد أفراد العائلة وهو يُعدّ لك وجبة تقليدية ويرحّب بك في مطبخه الخاص."
                     : "Home-style Arabic cooking in the middle of Rainbow Street. This isn't a restaurant — it is truly like watching a family member prepare you a traditional meal and welcoming you into their private kitchen."}
                 </p>
+                <div className="mt-4 rounded-2xl border border-z-orange/30 bg-z-orange-soft px-4 py-3.5">
+                  <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-z-orange">
+                    {isAr ? "في هذه المحطة" : "At this stop"}
+                  </div>
+                  <p className="text-sm font-medium leading-6 text-neutral-800">
+                    {isAr
+                      ? "أخبر صاحبة المطبخ أنك هنا مع زوّار واستمتع بتذوّق المأكولات التقليدية."
+                      : "Tell the kitchen owner you're here with Zowar and enjoy your traditional tastings."}
+                  </p>
+                </div>
               </div>
             ) : null}
 

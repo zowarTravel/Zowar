@@ -20,14 +20,11 @@ const IMG_AXON   = `${BASE}/Monument%20Axon.JPG`;
 /* ------------------------------------------------------------------ */
 
 const ROUND_KEY   = "r6" as const;
-const OUTER_START = 45;    // deg off solved
 const INNER_START = -28;   // deg off solved
 const SNAP_DEG    = 9;     // snap to 0 when within ±9°
 
-// Fraction of stage half-width defining drag zones.
-// Tune these if the ring hit areas feel off after checking the PNGs.
-const INNER_ZONE = 0.42;   // < this = inner ring drag zone
-const OUTER_ZONE = 0.88;   // > this = outside stone, ignore
+// Outer boundary of the stone — beyond this is outside the stone
+const OUTER_ZONE = 0.88;
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
@@ -52,21 +49,17 @@ const COPY = {
   en: {
     badge:    "Round 7 · Monument",
     title:    "Reassemble the iconic stone monument to unlock the next location.",
-    subtitle: "Drag each ring to rotate it. Align both to restore the stone.",
+    subtitle: "Drag the inner ring to rotate it. Align it to restore the stone.",
 
     hintBtn1: "Need a hint?",
-    hint1:    "Both rings need to move — don't get stuck on one.",
+    hint1:    "Focus on matching the stone texture at the ring boundary.",
     hintBtn2: "Another hint?",
     hint2:    "Watch the stone texture at the ring boundary. When it matches across both sides, you are close.",
     hintBtn3: "One more?",
     hint3:    "Slow down once you feel close. The snap will catch you.",
 
-    outerLabel: "Outer Ring",
     innerLabel: "Inner Ring",
-    outerAria:  "Rotate outer stone ring",
     innerAria:  "Rotate inner stone ring",
-
-    ring1Banner: "First ring locked — now align the second.",
 
     solvedEyebrow: "Restored",
     solvedHead:    "You put it back together.",
@@ -85,21 +78,17 @@ const COPY = {
   ar: {
     badge:    "الجولة ٧ · المعلم",
     title:    "أعِد تجميع المعلم الحجري الشهير لفتح موقعك التالي.",
-    subtitle: "اسحب كل حلقة لتدويرها. اضبط كلتيهما لاستعادة الحجر.",
+    subtitle: "اسحب الحلقة الداخلية لتدويرها. اضبطها لاستعادة الحجر.",
 
     hintBtn1: "تحتاج إلى تلميح؟",
-    hint1:    "كلتا الحلقتين تحتاجان إلى الحركة — لا تعلق في واحدة.",
+    hint1:    "ركّز على مطابقة ملمس الحجر عند حدود الحلقة.",
     hintBtn2: "تلميح آخر؟",
     hint2:    "راقب ملمس الحجر عند حدود الحلقة. عندما يتطابق الجانبان فأنت قريب.",
     hintBtn3: "تلميح إضافي؟",
     hint3:    "تمهّل عندما تشعر بالاقتراب. سيلتقطك الإغلاق.",
 
-    outerLabel: "الحلقة الخارجية",
     innerLabel: "الحلقة الداخلية",
-    outerAria:  "تدوير الحلقة الخارجية",
     innerAria:  "تدوير الحلقة الداخلية",
-
-    ring1Banner: "الحلقة الأولى ثُبِّتت — الآن اضبط الثانية.",
 
     solvedEyebrow: "تمّت الاستعادة",
     solvedHead:    "لقد أعدت تجميعه.",
@@ -187,26 +176,22 @@ const LAYER: React.CSSProperties = {
 };
 
 interface StageProps {
-  outerAngle: number;
   innerAngle: number;
-  outerLocked: boolean;
   innerLocked: boolean;
   solved: boolean;
   warmth: number;
-  onDelta: (ring: "outer" | "inner", delta: number) => void;
+  onDelta: (delta: number) => void;
 }
 
 function StoneStage({
-  outerAngle,
   innerAngle,
-  outerLocked,
   innerLocked,
   solved,
   warmth,
   onDelta,
 }: StageProps) {
   const stageRef = React.useRef<HTMLDivElement>(null);
-  const dragRef  = React.useRef<{ ring: "outer" | "inner"; lastAngle: number } | null>(null);
+  const dragRef  = React.useRef<{ lastAngle: number } | null>(null);
   const [dragging, setDragging] = React.useState(false);
 
   function ptrAngle(e: PointerEvent, r: DOMRect) {
@@ -226,21 +211,15 @@ function StoneStage({
 
   function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
     e.preventDefault();
-    if (solved) return;
+    if (solved || innerLocked) return;
     const rect = stageRef.current!.getBoundingClientRect();
     const dist = ptrDist(e.nativeEvent, rect);
     const half = rect.width / 2;
 
-    let ring: "outer" | "inner" | null = null;
-    if (dist < half * INNER_ZONE && !innerLocked) {
-      ring = "inner";
-    } else if (dist < half * OUTER_ZONE && !outerLocked) {
-      ring = "outer";
-    }
-    if (!ring) return;
+    if (dist >= half * OUTER_ZONE) return;
 
     e.currentTarget.setPointerCapture(e.pointerId);
-    dragRef.current = { ring, lastAngle: ptrAngle(e.nativeEvent, rect) };
+    dragRef.current = { lastAngle: ptrAngle(e.nativeEvent, rect) };
     setDragging(true);
   }
 
@@ -253,7 +232,7 @@ function StoneStage({
     if (delta >  180) delta -= 360;
     if (delta < -180) delta += 360;
     dragRef.current.lastAngle = newA;
-    onDelta(dragRef.current.ring, delta);
+    onDelta(delta);
   }
 
   function handlePointerUp() {
@@ -261,7 +240,7 @@ function StoneStage({
     setDragging(false);
   }
 
-  // Warm amber glow — grows as rings approach alignment
+  // Warm amber glow — grows as inner ring approaches alignment
   const glowPx  = Math.round(warmth * 24);
   const glowAlp = (warmth * 0.7).toFixed(2);
   const filter  =
@@ -281,7 +260,6 @@ function StoneStage({
           touchAction: "none",
           filter,
           transition: "filter 0.25s ease",
-          // Settle bounce on solve
           animation: solved ? "r6Settle 650ms cubic-bezier(.22,1,.36,1) 280ms both" : undefined,
         }}
         onPointerDown={handlePointerDown}
@@ -289,21 +267,13 @@ function StoneStage({
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
       >
-        {/* ── Layer 1 (bottom): outer rotating ring ── */}
+        {/* ── Layer 1 (bottom): outer ring — fixed at solved position ── */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={IMG_OUTER}
           alt=""
           draggable={false}
-          style={{
-            ...LAYER,
-            transform: `rotate(${outerAngle}deg)`,
-            transformOrigin: "50% 50%",
-            transition:
-              outerLocked || solved
-                ? "transform 0.5s cubic-bezier(.22,1,.36,1)"
-                : undefined,
-          }}
+          style={{ ...LAYER }}
         />
 
         {/* ── Layer 2 (middle): inner rotating ring ── */}
@@ -396,64 +366,45 @@ export default function PuzzleR6({
   const isAr = safeLocale === "ar";
   const t    = COPY[safeLocale];
 
-  // Refs so effects / timeouts always see current values without re-subscribing
   const solvedRef      = React.useRef(false);
-  const outerLockedRef = React.useRef(false);
   const innerLockedRef = React.useRef(false);
   const lastHapticRef  = React.useRef(0);
   const onSolvedRef    = React.useRef(onSolved);
   React.useLayoutEffect(() => { onSolvedRef.current = onSolved; }, [onSolved]);
 
-  // Live angle refs — readable inside dwell timeouts without stale closure issues
-  const outerAngleRef = React.useRef(OUTER_START);
   const innerAngleRef = React.useRef(INNER_START);
 
-  // Dwell timers — ring must stay within tolerance for DWELL_MS before locking
-  const DWELL_MS       = 600;
-  const outerDwellRef  = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const innerDwellRef  = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const DWELL_MS      = 600;
+  const innerDwellRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Clean up pending timers if the component unmounts mid-puzzle
   React.useEffect(() => () => {
-    if (outerDwellRef.current) clearTimeout(outerDwellRef.current);
     if (innerDwellRef.current) clearTimeout(innerDwellRef.current);
   }, []);
 
   const successRef = React.useRef<HTMLDivElement>(null);
   const aboutRef   = React.useRef<HTMLDivElement>(null);
 
-  const [outerAngle,  setOuterAngle]  = React.useState(OUTER_START);
   const [innerAngle,  setInnerAngle]  = React.useState(INNER_START);
-  const [outerLocked, setOuterLocked] = React.useState(false);
   const [innerLocked, setInnerLocked] = React.useState(false);
   const [solved,      setSolved]      = React.useState(false);
   const [confirmed,   setConfirmed]   = React.useState(false);
-  const [showBanner,  setShowBanner]  = React.useState(false);
 
-  // Hint states
   const [showH1, setShowH1] = React.useState(false);
   const [showH2, setShowH2] = React.useState(false);
   const [showH3, setShowH3] = React.useState(false);
   const [showP1, setShowP1] = React.useState(false);
   const [showP2, setShowP2] = React.useState(false);
 
-  // Proximity warmth for glow (0–1)
-  const oDist   = outerLocked ? 0 : distFromZero(outerAngle);
-  const iDist   = innerLocked ? 0 : distFromZero(innerAngle);
-  const warmth  =
-    Math.max(0, 1 - oDist / 50) * 0.5 +
-    Math.max(0, 1 - iDist / 50) * 0.5;
+  // Proximity warmth for glow (0–1) — inner ring only
+  const iDist  = innerLocked ? 0 : distFromZero(innerAngle);
+  const warmth = Math.max(0, 1 - iDist / 50);
 
-  // Keep live angle refs in sync so dwell timeouts read fresh values
-  React.useEffect(() => { outerAngleRef.current = outerAngle; }, [outerAngle]);
   React.useEffect(() => { innerAngleRef.current = innerAngle; }, [innerAngle]);
 
-  // Called from inside a dwell timeout after the ring has held still long enough
   function commitFullSolve() {
     if (solvedRef.current) return;
-    if (!outerLockedRef.current || !innerLockedRef.current) return;
+    if (!innerLockedRef.current) return;
     solvedRef.current = true;
-    setShowBanner(false);
     setSolved(true);
     setRoundSolved(ROUND_KEY);
     serverSetRoundSolved(ROUND_KEY);
@@ -463,40 +414,13 @@ export default function PuzzleR6({
     }, 200);
   }
 
-  // ── Solve detection, sequential locking, proximity haptics ─────────
+  // ── Solve detection: inner ring only ─────────────────────────────
   React.useEffect(() => {
     if (solvedRef.current) return;
 
-    const oD  = distFromZero(outerAngle);
     const iD  = distFromZero(innerAngle);
-    const oOk = oD < SNAP_DEG;
     const iOk = iD < SNAP_DEG;
 
-    // Outer ring: start dwell timer when in zone, cancel if it leaves
-    if (!outerLockedRef.current) {
-      if (oOk) {
-        if (!outerDwellRef.current) {
-          outerDwellRef.current = setTimeout(() => {
-            outerDwellRef.current = null;
-            if (outerLockedRef.current) return;
-            if (distFromZero(outerAngleRef.current) >= SNAP_DEG) return;
-            outerLockedRef.current = true;
-            setOuterLocked(true);
-            setOuterAngle(snapNearest(outerAngleRef.current));
-            if (!innerLockedRef.current) setShowBanner(true);
-            try { navigator.vibrate([30, 15, 75]); } catch { /* ignore */ }
-            commitFullSolve();
-          }, DWELL_MS);
-        }
-      } else {
-        if (outerDwellRef.current) {
-          clearTimeout(outerDwellRef.current);
-          outerDwellRef.current = null;
-        }
-      }
-    }
-
-    // Inner ring: same pattern
     if (!innerLockedRef.current) {
       if (iOk) {
         if (!innerDwellRef.current) {
@@ -507,7 +431,6 @@ export default function PuzzleR6({
             innerLockedRef.current = true;
             setInnerLocked(true);
             setInnerAngle(snapNearest(innerAngleRef.current));
-            if (!outerLockedRef.current) setShowBanner(true);
             try { navigator.vibrate([30, 15, 75]); } catch { /* ignore */ }
             commitFullSolve();
           }, DWELL_MS);
@@ -520,22 +443,19 @@ export default function PuzzleR6({
       }
     }
 
-    // Proximity haptics — pulse as user gets warm (throttled)
-    const minDist = Math.min(
-      outerLockedRef.current ? 999 : oD,
-      innerLockedRef.current ? 999 : iD,
-    );
+    // Proximity haptics
     const now = Date.now();
-    if (minDist < 9 && now - lastHapticRef.current > 320) {
-      lastHapticRef.current = now;
-      try { navigator.vibrate(8); } catch { /* ignore */ }
-    } else if (minDist < 20 && now - lastHapticRef.current > 700) {
-      lastHapticRef.current = now;
-      try { navigator.vibrate(4); } catch { /* ignore */ }
+    if (!innerLockedRef.current) {
+      if (iD < 9 && now - lastHapticRef.current > 320) {
+        lastHapticRef.current = now;
+        try { navigator.vibrate(8); } catch { /* ignore */ }
+      } else if (iD < 20 && now - lastHapticRef.current > 700) {
+        lastHapticRef.current = now;
+        try { navigator.vibrate(4); } catch { /* ignore */ }
+      }
     }
-  }, [outerAngle, innerAngle]);
+  }, [innerAngle]);
 
-  // Scroll to success after settle animation (500 ms delay)
   React.useEffect(() => {
     if (!solved) return;
     const id = window.setTimeout(
@@ -554,9 +474,8 @@ export default function PuzzleR6({
     return () => window.clearTimeout(id);
   }, [confirmed]);
 
-  function handleDelta(ring: "outer" | "inner", delta: number) {
-    if (ring === "outer" && !outerLockedRef.current) setOuterAngle(v => v + delta);
-    if (ring === "inner" && !innerLockedRef.current) setInnerAngle(v => v + delta);
+  function handleDelta(delta: number) {
+    if (!innerLockedRef.current) setInnerAngle(v => v + delta);
   }
 
   /* ---------------------------------------------------------------- */
@@ -596,22 +515,10 @@ export default function PuzzleR6({
           </>
         )}
 
-        {/* "First ring locked" banner */}
-        {showBanner && !solved && (
-          <div
-            className="mt-4 rounded-2xl border border-green-200 bg-green-50 px-4 py-2.5 text-sm font-medium text-green-800"
-            style={{ animation: "r6FadeUp 320ms cubic-bezier(.22,1,.36,1) both" }}
-          >
-            {t.ring1Banner}
-          </div>
-        )}
-
         {/* Stone */}
         <div className="mt-5">
           <StoneStage
-            outerAngle={outerAngle}
             innerAngle={innerAngle}
-            outerLocked={outerLocked}
             innerLocked={innerLocked}
             solved={solved}
             warmth={warmth}
@@ -621,20 +528,13 @@ export default function PuzzleR6({
 
         {/* Nudge buttons — visible while unsolved */}
         {!solved && (
-          <div className="mt-4 space-y-2.5" dir="ltr">
-            <NudgeRow
-              label={t.outerLabel}
-              aria={t.outerAria}
-              locked={outerLocked}
-              solved={solved}
-              onNudge={d => handleDelta("outer", d)}
-            />
+          <div className="mt-4" dir="ltr">
             <NudgeRow
               label={t.innerLabel}
               aria={t.innerAria}
               locked={innerLocked}
               solved={solved}
-              onNudge={d => handleDelta("inner", d)}
+              onNudge={d => handleDelta(d)}
             />
           </div>
         )}

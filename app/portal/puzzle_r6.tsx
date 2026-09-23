@@ -21,7 +21,7 @@ const IMG_AXON   = `${BASE}/Monument%20Axon.JPG`;
 
 const ROUND_KEY   = "r6" as const;
 const INNER_START = -28;   // deg off solved
-const SNAP_DEG    = 9;     // snap to 0 when within ±9°
+const SNAP_DEG    = 5;     // snap to 0 when within ±5°
 
 // Outer boundary of the stone — beyond this is outside the stone
 const OUTER_ZONE = 0.88;

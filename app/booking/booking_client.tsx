@@ -47,6 +47,12 @@ function getSlotsForDate(dateStr: string): string[] {
   return d.getDay() === 5 ? generateSlots(10, 30) : generateSlots(9, 30);
 }
 
+/** True if this slot's datetime (Amman time, UTC+3) is within the 24-hour booking cutoff. */
+function isSlotTooSoon(dateStr: string, slot: string): boolean {
+  const slotTime = new Date(`${dateStr}T${slot}:00+03:00`).getTime();
+  return slotTime < Date.now() + 24 * 60 * 60 * 1000;
+}
+
 function isDayAvailable(dateStr: string): boolean {
   if (dateStr < minBookableDate()) return false;
   return AVAILABLE_DAYS.has(new Date(dateStr + "T12:00:00").getDay());
@@ -706,15 +712,17 @@ export default function BookingClient({ locale }: BookingClientProps) {
                 <div className="mt-3 grid grid-cols-3 gap-2">
                   {daySlots.map((slot) => {
                     const booked = bookedSlots.includes(slot);
+                    const tooSoon = !booked && isSlotTooSoon(date, slot);
+                    const unavailable = booked || tooSoon;
                     const selected = selectedTime === slot;
                     return (
                       <button
                         key={slot}
                         type="button"
-                        disabled={booked}
+                        disabled={unavailable}
                         onClick={() => setSelectedTime(slot)}
                         className={`rounded-xl border py-2.5 text-xs font-medium transition ${
-                          booked
+                          unavailable
                             ? "cursor-not-allowed border-neutral-100 bg-neutral-50 text-neutral-300"
                             : selected
                               ? "border-z-orange bg-z-orange-soft z-orange"
@@ -724,6 +732,9 @@ export default function BookingClient({ locale }: BookingClientProps) {
                         {formatSlot(slot)}
                         {booked && (
                           <span className="block text-[10px] text-neutral-300">Booked</span>
+                        )}
+                        {tooSoon && (
+                          <span className="block text-[10px] text-neutral-300">Unavailable</span>
                         )}
                       </button>
                     );

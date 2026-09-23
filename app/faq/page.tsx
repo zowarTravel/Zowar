@@ -248,6 +248,21 @@ const content: Record<
             answer:
               "Yes. Zowar is organized intentionally, not as a random route, which helps the experience feel smooth and legitimate.",
           },
+          {
+            question: "What kind of food can we expect?",
+            answer:
+              "The tastings are rooted in traditional Jordanian flavors — think coffee, classic street-food bites like hummus and falafel, and seasonal homemade creations from local kitchens. The exact stops are part of the mystery, but everything is real, local, and carefully chosen.",
+          },
+          {
+            question: "Can you accommodate dietary requirements?",
+            answer:
+              "Yes. If you have dietary restrictions or allergies, let us know before your experience and we will do our best to make sure each stop is prepared for you. The more notice you give us, the smoother it goes.",
+          },
+          {
+            question: "Do I need to pay for food at the stops?",
+            answer:
+              "No. Everything included in your Zowar experience is covered by your booking. Just show your screen when prompted at each stop and enjoy — no wallets needed for what is part of the experience.",
+          },
         ],
       },
       {
@@ -277,6 +292,21 @@ const content: Record<
             question: "Why should I book Zowar instead of exploring on my own?",
             answer:
               "Zowar adds structure, anticipation, and discovery to your outing. Instead of simply visiting places one by one, you experience the city through a curated sequence of clues, stops, and moments designed to feel memorable.",
+          },
+          {
+            question: "When do I get my Portal link and starting point?",
+            answer:
+              "As soon as checkout is complete, you will receive a confirmation email with everything you need — including your Portal access link and where to begin. When you are ready to start, open the link on your phone and go.",
+          },
+          {
+            question: "What if it rains?",
+            answer:
+              "All of our stops have indoor spaces, so the experience runs rain or shine. Zowar is designed to be enjoyable regardless of the weather.",
+          },
+          {
+            question: "Is parking included?",
+            answer:
+              "Parking is not included. Rainbow Street has paid street parking nearby, but we recommend arriving by taxi or ride-share for the easiest start.",
           },
         ],
       },
@@ -459,6 +489,21 @@ const content: Record<
             answer:
               "نعم. زوار منظمة بشكل مقصود وليست مسارًا عشوائيًا، وهذا ما يساعد على أن تبدو التجربة سلسة وموثوقة.",
           },
+          {
+            question: "ما نوع الطعام الذي يمكن توقعه؟",
+            answer:
+              "معظم ما ستتذوقه متجذر في النكهات الأردنية الأصيلة — من القهوة والمشروبات إلى كلاسيكيات الشارع كالحمص والفلافل، ومأكولات موسمية بيتية من مطابخ محلية. المحطات الدقيقة جزء من المفاجأة، لكن كل شيء حقيقي ومحلي ومختار بعناية.",
+          },
+          {
+            question: "هل يمكنكم مراعاة احتياجاتي الغذائية؟",
+            answer:
+              "نعم. إذا كان لديك قيود غذائية أو حساسية من أطعمة معينة، أخبرنا قبل موعد تجربتك وسنبذل جهدنا لضمان استعداد كل محطة لاستقبالك. كلما أبلغتنا مبكرًا، كان الأمر أكثر سلاسة.",
+          },
+          {
+            question: "هل أحتاج إلى الدفع مقابل الطعام عند المحطات؟",
+            answer:
+              "لا. كل ما هو مشمول في تجربة زوار مغطى بحجزك. ما عليك سوى إظهار شاشتك عند الطلب في كل محطة والاستمتاع — لا حاجة إلى المحفظة لما هو جزء من التجربة.",
+          },
         ],
       },
       {
@@ -488,6 +533,21 @@ const content: Record<
             question: "لماذا أحجز زوار بدلًا من الاستكشاف بنفسي؟",
             answer:
               "تضيف زوار عنصر التنظيم، والترقّب، والاكتشاف إلى خروجتك. فبدلًا من زيارة الأماكن واحدًا تلو الآخر، ستعيش المدينة من خلال تسلسل منسق من الأدلة، والمحطات، واللحظات المصممة لتكون لا تُنسى.",
+          },
+          {
+            question: "متى أحصل على رابط البوابة ونقطة البداية؟",
+            answer:
+              "فور إتمام عملية الدفع ستصلك رسالة تأكيد على بريدك الإلكتروني تحتوي على كل ما تحتاجه — بما في ذلك رابط الوصول إلى البوابة وموقع نقطة البداية. عندما تكون مستعدًا للانطلاق، افتح الرابط على هاتفك وابدأ.",
+          },
+          {
+            question: "ماذا لو كان الطقس ممطرًا؟",
+            answer:
+              "جميع محطاتنا تمتلك مساحات داخلية، لذا تسير التجربة في كل الأحوال الجوية. زوار مصممة لتكون ممتعة بغض النظر عن الطقس.",
+          },
+          {
+            question: "هل يشمل الحجز موقف السيارات؟",
+            answer:
+              "لا، موقف السيارات غير مشمول. يتوفر في محيط شارع الرينبو موقف مدفوع للسيارات، لكننا نوصي بالقدوم بالتاكسي أو سيارة الأجرة لبداية أكثر سلاسة.",
           },
         ],
       },
@@ -670,6 +730,21 @@ const content: Record<
             answer:
               "Sí. Zowar está organizado intencionalmente, no como una ruta aleatoria, lo que ayuda a que la experiencia se sienta fluida y legítima.",
           },
+          {
+            question: "¿Qué tipo de comida podemos esperar?",
+            answer:
+              "La mayoría de lo que probarás tiene raíces en los sabores jordanos tradicionales — piensa en café, clásicos callejeros como hummus y falafel, y creaciones caseras de temporada de cocinas locales. Las paradas exactas son parte del misterio, pero todo es real, local y cuidadosamente elegido.",
+          },
+          {
+            question: "¿Pueden adaptarse a requisitos dietéticos?",
+            answer:
+              "Sí. Si tienes restricciones dietéticas o alergias, háznolo saber antes de tu experiencia y haremos todo lo posible para que cada parada esté preparada para ti. Cuanto más nos avises, mejor.",
+          },
+          {
+            question: "¿Tengo que pagar por la comida en las paradas?",
+            answer:
+              "No. Todo lo incluido en tu experiencia Zowar está cubierto por tu reserva. Solo muestra tu pantalla cuando te lo indiquen en cada parada y disfruta — no necesitas sacar la cartera para nada que forme parte de la experiencia.",
+          },
         ],
       },
       {
@@ -699,6 +774,21 @@ const content: Record<
             question: "¿Por qué reservar Zowar en lugar de explorar por mi cuenta?",
             answer:
               "Zowar añade estructura, anticipación y descubrimiento a tu salida. En lugar de simplemente visitar lugares uno por uno, vives la ciudad a través de una secuencia curada de pistas, paradas y momentos diseñados para ser memorables.",
+          },
+          {
+            question: "¿Cuándo recibiré mi enlace al Portal y punto de inicio?",
+            answer:
+              "En cuanto completes el pago, recibirás un correo de confirmación con todo lo que necesitas — incluido tu enlace de acceso al Portal y dónde empezar. Cuando estés listo para comenzar, abre el enlace en tu teléfono y empieza.",
+          },
+          {
+            question: "¿Qué pasa si llueve?",
+            answer:
+              "Todas nuestras paradas tienen espacios interiores, así que la experiencia se realiza con cualquier tiempo. Zowar está diseñado para ser disfrutable independientemente del clima.",
+          },
+          {
+            question: "¿Está incluido el aparcamiento?",
+            answer:
+              "No, el aparcamiento no está incluido. Hay aparcamiento de pago cerca de Rainbow Street, pero recomendamos llegar en taxi o servicio de transporte para empezar de la manera más cómoda.",
           },
         ],
       },

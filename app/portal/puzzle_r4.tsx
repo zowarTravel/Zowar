@@ -57,11 +57,11 @@ const TILES: readonly Tile[] = [
   { id: "JASMINE",        category: "SOAP_SCENTS",   label: { en: "Jasmine",         ar: "ياسمين"        } },
   { id: "SHAWERMA",       category: "JORDAN_MEALS",  label: { en: "Shawerma",        ar: "شاورما"        } },
   { id: "YELLOW_TAXI",    category: "AMMAN",         label: { en: "Yellow taxi",     ar: "تاكسي أصفر"   } },
-  { id: "STARRY_NIGHT",   category: "DESERT",        label: { en: "Starry night",    ar: "ليلة نجوم"    } },
+  { id: "STARRY_NIGHT",   category: "DESERT",        label: { en: "Starry night",    ar: "نجوم السماء"  } },
 
   { id: "ORANGE_BLOSSOM", category: "SOAP_SCENTS",   label: { en: "Orange blossom",  ar: "زهر البرتقال" } },
   { id: "MANAKEESH",      category: "JORDAN_MEALS",  label: { en: "Manakeesh",       ar: "مناقيش"        } },
-  { id: "WATER_TANKER",   category: "AMMAN",         label: { en: "Water tanker",    ar: "صهريج المياه" } },
+  { id: "WATER_TANKER",   category: "AMMAN",         label: { en: "Water tanker",    ar: "تنكات الماء"  } },
   { id: "BEDOUIN_TENT",   category: "DESERT",        label: { en: "Bedouin tent",    ar: "خيمة بدوية"   } },
 
   { id: "ROSE_WATER",     category: "SOAP_SCENTS",   label: { en: "Rose water",      ar: "ماء الورد"    } },

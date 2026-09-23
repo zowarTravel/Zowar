@@ -333,7 +333,7 @@ function CalendarPicker({
                     ? "bg-z-orange font-semibold text-white"
                     : disabled || past
                     ? "cursor-not-allowed text-neutral-300"
-                    : "text-neutral-800 hover:bg-z-orange-soft hover:text-z-orange",
+                    : "bg-z-orange-soft text-neutral-800 hover:bg-z-orange hover:text-white",
                   isToday && !selected
                     ? "ring-1 ring-z-orange/30"
                     : "",
@@ -695,6 +695,19 @@ export default function BookingClient({ locale }: BookingClientProps) {
               <label className="text-sm text-neutral-600">
                 {t.chooseDate}
               </label>
+
+              {/* Calendar legend */}
+              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-neutral-500">
+                <div className="flex items-center gap-1.5">
+                  <span className="h-3 w-3 shrink-0 rounded-full bg-z-orange-soft ring-1 ring-z-orange/25" />
+                  <span>{effectiveLocale === "ar" ? "متاح" : effectiveLocale === "es" ? "Disponible" : "Available"}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="h-3 w-3 shrink-0 rounded-full bg-neutral-100 ring-1 ring-neutral-200" />
+                  <span>{effectiveLocale === "ar" ? "غير متاح" : effectiveLocale === "es" ? "No disponible" : "Not available"}</span>
+                </div>
+              </div>
+
               <CalendarPicker value={date} onChange={setDate} isAr={isAr} />
             </div>
 

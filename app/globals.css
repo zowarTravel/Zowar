@@ -121,6 +121,15 @@ body {
 }
 
 /* =============================================
+   ARABIC / RTL TYPOGRAPHY
+   ============================================= */
+
+/* letter-spacing breaks Arabic cursive glyph connections — reset it globally for RTL content */
+[dir="rtl"], [dir="rtl"] * {
+  letter-spacing: 0 !important;
+}
+
+/* =============================================
    ANIMATIONS
    ============================================= */
 @keyframes letterHop {

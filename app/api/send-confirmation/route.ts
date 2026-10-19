@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { Resend } from "resend";
+import { EXPERIENCE_NAME, normalizeExperience, portalPathFor } from "@/app/lib/experiences";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -44,24 +45,32 @@ export async function POST(req: Request) {
     const siteUrl =
       process.env.NEXT_PUBLIC_SITE_URL || "https://zowar.net";
 
-    const portalPath = experience === "weibdeh" ? "/portal/weibdeh" : "/portal";
+    // The experience actually paid for lives on the Stripe session
+    const bookedExperience = normalizeExperience(session.metadata?.experience ?? experience);
+    const portalPath = portalPathFor(bookedExperience);
     const magicLink = `${siteUrl}${portalPath}?session_id=${session_id}&lang=${locale}`;
 
     const experienceName =
-      locale === "ar"
-        ? experience === "weibdeh" ? "تجربة الويبدة" : "تجربة شارع الرينبو"
-        : experience === "weibdeh" ? "Al Weibdeh Experience" : "Rainbow Street Experience";
+      EXPERIENCE_NAME[bookedExperience][locale === "ar" ? "ar" : "en"];
+
+    const details = bookingDetails(session.metadata ?? {}, locale);
+
+    const subject =
+      bookedExperience === "highlights"
+        ? locale === "ar"
+          ? "تأكيد حجزك لجولة أبرز محطات شارع الرينبو 🎉"
+          : "Your Zowar Rainbow Street Highlights Booking is Confirmed 🎉"
+        : locale === "ar"
+        ? "تأكيد حجزك مع زُوّار 🎉"
+        : "Your Zowar Booking is Confirmed 🎉";
 
     const resend = new Resend(resendKey);
 
     const { error } = await resend.emails.send({
       from: "Zowar <hello@zowar.net>",
       to: email,
-      subject:
-        locale === "ar"
-          ? "تأكيد حجزك مع زُوّار 🎉"
-          : "Your Zowar Booking is Confirmed 🎉",
-      html: buildEmail({ email, magicLink, experienceName, locale }),
+      subject,
+      html: buildEmail({ email, magicLink, experienceName, locale, details }),
     });
 
     if (error) {
@@ -77,18 +86,76 @@ export async function POST(req: Request) {
   }
 }
 
+type DetailRow = { label: string; value: string };
+
+/* Date, start time and guests from the checkout metadata — rows with no value are skipped */
+function bookingDetails(meta: Record<string, string>, locale: string): DetailRow[] {
+  const isAr = locale === "ar";
+  const loc = isAr ? "ar-JO" : "en-GB";
+  const rows: DetailRow[] = [];
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(meta.date ?? "")) {
+    rows.push({
+      label: isAr ? "التاريخ" : "Date",
+      value: new Date(`${meta.date}T00:00:00Z`).toLocaleDateString(loc, {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC",
+      }),
+    });
+  }
+
+  if (/^\d{2}:\d{2}$/.test(meta.timeSlot ?? "")) {
+    rows.push({
+      label: isAr ? "وقت البداية" : "Start time",
+      value: new Date(`1970-01-01T${meta.timeSlot}:00Z`).toLocaleTimeString(isAr ? "ar-JO" : "en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: "UTC",
+      }),
+    });
+  }
+
+  const qty = parseInt(meta.qty ?? "", 10);
+  if (qty > 0) {
+    rows.push({
+      label: isAr ? "عدد الأشخاص" : "Guests",
+      value: isAr ? qty.toLocaleString("ar-JO") : String(qty),
+    });
+  }
+
+  return rows;
+}
+
+function detailsTable(rows: DetailRow[], isAr: boolean): string {
+  if (!rows.length) return "";
+  const align = isAr ? "right" : "left";
+  const cells = rows
+    .map(
+      (r) =>
+        `<tr><td style="padding:6px 0;color:#888;font-size:14px;text-align:${align};width:40%">${r.label}</td><td style="padding:6px 0;color:#111;font-size:14px;font-weight:600;text-align:${align}">${r.value}</td></tr>`
+    )
+    .join("");
+  return `<table cellpadding="0" cellspacing="0" width="100%" style="margin:16px 0 20px;background:#faf8f4;border-radius:14px;padding:12px 16px">${cells}</table>`;
+}
+
 function buildEmail({
   magicLink,
   experienceName,
   locale,
+  details,
 }: {
   email: string;
   magicLink: string;
   experienceName: string;
   locale: string;
+  details: DetailRow[];
 }) {
   const isAr = locale === "ar";
   const dir = isAr ? "rtl" : "ltr";
+  const detailsHtml = detailsTable(details, isAr);
 
   if (isAr) {
     return `
@@ -106,6 +173,7 @@ function buildEmail({
           <p style="margin:0 0 8px;color:#C8694A;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:2px">تم تأكيد الحجز</p>
           <h1 style="margin:0 0 16px;font-size:24px;color:#111;font-weight:700">بوابتك مفتوحة! 🎉</h1>
           <p style="margin:0 0 8px;color:#444;font-size:15px;line-height:1.6">شكراً لحجزك <strong>${experienceName}</strong>.</p>
+          ${detailsHtml}
           <p style="margin:0 0 28px;color:#444;font-size:15px;line-height:1.6">استخدم الرابط أدناه للدخول إلى البوابة في أي وقت — يمكنك إعادة استخدامه إذا أغلقت المتصفح.</p>
           <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">
             <a href="${magicLink}" style="display:inline-block;background:#C8694A;color:#fff;text-decoration:none;padding:16px 32px;border-radius:14px;font-weight:700;font-size:16px">ادخل إلى البوابة</a>
@@ -149,6 +217,7 @@ function buildEmail({
           <p style="margin:0 0 8px;color:#C8694A;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:2px">Booking Confirmed</p>
           <h1 style="margin:0 0 16px;font-size:24px;color:#111;font-weight:700">Your portal is unlocked 🎉</h1>
           <p style="margin:0 0 8px;color:#444;font-size:15px;line-height:1.6">Thanks for booking the <strong>${experienceName}</strong>.</p>
+          ${detailsHtml}
           <p style="margin:0 0 28px;color:#444;font-size:15px;line-height:1.6">Use the link below to enter your portal any time — including if you close your browser or switch devices.</p>
           <table cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">
             <a href="${magicLink}" style="display:inline-block;background:#C8694A;color:#fff;text-decoration:none;padding:16px 32px;border-radius:14px;font-weight:700;font-size:16px">Enter the Portal</a>

@@ -3,6 +3,7 @@ export const maxDuration = 30;
 
 import Stripe from "stripe";
 import { signPayload } from "@/app/lib/portal-token";
+import { normalizeExperience } from "@/app/lib/experiences";
 
 const NINETY_DAYS = 90 * 24 * 3600;
 
@@ -35,12 +36,15 @@ export async function POST(req: Request) {
       return Response.json({ valid: false }, { status: 402 });
     }
 
+    const experience = normalizeExperience(session.metadata?.experience);
+
     const token = signPayload({
       sessionId: session_id,
       exp: Date.now() + NINETY_DAYS * 1000,
+      experience,
     });
 
-    return new Response(JSON.stringify({ valid: true }), {
+    return new Response(JSON.stringify({ valid: true, experience }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

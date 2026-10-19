@@ -50,6 +50,20 @@ export const riddle1 = {
     en: "Started as a shared studio. Now one of the better stops on this street.",
     ar: "بدأت مساحةً مشتركة للعمل. الآن إحدى محطات الشارع الأكثر قيمة.",
   },
+  /* Rainbow Street Highlights — stop numbering comes from the route */
+  highlights: {
+    kind: { en: "Riddle", ar: "لغز" },
+    subtitle: {
+      en: "Answer the riddle to reveal your next stop.",
+      ar: "أجب عن اللغز لتكشف محطتك التالية.",
+    },
+    /* When Rumman opens the route */
+    subtitleFirst: {
+      en: "Answer the riddle to reveal your first stop.",
+      ar: "أجب عن اللغز لتكشف محطتك الأولى.",
+    },
+    aboutEyebrowFirst: { en: "Your first stop", ar: "محطتك الأولى" },
+  },
 } as const;
 
 /* ------------------------------------------------------------------ */

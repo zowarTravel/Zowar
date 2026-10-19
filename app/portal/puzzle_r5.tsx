@@ -3,7 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import type { Locale } from "./riddlecontent";
-import { setRoundSolved, serverSetRoundSolved } from "./progress";
+import { useExperience } from "./experience_context";
+import { stopLabel } from "./routes";
 
 const ROUND_KEY = "r5" as const;
 
@@ -52,6 +53,20 @@ const COPY = {
   },
 } as const;
 
+/* Rainbow Street Highlights — Maisa is the final stop */
+const HIGHLIGHTS_COPY = {
+  en: {
+    badgeSuffix: "Follow the City",
+    subtitle: "Let the spirit of the city and the colors guide you on an adventure trail from Tabrizi to your final stop. Follow the colorful stairs in front of Tabrizi to begin your adventure.",
+    successEyebrow: "Your final stop",
+  },
+  ar: {
+    badgeSuffix: "اتبع المدينة",
+    subtitle: "دع روح المدينة وألوانها تقودك في مسار مغامرة من تبريزي إلى محطتك الأخيرة. اتبع الدرج الملوّن أمام تبريزي لتبدأ مغامرتك.",
+    successEyebrow: "محطتك الأخيرة",
+  },
+} as const;
+
 export default function PuzzleR5({
   locale,
   onSolved,
@@ -61,7 +76,15 @@ export default function PuzzleR5({
 }) {
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
   const isAr = safeLocale === "ar";
-  const t = COPY[safeLocale];
+  const route = useExperience();
+  const t =
+    route.id === "highlights"
+      ? {
+          ...COPY[safeLocale],
+          ...HIGHLIGHTS_COPY[safeLocale],
+          badge: `${stopLabel(route, ROUND_KEY, safeLocale)} · ${HIGHLIGHTS_COPY[safeLocale].badgeSuffix}`,
+        }
+      : COPY[safeLocale];
 
   const solvedRef = React.useRef(false);
   const successRef = React.useRef<HTMLDivElement>(null);
@@ -74,8 +97,8 @@ export default function PuzzleR5({
     if (solvedRef.current) return;
     solvedRef.current = true;
     setSolved(true);
-    setRoundSolved(ROUND_KEY);
-    void serverSetRoundSolved(ROUND_KEY);
+    route.progress.setSolved(ROUND_KEY);
+    void route.progress.serverSetSolved(ROUND_KEY);
     onSolved?.();
     window.setTimeout(() => {
       successRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });

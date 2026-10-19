@@ -2,8 +2,9 @@ export const runtime = "nodejs";
 
 import { NextRequest } from "next/server";
 import { verifyPayload, signPayload } from "@/app/lib/portal-token";
+import { canAccessPortal } from "@/app/lib/experiences";
 
-type Auth = { sessionId: string; exp: number };
+type Auth = { sessionId: string; exp: number; experience?: string };
 type Progress = { w1: boolean; w2: boolean; w3: boolean; w4: boolean; w5: boolean; w6: boolean; w7: boolean };
 
 const NINETY_DAYS = 90 * 24 * 3600;
@@ -29,13 +30,24 @@ function progressCookie(p: Progress): string {
   return `zowar_weibdeh_progress=${token}; HttpOnly; Path=/; SameSite=Strict; Max-Age=${NINETY_DAYS}`;
 }
 
+function authorize(req: NextRequest): Response | null {
+  const auth = getAuth(req);
+  if (!auth) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  if (!canAccessPortal(auth.experience, "weibdeh")) {
+    return Response.json({ error: "Wrong experience" }, { status: 403 });
+  }
+  return null;
+}
+
 export async function GET(req: NextRequest) {
-  if (!getAuth(req)) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  const denied = authorize(req);
+  if (denied) return denied;
   return Response.json(getProgress(req));
 }
 
 export async function POST(req: NextRequest) {
-  if (!getAuth(req)) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  const denied = authorize(req);
+  if (denied) return denied;
 
   const body = (await req.json()) as Partial<Progress>;
   const current = getProgress(req);

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import LangDropdown from "@/app/components/lang-dropdown";
+import { PRICE_PER_PERSON_JOD, portalPathFor, type ExperienceId } from "@/app/lib/experiences";
 
 type Locale = "en" | "ar" | "es";
 
@@ -81,6 +82,13 @@ const copy = {
     exp1Desc: "A 7-stop culinary walk through Rainbow Street’s iconic cafés & eateries.",
     exp1Stops: "7 stops",
     exp1Value: "Over 25 JD in tastings & gifts included",
+    exp3Name: "Rainbow Street Highlights",
+    exp3Desc: "The Rainbow Street experience, condensed — our signature stops for when you're short on time.",
+    exp3Sticker: "Highlights",
+    exp3Stops: "3 signature stops",
+    exp3Duration: "Around 1–1.5 hours",
+    timeNoteHighlights: "Slots every 30 min · Around 1–1.5 hours on Rainbow Street",
+    exp3Value: "Tastings & a scented gift included",
     exp2Name: "Experience Al Weibdeh",
     exp2Desc: "A 7-stop food adventure through the historic Al Weibdeh neighbourhood.",
     exp2Stops: "7 stops",
@@ -130,6 +138,13 @@ const copy = {
     exp1Desc: "جولة ذواقة من ٧ محطات عبر المقاهي والمطاعم الأيقونية في شارع الرينبو.",
     exp1Stops: "٧ محطات",
     exp1Value: "أكثر من ٢٥ دينار في التذوقات والهدايا",
+    exp3Name: "أبرز محطات شارع الرينبو",
+    exp3Desc: "تجربة شارع الرينبو باختصار — محطاتنا المميّزة لمن وقته ضيّق.",
+    exp3Sticker: "الأبرز",
+    exp3Stops: "٣ محطات مميّزة",
+    exp3Duration: "حوالي ساعة إلى ساعة ونصف",
+    timeNoteHighlights: "مواعيد كل ٣٠ دقيقة · حوالي ساعة إلى ساعة ونصف في شارع الرينبو",
+    exp3Value: "تذوّقات وهدية عطرية",
     exp2Name: "تجربة الويبدة",
     exp2Desc: "مغامرة طعام من ٧ محطات عبر حي الويبدة التاريخي.",
     exp2Stops: "٧ محطات",
@@ -179,6 +194,13 @@ const copy = {
     exp1Desc: "Un recorrido gastronómico de 7 paradas por los cafés y restaurantes de Rainbow Street.",
     exp1Stops: "7 paradas",
     exp1Value: "Más de 25 JOD en degustaciones y regalos incluidos",
+    exp3Name: "Lo Mejor de Calle Rainbow",
+    exp3Desc: "La experiencia de Rainbow Street en versión corta — nuestras paradas emblemáticas para cuando vas con prisa.",
+    exp3Sticker: "Lo Mejor",
+    exp3Stops: "3 paradas emblemáticas",
+    exp3Duration: "Unas 1–1,5 horas",
+    timeNoteHighlights: "Turnos cada 30 min · Unas 1–1,5 horas en Rainbow Street",
+    exp3Value: "Degustaciones y un regalo aromático incluidos",
     exp2Name: "Experiencia Al Weibdeh",
     exp2Desc: "Una aventura culinaria de 7 paradas por el histórico barrio de Al Weibdeh.",
     exp2Stops: "7 paradas",
@@ -372,9 +394,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
   /* ---------------- State ---------------- */
 
-  const [experience, setExperience] = React.useState<"rainbow" | "weibdeh">(
-    "rainbow"
-  );
+  const [experience, setExperience] = React.useState<ExperienceId>("rainbow");
 
   const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
   const [bookedSlots, setBookedSlots] = React.useState<string[]>([]);
@@ -384,7 +404,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
   const [qty, setQty] = React.useState(1);
   const [code, setCode] = React.useState("");
-  const [discount, setDiscount] = React.useState(0);
+  const [discountRate, setDiscountRate] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [codeMessage, setCodeMessage] = React.useState("");
 
@@ -402,25 +422,26 @@ export default function BookingClient({ locale }: BookingClientProps) {
       .finally(() => setLoadingSlots(false));
   }, [date, dayAvailable]);
 
-  const pricePerPerson = 25;
+  const pricePerPerson = PRICE_PER_PERSON_JOD[experience];
 
   const subtotal = Math.max(1, qty) * pricePerPerson;
+  const discount = Math.floor(subtotal * discountRate);
   const total = clamp(subtotal - discount, 0, 999999);
 
   function applyCode() {
     const normalized = code.trim().toLowerCase();
 
-    if (code.trim() === "BESTOFAMMANFREE") {
-      setDiscount(subtotal);
+    if (normalized === "z0war") {
+      setDiscountRate(1);
       setCodeMessage(t.freeCodeApplied);
     } else if (normalized === "halfzowar") {
-      setDiscount(Math.floor(subtotal * 0.5));
+      setDiscountRate(0.5);
       setCodeMessage(t.halfOffApplied);
     } else if (normalized === "qottob15") {
-      setDiscount(Math.floor(subtotal * 0.15));
+      setDiscountRate(0.15);
       setCodeMessage(t.qottob15Applied);
     } else {
-      setDiscount(0);
+      setDiscountRate(0);
       setCodeMessage("");
     }
   }
@@ -431,7 +452,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
     setLoading(true);
 
     try {
-      // Free promo code path — bypass Stripe entirely
+      // Free code path — bypass Stripe entirely; the auth cookie unlocks every portal
       if (total === 0) {
         const res = await fetch("/api/portal/free-unlock", {
           method: "POST",
@@ -442,9 +463,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
           const d = await res.json().catch(() => ({}));
           throw new Error(d?.error || "Invalid promo code.");
         }
-        localStorage.setItem("zowar_unlocked", "1");
-        const portalPath = experience === "weibdeh" ? "/portal/weibdeh" : "/portal";
-        window.location.href = `${portalPath}?lang=${effectiveLocale}`;
+        window.location.href = `${portalPathFor(experience)}?lang=${effectiveLocale}`;
         return;
       }
 
@@ -609,6 +628,74 @@ export default function BookingClient({ locale }: BookingClientProps) {
               </div>
             </button>
 
+            {/* Rainbow Street Highlights */}
+
+            <button
+              type="button"
+              onClick={() => setExperience("highlights")}
+              className={`${experienceCardBase} ${
+                experience === "highlights"
+                  ? "border-z-orange bg-z-orange-soft"
+                  : "border-black/10 bg-white hover:bg-black/[0.02]"
+              }`}
+            >
+              {experience === "highlights" && (
+                <div className="absolute end-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-z-orange">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-3 w-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+              )}
+
+              <div className="flex items-center gap-4 pe-6">
+                <div className="relative shrink-0">
+                  <div className={experienceImageClass}>
+                    <Image
+                      src="/Rainbow.png"
+                      alt="Rainbow Street Highlights"
+                      fill
+                      sizes="112px"
+                      className="object-cover"
+                    />
+                  </div>
+                  {/* "Highlights" sticker */}
+                  <span className="absolute -end-2 -top-2 rotate-[8deg] rounded-lg border-2 border-white bg-z-orange px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-md">
+                    {t.exp3Sticker}
+                  </span>
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-neutral-950">
+                    {t.exp3Name}
+                  </div>
+
+                  <div className="mt-1 text-sm leading-relaxed text-neutral-600">
+                    {t.exp3Desc}
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <div className="inline-flex items-center rounded-full border border-z-orange bg-z-orange-soft px-2.5 py-0.5 text-xs font-semibold z-orange">
+                      {t.exp3Stops}
+                    </div>
+                    <span className="text-xs font-semibold text-neutral-700">
+                      {t.exp3Duration} · {PRICE_PER_PERSON_JOD.highlights} {t.currency}
+                    </span>
+                  </div>
+                  <div className="mt-2 text-xs font-medium text-emerald-700">
+                    ✓ {t.exp3Value}
+                  </div>
+                </div>
+              </div>
+            </button>
+
             {/* Al Weibdeh — coming soon */}
 
             <div className={`${experienceCardBase} cursor-not-allowed border-black/10 bg-white opacity-60`}>
@@ -713,7 +800,9 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
             <div className="mt-6">
               <label className="text-sm font-medium text-neutral-700">{t.chooseTime}</label>
-              <p className="mt-0.5 text-xs text-neutral-400">{t.timeNote}</p>
+              <p className="mt-0.5 text-xs text-neutral-400">
+                {experience === "highlights" ? t.timeNoteHighlights : t.timeNote}
+              </p>
 
               {!dayAvailable ? (
                 <p className="mt-3 rounded-2xl border border-neutral-100 bg-neutral-50 px-4 py-3 text-sm text-neutral-500">

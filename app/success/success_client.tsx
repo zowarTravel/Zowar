@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { normalizeExperience, portalPathFor } from "@/app/lib/experiences";
 
 type Locale = "en" | "ar" | "es";
 
@@ -43,10 +44,13 @@ export default function SuccessClient({
   const isAr = locale === "ar";
   const t = copy[locale];
 
-  const portalPath = experience === "weibdeh" ? "/portal/weibdeh" : "/portal";
+  const portalPath = portalPathFor(experience);
 
   React.useEffect(() => {
-    localStorage.setItem("zowar_unlocked", "1");
+    // Legacy unlock flag opens every portal, so Highlights bookings rely on the session check instead
+    if (normalizeExperience(experience) !== "highlights") {
+      localStorage.setItem("zowar_unlocked", "1");
+    }
     if (sessionId) localStorage.setItem("zowar_session_id", sessionId);
     if (experience) localStorage.setItem("zowar_experience", experience);
 

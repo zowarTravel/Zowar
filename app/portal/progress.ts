@@ -15,7 +15,18 @@ export type PortalProgress = {
   r7: boolean;
 };
 
-const KEY = "zowar_progress_v1";
+export type RoundKey = keyof PortalProgress;
+
+const ALL_ROUNDS: readonly RoundKey[] = ["r1", "r2", "r3", "r4", "r5", "r5b", "r6", "r7"];
+
+export type ProgressStore = {
+  storageKey: string;
+  read: () => PortalProgress;
+  setSolved: (round: RoundKey) => void;
+  clear: () => void;
+  sync: () => Promise<PortalProgress>;
+  serverSetSolved: (round: RoundKey) => Promise<void>;
+};
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                            */
@@ -36,7 +47,7 @@ function freshDefault(): PortalProgress {
 
 function safeParse(
   raw: string | null
-): Partial<Record<keyof PortalProgress, unknown>> | null {
+): Partial<Record<RoundKey, unknown>> | null {
   if (!raw) return null;
   try {
     return JSON.parse(raw);
@@ -46,86 +57,115 @@ function safeParse(
 }
 
 /* ------------------------------------------------------------------ */
-/* Public API                                                         */
+/* Store factory                                                      */
 /* ------------------------------------------------------------------ */
 
-export function readProgress(): PortalProgress {
-  // Always return a NEW object (prevents hydration issues)
-  const base = freshDefault();
+/**
+ * A progress store persists only `rounds` under `storageKey` (localStorage)
+ * and syncs them with `endpoint` (signed server cookie). Reads always return
+ * the full PortalProgress shape; rounds outside the store are false.
+ */
+export function createProgressStore(
+  storageKey: string,
+  endpoint: string,
+  rounds: readonly RoundKey[]
+): ProgressStore {
+  function pick(p: PortalProgress): Partial<PortalProgress> {
+    const out: Partial<PortalProgress> = {};
+    for (const k of rounds) out[k] = p[k];
+    return out;
+  }
 
-  if (typeof window === "undefined") {
+  function read(): PortalProgress {
+    // Always return a NEW object (prevents hydration issues)
+    const base = freshDefault();
+
+    if (typeof window === "undefined") {
+      return base;
+    }
+
+    const parsed = safeParse(localStorage.getItem(storageKey));
+    if (!parsed) return base;
+
+    for (const k of rounds) base[k] = parsed[k] === true;
     return base;
   }
 
-  const parsed = safeParse(localStorage.getItem(KEY));
-  if (!parsed) return base;
+  function setSolved(round: RoundKey) {
+    if (typeof window === "undefined") return;
 
-  return {
-    r1: parsed.r1 === true,
-    r2: parsed.r2 === true,
-    r3: parsed.r3 === true,
-    r4: parsed.r4 === true,
-    r5: parsed.r5 === true,
-    r5b: parsed.r5b === true,
-    r6: parsed.r6 === true,
-    r7: parsed.r7 === true,
-  };
-}
+    const cur = read();
+    if (cur[round]) return;
 
-export function setRoundSolved(round: keyof PortalProgress) {
-  if (typeof window === "undefined") return;
-
-  const cur = readProgress();
-  if (cur[round]) return;
-
-  const next: PortalProgress = {
-    ...cur,
-    [round]: true,
-  };
-
-  localStorage.setItem(KEY, JSON.stringify(next));
-}
-
-export function clearProgress() {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(KEY);
-}
-
-export async function syncProgress(): Promise<PortalProgress> {
-  try {
-    const res = await fetch("/api/portal/progress");
-    if (!res.ok) return readProgress();
-    const server = (await res.json()) as PortalProgress;
-    // Merge: local OR server (forward only)
-    const local = readProgress();
-    const merged: PortalProgress = {
-      r1: local.r1 || server.r1,
-      r2: local.r2 || server.r2,
-      r3: local.r3 || server.r3,
-      r4: local.r4 || server.r4,
-      r5: local.r5 || server.r5,
-      r5b: local.r5b || (server.r5b ?? false),
-      r6: local.r6 || (server.r6 ?? false),
-      r7: local.r7 || (server.r7 ?? false),
+    const next: PortalProgress = {
+      ...cur,
+      [round]: true,
     };
-    // Write merged back to localStorage
-    if (typeof window !== "undefined") {
-      localStorage.setItem(KEY, JSON.stringify(merged));
-    }
-    return merged;
-  } catch {
-    return readProgress();
+
+    localStorage.setItem(storageKey, JSON.stringify(pick(next)));
   }
+
+  function clear() {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem(storageKey);
+  }
+
+  async function sync(): Promise<PortalProgress> {
+    try {
+      const res = await fetch(endpoint);
+      if (!res.ok) return read();
+      const server = (await res.json()) as Partial<PortalProgress>;
+      // Merge: local OR server (forward only)
+      const local = read();
+      const merged = freshDefault();
+      for (const k of rounds) merged[k] = local[k] || server[k] === true;
+      // Write merged back to localStorage
+      if (typeof window !== "undefined") {
+        localStorage.setItem(storageKey, JSON.stringify(pick(merged)));
+      }
+      return merged;
+    } catch {
+      return read();
+    }
+  }
+
+  async function serverSetSolved(round: RoundKey): Promise<void> {
+    try {
+      await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [round]: true }),
+      });
+    } catch {
+      // silently ignore — local progress is already saved
+    }
+  }
+
+  return { storageKey, read, setSolved, clear, sync, serverSetSolved };
 }
 
-export async function serverSetRoundSolved(round: keyof PortalProgress): Promise<void> {
-  try {
-    await fetch("/api/portal/progress", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [round]: true }),
-    });
-  } catch {
-    // silently ignore — local progress is already saved
-  }
-}
+/* ------------------------------------------------------------------ */
+/* Stores                                                             */
+/* ------------------------------------------------------------------ */
+
+export const fullProgressStore = createProgressStore(
+  "zowar_progress_v1",
+  "/api/portal/progress",
+  ALL_ROUNDS
+);
+
+export const highlightsProgressStore = createProgressStore(
+  "zowar_highlights_progress_v1",
+  "/api/portal/highlights-progress",
+  ["r2", "r4", "r5"]
+);
+
+/* ------------------------------------------------------------------ */
+/* Public API (Full Experience)                                       */
+/* ------------------------------------------------------------------ */
+
+export const readProgress = fullProgressStore.read;
+export const setRoundSolved = fullProgressStore.setSolved;
+export const clearProgress = fullProgressStore.clear;
+export const syncProgress = fullProgressStore.sync;
+export const serverSetRoundSolved = fullProgressStore.serverSetSolved;

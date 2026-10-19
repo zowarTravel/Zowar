@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { normalizeExperience, unitAmountUsdCents } from "@/app/lib/experiences";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -49,8 +50,12 @@ export async function POST(req: Request) {
     const stripe = getStripe();
 
     const safeQty = Math.max(1, qty ?? 1);
+    const safeExperience = normalizeExperience(experience);
+    const isHighlights = safeExperience === "highlights";
     const promoCode = qottob15 ? "qottob15" : halfOff ? "halfzowar" : "";
-    const unitAmountCents = qottob15 ? 2996 : halfOff ? 1763 : 3525; // 25 JOD per person ($35.25); 15% off = $29.96; half = $17.63
+    // Rainbow: 25 JOD ($35.25); 15% off = $29.96; half = $17.63. Highlights: 14 JOD ($19.74).
+    const unitAmountCents = unitAmountUsdCents(safeExperience, qottob15 ? 0.15 : halfOff ? 0.5 : 0);
+    const guests = `${safeQty} guest${safeQty > 1 ? "s" : ""}`;
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -60,21 +65,23 @@ export async function POST(req: Request) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: "Zowar Amman Experience",
-              description: `Self-guided Amman food and puzzle walk · ${safeQty} guest${safeQty > 1 ? "s" : ""}`,
+              name: isHighlights ? "Zowar Rainbow Street Highlights" : "Zowar Amman Experience",
+              description: isHighlights
+                ? `Self-guided Rainbow Street highlights walk · 3 stops · ${guests}`
+                : `Self-guided Amman food and puzzle walk · ${guests}`,
             },
             unit_amount: unitAmountCents,
           },
           quantity: safeQty,
         },
       ],
-      success_url: `${origin}/success?lang=${locale}&session_id={CHECKOUT_SESSION_ID}&experience=${experience}`,
+      success_url: `${origin}/success?lang=${locale}&session_id={CHECKOUT_SESSION_ID}&experience=${safeExperience}`,
       cancel_url: `${origin}/booking?lang=${locale}`,
       metadata: {
         date: date ?? "",
         timeSlot: timeSlot ?? "",
         qty: String(qty ?? 1),
-        experience: experience ?? "rainbow",
+        experience: safeExperience,
         lang: locale,
         promo_code: promoCode,
       },

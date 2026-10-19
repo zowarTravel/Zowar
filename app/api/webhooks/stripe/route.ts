@@ -7,6 +7,7 @@ import {
   totalPartnerCostForBooking,
 } from "@/app/lib/finance/db";
 import type { Booking } from "@/app/lib/finance/types";
+import { normalizeExperience, PRICE_PER_PERSON_JOD } from "@/app/lib/experiences";
 
 export const runtime = "nodejs";
 
@@ -58,17 +59,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   const meta = session.metadata ?? {};
   const participants = Math.max(1, parseInt(meta.qty ?? "1", 10));
-  const experience = meta.experience ?? "rainbow";
+  const experience = normalizeExperience(meta.experience);
   const experienceDate = meta.date || undefined;
   const locale = meta.lang ?? "en";
   const promoCode = meta.promo_code || undefined;
 
-  // Revenue: 28 JOD per participant (fixed price at time of booking)
-  const pricePerPersonJOD = 28;
+  // Revenue: fixed price per participant at time of booking (Full stays at 28 JOD as before)
+  const pricePerPersonJOD = experience === "highlights" ? PRICE_PER_PERSON_JOD.highlights : 28;
   const grossRevenue = participants * pricePerPersonJOD;
 
   const partners = getPartners();
-  const partnerCost = totalPartnerCostForBooking(participants, partners);
+  const partnerCost = totalPartnerCostForBooking(participants, partners, experience);
 
   const now = new Date().toISOString();
   const today = now.slice(0, 10);

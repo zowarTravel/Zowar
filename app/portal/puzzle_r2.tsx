@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { setRoundSolved, serverSetRoundSolved, readProgress } from "./progress";
 import { riddle1 } from "./riddlecontent";
+import { useExperience } from "./experience_context";
+import { previousRound, stopLabel } from "./routes";
 
 const RUMMAN_MAP_URL = "https://maps.app.goo.gl/KzWjZf4eBSDNX1WQA";
 import type { Locale } from "./riddlecontent";
@@ -19,9 +20,12 @@ export default function PuzzleR2({
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
   const isAr = safeLocale === "ar";
   const t = riddle1;
+  const route = useExperience();
+  const isHighlights = route.id === "highlights";
 
-  const progress = React.useMemo(() => readProgress(), []);
-  const locked = !progress.r1;
+  const progress = React.useMemo(() => route.progress.read(), [route]);
+  const prev = previousRound(route, "r2");
+  const locked = prev ? !progress[prev] : false;
 
   const [answer, setAnswer] = React.useState("");
   const [showHint, setShowHint] = React.useState(false);
@@ -37,11 +41,11 @@ export default function PuzzleR2({
       solvedOnceRef.current = true;
 
       setStatus(nextStatus);
-      setRoundSolved("r2");
-      serverSetRoundSolved("r2"); // fire-and-forget server sync
+      route.progress.setSolved("r2");
+      route.progress.serverSetSolved("r2"); // fire-and-forget server sync
       onSolved?.();
     },
-    [onSolved]
+    [onSolved, route]
   );
 
   const check = React.useCallback(async () => {
@@ -134,13 +138,17 @@ export default function PuzzleR2({
           <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] z-orange">
-                {isAr ? "الجولة ٣ · لغز" : "Round 3 · Riddle"}
+                {isHighlights
+                  ? `${stopLabel(route, "r2", safeLocale)} · ${t.highlights.kind[safeLocale]}`
+                  : isAr ? "الجولة ٣ · لغز" : "Round 3 · Riddle"}
               </div>
               <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
                 {t.title[safeLocale]}
               </h2>
               <p className="mt-1 text-sm text-neutral-700">
-                {isAr ? "أجب عن اللغز لفتح الجولة التالية." : "Answer the riddle to unlock the next round."}
+                {isHighlights
+                  ? (prev ? t.highlights.subtitle : t.highlights.subtitleFirst)[safeLocale]
+                  : isAr ? "أجب عن اللغز لفتح الجولة التالية." : "Answer the riddle to unlock the next round."}
               </p>
             </div>
 
@@ -255,7 +263,7 @@ export default function PuzzleR2({
           {(status === "correct" || status === "close") && (
             <div className="mt-6 overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50 p-5 animate-[zowarFadeUp_420ms_cubic-bezier(.22,1,.36,1)_1]">
               <div className="text-xs font-semibold uppercase tracking-[0.2em] text-z-orange">
-                {t.aboutEyebrow[safeLocale]}
+                {isHighlights && !prev ? t.highlights.aboutEyebrowFirst[safeLocale] : t.aboutEyebrow[safeLocale]}
               </div>
               <h3 className="mt-2 text-xl font-semibold text-neutral-950">
                 <a

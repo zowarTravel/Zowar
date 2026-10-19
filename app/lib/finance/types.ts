@@ -13,7 +13,7 @@ export interface Booking {
   stripeFee?: number;        // JOD – optional, fill in manually
   netRevenue: number;        // grossRevenue - (stripeFee ?? 0)
   currency: "JOD";
-  experience: string;        // "rainbow" | "weibdeh"
+  experience: string;        // "rainbow" | "highlights" | "weibdeh"
   status: BookingStatus;
   totalPartnerCost: number;  // sum of all active standard-route partners × participants
   promoCode?: string;

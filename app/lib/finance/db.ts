@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import type { Booking, Partner, PartnerPayment, PartnerBalance, FinanceSummary } from "./types";
+import { partnerIncludedIn } from "../experiences";
 
 // ─── Storage paths ────────────────────────────────────────────────────────────
 const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), "data");
@@ -43,7 +44,7 @@ const SEED_PARTNERS: Partner[] = [
     phone: "",
     cliqAlias: "",
     paymentMethod: "cliq",
-    costPerParticipant: 1.5,
+    costPerParticipant: 2,
     includedInStandardRoute: true,
     active: true,
     notes: "Stop R1 – café puzzle final reveal",
@@ -55,22 +56,34 @@ const SEED_PARTNERS: Partner[] = [
     phone: "",
     cliqAlias: "",
     paymentMethod: "cliq",
-    costPerParticipant: 4,
+    costPerParticipant: 4.5,
     includedInStandardRoute: true,
     active: true,
     notes: "Stop R2 – pomegranate tasting",
   },
   {
     partnerId: "p_trinitae",
-    businessName: "Trinitae Soap House",
+    businessName: "Tabrizi",
     contactName: "",
     phone: "",
     cliqAlias: "",
     paymentMethod: "cliq",
-    costPerParticipant: 0, // placeholder – confirm with partner
+    costPerParticipant: 3,
     includedInStandardRoute: true,
     active: true,
-    notes: "Stop R3 – soap puzzle; price TBD",
+    notes: "Stop R4 – scented gift",
+  },
+  {
+    partnerId: "p_maisa",
+    businessName: "Maisa Space",
+    contactName: "",
+    phone: "",
+    cliqAlias: "",
+    paymentMethod: "cliq",
+    costPerParticipant: 3,
+    includedInStandardRoute: true,
+    active: true,
+    notes: "Stop R5 – seasonal tasting platter",
   },
   {
     partnerId: "p_falafel",
@@ -81,8 +94,8 @@ const SEED_PARTNERS: Partner[] = [
     paymentMethod: "cliq",
     costPerParticipant: 0.6,
     includedInStandardRoute: true,
-    active: true,
-    notes: "Stop R4 – falafel logo puzzle",
+    active: false,
+    notes: "Former stop – no longer on the route",
   },
   {
     partnerId: "p_yasmeenah",
@@ -93,8 +106,8 @@ const SEED_PARTNERS: Partner[] = [
     paymentMethod: "cliq",
     costPerParticipant: 0, // placeholder – confirm with partner
     includedInStandardRoute: true,
-    active: true,
-    notes: "Stop R5 – sweets; price TBD",
+    active: false,
+    notes: "Former stop – no longer on the route",
   },
   {
     partnerId: "p_flour",
@@ -105,8 +118,8 @@ const SEED_PARTNERS: Partner[] = [
     paymentMethod: "cliq",
     costPerParticipant: 1.75,
     includedInStandardRoute: true,
-    active: true,
-    notes: "Stop R6 – pizza stop",
+    active: false,
+    notes: "Former stop – no longer on the route",
   },
   {
     partnerId: "p_mijana",
@@ -119,6 +132,30 @@ const SEED_PARTNERS: Partner[] = [
     includedInStandardRoute: true,
     active: true,
     notes: "Stop R7 – rooftop final meal",
+  },
+  {
+    partnerId: "p_asma",
+    businessName: "Asma Kitchen",
+    contactName: "",
+    phone: "",
+    cliqAlias: "",
+    paymentMethod: "cliq",
+    costPerParticipant: 2,
+    includedInStandardRoute: true,
+    active: true,
+    notes: "Stop R3 – hummus & mutabbal",
+  },
+  {
+    partnerId: "p_mlabbas",
+    businessName: "Mlabbas",
+    contactName: "",
+    phone: "",
+    cliqAlias: "",
+    paymentMethod: "cliq",
+    costPerParticipant: 2,
+    includedInStandardRoute: true,
+    active: true,
+    notes: "Stop R5b – camel riddle",
   },
 ];
 
@@ -142,12 +179,64 @@ export function appendBooking(booking: Booking): void {
 }
 
 // ─── Partners ──────────────────────────────────────────────────────────────────
+// One-time updates for an already-persisted partners.json, applied in order.
+// Applied ids are recorded in partners-migrations.json so each runs once.
+const PARTNER_MIGRATIONS: ReadonlyArray<{ id: string; apply: (partners: Partner[]) => Partner[] }> = [
+  {
+    id: "2026-10-highlights-partner-costs",
+    apply: (partners) => {
+      const patches: Record<string, Partial<Partner>> = {
+        p_magenta: { costPerParticipant: 2 },
+        p_rumman: { costPerParticipant: 4.5 },
+        p_trinitae: { businessName: "Tabrizi", costPerParticipant: 3, notes: "Stop R4 – scented gift" },
+      };
+      const next = partners.map((p) => (patches[p.partnerId] ? { ...p, ...patches[p.partnerId] } : p));
+      const maisa = SEED_PARTNERS.find((p) => p.partnerId === "p_maisa");
+      if (maisa && !next.some((p) => p.partnerId === "p_maisa")) next.push(maisa);
+      return next;
+    },
+  },
+  {
+    id: "2026-10-deactivate-former-stops",
+    apply: (partners) => {
+      const former = ["p_falafel", "p_yasmeenah", "p_flour"];
+      return partners.map((p) =>
+        former.includes(p.partnerId)
+          ? { ...p, active: false, notes: "Former stop – no longer on the route" }
+          : p
+      );
+    },
+  },
+  {
+    id: "2026-10-add-asma-mlabbas",
+    apply: (partners) => {
+      const next = [...partners];
+      for (const id of ["p_asma", "p_mlabbas"]) {
+        const seed = SEED_PARTNERS.find((p) => p.partnerId === id);
+        if (seed && !next.some((p) => p.partnerId === id)) next.push(seed);
+      }
+      return next;
+    },
+  },
+];
+
 export function getPartners(): Partner[] {
   const stored = readJson<Partner[]>("partners.json", []);
-  if (stored.length > 0) return stored;
-  // First run: seed and persist
-  writeJson("partners.json", SEED_PARTNERS);
-  return SEED_PARTNERS;
+  if (stored.length === 0) {
+    // First run: seed and persist (the seed already reflects every migration)
+    writeJson("partners.json", SEED_PARTNERS);
+    writeJson("partners-migrations.json", PARTNER_MIGRATIONS.map((m) => m.id));
+    return SEED_PARTNERS;
+  }
+
+  const applied = readJson<string[]>("partners-migrations.json", []);
+  const pending = PARTNER_MIGRATIONS.filter((m) => !applied.includes(m.id));
+  if (pending.length === 0) return stored;
+
+  const migrated = pending.reduce((ps, m) => m.apply(ps), stored);
+  writeJson("partners.json", migrated);
+  writeJson("partners-migrations.json", [...applied, ...pending.map((m) => m.id)]);
+  return migrated;
 }
 
 export function savePartners(partners: Partner[]): void {
@@ -166,9 +255,13 @@ export function appendPayment(payment: PartnerPayment): void {
 }
 
 // ─── Calculated views ─────────────────────────────────────────────────────────
-export function totalPartnerCostForBooking(participants: number, partners: Partner[]): number {
+export function totalPartnerCostForBooking(
+  participants: number,
+  partners: Partner[],
+  experience?: string
+): number {
   return partners
-    .filter((p) => p.active && p.includedInStandardRoute)
+    .filter((p) => p.active && p.includedInStandardRoute && partnerIncludedIn(experience, p.partnerId))
     .reduce((sum, p) => sum + p.costPerParticipant * participants, 0);
 }
 
@@ -178,11 +271,14 @@ export function computePartnerBalances(
   payments: PartnerPayment[]
 ): PartnerBalance[] {
   const paidBookings = bookings.filter((b) => b.status === "paid");
-  const totalParticipants = paidBookings.reduce((s, b) => s + b.numberOfParticipants, 0);
 
   return partners
     .filter((p) => p.active && p.includedInStandardRoute)
     .map((p) => {
+      // Only count guests whose experience actually visits this partner
+      const totalParticipants = paidBookings
+        .filter((b) => partnerIncludedIn(b.experience, p.partnerId))
+        .reduce((s, b) => s + b.numberOfParticipants, 0);
       const amountOwed = totalParticipants * p.costPerParticipant;
       const partnerPayments = payments.filter((pay) => pay.partnerId === p.partnerId);
       const amountPaid = partnerPayments.reduce((s, pay) => s + pay.amountPaid, 0);

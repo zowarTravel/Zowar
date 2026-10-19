@@ -3,7 +3,8 @@
 import React from "react";
 import type { Locale } from "./riddlecontent";
 import { riddle4 } from "./riddlecontent";
-import { setRoundSolved, serverSetRoundSolved, readProgress } from "./progress";
+import { useExperience } from "./experience_context";
+import { previousRound, stopLabel } from "./routes";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                              */
@@ -116,9 +117,12 @@ export function PuzzleR4({ locale, onSolved }: Props) {
   const safeLocale: Locale = locale === "ar" ? "ar" : "en";
   const isAr = safeLocale === "ar";
   const t = riddle4;
+  const route = useExperience();
+  const isHighlights = route.id === "highlights";
 
-  const progress = React.useMemo(() => readProgress(), []);
-  const locked = !progress.r3;
+  const progress = React.useMemo(() => route.progress.read(), [route]);
+  const prev = previousRound(route, "r4");
+  const locked = prev ? !progress[prev] : false;
 
   const [selected, setSelected] = React.useState<string[]>([]);
   const [solvedCats, setSolvedCats] = React.useState<CategoryKey[]>([]);
@@ -138,8 +142,8 @@ export function PuzzleR4({ locale, onSolved }: Props) {
   function finishOnce() {
     if (solvedOnceRef.current) return;
     solvedOnceRef.current = true;
-    setRoundSolved("r4");
-    serverSetRoundSolved("r4");
+    route.progress.setSolved("r4");
+    route.progress.serverSetSolved("r4");
     onSolved?.();
   }
 
@@ -216,6 +220,20 @@ export function PuzzleR4({ locale, onSolved }: Props) {
   /* ------------------------------------------------------------------ */
 
   if (locked) {
+    if (isHighlights && prev) {
+      return (
+        <div className="rounded-3xl border border-neutral-200 bg-white p-5">
+          <h2 className="text-xl font-semibold">
+            {isAr ? `${stopLabel(route, "r4", safeLocale)} مقفلة` : `${stopLabel(route, "r4", safeLocale)} Locked`}
+          </h2>
+          <p className="mt-2 text-neutral-700">
+            {isAr
+              ? `أكمل ${stopLabel(route, prev, safeLocale)} أولاً لفتح هذا اللغز.`
+              : `Complete ${stopLabel(route, prev, safeLocale)} first to unlock this puzzle.`}
+          </p>
+        </div>
+      );
+    }
     return (
       <div className="rounded-3xl border border-neutral-200 bg-white p-5">
         <h2 className="text-xl font-semibold">{isAr ? "الجولة ٤ مقفلة" : "Round 4 Locked"}</h2>
@@ -258,7 +276,9 @@ export function PuzzleR4({ locale, onSolved }: Props) {
         <div className="relative flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold z-orange">
-              <span className="opacity-80">{isAr ? "الجولة ٤" : "Round 4"}</span>
+              <span className="opacity-80">
+                {isHighlights ? stopLabel(route, "r4", safeLocale) : isAr ? "الجولة ٤" : "Round 4"}
+              </span>
               <span className="h-3 w-px bg-neutral-300" />
               <span className="opacity-90">{isAr ? "ترابط المجموعات" : "Connections"}</span>
             </div>
@@ -462,7 +482,35 @@ export function PuzzleR4({ locale, onSolved }: Props) {
                 </h3>
 
                 <p className="mt-2 text-neutral-700">
-                  {isAr ? (
+                  {isHighlights ? (
+                    isAr ? (
+                      <>
+                        توجّه إلى{" "}
+                        <a
+                          href={TABRIZI_MAP_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-semibold underline decoration-z-orange underline-offset-2 z-orange hover:opacity-80"
+                        >
+                          تبريزي
+                        </a>
+                        {" "}في شارع عمر بن الخطاب.
+                      </>
+                    ) : (
+                      <>
+                        Head to{" "}
+                        <a
+                          href={TABRIZI_MAP_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-semibold underline decoration-z-orange underline-offset-2 z-orange hover:opacity-80"
+                        >
+                          Tabrizi
+                        </a>
+                        {" "}on Omar Bin Al-Khattab Street.
+                      </>
+                    )
+                  ) : isAr ? (
                     <>
                       خذ الدرج مباشرةً أمام مطبخ أسمى صعودًا إلى شارع عمر بن الخطاب، ثم توجّه إلى{" "}
                       <a

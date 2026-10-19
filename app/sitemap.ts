@@ -88,6 +88,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${BASE}/blog/is-amman-safe`,
+      lastModified: new Date("2026-10-18"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: `${BASE}/blog/best-breakfast-amman`,
       lastModified: new Date(),
       changeFrequency: "monthly",

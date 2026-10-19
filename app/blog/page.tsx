@@ -20,6 +20,14 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "is-amman-safe",
+    title: "Is Amman Safe to Visit Right Now? A Local's Honest Answer",
+    description:
+      "What the US, UK and Canadian advisories say, what daily life in Amman looks like this year, what to do if you hear a siren, and how to decide for yourself.",
+    tag: "Travel Safety",
+    readTime: "10 min read",
+  },
+  {
     slug: "3-days-in-amman",
     title: "3 Days in Amman: The Complete Itinerary",
     description:

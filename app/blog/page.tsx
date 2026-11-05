@@ -20,6 +20,22 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "jordan-pass",
+    title: "Is the Jordan Pass Worth It? Prices, Savings & Who Should Skip It",
+    description:
+      "2026 prices, what the pass covers, how the visa fee waiver works, real savings examples, and the situations where it costs more than it saves.",
+    tag: "Travel Planning",
+    readTime: "7 min read",
+  },
+  {
+    slug: "amman-in-winter",
+    title: "Amman in Winter: What to Expect from December to February",
+    description:
+      "Temperatures, rain and the occasional snow day, why buildings feel colder inside, what to pack, winter food, and which day trips are best this time of year.",
+    tag: "Travel Planning",
+    readTime: "8 min read",
+  },
+  {
     slug: "is-amman-safe",
     title: "Is Amman Safe to Visit Right Now? A Local's Honest Answer",
     description:

@@ -5,6 +5,7 @@ import Link from "next/link";
 import React from "react";
 import LangDropdown from "@/app/components/lang-dropdown";
 import { PRICE_PER_PERSON_JOD, portalPathFor, type ExperienceId } from "@/app/lib/experiences";
+import { track } from "@/app/lib/analytics";
 
 type Locale = "en" | "ar" | "es";
 
@@ -463,12 +464,14 @@ export default function BookingClient({ locale }: BookingClientProps) {
           const d = await res.json().catch(() => ({}));
           throw new Error(d?.error || "Invalid promo code.");
         }
+        track("free_unlock", { experience, code: code.trim().toLowerCase() });
         window.location.href = `${portalPathFor(experience)}?lang=${effectiveLocale}`;
         return;
       }
 
       // Paid path — custom checkout session (carries date, timeSlot, qty, experience metadata)
       const normalized = code.trim().toLowerCase();
+      track("checkout_started", { experience, qty, locale: effectiveLocale, code: normalized || "none" });
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

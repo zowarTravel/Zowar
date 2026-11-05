@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { normalizeExperience, portalPathFor } from "@/app/lib/experiences";
+import { track } from "@/app/lib/analytics";
 
 type Locale = "en" | "ar" | "es";
 
@@ -53,6 +54,13 @@ export default function SuccessClient({
     }
     if (sessionId) localStorage.setItem("zowar_session_id", sessionId);
     if (experience) localStorage.setItem("zowar_experience", experience);
+
+    // Count each booking once, even if the success page is reloaded
+    const trackedKey = `zowar_tracked_${sessionId ?? "unknown"}`;
+    if (!sessionStorage.getItem(trackedKey)) {
+      sessionStorage.setItem(trackedKey, "1");
+      track("booking_completed", { experience: normalizeExperience(experience), locale });
+    }
 
     // Send confirmation email with magic link (fire-and-forget)
     if (sessionId) {

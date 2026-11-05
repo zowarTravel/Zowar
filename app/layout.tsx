@@ -1,6 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+
+// Umami Cloud analytics (public IDs, not secrets).
+const UMAMI_SCRIPT_URL = "https://cloud.umami.is/script.js";
+const UMAMI_WEBSITE_ID = "d1ece62b-7d62-4a79-939d-994d876f8d76";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,6 +58,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <Script
+          src={UMAMI_SCRIPT_URL}
+          data-website-id={UMAMI_WEBSITE_ID}
+          data-domains="zowar.net,www.zowar.net"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

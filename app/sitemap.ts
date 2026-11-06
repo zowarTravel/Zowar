@@ -86,6 +86,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
+      alternates: { languages: { en: `${BASE}/blog/3-days-in-amman`, es: `${BASE}/blog/es/3-dias-en-aman` } },
+    },
+    {
+      url: `${BASE}/blog/es/3-dias-en-aman`,
+      lastModified: new Date("2026-11-06"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+      alternates: { languages: { en: `${BASE}/blog/3-days-in-amman`, es: `${BASE}/blog/es/3-dias-en-aman` } },
+    },
+    {
+      url: `${BASE}/blog/es/jordan-pass`,
+      lastModified: new Date("2026-11-06"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: { en: `${BASE}/blog/jordan-pass`, es: `${BASE}/blog/es/jordan-pass` } },
+    },
+    {
+      url: `${BASE}/blog/ar/best-breakfast-amman`,
+      lastModified: new Date("2026-11-06"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: { en: `${BASE}/blog/best-breakfast-amman`, ar: `${BASE}/blog/ar/best-breakfast-amman` } },
+    },
+    {
+      url: `${BASE}/blog/ar/best-restaurants-rainbow-street`,
+      lastModified: new Date("2026-11-06"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: { en: `${BASE}/blog/best-restaurants-rainbow-street`, ar: `${BASE}/blog/ar/best-restaurants-rainbow-street` } },
     },
     {
       url: `${BASE}/blog/is-amman-safe`,
@@ -98,6 +127,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-11-04"),
       changeFrequency: "monthly",
       priority: 0.8,
+      alternates: { languages: { en: `${BASE}/blog/jordan-pass`, es: `${BASE}/blog/es/jordan-pass` } },
     },
     {
       url: `${BASE}/blog/amman-in-winter`,
@@ -110,6 +140,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
+      alternates: { languages: { en: `${BASE}/blog/best-breakfast-amman`, ar: `${BASE}/blog/ar/best-breakfast-amman` } },
     },
     {
       url: `${BASE}/blog/rainbow-street-guide`,
@@ -140,6 +171,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.85,
+      alternates: { languages: { en: `${BASE}/blog/best-restaurants-rainbow-street`, ar: `${BASE}/blog/ar/best-restaurants-rainbow-street` } },
     },
     {
       url: `${BASE}/blog/things-to-do-amman-locals`,

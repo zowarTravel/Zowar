@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import BlogTranslations from "@/app/components/blog-translations";
 
 export const metadata: Metadata = {
   title: "Best Breakfast Places in Amman, Jordan – Local Guide 2026",
   description:
     "The complete guide to breakfast in Amman — traditional spots like Al-Quds Falafel, Abu Jbara and Khashoka, plus modern takes at Shams Al Balad, Rumman Collective, Rumi Café and Blue Fig.",
-  alternates: { canonical: "https://zowar.net/blog/best-breakfast-amman" },
+  alternates: {
+    canonical: "https://zowar.net/blog/best-breakfast-amman",
+    languages: {
+      en: "https://zowar.net/blog/best-breakfast-amman",
+      ar: "https://zowar.net/blog/ar/best-breakfast-amman",
+      "x-default": "https://zowar.net/blog/best-breakfast-amman",
+    },
+  },
   openGraph: {
     title: "Best Breakfast Places in Amman, Jordan – Local Guide 2026",
     description:
@@ -107,7 +115,7 @@ const articleSchema = {
           position: 4,
           item: {
             "@type": "Restaurant",
-            name: "Abu Mahjoud",
+            name: "Abu Mahjoub",
             description: "A classic downtown Amman breakfast spot beloved by locals for ful medames, hummus, and traditional Jordanian morning plates.",
             address: { "@type": "PostalAddress", addressLocality: "Amman", addressCountry: "JO" },
             servesCuisine: "Jordanian",
@@ -253,15 +261,15 @@ The standout dishes are the Chicken Liver Qalaya, cooked down with spices in a c
     tip: "Popular with families on weekends. A weekday morning visit is more relaxed.",
   },
   {
-    name: "Abu Mahjoud",
+    name: "Abu Mahjoub",
     nameAr: "أبو محجوب",
     neighborhood: "Downtown Amman",
     highlight: "The neighbourhood's best-kept morning secret",
-    description: `Abu Mahjoud sits in the older part of Amman where breakfast has been a serious business for generations. This is not a restaurant that needs to advertise — its regulars find it by habit, and visitors find it by asking around. The crowd tells you everything: taxi drivers, shopkeepers, students, the occasional traveller who wandered off the tourist trail.
+    description: `Abu Mahjoub sits in the older part of Amman where breakfast has been a serious business for generations. This is not a restaurant that needs to advertise — its regulars find it by habit, and visitors find it by asking around. The crowd tells you everything: taxi drivers, shopkeepers, students, the occasional traveller who wandered off the tourist trail.
 
 The menu is rooted in tradition. Ful medames simmered long and finished with olive oil. Hummus made fresh, smooth and properly thick. Boiled eggs, flatbread, olives. The kind of breakfast that costs almost nothing and stays with you all morning.
 
-What Abu Mahjoud offers that few restaurants can replicate is the sense that you are eating exactly where and how Ammani people have always eaten — without any performance of it. No branding, no Instagram lighting. Just good food, fast service, and a room full of people who have been coming for years.`,
+What Abu Mahjoub offers that few restaurants can replicate is the sense that you are eating exactly where and how Ammani people have always eaten — without any performance of it. No branding, no Instagram lighting. Just good food, fast service, and a room full of people who have been coming for years.`,
     order: "Ful medames with olive oil, hummus, boiled eggs, and fresh bread.",
     tip: "Arrive before 9 AM for a seat. Cash only — prices are low.",
   },
@@ -428,6 +436,10 @@ export default function BestBreakfastAmman() {
               <span>·</span>
               <span>Updated 2026</span>
             </div>
+            <BlogTranslations
+              prefix="Also available in:"
+              links={[{ lang: "ar", label: "العربية", href: "/blog/ar/best-breakfast-amman" }]}
+            />
           </header>
 
           {/* Hero image */}

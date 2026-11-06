@@ -335,7 +335,7 @@ export default function HummusRecipe() {
               Where to eat hummus in Amman
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">
-              If you want to taste the real thing in context, Abu Jbara and Abu Mahjoud
+              If you want to taste the real thing in context, Abu Jbara and Abu Mahjoub
               both serve excellent hummus as part of a full Jordanian breakfast spread.
               The Zowar experience also stops at curated local spots along Rainbow Street
               where hummus is part of the tasting.

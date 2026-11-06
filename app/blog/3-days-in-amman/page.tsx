@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import BlogTranslations from "@/app/components/blog-translations";
 
 export const metadata: Metadata = {
   title: "3 Days in Amman: The Complete Itinerary for 2026",
   description:
     "The complete 3-day Amman itinerary — Rainbow Street and Weibdeh, the Citadel and Roman Theatre, day trips to Jerash and the Dead Sea. Where to eat, what to see, and how to spend your time.",
-  alternates: { canonical: "https://zowar.net/blog/3-days-in-amman" },
+  alternates: {
+    canonical: "https://zowar.net/blog/3-days-in-amman",
+    languages: {
+      en: "https://zowar.net/blog/3-days-in-amman",
+      es: "https://zowar.net/blog/es/3-dias-en-aman",
+      "x-default": "https://zowar.net/blog/3-days-in-amman",
+    },
+  },
   openGraph: {
     title: "3 Days in Amman: The Complete Itinerary for 2026",
     description:
@@ -264,6 +272,10 @@ export default function ThreeDaysInAmman() {
               <span>·</span>
               <span>Updated 2026</span>
             </div>
+            <BlogTranslations
+              prefix="Also available in:"
+              links={[{ lang: "es", label: "Español", href: "/blog/es/3-dias-en-aman" }]}
+            />
           </header>
 
           {/* Hero image */}

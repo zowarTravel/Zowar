@@ -109,6 +109,25 @@ const posts = [
   },
 ];
 
+const translatedPosts = [
+  {
+    lang: "es",
+    heading: "Guías en español",
+    posts: [
+      { title: "Amán en 3 días: itinerario completo", href: "/blog/es/3-dias-en-aman" },
+      { title: "¿Merece la pena el Jordan Pass?", href: "/blog/es/jordan-pass" },
+    ],
+  },
+  {
+    lang: "ar",
+    heading: "أدلة بالعربية",
+    posts: [
+      { title: "أفضل مطاعم الفطور في عمّان", href: "/blog/ar/best-breakfast-amman" },
+      { title: "أفضل مطاعم شارع الرينبو", href: "/blog/ar/best-restaurants-rainbow-street" },
+    ],
+  },
+];
+
 export default function BlogIndex() {
   return (
     <div className="min-h-screen bg-[#faf7f2] text-neutral-900">
@@ -158,6 +177,28 @@ export default function BlogIndex() {
                 </span>
               </div>
             </Link>
+          ))}
+        </div>
+
+        <div className="mt-14 grid gap-5 sm:grid-cols-2">
+          {translatedPosts.map((group) => (
+            <section
+              key={group.lang}
+              lang={group.lang}
+              dir={group.lang === "ar" ? "rtl" : "ltr"}
+              className="rounded-3xl border border-black/8 bg-white p-6"
+            >
+              <h2 className="text-sm font-semibold text-neutral-700">{group.heading}</h2>
+              <ul className="mt-3 space-y-2 text-sm">
+                {group.posts.map((p) => (
+                  <li key={p.href}>
+                    <Link href={p.href} className="font-medium text-neutral-900 hover:text-[#c8694a] transition">
+                      {p.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
           ))}
         </div>
 

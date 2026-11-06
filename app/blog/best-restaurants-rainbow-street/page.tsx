@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import BlogTranslations from "@/app/components/blog-translations";
 
 export const metadata: Metadata = {
   title: "Best Restaurants on Rainbow Street, Amman – Local Guide 2026",
   description:
     "Where to eat on Rainbow Street — from traditional Jordanian dining at Sufra to farm-to-table at Maisa Space, artisan café Namliyeh, live music at Maestro, and the iconic Al-Quds Falafel.",
-  alternates: { canonical: "https://zowar.net/blog/best-restaurants-rainbow-street" },
+  alternates: {
+    canonical: "https://zowar.net/blog/best-restaurants-rainbow-street",
+    languages: {
+      en: "https://zowar.net/blog/best-restaurants-rainbow-street",
+      ar: "https://zowar.net/blog/ar/best-restaurants-rainbow-street",
+      "x-default": "https://zowar.net/blog/best-restaurants-rainbow-street",
+    },
+  },
   openGraph: {
     title: "Best Restaurants on Rainbow Street, Amman – Local Guide 2026",
     description:
@@ -356,6 +364,10 @@ export default function BestRestaurantsRainbowStreet() {
               <span>·</span>
               <span>Updated 2026</span>
             </div>
+            <BlogTranslations
+              prefix="Also available in:"
+              links={[{ lang: "ar", label: "العربية", href: "/blog/ar/best-restaurants-rainbow-street" }]}
+            />
           </header>
 
           <figure className="mb-10">

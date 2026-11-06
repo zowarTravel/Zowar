@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import BlogTranslations from "@/app/components/blog-translations";
 
 // Update these together whenever prices or rules on jordanpass.jo change.
 const LAST_UPDATED_ISO = "2026-11-04";
@@ -10,7 +11,14 @@ export const metadata: Metadata = {
   title: "Is the Jordan Pass Worth It? Prices, Savings & Who Should Skip It (2026)",
   description:
     "Jordan Pass prices for 2026, what it covers, the visa fee waiver rules, worked examples of how much you save, and the situations where it is not worth buying.",
-  alternates: { canonical: "https://zowar.net/blog/jordan-pass" },
+  alternates: {
+    canonical: "https://zowar.net/blog/jordan-pass",
+    languages: {
+      en: "https://zowar.net/blog/jordan-pass",
+      es: "https://zowar.net/blog/es/jordan-pass",
+      "x-default": "https://zowar.net/blog/jordan-pass",
+    },
+  },
   openGraph: {
     title: "Is the Jordan Pass Worth It? A Local's Breakdown",
     description:
@@ -208,6 +216,10 @@ export default function JordanPass() {
                 Last updated {LAST_UPDATED}
               </time>
             </div>
+            <BlogTranslations
+              prefix="Also available in:"
+              links={[{ lang: "es", label: "Español", href: "/blog/es/jordan-pass" }]}
+            />
           </header>
 
           <figure className="mb-10">

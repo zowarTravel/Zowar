@@ -20,6 +20,14 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "what-to-eat-in-jordan",
+    title: "What to Eat in Jordan: 15 Dishes to Try",
+    description:
+      "Mansaf, maqluba, musakhan, falafel, knafeh and more: the dishes that define Jordanian food, how to eat them, and where to find them in Amman.",
+    tag: "Food Guide",
+    readTime: "12 min read",
+  },
+  {
     slug: "jordan-pass",
     title: "Is the Jordan Pass Worth It? Prices, Savings & Who Should Skip It",
     description:

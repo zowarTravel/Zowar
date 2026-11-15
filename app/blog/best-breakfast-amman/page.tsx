@@ -471,6 +471,23 @@ export default function BestBreakfastAmman() {
             </p>
           </section>
 
+          {/* Early CTA */}
+          <aside className="mt-6 flex flex-col gap-4 rounded-2xl border border-[#c8694a]/20 bg-z-orange-soft p-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm leading-6 text-neutral-700">
+              <strong className="font-semibold text-neutral-900">Want to eat your way through Rainbow Street?</strong>{" "}
+              Zowar is a self-guided puzzle walk with over 25 JOD in tastings and gifts along the way.
+            </p>
+            <Link
+              href="/booking"
+              data-umami-event="blog_cta_click"
+              data-umami-event-post="best-breakfast-amman"
+              data-umami-event-position="top"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-[#c8694a] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
+            >
+              See the experience →
+            </Link>
+          </aside>
+
           {/* Quick nav */}
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
             <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">In this guide</p>
@@ -640,6 +657,9 @@ export default function BestBreakfastAmman() {
             <div className="mt-5 flex flex-wrap gap-3">
               <Link
                 href="/booking"
+                data-umami-event="blog_cta_click"
+                data-umami-event-post="best-breakfast-amman"
+                data-umami-event-position="bottom"
                 className="inline-flex items-center gap-2 rounded-2xl bg-[#c8694a] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
               >
                 Book the experience →
@@ -655,7 +675,7 @@ export default function BestBreakfastAmman() {
 
           <div className="mt-14 flex items-center justify-between border-t border-black/8 pt-8 text-sm text-neutral-500">
             <Link href="/blog" className="hover:text-neutral-800 transition">← All guides</Link>
-            <Link href="/blog/rainbow-street-guide" className="hover:text-neutral-800 transition">Rainbow Street history →</Link>
+            <Link href="/blog/what-to-eat-in-jordan" className="hover:text-neutral-800 transition">What to eat in Jordan →</Link>
           </div>
         </article>
       </div>

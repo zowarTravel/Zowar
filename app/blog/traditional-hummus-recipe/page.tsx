@@ -349,6 +349,9 @@ export default function HummusRecipe() {
               </Link>
               <Link
                 href="/booking"
+                data-umami-event="blog_cta_click"
+                data-umami-event-post="traditional-hummus-recipe"
+                data-umami-event-position="bottom"
                 className="inline-flex items-center gap-2 rounded-2xl border border-black/10 bg-white px-5 py-2.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
               >
                 Book Zowar experience →

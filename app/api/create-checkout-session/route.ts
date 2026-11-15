@@ -1,21 +1,8 @@
-import Stripe from "stripe";
+import { getStripe } from "@/app/lib/stripe";
 import { normalizeExperience, unitAmountUsdCents } from "@/app/lib/experiences";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
-
-let _stripe: Stripe | null = null;
-function getStripe(): Stripe {
-  if (!_stripe) {
-    const key = process.env.STRIPE_SECRET_KEY;
-    if (!key) throw new Error("Missing STRIPE_SECRET_KEY — check your server environment variables.");
-    _stripe = new Stripe(key, {
-      maxNetworkRetries: 1,
-      httpClient: Stripe.createFetchHttpClient(),
-    });
-  }
-  return _stripe;
-}
 
 export async function POST(req: Request) {
   try {

@@ -1,5 +1,6 @@
 // app/api/checkout/route.ts
-import Stripe from "stripe";
+import type Stripe from "stripe";
+import { getStripe } from "@/app/lib/stripe";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -33,16 +34,6 @@ function format3(n: number) {
 
 function format2(n: number) {
   return n.toFixed(2);
-}
-
-let _stripe: Stripe | null = null;
-function getStripe(): Stripe {
-  if (!_stripe) {
-    const key = process.env.STRIPE_SECRET_KEY;
-    if (!key) throw new Error("Missing STRIPE_SECRET_KEY environment variable.");
-    _stripe = new Stripe(key);
-  }
-  return _stripe;
 }
 
 function normalizeCode(x: unknown) {

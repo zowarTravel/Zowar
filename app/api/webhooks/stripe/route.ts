@@ -1,5 +1,7 @@
-import Stripe from "stripe";
+import type Stripe from "stripe";
 import { randomUUID } from "crypto";
+import { getStripe } from "@/app/lib/stripe";
+import { sendBookingEmails } from "@/app/lib/booking-emails";
 import {
   findBookingBySessionId,
   appendBooking,
@@ -10,18 +12,10 @@ import type { Booking } from "@/app/lib/finance/types";
 import { normalizeExperience, PRICE_PER_PERSON_JOD } from "@/app/lib/experiences";
 
 export const runtime = "nodejs";
+export const maxDuration = 30;
 
 // Add STRIPE_WEBHOOK_SECRET to your .env.local:
 // STRIPE_WEBHOOK_SECRET=whsec_...
-let _stripe: Stripe | null = null;
-function getStripe(): Stripe {
-  if (!_stripe) {
-    const key = process.env.STRIPE_SECRET_KEY;
-    if (!key) throw new Error("Missing STRIPE_SECRET_KEY");
-    _stripe = new Stripe(key);
-  }
-  return _stripe;
-}
 
 export async function POST(req: Request) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -45,6 +39,14 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     await handleCheckoutCompleted(session);
+
+    // Runs even for an already-recorded booking, so a Stripe retry can finish a failed send
+    try {
+      await sendBookingEmails(session);
+    } catch (err) {
+      console.error("[stripe-webhook] Booking emails failed:", session.id, err);
+      return new Response("Booking emails failed", { status: 500 });
+    }
   }
 
   return new Response("ok", { status: 200 });

@@ -62,12 +62,12 @@ export default function SuccessClient({
       track("booking_completed", { experience: normalizeExperience(experience), locale });
     }
 
-    // Send confirmation email with magic link (fire-and-forget)
+    // Backup for the Stripe webhook, which normally sends the booking emails (fire-and-forget)
     if (sessionId) {
       fetch("/api/send-confirmation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: sessionId, locale, experience }),
+        body: JSON.stringify({ session_id: sessionId }),
       }).catch(() => {});
     }
 

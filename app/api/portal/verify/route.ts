@@ -1,21 +1,11 @@
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-import Stripe from "stripe";
+import { getStripe } from "@/app/lib/stripe";
 import { signPayload } from "@/app/lib/portal-token";
 import { normalizeExperience } from "@/app/lib/experiences";
 
 const NINETY_DAYS = 90 * 24 * 3600;
-
-let _stripe: Stripe | null = null;
-function getStripe(): Stripe {
-  if (!_stripe) {
-    const key = process.env.STRIPE_SECRET_KEY;
-    if (!key) throw new Error("Missing STRIPE_SECRET_KEY");
-    _stripe = new Stripe(key);
-  }
-  return _stripe;
-}
 
 export async function POST(req: Request) {
   try {

@@ -1,17 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
+import { getStripe } from "@/app/lib/stripe";
 
 export const runtime = "nodejs";
-
-let _stripe: Stripe | null = null;
-function getStripe(): Stripe {
-  if (!_stripe) {
-    const key = process.env.STRIPE_SECRET_KEY;
-    if (!key) throw new Error("Missing STRIPE_SECRET_KEY");
-    _stripe = new Stripe(key, { maxNetworkRetries: 0 });
-  }
-  return _stripe;
-}
 
 export async function GET(req: NextRequest) {
   const date = req.nextUrl.searchParams.get("date");

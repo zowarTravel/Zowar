@@ -136,6 +136,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${BASE}/blog/driving-in-jordan`,
+      lastModified: new Date("2026-11-16"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${BASE}/blog/what-to-eat-in-jordan`,
       lastModified: new Date("2026-11-14"),
       changeFrequency: "monthly",

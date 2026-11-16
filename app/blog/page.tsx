@@ -20,6 +20,14 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "driving-in-jordan",
+    title: "Driving in Jordan: Renting a Car, Road Rules & the Best Routes",
+    description:
+      "What you need to rent a car, what it costs, insurance, speed cameras and checkpoints, the best routes to Petra and Wadi Rum, and why you should skip driving in Amman.",
+    tag: "Travel Planning",
+    readTime: "12 min read",
+  },
+  {
     slug: "what-to-eat-in-jordan",
     title: "What to Eat in Jordan: 15 Dishes to Try",
     description:

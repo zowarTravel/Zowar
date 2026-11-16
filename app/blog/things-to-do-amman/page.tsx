@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "From the Citadel and Roman Theatre to Rainbow Street and Darat Al Funun — a local guide to Amman's best attractions and neighbourhoods.",
     url: "https://zowar.net/blog/things-to-do-amman",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/blog/grand-husseini-mosque-downtown-amman.jpg", alt: "The Grand Husseini Mosque in downtown Amman at dusk" }],
   },
   keywords: [
     "things to do in Amman",
@@ -301,10 +301,10 @@ export default function ThingsToDoAmman() {
           <figure className="mb-10">
             <div className="relative h-72 w-full overflow-hidden rounded-3xl sm:h-96">
               <Image
-                src="/images/blog/amman-city-panoramic.jpg"
-                alt="Panoramic view of Amman's limestone hills and city skyline"
+                src="/images/blog/amman-downtown-lookout.jpg"
+                alt="A visitor at a lookout over downtown Amman and the limestone houses of the hills beyond"
                 fill
-                className="object-cover"
+                className="object-cover object-[center_62%]"
                 sizes="(max-width: 768px) 100vw, 768px"
                 priority
               />
@@ -339,14 +339,14 @@ export default function ThingsToDoAmman() {
           <figure className="mt-8">
             <div className="relative h-60 w-full overflow-hidden rounded-3xl sm:h-72">
               <Image
-                src="/images/blog/downtown-amman-old-city.jpg"
-                alt="Downtown Amman old city with limestone buildings and minarets"
+                src="/images/blog/grand-husseini-mosque-downtown-amman.jpg"
+                alt="The Grand Husseini Mosque and its two minarets at dusk in downtown Amman, with crowds and taxis in front"
                 fill
                 className="object-cover object-center"
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Al-Balad — Downtown Amman, the oldest part of the city</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-400">The Grand Husseini Mosque at dusk, the centre of Al-Balad, downtown Amman</figcaption>
           </figure>
 
           <div className="mt-14 space-y-16">

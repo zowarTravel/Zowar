@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "The real method for Jordanian hummus — dried chickpeas, ice-cold water, and quality tahini. Better than anything from a tub.",
     url: "https://zowar.net/blog/traditional-hummus-recipe",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/blog/hummus-and-zowar-puzzle.jpg", alt: "Hummus with olive oil and fresh bread in Amman" }],
   },
   keywords: [
     "traditional hummus recipe",
@@ -41,7 +41,7 @@ const schema = {
       url: "https://zowar.net/blog/traditional-hummus-recipe",
       author: { "@type": "Organization", name: "Zowar", url: "https://zowar.net" },
       datePublished: "2026-08-30",
-      image: "https://zowar.net/logo.png",
+      image: "https://zowar.net/images/blog/hummus-and-zowar-puzzle.jpg",
       prepTime: "PT12H",
       cookTime: "PT1H30M",
       totalTime: "PT13H30M",

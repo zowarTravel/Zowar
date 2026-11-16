@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Stone villas, art galleries, the best specialty coffee in the city, and a neighbourhood that still feels like a hidden corner of Amman. Your guide to Weibdeh.",
     url: "https://zowar.net/blog/weibdeh-neighbourhood-guide",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/blog/amman-weibdeh-street-mural.jpg", alt: "Street mural in Jabal Al-Weibdeh, Amman" }],
   },
   keywords: [
     "Jabal Al-Weibdeh guide",

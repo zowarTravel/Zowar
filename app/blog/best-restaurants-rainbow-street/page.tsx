@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description:
       "A local guide to eating on Rainbow Street — from a falafel counter open since 1966 to a Jordanian villa restaurant on the World's 50 Best Discovery list.",
     url: "https://zowar.net/blog/best-restaurants-rainbow-street",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/blog/rainbow-street--blue-gate-bougainvillea.jpg", alt: "Blue gate and bougainvillea on Rainbow Street, Amman" }],
   },
   keywords: [
     "best restaurants Rainbow Street Amman",

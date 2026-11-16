@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "The local side of Amman — pottery workshops, free outdoor cinema, live music, open-air markets, and a self-guided food walk through Rainbow Street.",
     url: "https://zowar.net/blog/things-to-do-amman-locals",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/blog/amman-colourful-mural.jpg", alt: "Colourful street mural in Amman" }],
   },
   keywords: [
     "things to do in Amman locals",

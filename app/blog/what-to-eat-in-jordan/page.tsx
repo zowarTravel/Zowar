@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "From mansaf to knafeh: a local guide to the 15 dishes that define Jordanian food, and where to eat them in Amman.",
     url: "https://zowar.net/blog/what-to-eat-in-jordan",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/blog/tabbouleh-jordanian-food.jpg", alt: "Fresh tabbouleh with Jordanian mezze" }],
   },
   keywords: [
     "what to eat in Jordan",
@@ -294,9 +294,9 @@ const images: Record<string, { src: string; alt: string; caption: string }> = {
     caption: "Hummus the Amman way: warm, in a shallow bowl, with plenty of olive oil",
   },
   street: {
-    src: "/images/blog/knafeh-downtown-amman.jpg",
-    alt: "Knafeh being served on the street in downtown Amman",
-    caption: "Knafeh in downtown Amman, eaten hot while the cheese still stretches",
+    src: "/images/blog/jordanian-shawarma-platter.jpg",
+    alt: "A platter of chicken shawarma arabi, wraps cut into pieces and piled with fries",
+    caption: "Shawarma arabi: the wrap cut into bite-size pieces and served with fries, garlic sauce and pickles",
   },
 };
 

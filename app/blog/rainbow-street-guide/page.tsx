@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "From the 1957 Rainbow Cinema to today's galleries, cafés and food scene — the full story and guide to Amman's most famous street.",
     url: "https://zowar.net/blog/rainbow-street-guide",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/blog/rainbow-street-sign-amman.jpg", alt: "Rainbow Street sign in Jabal Amman" }],
   },
   keywords: [
     "Rainbow Street Amman",
@@ -240,14 +240,14 @@ export default function RainbowStreetGuide() {
           <figure className="mt-8">
             <div className="relative h-64 w-full overflow-hidden rounded-3xl sm:h-80">
               <Image
-                src="/images/blog/amman-traditional-cafe-interior.jpg"
-                alt="Traditional café interior on Rainbow Street Amman with colourful cushions and city skyline view"
+                src="/images/blog/iced-coffee-rainbow-street.jpg"
+                alt="Two iced coffees held up on a cobbled street lined with palm trees and bougainvillea"
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">A Rainbow Street café — traditional textiles, Amman's skyline through the window</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-400">Iced coffee to go on Rainbow Street, the best way to walk it in summer</figcaption>
           </figure>
 
           {/* Architecture section */}
@@ -285,7 +285,7 @@ export default function RainbowStreetGuide() {
           <figure className="mt-8">
             <div className="relative h-80 w-full overflow-hidden rounded-3xl sm:h-96">
               <Image
-                src="/images/blog/weibdeh-blue-gate-bougainvillea.jpg"
+                src="/images/blog/rainbow-street--blue-gate-bougainvillea.jpg"
                 alt="Blue wooden gate framed by pink bougainvillea flowers on a Rainbow Street side street in Amman"
                 fill
                 className="object-cover"

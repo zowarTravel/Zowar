@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description:
       "How to spend 3 days in Amman — from breakfast on Rainbow Street to the Citadel, Roman Theatre, Jerash, and the Dead Sea.",
     url: "https://zowar.net/blog/3-days-in-amman",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/blog/amman-city-panoramic.jpg", alt: "Panoramic view of Amman's hills from Jabal Amman" }],
   },
   keywords: [
     "3 days in Amman",

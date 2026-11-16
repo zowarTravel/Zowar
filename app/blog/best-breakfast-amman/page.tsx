@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description:
       "From a falafel counter open since 1966 to a terrace overlooking the Citadel — the definitive guide to breakfast in Amman.",
     url: "https://zowar.net/blog/best-breakfast-amman",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/blog/amman-traditional-cafe-interior.jpg", alt: "Traditional café interior on Rainbow Street, Amman" }],
   },
   keywords: [
     "best breakfast Amman",
@@ -549,18 +549,18 @@ export default function BestBreakfastAmman() {
             </div>
           </div>
 
-          {/* Tea image — end of traditional section */}
+          {/* Abu Mahjoub image — end of traditional section */}
           <figure className="mt-10">
             <div className="relative h-60 w-full overflow-hidden rounded-3xl sm:h-72">
               <Image
-                src="/images/blog/jordanian-tea-cafe-table.jpg"
-                alt="Glasses of Jordanian tea on a wooden café table with fresh herbs"
+                src="/images/blog/abu-mahjoub-falafel-sandwich-amman.jpg"
+                alt="Coffee and a falafel sandwich on a street-side table opposite the Abu Mahjoub counter in Amman"
                 fill
-                className="object-cover object-center"
+                className="object-cover object-[center_30%]"
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Tea is served continuously at a Jordanian breakfast — the morning does not end until the pot runs dry</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-400">Breakfast across the street from Abu Mahjoub: a falafel sandwich, a coffee, and a queue that never really stops</figcaption>
           </figure>
 
           {/* Divider */}

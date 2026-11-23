@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Locale } from "./riddlecontent";
 import type { PortalProgress, RoundKey } from "./progress";
-import type { StampId } from "./passport_data";
+import { RAINBOW_STAMPS, pieceStampSrc, type StampId } from "./passport_data";
 import StampCollectedModal from "./StampCollectedModal";
 import HighlightsComplete from "./HighlightsComplete";
 import { ExperienceProvider } from "./experience_context";
@@ -145,6 +145,12 @@ export default function PortalFlow({
   const [activeRound, setActiveRound] = React.useState<RoundKey>(steps[0].key);
   const [stampModal, setStampModal] = React.useState<StampModal | null>(null);
 
+  /* The stamp modal opens on the sunrise-piece side — fetch those images ahead of time */
+  React.useEffect(() => {
+    if (route.id !== "full") return;
+    for (const s of RAINBOW_STAMPS) if (s.fragment !== undefined) new Image().src = pieceStampSrc(s.fragment);
+  }, [route.id]);
+
   /* Next-button visibility — shown immediately on load if already solved,
      or after the stamp modal is dismissed on a fresh solve. */
   const [showNext, setShowNext] = React.useState<ShowNext>(NO_NEXT);
@@ -224,6 +230,7 @@ export default function PortalFlow({
           stampId={stampModal.stampId}
           locale={safeLocale}
           onContinue={stampModal.onContinue}
+          showBack={route.id === "full"}
         />
       )}
 

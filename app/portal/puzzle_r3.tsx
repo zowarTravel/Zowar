@@ -192,14 +192,14 @@ export default function PuzzleR3({ locale, onSolved }: Props) {
   const finalInstruction: string =
     t.finalInstruction?.[safeLocale] ??
     (safeLocale === "en"
-      ? "You've walked the city and cracked every puzzle. Head to Mijana — the best view in Amman is yours."
-      : "قطعتَ الشوارع وحللتَ كل الألغاز. اذهب إلى ميجانا — أجمل إطلالة في عمّان في انتظارك.");
+      ? "Next stop: Asma Kitchen"
+      : "المحطة التالية: مطبخ أسمى");
 
   const endCopy: string =
     t.endCopy?.[safeLocale] ??
     (safeLocale === "en"
-      ? "Time to enjoy all the tasty bites and the magical Amman view at Mijana."
-      : "حان وقت الاستمتاع بكل اللقيمات اللذيذة والإطلالة الرائعة على عمّان في ميجانا.");
+      ? "Picture complete — now find it on the street."
+      : "اكتملت الصورة — الآن ابحث عنها في الشارع.");
 
   const correctCount = locked.filter(Boolean).length;
 

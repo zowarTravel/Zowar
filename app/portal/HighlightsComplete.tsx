@@ -290,8 +290,8 @@ export default function HighlightsComplete({
             }
             body={
               isAr
-                ? `تجربة شارع الرينبو الكاملة تضم ${arDigits(FULL_STAMPED_STOPS)} محطات وختاماً على سطح مع حلوى وإطلالة على عمّان. عُد لتملأ بقية صفحات جوازك.`
-                : `The full Rainbow Street experience has ${FULL_STAMPED_STOPS} stops and a rooftop finale with dessert and a view over Amman. Come back and fill the rest of your passport.`
+                ? `تجربة شارع الرينبو الكاملة تضم ${arDigits(FULL_STAMPED_STOPS)} محطات وصورة مخفية تقودك إلى ختام حلو. عُد لتملأ بقية صفحات جوازك.`
+                : `The full Rainbow Street experience has ${FULL_STAMPED_STOPS} stops and a hidden picture that leads you to a sweet finale. Come back and fill the rest of your passport.`
             }
             cta={isAr ? "اكتشف التجربة الكاملة ←" : "See the full experience →"}
             href={`/booking?lang=${locale}`}

@@ -45,3 +45,6 @@ next-env.d.ts
 
 # finance data (JSON persistence — lives on server, not in git)
 /data/
+
+# Source artwork (originals of what ships in public/) — kept locally, never deployed
+/design/

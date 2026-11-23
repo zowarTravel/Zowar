@@ -1,21 +1,36 @@
 "use client";
 
 import React from "react";
-import { RAINBOW_STAMPS, type StampId } from "./passport_data";
+import { RAINBOW_STAMPS, SUNRISE_PIECES, pieceStampSrc, type StampId } from "./passport_data";
 
 type Props = {
   stampId: StampId;
   locale?: "en" | "ar";
   onContinue: () => void;
+  /** Flip the stamp to show its piece of the r7 sunrise picture (Full Experience only). */
+  showBack?: boolean;
 };
+
+/* The piece side lands first, then the stamp turns over to the stop's own artwork and stays */
+const FLIP_DELAY_MS = 1900;
 
 export default function StampCollectedModal({
   stampId,
   locale = "en",
   onContinue,
+  showBack = false,
 }: Props) {
   const isAr = locale === "ar";
   const stamp = RAINBOW_STAMPS.find((s) => s.id === stampId);
+  const hasBack = showBack && stamp?.fragment !== undefined;
+  const [flipped, setFlipped] = React.useState(hasBack);
+
+  React.useEffect(() => {
+    if (!hasBack) return;
+    const t = window.setTimeout(() => setFlipped(false), FLIP_DELAY_MS);
+    return () => window.clearTimeout(t);
+  }, [hasBack]);
+
   if (!stamp) return null;
 
   return (
@@ -43,6 +58,26 @@ export default function StampCollectedModal({
         @keyframes scm-text {
           from { opacity: 0; transform: translateY(9px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+        .scm-flip { perspective: 700px; }
+        .scm-flip-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform-style: preserve-3d;
+          -webkit-transform-style: preserve-3d;
+          transition: transform 650ms cubic-bezier(.22,1,.36,1);
+        }
+        .scm-flip-inner.is-flipped { transform: rotateY(180deg); }
+        .scm-face {
+          position: absolute;
+          inset: 0;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+        }
+        .scm-face-back { transform: rotateY(180deg); }
+        @media (prefers-reduced-motion: reduce) {
+          .scm-flip-inner { transition: none; }
         }
       `}</style>
 
@@ -93,20 +128,43 @@ export default function StampCollectedModal({
                 style={{ animation: "scm-ink 720ms ease-out 390ms both" }}
               />
 
-              {/* Stamp image */}
+              {/* Stamp image — turns over to its sunrise piece when it has one */}
               <div
-                className="relative z-10 h-[128px] w-[128px] overflow-hidden rounded-2xl border border-amber-200/50 bg-white"
-                style={{
-                  boxShadow:
-                    "0 10px 32px rgba(200,161,58,0.22), 0 2px 8px rgba(0,0,0,0.08)",
-                  animation: "scm-stamp 600ms cubic-bezier(.22,1,.36,1) 140ms both",
-                }}
+                className="scm-flip relative z-10 h-[128px] w-[128px]"
+                style={{ animation: "scm-stamp 600ms cubic-bezier(.22,1,.36,1) 140ms both" }}
               >
-                <img
-                  src={stamp.image}
-                  alt={stamp.alt}
-                  className="h-full w-full object-contain p-2.5"
-                />
+                <button
+                  type="button"
+                  disabled={!hasBack}
+                  onClick={() => setFlipped((f) => !f)}
+                  className={["scm-flip-inner block", flipped ? "is-flipped" : "", hasBack ? "cursor-pointer" : "cursor-default"].join(" ")}
+                  style={{ touchAction: "manipulation" }}
+                  aria-label={hasBack ? (isAr ? "اقلب الطابع" : "Flip the stamp") : undefined}
+                >
+                  <div
+                    className="scm-face overflow-hidden rounded-2xl border border-amber-200/50 bg-white"
+                    style={{ boxShadow: "0 10px 32px rgba(200,161,58,0.22), 0 2px 8px rgba(0,0,0,0.08)" }}
+                  >
+                    <img
+                      src={stamp.image}
+                      alt={stamp.alt}
+                      className="h-full w-full object-contain p-2.5"
+                    />
+                  </div>
+                  {hasBack && (
+                    <div
+                      className="scm-face scm-face-back overflow-hidden rounded-2xl border border-amber-200/50 bg-[#F7E8D5]"
+                      style={{ boxShadow: "0 10px 32px rgba(200,161,58,0.22), 0 2px 8px rgba(0,0,0,0.08)" }}
+                    >
+                      <img
+                        src={pieceStampSrc(stamp.fragment!)}
+                        alt={isAr ? "قطعة من صورة" : "A piece of a picture"}
+                        className="h-full w-full object-contain p-1.5"
+                        draggable={false}
+                      />
+                    </div>
+                  )}
+                </button>
               </div>
             </div>
 
@@ -124,6 +182,16 @@ export default function StampCollectedModal({
               <div className="mt-0.5 text-[13px] text-amber-700/80">
                 {isAr ? stamp.subtitleAr : stamp.subtitle}
               </div>
+              {hasBack && (
+                <div
+                  className="mt-3 text-[12px] leading-5 text-amber-900/75"
+                  style={{ animation: "scm-text 360ms ease-out 600ms both" }}
+                >
+                  {isAr
+                    ? "على ظهر هذا الطابع قطعة من صورة — واحدة من ست قطع. احتفظ بها، ستحتاجها في النهاية."
+                    : `The back of this stamp holds one of ${SUNRISE_PIECES} pieces of a picture. Keep it — you'll need it at the end.`}
+                </div>
+              )}
               <div className="mt-3 text-[11px] text-amber-800/50">
                 {isAr ? "تم تحديث جواز سفرك." : "Your passport has been updated."}
               </div>

@@ -75,7 +75,7 @@ const schema = {
           name: "How much does the Rainbow Street experience cost?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "The Zowar Rainbow Street experience starts at 25 JOD per person, and includes food tastings and a Jordanian gift at the final stop.",
+            text: "The Zowar Rainbow Street experience starts at 25 JOD per person, and includes food tastings, a Jordanian gift along the way, and a sweet finish at the final stop.",
           },
         },
         {

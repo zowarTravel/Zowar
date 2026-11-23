@@ -130,8 +130,20 @@ const SEED_PARTNERS: Partner[] = [
     paymentMethod: "cliq",
     costPerParticipant: 5,
     includedInStandardRoute: true,
+    active: false,
+    notes: "Former stop – no longer on the route",
+  },
+  {
+    partnerId: "p_shams",
+    businessName: "Shams El Balad",
+    contactName: "",
+    phone: "",
+    cliqAlias: "",
+    paymentMethod: "cliq",
+    costPerParticipant: 2.75,
+    includedInStandardRoute: true,
     active: true,
-    notes: "Stop R7 – rooftop final meal",
+    notes: "Stop R7 – final meal",
   },
   {
     partnerId: "p_asma",
@@ -215,6 +227,19 @@ const PARTNER_MIGRATIONS: ReadonlyArray<{ id: string; apply: (partners: Partner[
         const seed = SEED_PARTNERS.find((p) => p.partnerId === id);
         if (seed && !next.some((p) => p.partnerId === id)) next.push(seed);
       }
+      return next;
+    },
+  },
+  {
+    id: "2026-11-replace-mijana-with-shams",
+    apply: (partners) => {
+      const next = partners.map((p) =>
+        p.partnerId === "p_mijana"
+          ? { ...p, active: false, notes: "Former stop – no longer on the route" }
+          : p
+      );
+      const shams = SEED_PARTNERS.find((p) => p.partnerId === "p_shams");
+      if (shams && !next.some((p) => p.partnerId === "p_shams")) next.push(shams);
       return next;
     },
   },

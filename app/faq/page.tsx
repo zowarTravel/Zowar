@@ -181,7 +181,7 @@ const content: Record<
           {
             question: "What is included in the price?",
             answer:
-              "Your Zowar booking gives you access to the digital Puzzle Portal, which guides you through a curated route of 7 stops. The experience includes over 25 JOD worth of food tastings and a Jordanian gift at the final stop. You pay once at checkout — there are no additional Zowar charges during the experience.",
+              "Your Zowar booking gives you access to the digital Puzzle Portal, which guides you through a curated route of 7 stops. The experience includes over 25 JOD worth of food tastings, a Jordanian gift along the way, and a sweet finish at the final stop. You pay once at checkout — there are no additional Zowar charges during the experience.",
           },
           {
             question: "Can I reschedule my booking?",

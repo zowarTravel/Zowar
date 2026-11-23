@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description:
       "Learn about Zowar — the team behind Amman's self-guided food puzzle walks.",
     url: "https://zowar.net/about",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/og/home.jpg", width: 1200, height: 630, alt: "Amman skyline seen from Jabal Amman" }],
   },
 };
 

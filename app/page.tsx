@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     description:
       "Explore Amman's iconic Rainbow Street on a self-guided food and puzzle adventure. Discover local restaurants, solve clues, and taste Jordanian flavors.",
     url: "https://zowar.net",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/og/home.jpg", width: 1200, height: 630, alt: "Amman skyline seen from Jabal Amman" }],
   },
 };
 
@@ -34,7 +34,7 @@ const schema = {
         "Self-guided food and puzzle walk through Amman's iconic Rainbow Street. Discover local restaurants, solve clues, and experience Jordanian culture.",
       url: "https://zowar.net",
       logo: "https://zowar.net/logo.png",
-      image: "https://zowar.net/logo.png",
+      image: "https://zowar.net/images/og/home.jpg",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Rainbow Street",

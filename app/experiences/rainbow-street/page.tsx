@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description:
       "Explore Rainbow Street and Jabal Amman through a self-guided food and puzzle experience with local tastings, hidden details, independent businesses and city views.",
     url: "https://zowar.net/experiences/rainbow-street",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/og/booking.jpg", width: 1200, height: 630, alt: "Hummus, bread and the Zowar puzzle on a phone" }],
   },
 };
 
@@ -156,7 +156,7 @@ export default function RainbowStreetExperiencePage() {
                   key={item.label}
                   className="rounded-2xl border border-black/8 bg-white p-4"
                 >
-                  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-neutral-600">
                     {item.label}
                   </div>
                   <div className="mt-1 text-sm font-semibold text-neutral-900">{item.value}</div>

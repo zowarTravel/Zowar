@@ -185,7 +185,7 @@ function ActivityCard({ item, index }: { item: Activity; index: number }) {
         <div>
           <h3 className="text-2xl font-semibold text-neutral-950">
             {item.name}
-            <span className="ms-2 text-base font-normal text-neutral-400">{item.nameAr}</span>
+            <span className="ms-2 text-base font-normal text-neutral-600">{item.nameAr}</span>
           </h3>
           <p className="mt-0.5 text-sm text-neutral-500">{item.neighborhood}</p>
         </div>
@@ -203,7 +203,7 @@ function ActivityCard({ item, index }: { item: Activity; index: number }) {
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <div className="rounded-2xl border border-black/8 bg-white p-4">
-          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">Good to know</p>
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">Good to know</p>
           <p className="text-sm leading-6 text-neutral-700">{item.know}</p>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
@@ -248,7 +248,7 @@ export default function ThingsToDoAmmanLocals() {
               that transforms Rainbow Street every summer. The side of Amman that
               locals come back to.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Zowar · Amman, Jordan</span>
               <span>·</span>
               <span>12 min read</span>
@@ -268,7 +268,7 @@ export default function ThingsToDoAmmanLocals() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Weibdeh — where most of the local creative scene in Amman has settled</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Weibdeh — where most of the local creative scene in Amman has settled</figcaption>
           </figure>
 
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -284,7 +284,7 @@ export default function ThingsToDoAmmanLocals() {
           </section>
 
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">In this guide</p>
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">In this guide</p>
             <ol className="space-y-1.5 text-sm">
               {activities.map((a, i) => (
                 <li key={a.name} className="flex items-center gap-2">
@@ -305,7 +305,7 @@ export default function ThingsToDoAmmanLocals() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Pottery at Gilgamesh — paint your piece, they fire it in the kiln</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Pottery at Gilgamesh — paint your piece, they fire it in the kiln</figcaption>
           </figure>
 
           <div className="mt-14 space-y-16">
@@ -316,7 +316,7 @@ export default function ThingsToDoAmmanLocals() {
 
           {/* Outdoor section */}
           <section className="mt-16 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">If you want to get out of the city</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">If you want to get out of the city</h2>
             <p className="mt-3 text-sm leading-7 text-neutral-600">
               Each of these deserves its own guide — but here is the short version for
               when Amman is ready to expand.
@@ -332,7 +332,7 @@ export default function ThingsToDoAmmanLocals() {
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#c8694a]" />
                   <span>
                     <strong className="font-semibold text-neutral-900">{place}</strong>
-                    <span className="ms-2 text-xs text-neutral-400">{distance}</span>
+                    <span className="ms-2 text-xs text-neutral-600">{distance}</span>
                     {" — "}{desc}
                   </span>
                 </li>
@@ -350,12 +350,12 @@ export default function ThingsToDoAmmanLocals() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Amman street art — the city expresses itself in the places between the landmarks</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Amman street art — the city expresses itself in the places between the landmarks</figcaption>
           </figure>
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-[#fef3ee] p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Start on Rainbow Street</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               The Zowar experience — discover the city at your own pace
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

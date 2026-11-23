@@ -37,7 +37,7 @@ export async function generateMetadata({
         ? "تعاون مع زوّار وأضف محلك لمسارات تجربة الطعام في عمّان."
         : "Partner your Amman café, restaurant, or food spot with Zowar's guided food puzzle walks.",
       url: "https://zowar.net/collaborate",
-      images: [{ url: "/logo.png" }],
+      images: [{ url: "/images/og/home.jpg", width: 1200, height: 630 }],
     },
   };
 }

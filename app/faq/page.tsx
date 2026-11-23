@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description:
       "Answers to common questions about Zowar's food puzzle walks in Amman.",
     url: "https://zowar.net/faq",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/og/home.jpg", width: 1200, height: 630, alt: "Amman skyline seen from Jabal Amman" }],
   },
 };
 

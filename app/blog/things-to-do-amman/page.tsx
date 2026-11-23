@@ -227,7 +227,7 @@ function AttractionCard({ item, index }: { item: Attraction; index: number }) {
         <div>
           <h3 className="text-2xl font-semibold text-neutral-950">
             {item.name}
-            <span className="ms-2 text-base font-normal text-neutral-400">{item.nameAr}</span>
+            <span className="ms-2 text-base font-normal text-neutral-600">{item.nameAr}</span>
           </h3>
           <p className="mt-0.5 text-sm text-neutral-500">{item.neighborhood}</p>
         </div>
@@ -245,7 +245,7 @@ function AttractionCard({ item, index }: { item: Attraction; index: number }) {
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <div className="rounded-2xl border border-black/8 bg-white p-4">
-          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">Good to know</p>
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">Good to know</p>
           <p className="text-sm leading-6 text-neutral-700">{item.know}</p>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
@@ -289,7 +289,7 @@ export default function ThingsToDoAmman() {
               Rainbow Street and Weibdeh — a local guide to Amman&apos;s most
               rewarding places to spend time.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Zowar · Amman, Jordan</span>
               <span>·</span>
               <span>16 min read</span>
@@ -309,7 +309,7 @@ export default function ThingsToDoAmman() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Amman from above — a city built across hills, best understood by moving through it</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Amman from above — a city built across hills, best understood by moving through it</figcaption>
           </figure>
 
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -325,7 +325,7 @@ export default function ThingsToDoAmman() {
           </section>
 
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">In this guide</p>
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">In this guide</p>
             <ol className="space-y-1.5 text-sm">
               {attractions.map((a, i) => (
                 <li key={a.name} className="flex items-center gap-2">
@@ -346,7 +346,7 @@ export default function ThingsToDoAmman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">The Grand Husseini Mosque at dusk, the centre of Al-Balad, downtown Amman</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">The Grand Husseini Mosque at dusk, the centre of Al-Balad, downtown Amman</figcaption>
           </figure>
 
           <div className="mt-14 space-y-16">
@@ -357,7 +357,7 @@ export default function ThingsToDoAmman() {
 
           {/* Day trips */}
           <section className="mt-16 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Day trips from Amman</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Day trips from Amman</h2>
             <p className="mt-3 text-sm leading-7 text-neutral-600">
               Amman is a natural base for exploring the rest of Jordan. Each of these
               destinations is worth a day or more of its own.
@@ -374,7 +374,7 @@ export default function ThingsToDoAmman() {
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#c8694a]" />
                   <span>
                     <strong className="font-semibold text-neutral-900">{place}</strong>
-                    <span className="ms-2 text-xs text-neutral-400">{distance}</span>
+                    <span className="ms-2 text-xs text-neutral-600">{distance}</span>
                     {" — "}{desc}
                   </span>
                 </li>
@@ -392,12 +392,12 @@ export default function ThingsToDoAmman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Amman from the ruins — the city has been watched from this hill for 3,000 years</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Amman from the ruins — the city has been watched from this hill for 3,000 years</figcaption>
           </figure>
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-[#fef3ee] p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Start on Rainbow Street</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Discover Amman through the Zowar experience
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

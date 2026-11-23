@@ -184,7 +184,7 @@ export default function HummusRecipe() {
                 ["Difficulty", "Easy"],
               ].map(([label, val]) => (
                 <div key={label} className="rounded-xl border border-black/8 bg-white px-3 py-1.5">
-                  <span className="text-neutral-400">{label}: </span>
+                  <span className="text-neutral-600">{label}: </span>
                   <span className="font-medium text-neutral-800">{val}</span>
                 </div>
               ))}
@@ -204,12 +204,12 @@ export default function HummusRecipe() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Hummus with olive oil and fresh khubz — the way it should always be served</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Hummus with olive oil and fresh khubz — the way it should always be served</figcaption>
           </figure>
 
           {/* Intro */}
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-lg font-semibold text-neutral-950">Before you start</h2>
+            <h2 className="text-lg font-semibold text-neutral-950 text-balance">Before you start</h2>
             <div className="mt-4 space-y-4 text-sm leading-7 text-neutral-700">
               <p>
                 Hummus has been eaten across the Levant for centuries. The word simply
@@ -234,7 +234,7 @@ export default function HummusRecipe() {
 
           {/* Ingredients */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Ingredients</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Ingredients</h2>
             <p className="mt-1 text-sm text-neutral-500">Makes 4–6 servings as part of a mezze spread</p>
             <div className="mt-5 space-y-3">
               {ingredients.map((ing) => (
@@ -253,7 +253,7 @@ export default function HummusRecipe() {
 
           {/* Method */}
           <section className="mt-8">
-            <h2 className="mb-5 text-xl font-semibold text-neutral-950">Method</h2>
+            <h2 className="mb-5 text-xl font-semibold text-neutral-950 text-balance">Method</h2>
             <div className="space-y-5">
               {steps.map((step) => (
                 <div key={step.n} className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -269,7 +269,7 @@ export default function HummusRecipe() {
 
           {/* Tips */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Tips for the best result</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Tips for the best result</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
                 ["Tahini quality is everything.", "Buy tahini made from 100% sesame seeds with no additives. Jordanian and Lebanese brands tend to be the best. If your tahini tastes bitter or is separated and oily at the top of the jar, it will give you inferior hummus."],
@@ -300,12 +300,12 @@ export default function HummusRecipe() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Hummus is always served with tea at a Jordanian breakfast — the two are inseparable</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Hummus is always served with tea at a Jordanian breakfast — the two are inseparable</figcaption>
           </figure>
 
           {/* Serve with */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">What to serve with hummus</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">What to serve with hummus</h2>
             <div className="mt-4 space-y-4 text-sm leading-7 text-neutral-700">
               <p>
                 In Jordan, hummus is almost always part of a larger spread rather than a
@@ -331,7 +331,7 @@ export default function HummusRecipe() {
           {/* Where to eat */}
           <section className="mt-8 rounded-3xl border border-[#c8694a]/20 bg-z-orange-soft p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Eat it in Amman</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Where to eat hummus in Amman
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

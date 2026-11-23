@@ -265,7 +265,7 @@ export default function ThreeDaysInAmman() {
               staying for — the food, the history, the neighbourhoods, and the country
               beyond.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Zowar · Amman, Jordan</span>
               <span>·</span>
               <span>12 min read</span>
@@ -290,12 +290,12 @@ export default function ThreeDaysInAmman() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Amman from Jabal Amman — the city stretches across 20 hills</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Amman from Jabal Amman — the city stretches across 20 hills</figcaption>
           </figure>
 
           {/* Overview */}
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-lg font-semibold text-neutral-950">Before you start</h2>
+            <h2 className="text-lg font-semibold text-neutral-950 text-balance">Before you start</h2>
             <div className="mt-4 space-y-4 text-sm leading-7 text-neutral-700">
               <p>
                 Amman is one of the most underrated cities in the Middle East. It tends to
@@ -332,7 +332,7 @@ export default function ThreeDaysInAmman() {
 
           {/* Practical info */}
           <section className="mt-6 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-lg font-semibold text-neutral-950">Practical information</h2>
+            <h2 className="text-lg font-semibold text-neutral-950 text-balance">Practical information</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {[
                 ["Where to stay", "Jabal Amman (First/Second Circle area) is the best base — walkable to Rainbow Street and Weibdeh, easy taxi access everywhere else. Abdoun is quieter and slightly further from the main sights."],
@@ -341,7 +341,7 @@ export default function ThreeDaysInAmman() {
                 ["Currency", "Jordanian Dinar (JOD). Most restaurants and shops are cash-only. ATMs are widely available. Credit cards accepted at hotels and larger restaurants."],
               ].map(([title, body]) => (
                 <div key={title} className="rounded-2xl border border-black/8 p-4">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">{title}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">{title}</p>
                   <p className="mt-2 text-sm leading-6 text-neutral-700">{body}</p>
                 </div>
               ))}
@@ -359,7 +359,7 @@ export default function ThreeDaysInAmman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">The painted stairs of Rainbow Street — one of many details that reward a slow walk</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">The painted stairs of Rainbow Street — one of many details that reward a slow walk</figcaption>
           </figure>
 
           {/* Day-by-day */}
@@ -369,7 +369,7 @@ export default function ThreeDaysInAmman() {
                 {/* Day header */}
                 <div className={`rounded-3xl border p-6 sm:p-8 ${day.color}`}>
                   <p className={`text-xs font-bold uppercase tracking-[0.2em] ${day.labelColor}`}>{day.day}</p>
-                  <h2 className="mt-1 text-2xl font-semibold text-neutral-950">{day.title}</h2>
+                  <h2 className="mt-1 text-2xl font-semibold text-neutral-950 text-balance">{day.title}</h2>
                   <p className="mt-2 text-sm text-neutral-600">{day.subtitle}</p>
                 </div>
 
@@ -420,12 +420,12 @@ export default function ThreeDaysInAmman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Knafeh pulled fresh on the street in downtown Amman — a must on Day 2</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Knafeh pulled fresh on the street in downtown Amman — a must on Day 2</figcaption>
           </figure>
 
           {/* Tips section */}
           <section className="mt-12 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Tips for getting the most out of Amman</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Tips for getting the most out of Amman</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
                 ["Start early.", "Amman's most popular breakfast spots, the Citadel, and Jerash are all significantly better before 10 AM — cooler, quieter, and the light is better for photographs."],
@@ -456,12 +456,12 @@ export default function ThreeDaysInAmman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">The view from the Amman Citadel — occupied continuously for over 7,000 years</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">The view from the Amman Citadel — occupied continuously for over 7,000 years</figcaption>
           </figure>
 
           {/* FAQ */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Frequently asked questions</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Frequently asked questions</h2>
             <div className="mt-5 space-y-6">
               {[
                 ["Is 3 days enough for Amman?", "Three days is enough to see the main highlights and do one day trip. You can cover Rainbow Street, Weibdeh, the Citadel, Roman Theatre, and downtown comfortably in two days, with a third for Jerash or the Dead Sea. A fourth day would let you add Madaba and Mount Nebo without rushing."],
@@ -481,7 +481,7 @@ export default function ThreeDaysInAmman() {
           {/* CTA */}
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-z-orange-soft p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Day 1 sorted</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Start your Amman trip with Zowar
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">
@@ -518,7 +518,7 @@ export default function ThreeDaysInAmman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Kilim rugs outside one of Rainbow Street's independent shops — the kind of detail you only catch on foot</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Kilim rugs outside one of Rainbow Street's independent shops — the kind of detail you only catch on foot</figcaption>
           </figure>
 
           {/* Related guides */}

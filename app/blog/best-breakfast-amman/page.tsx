@@ -366,7 +366,7 @@ function PlaceCard({ place, index, accent }: { place: Place; index: number; acce
         <div>
           <h3 className="text-2xl font-semibold text-neutral-950">
             {place.name}
-            <span className="ms-2 text-base font-normal text-neutral-400">{place.nameAr}</span>
+            <span className="ms-2 text-base font-normal text-neutral-600">{place.nameAr}</span>
           </h3>
           <p className="mt-0.5 text-sm text-neutral-500">{place.neighborhood}</p>
         </div>
@@ -384,7 +384,7 @@ function PlaceCard({ place, index, accent }: { place: Place; index: number; acce
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <div className="rounded-2xl border border-black/8 bg-white p-4">
-          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">What to order</p>
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">What to order</p>
           <p className="text-sm leading-6 text-neutral-700">{place.order}</p>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
@@ -429,7 +429,7 @@ export default function BestBreakfastAmman() {
               terraces overlooking the Citadel — a local guide to breakfast in Amman,
               split between the traditional and the modern.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Zowar · Amman, Jordan</span>
               <span>·</span>
               <span>14 min read</span>
@@ -454,7 +454,7 @@ export default function BestBreakfastAmman() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">A Rainbow Street café — where breakfast can last as long as you want it to</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">A Rainbow Street café — where breakfast can last as long as you want it to</figcaption>
           </figure>
 
           {/* Intro */}
@@ -490,7 +490,7 @@ export default function BestBreakfastAmman() {
 
           {/* Quick nav */}
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">In this guide</p>
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">In this guide</p>
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <p className="mb-2 text-xs font-bold text-neutral-700">Traditional Breakfast</p>
@@ -528,7 +528,7 @@ export default function BestBreakfastAmman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Baklava trays in downtown Amman — pastries are part of the morning ritual too</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Baklava trays in downtown Amman — pastries are part of the morning ritual too</figcaption>
           </figure>
 
           {/* Traditional section */}
@@ -536,7 +536,7 @@ export default function BestBreakfastAmman() {
             <div className="mb-8 flex items-center gap-4">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c8694a]">Part One</p>
-                <h2 className="text-2xl font-semibold text-neutral-950">Traditional Breakfast</h2>
+                <h2 className="text-2xl font-semibold text-neutral-950 text-balance">Traditional Breakfast</h2>
                 <p className="mt-1 text-sm text-neutral-500">Spots that have been doing it the same way for decades — and have earned every regular they have.</p>
               </div>
             </div>
@@ -560,13 +560,13 @@ export default function BestBreakfastAmman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Breakfast across the street from Abu Mahjoub: a falafel sandwich, a coffee, and a queue that never really stops</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Breakfast across the street from Abu Mahjoub: a falafel sandwich, a coffee, and a queue that never really stops</figcaption>
           </figure>
 
           {/* Divider */}
           <div className="my-16 flex items-center gap-4">
             <div className="h-px flex-1 bg-black/8" />
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Modern Takes</span>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-600">Modern Takes</span>
             <div className="h-px flex-1 bg-black/8" />
           </div>
 
@@ -581,14 +581,14 @@ export default function BestBreakfastAmman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Rumman Collective on Rainbow Street — the name means pomegranate, and the entrance lives up to it</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Rumman Collective on Rainbow Street — the name means pomegranate, and the entrance lives up to it</figcaption>
           </figure>
 
           {/* Modern section */}
           <div>
             <div className="mb-8">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c8694a]">Part Two</p>
-              <h2 className="text-2xl font-semibold text-neutral-950">Modern Takes on a Traditional Breakfast</h2>
+              <h2 className="text-2xl font-semibold text-neutral-950 text-balance">Modern Takes on a Traditional Breakfast</h2>
               <p className="mt-1 text-sm text-neutral-500">Places that use local ingredients and Jordanian food culture as a starting point — and take it somewhere intentional.</p>
             </div>
             <div className="space-y-16">
@@ -602,7 +602,7 @@ export default function BestBreakfastAmman() {
 
           {/* Tips */}
           <section className="mt-16 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Tips for breakfast in Amman</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Tips for breakfast in Amman</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
                 ["Go early.", "Most traditional spots peak between 7 and 10 AM. The best experience is always the early one — falafel sells out, hummus is freshest."],
@@ -624,7 +624,7 @@ export default function BestBreakfastAmman() {
 
           {/* What is a traditional Jordanian breakfast */}
           <section className="mt-10 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">What is a traditional Jordanian breakfast?</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">What is a traditional Jordanian breakfast?</h2>
             <p className="mt-4 text-sm leading-7 text-neutral-700">
               A traditional Jordanian breakfast — known locally as <em>ftour</em> — is a
               spread of small shared dishes rather than a single plate. The staples are
@@ -644,7 +644,7 @@ export default function BestBreakfastAmman() {
           {/* CTA */}
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-z-orange-soft p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Experience Rainbow Street</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Explore Amman&apos;s food scene with Zowar
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

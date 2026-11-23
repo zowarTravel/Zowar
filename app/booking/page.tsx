@@ -19,6 +19,6 @@ export const metadata: Metadata = {
     description:
       "Self-guided food and puzzle walk on Rainbow Street. 7 curated stops, 3–4 hours, over 25 JOD in tastings and gifts. Pick a date and book securely.",
     url: "https://zowar.net/booking",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/og/booking.jpg", width: 1200, height: 630, alt: "Hummus, bread and the Zowar puzzle on a phone" }],
   },
 }; type Locale = "en" | "ar" | "es"; export default async function BookingPage({ searchParams, }: { searchParams: Promise<{ lang?: string }>; }) { const { lang } = await searchParams; const normalizedLang = (lang ?? "").toLowerCase(); const locale: Locale = normalizedLang.startsWith("ar") ? "ar" : normalizedLang.startsWith("es") ? "es" : "en"; return <BookingClient locale={locale} />; }

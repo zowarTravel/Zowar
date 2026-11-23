@@ -180,7 +180,7 @@ export default function WeibdehGuide() {
               best specialty coffee — the neighbourhood that sits just above Rainbow
               Street and feels like a different world.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Zowar · Amman, Jordan</span>
               <span>·</span>
               <span>7 min read</span>
@@ -201,12 +201,12 @@ export default function WeibdehGuide() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">One of Weibdeh's most striking murals — the neighbourhood's art scene spills onto its building walls</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">One of Weibdeh's most striking murals — the neighbourhood's art scene spills onto its building walls</figcaption>
           </figure>
 
           {/* Intro */}
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">About the neighbourhood</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">About the neighbourhood</h2>
             <div className="mt-4 space-y-4 text-base leading-8 text-neutral-700">
               <p>
                 Jabal Al-Weibdeh sits on a hill in central Amman, just north of Jabal
@@ -244,13 +244,13 @@ export default function WeibdehGuide() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Street art appears throughout Weibdeh — small, unexpected, and worth slowing down for</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Street art appears throughout Weibdeh — small, unexpected, and worth slowing down for</figcaption>
           </figure>
 
           {/* Places */}
           {places.map((cat) => (
             <section key={cat.category} className="mt-10">
-              <h2 className="mb-5 text-xl font-semibold text-neutral-950">{cat.category}</h2>
+              <h2 className="mb-5 text-xl font-semibold text-neutral-950 text-balance">{cat.category}</h2>
               <div className="space-y-5">
                 {cat.stops.map((stop) => (
                   <div key={stop.name} className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -258,7 +258,7 @@ export default function WeibdehGuide() {
                       <h3 className="text-lg font-semibold text-neutral-950">
                         {stop.name}
                         {stop.nameAr && (
-                          <span className="ms-2 text-base font-normal text-neutral-400">{stop.nameAr}</span>
+                          <span className="ms-2 text-base font-normal text-neutral-600">{stop.nameAr}</span>
                         )}
                       </h3>
                     </div>
@@ -284,12 +284,12 @@ export default function WeibdehGuide() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">One of Weibdeh's neighbourhood cafés — books, warm light, and unhurried mornings</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">One of Weibdeh's neighbourhood cafés — books, warm light, and unhurried mornings</figcaption>
           </figure>
 
           {/* Practical */}
           <section className="mt-10 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Getting there and getting around</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Getting there and getting around</h2>
             <div className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               <p>
                 Weibdeh is in central Amman and easily reached by taxi from anywhere in
@@ -314,7 +314,7 @@ export default function WeibdehGuide() {
 
           {/* FAQ */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Frequently asked questions</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Frequently asked questions</h2>
             <div className="mt-5 space-y-6">
               {[
                 ["Is Weibdeh worth visiting?", "Yes, particularly if you have an interest in art, architecture, or local culture. It is a more genuine and less touristy part of Amman than some of the more commercially developed areas, and it rewards slow exploration."],
@@ -333,7 +333,7 @@ export default function WeibdehGuide() {
           {/* CTA */}
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-z-orange-soft p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Explore with Zowar</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               The Zowar experience covers Weibdeh and Rainbow Street
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

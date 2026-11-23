@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import { posts } from "./posts";
 
 export const metadata: Metadata = {
   title: "Journal – Amman Food & Travel Guides",
@@ -14,116 +16,16 @@ export const metadata: Metadata = {
     description:
       "Local guides to eating and exploring Amman, Jordan — written by the team behind the Zowar experience.",
     url: "https://zowar.net/blog",
-    images: [{ url: "/logo.png", width: 1200, height: 630 }],
+    images: [
+      {
+        url: "/images/og/blog.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Rainbow Street sign with bougainvillea in Jabal Amman",
+      },
+    ],
   },
 };
-
-const posts = [
-  {
-    slug: "driving-in-jordan",
-    title: "Driving in Jordan: Renting a Car, Road Rules & the Best Routes",
-    description:
-      "What you need to rent a car, what it costs, insurance, speed cameras and checkpoints, the best routes to Petra and Wadi Rum, and why you should skip driving in Amman.",
-    tag: "Travel Planning",
-    readTime: "12 min read",
-  },
-  {
-    slug: "what-to-eat-in-jordan",
-    title: "What to Eat in Jordan: 15 Dishes to Try",
-    description:
-      "Mansaf, maqluba, musakhan, falafel, knafeh and more: the dishes that define Jordanian food, how to eat them, and where to find them in Amman.",
-    tag: "Food Guide",
-    readTime: "12 min read",
-  },
-  {
-    slug: "jordan-pass",
-    title: "Is the Jordan Pass Worth It? Prices, Savings & Who Should Skip It",
-    description:
-      "2026 prices, what the pass covers, how the visa fee waiver works, real savings examples, and the situations where it costs more than it saves.",
-    tag: "Travel Planning",
-    readTime: "7 min read",
-  },
-  {
-    slug: "amman-in-winter",
-    title: "Amman in Winter: What to Expect from December to February",
-    description:
-      "Temperatures, rain and the occasional snow day, why buildings feel colder inside, what to pack, winter food, and which day trips are best this time of year.",
-    tag: "Travel Planning",
-    readTime: "8 min read",
-  },
-  {
-    slug: "is-amman-safe",
-    title: "Is Amman Safe to Visit Right Now? A Local's Honest Answer",
-    description:
-      "What the US, UK and Canadian advisories say, what daily life in Amman looks like this year, what to do if you hear a siren, and how to decide for yourself.",
-    tag: "Travel Safety",
-    readTime: "10 min read",
-  },
-  {
-    slug: "3-days-in-amman",
-    title: "3 Days in Amman: The Complete Itinerary",
-    description:
-      "Rainbow Street and Weibdeh, the Citadel and Roman Theatre, day trips to Jerash and the Dead Sea — how to spend three days in Amman properly.",
-    tag: "Travel Itinerary",
-    readTime: "12 min read",
-  },
-  {
-    slug: "things-to-do-amman",
-    title: "Things to Do in Amman, Jordan",
-    description:
-      "The Citadel, Roman Theatre, Jordan Museum, Darat Al Funun, Rainbow Street, Weibdeh, and the Zowar experience — the complete local guide to Amman's best places to spend time.",
-    tag: "Travel Guide",
-    readTime: "16 min read",
-  },
-  {
-    slug: "things-to-do-amman-locals",
-    title: "Things to Do in Amman – Local Experiences",
-    description:
-      "Pottery workshops, free outdoor cinema above the city, live music in Weibdeh, a Friday market on Rainbow Street, and a self-guided food walk through the neighbourhood.",
-    tag: "Local Guide",
-    readTime: "12 min read",
-  },
-  {
-    slug: "best-restaurants-rainbow-street",
-    title: "Best Restaurants on Rainbow Street, Amman",
-    description:
-      "From Sufra and Shams Al Balad to Maisa Space, Namliyeh, Wild Jordan Café, Books@Café, and Al-Quds Falafel — where to eat on Rainbow Street.",
-    tag: "Food Guide",
-    readTime: "14 min read",
-  },
-  {
-    slug: "best-breakfast-amman",
-    title: "Best Breakfast Places in Amman, Jordan",
-    description:
-      "Traditional spots like Al-Quds Falafel, Abu Jbara and Khashoka alongside modern takes at Shams Al Balad, Rumman Collective and Blue Fig — the definitive local guide.",
-    tag: "Food Guide",
-    readTime: "12 min read",
-  },
-  {
-    slug: "rainbow-street-guide",
-    title: "Rainbow Street, Amman: History, Cinema & Complete Guide",
-    description:
-      "How a residential ridge became a cultural street, the story of the 1957 Rainbow Cinema, and everything to do, eat, and see there today.",
-    tag: "Neighbourhood Guide",
-    readTime: "8 min read",
-  },
-  {
-    slug: "weibdeh-neighbourhood-guide",
-    title: "Jabal Al-Weibdeh: Amman's Creative Quarter",
-    description:
-      "Darat Al Funun, the Jordan National Gallery, Rumi Café, and the quiet stone lanes of one of Amman's most atmospheric neighbourhoods.",
-    tag: "Neighbourhood Guide",
-    readTime: "7 min read",
-  },
-  {
-    slug: "traditional-hummus-recipe",
-    title: "Traditional Jordanian Hummus Recipe",
-    description:
-      "The authentic method — dried chickpeas, high-quality tahini, ice-cold water, and the techniques that separate Jordanian hummus from everything else.",
-    tag: "Recipe",
-    readTime: "6 min read",
-  },
-];
 
 const translatedPosts = [
   {
@@ -162,7 +64,7 @@ export default function BlogIndex() {
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-[#c8694a]">
             Zowar Journal
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-neutral-950 text-balance sm:text-4xl">
             Amman Food &amp; Travel Guides
           </h1>
           <p className="mt-3 text-base leading-relaxed text-neutral-600">
@@ -172,25 +74,37 @@ export default function BlogIndex() {
         </header>
 
         <div className="space-y-5">
-          {posts.map((post) => (
+          {posts.map((post, i) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group block rounded-3xl border border-black/8 bg-white p-6 transition hover:border-[#c8694a]/30 hover:shadow-md"
+              className="group flex flex-col overflow-hidden rounded-3xl border border-black/8 bg-white transition hover:border-[#c8694a]/30 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c8694a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf7f2] sm:flex-row"
             >
-              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-2.5 py-0.5 text-xs font-semibold text-[#c8694a]">
-                {post.tag}
+              <div className="relative aspect-[16/9] w-full shrink-0 bg-neutral-100 sm:aspect-auto sm:w-56">
+                <Image
+                  src={post.image}
+                  alt={post.imageAlt}
+                  fill
+                  sizes="(max-width: 640px) 100vw, 224px"
+                  priority={i < 2}
+                  className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                />
               </div>
-              <h2 className="text-lg font-semibold text-neutral-950 group-hover:text-[#c8694a] transition">
-                {post.title}
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-neutral-600">{post.description}</p>
-              <div className="mt-4 flex items-center gap-3 text-xs text-neutral-400">
-                <span>{post.readTime}</span>
-                <span>·</span>
-                <span className="font-medium text-[#c8694a] group-hover:underline">
-                  Read guide →
-                </span>
+              <div className="p-6">
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-z-orange bg-z-orange-soft px-2.5 py-0.5 text-xs font-semibold text-[#c8694a]">
+                  {post.tag}
+                </div>
+                <h2 className="text-lg font-semibold text-neutral-950 text-balance group-hover:text-[#c8694a] transition">
+                  {post.title}
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-neutral-600">{post.description}</p>
+                <div className="mt-4 flex items-center gap-3 text-xs text-neutral-600">
+                  <span>{post.readTime}</span>
+                  <span>·</span>
+                  <span className="font-medium text-[#c8694a] group-hover:underline">
+                    Read guide →
+                  </span>
+                </div>
               </div>
             </Link>
           ))}

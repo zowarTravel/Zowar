@@ -295,7 +295,7 @@ function PlaceCard({ place, index }: { place: Place; index: number }) {
         <div>
           <h3 className="text-2xl font-semibold text-neutral-950">
             {place.name}
-            <span className="ms-2 text-base font-normal text-neutral-400">{place.nameAr}</span>
+            <span className="ms-2 text-base font-normal text-neutral-600">{place.nameAr}</span>
           </h3>
           <p className="mt-0.5 text-sm text-neutral-500">{place.neighborhood}</p>
         </div>
@@ -313,7 +313,7 @@ function PlaceCard({ place, index }: { place: Place; index: number }) {
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <div className="rounded-2xl border border-black/8 bg-white p-4">
-          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">What to order</p>
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">What to order</p>
           <p className="text-sm leading-6 text-neutral-700">{place.order}</p>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
@@ -357,7 +357,7 @@ export default function BestRestaurantsRainbowStreet() {
               World&apos;s 50 Best Discovery list — a local guide to eating on
               Rainbow Street and the surrounding neighbourhood.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Zowar · Amman, Jordan</span>
               <span>·</span>
               <span>14 min read</span>
@@ -381,7 +381,7 @@ export default function BestRestaurantsRainbowStreet() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Rainbow Street — where most of the best food on this list is within a ten-minute walk</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Rainbow Street — where most of the best food on this list is within a ten-minute walk</figcaption>
           </figure>
 
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -398,7 +398,7 @@ export default function BestRestaurantsRainbowStreet() {
           </section>
 
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">In this guide</p>
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">In this guide</p>
             <ol className="space-y-1.5 text-sm">
               {restaurants.map((p, i) => (
                 <li key={p.name} className="flex items-center gap-2">
@@ -419,7 +419,7 @@ export default function BestRestaurantsRainbowStreet() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">A Rainbow Street café — the neighbourhood where most of these restaurants have been for years</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">A Rainbow Street café — the neighbourhood where most of these restaurants have been for years</figcaption>
           </figure>
 
           <div className="mt-14 space-y-16">
@@ -438,11 +438,11 @@ export default function BestRestaurantsRainbowStreet() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Rainbow Street — shops, crafts, and food all on the same block</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Rainbow Street — shops, crafts, and food all on the same block</figcaption>
           </figure>
 
           <section className="mt-16 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Tips for eating on Rainbow Street</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Tips for eating on Rainbow Street</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
                 ["Book ahead at Sufra and Shams El Balad.", "Both are popular enough that Friday and Saturday lunches fill up. A quick call or online reservation saves the walk of shame."],
@@ -464,7 +464,7 @@ export default function BestRestaurantsRainbowStreet() {
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-[#fef3ee] p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Experience Rainbow Street</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Discover the street through the Zowar experience
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

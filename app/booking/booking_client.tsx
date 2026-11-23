@@ -803,7 +803,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
 
             <div className="mt-6">
               <label className="text-sm font-medium text-neutral-700">{t.chooseTime}</label>
-              <p className="mt-0.5 text-xs text-neutral-400">
+              <p className="mt-0.5 text-xs text-neutral-600">
                 {experience === "highlights" ? t.timeNoteHighlights : t.timeNote}
               </p>
 
@@ -812,7 +812,7 @@ export default function BookingClient({ locale }: BookingClientProps) {
                   {t.unavailableDay}
                 </p>
               ) : loadingSlots ? (
-                <p className="mt-3 text-sm text-neutral-400">{t.checkingSlots}</p>
+                <p className="mt-3 text-sm text-neutral-600">{t.checkingSlots}</p>
               ) : (
                 <div className="mt-3 grid grid-cols-3 gap-2">
                   {daySlots.map((slot) => {

@@ -212,7 +212,7 @@ function PlaceCard({ place, index }: { place: Place; index: number }) {
         <div>
           <h3 className="text-2xl font-semibold text-neutral-950">
             {place.name}
-            <span lang="en" className="ms-2 text-base font-normal text-neutral-400">{place.nameEn}</span>
+            <span lang="en" className="ms-2 text-base font-normal text-neutral-600">{place.nameEn}</span>
           </h3>
           <p className="mt-0.5 text-sm text-neutral-500">{place.neighborhood}</p>
         </div>
@@ -230,7 +230,7 @@ function PlaceCard({ place, index }: { place: Place; index: number }) {
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <div className="rounded-2xl border border-black/8 bg-white p-4">
-          <p className="mb-1.5 text-xs font-bold text-neutral-400">شو تطلب</p>
+          <p className="mb-1.5 text-xs font-bold text-neutral-600">شو تطلب</p>
           <p className="text-sm leading-6 text-neutral-700">{place.order}</p>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
@@ -273,7 +273,7 @@ export default function BestRestaurantsRainbowStreetAr() {
               من كشك فلافل يعمل منذ 1966 إلى فيلا أردنية على قائمة World&apos;s 50 Best
               Discovery: دليل محلي للأكل في شارع الرينبو وما حوله.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>بقلم فريق زوّار · عمّان</span>
               <span>·</span>
               <span>قراءة 12 دقيقة</span>
@@ -297,7 +297,7 @@ export default function BestRestaurantsRainbowStreetAr() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">شارع الرينبو: معظم الأكل الطيب في هذه القائمة على بعد عشر دقائق مشيًا</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">شارع الرينبو: معظم الأكل الطيب في هذه القائمة على بعد عشر دقائق مشيًا</figcaption>
           </figure>
 
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -311,7 +311,7 @@ export default function BestRestaurantsRainbowStreetAr() {
           </section>
 
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-xs font-bold text-neutral-400">في هذا الدليل</p>
+            <p className="mb-4 text-xs font-bold text-neutral-600">في هذا الدليل</p>
             <ol className="space-y-1.5 text-sm">
               {restaurants.map((p, i) => (
                 <li key={p.nameEn} className="flex items-center gap-2">
@@ -332,7 +332,7 @@ export default function BestRestaurantsRainbowStreetAr() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">مقهى في شارع الرينبو، الحي الذي تعيش فيه معظم هذه المطاعم منذ سنوات</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">مقهى في شارع الرينبو، الحي الذي تعيش فيه معظم هذه المطاعم منذ سنوات</figcaption>
           </figure>
 
           <div className="mt-14 space-y-16">
@@ -351,11 +351,11 @@ export default function BestRestaurantsRainbowStreetAr() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">شارع الرينبو: محلات وحِرف وأكل في نفس البلوك</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">شارع الرينبو: محلات وحِرف وأكل في نفس البلوك</figcaption>
           </figure>
 
           <section className="mt-16 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-bold text-neutral-950">نصائح للأكل في شارع الرينبو</h2>
+            <h2 className="text-xl font-bold text-neutral-950 text-balance">نصائح للأكل في شارع الرينبو</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
                 ["احجز في سفرة وشمس البلد.", "الاثنان مزدحمان بما يكفي ليمتلئا في غداء الجمعة والسبت. مكالمة سريعة أو حجز أونلاين يوفّر عليك المشوار."],
@@ -377,7 +377,7 @@ export default function BestRestaurantsRainbowStreetAr() {
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-[#fef3ee] p-6 sm:p-8">
             <p className="text-xs font-bold text-[#c8694a]">جرّب شارع الرينبو بطريقة مختلفة</p>
-            <h2 className="mt-2 text-xl font-bold text-neutral-950">
+            <h2 className="mt-2 text-xl font-bold text-neutral-950 text-balance">
               اكتشف الشارع مع تجربة زوّار
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

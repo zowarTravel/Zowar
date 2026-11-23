@@ -119,7 +119,7 @@ const months = [
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} className="mt-14 scroll-mt-20">
-      <h2 className="text-2xl font-semibold text-neutral-950">{title}</h2>
+      <h2 className="text-2xl font-semibold text-neutral-950 text-balance">{title}</h2>
       <div className="mt-4 space-y-4 text-base leading-8 text-neutral-700">{children}</div>
     </section>
   );
@@ -183,7 +183,7 @@ export default function AmmanInWinter() {
               city with cold nights, rainy spells and the occasional snow day — and
               it is one of the best times to visit if you come prepared.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Abdallah Al-Qudsi</span>
               <span>·</span>
               <span>8 min read</span>
@@ -203,7 +203,7 @@ export default function AmmanInWinter() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Clear winter light over Amman&apos;s hills</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Clear winter light over Amman&apos;s hills</figcaption>
           </figure>
 
           <section id="short-answer" className="scroll-mt-20 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -219,7 +219,7 @@ export default function AmmanInWinter() {
           </section>
 
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">In this guide</p>
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">In this guide</p>
             <ol className="space-y-1.5 text-sm">
               {toc.map(([id, label], i) => (
                 <li key={id} className="flex items-center gap-2">
@@ -297,7 +297,7 @@ export default function AmmanInWinter() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Sweet sage tea — the standard winter warm-up</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Sweet sage tea — the standard winter warm-up</figcaption>
           </figure>
 
           <Section id="pack" title="What to pack">
@@ -381,7 +381,7 @@ export default function AmmanInWinter() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Hot knafeh downtown — better in January than July</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Hot knafeh downtown — better in January than July</figcaption>
           </figure>
 
           <Section id="day-trips" title="Day trips in winter">
@@ -463,7 +463,7 @@ export default function AmmanInWinter() {
           </Section>
 
           <section id="faq" className="mt-14 scroll-mt-20 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Frequently asked questions</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Frequently asked questions</h2>
             <div className="mt-5 space-y-6">
               {faqs.map(([q, a]) => (
                 <div key={q}>
@@ -475,7 +475,7 @@ export default function AmmanInWinter() {
           </section>
 
           <section className="mt-10 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">About the author</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-600">About the author</p>
             <p className="mt-2 font-semibold text-neutral-950">Abdallah Al-Qudsi</p>
             <p className="mt-2 text-sm leading-6 text-neutral-600">
               Abdallah grew up in Jordan and has family in many different parts of the
@@ -486,7 +486,7 @@ export default function AmmanInWinter() {
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-[#fef3ee] p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Rain or shine</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               A warm way to spend a winter afternoon in Amman
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

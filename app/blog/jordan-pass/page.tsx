@@ -144,7 +144,7 @@ const examples = [
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} className="mt-14 scroll-mt-20">
-      <h2 className="text-2xl font-semibold text-neutral-950">{title}</h2>
+      <h2 className="text-2xl font-semibold text-neutral-950 text-balance">{title}</h2>
       <div className="mt-4 space-y-4 text-base leading-8 text-neutral-700">{children}</div>
     </section>
   );
@@ -207,7 +207,7 @@ export default function JordanPass() {
               than 40 other sites. For most visitors it is an easy win — but there are
               a few situations where it costs you more than it saves.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Abdallah Al-Qudsi</span>
               <span>·</span>
               <span>7 min read</span>
@@ -233,7 +233,7 @@ export default function JordanPass() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">The Amman Citadel — one of the sites the pass covers</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">The Amman Citadel — one of the sites the pass covers</figcaption>
           </figure>
 
           <section id="short-answer" className="scroll-mt-20 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -249,7 +249,7 @@ export default function JordanPass() {
           </section>
 
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">In this guide</p>
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">In this guide</p>
             <ol className="space-y-1.5 text-sm">
               {toc.map(([id, label], i) => (
                 <li key={id} className="flex items-center gap-2">
@@ -271,7 +271,7 @@ export default function JordanPass() {
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <p className="font-semibold text-neutral-950">{p.name}</p>
                     <p className="text-sm font-semibold text-[#c8694a]">
-                      {p.price} <span className="font-normal text-neutral-400">{p.usd}</span>
+                      {p.price} <span className="font-normal text-neutral-600">{p.usd}</span>
                     </p>
                   </div>
                   <p className="mt-2 text-sm leading-6 text-neutral-600">{p.petra}</p>
@@ -432,7 +432,7 @@ export default function JordanPass() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Downtown Amman, below the Citadel</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Downtown Amman, below the Citadel</figcaption>
           </figure>
 
           <Section id="tips" title="Tips for using it">
@@ -472,7 +472,7 @@ export default function JordanPass() {
           </Section>
 
           <section id="faq" className="mt-14 scroll-mt-20 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Frequently asked questions</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Frequently asked questions</h2>
             <div className="mt-5 space-y-6">
               {faqs.map(([q, a]) => (
                 <div key={q}>
@@ -484,7 +484,7 @@ export default function JordanPass() {
           </section>
 
           <section className="mt-10 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">About the author</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-600">About the author</p>
             <p className="mt-2 font-semibold text-neutral-950">Abdallah Al-Qudsi</p>
             <p className="mt-2 text-sm leading-6 text-neutral-600">
               Abdallah grew up in Jordan and has family in many different parts of the
@@ -495,7 +495,7 @@ export default function JordanPass() {
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-[#fef3ee] p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">After the Citadel</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Spend the afternoon eating your way up Rainbow Street
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

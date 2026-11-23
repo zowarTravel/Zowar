@@ -146,7 +146,7 @@ const examples = [
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} className="mt-14 scroll-mt-20">
-      <h2 className="text-2xl font-semibold text-neutral-950">{title}</h2>
+      <h2 className="text-2xl font-semibold text-neutral-950 text-balance">{title}</h2>
       <div className="mt-4 space-y-4 text-base leading-8 text-neutral-700">{children}</div>
     </section>
   );
@@ -209,7 +209,7 @@ export default function JordanPassEs() {
               de 40 lugares. Para la mayoría de visitantes es una compra fácil, pero hay
               algunos casos en los que te cuesta más de lo que te ahorra.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>Por Abdallah Al-Qudsi</span>
               <span>·</span>
               <span>7 min de lectura</span>
@@ -235,7 +235,7 @@ export default function JordanPassEs() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">La Ciudadela de Amán, uno de los lugares que cubre el pase</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">La Ciudadela de Amán, uno de los lugares que cubre el pase</figcaption>
           </figure>
 
           <section id="respuesta-corta" className="scroll-mt-20 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -251,7 +251,7 @@ export default function JordanPassEs() {
           </section>
 
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">En esta guía</p>
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">En esta guía</p>
             <ol className="space-y-1.5 text-sm">
               {toc.map(([id, label], i) => (
                 <li key={id} className="flex items-center gap-2">
@@ -273,7 +273,7 @@ export default function JordanPassEs() {
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <p className="font-semibold text-neutral-950">{p.name}</p>
                     <p className="text-sm font-semibold text-[#c8694a]">
-                      {p.price} <span className="font-normal text-neutral-400">{p.approx}</span>
+                      {p.price} <span className="font-normal text-neutral-600">{p.approx}</span>
                     </p>
                   </div>
                   <p className="mt-2 text-sm leading-6 text-neutral-600">{p.petra}</p>
@@ -433,7 +433,7 @@ export default function JordanPassEs() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">El centro de Amán, a los pies de la Ciudadela</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">El centro de Amán, a los pies de la Ciudadela</figcaption>
           </figure>
 
           <Section id="consejos" title="Consejos para usarlo">
@@ -473,7 +473,7 @@ export default function JordanPassEs() {
           </Section>
 
           <section id="preguntas" className="mt-14 scroll-mt-20 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Preguntas frecuentes</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Preguntas frecuentes</h2>
             <div className="mt-5 space-y-6">
               {faqs.map(([q, a]) => (
                 <div key={q}>
@@ -485,7 +485,7 @@ export default function JordanPassEs() {
           </section>
 
           <section className="mt-10 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Sobre el autor</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-600">Sobre el autor</p>
             <p className="mt-2 font-semibold text-neutral-950">Abdallah Al-Qudsi</p>
             <p className="mt-2 text-sm leading-6 text-neutral-600">
               Abdallah creció en Jordania y tiene familia en muchas partes del país.
@@ -497,7 +497,7 @@ export default function JordanPassEs() {
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-[#fef3ee] p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Después de la Ciudadela</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Pasa la tarde comiendo calle arriba por Rainbow Street
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

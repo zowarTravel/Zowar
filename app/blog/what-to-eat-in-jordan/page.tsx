@@ -267,7 +267,7 @@ function DishCard({ dish, number }: { dish: Dish; number: number }) {
         <div>
           <h3 className="text-2xl font-semibold text-neutral-950">
             {dish.name}
-            <span className="ms-2 text-base font-normal text-neutral-400">{dish.nameAr}</span>
+            <span className="ms-2 text-base font-normal text-neutral-600">{dish.nameAr}</span>
           </h3>
           <p className="mt-0.5 text-sm text-neutral-500">{dish.oneLiner}</p>
         </div>
@@ -333,7 +333,7 @@ export default function WhatToEatInJordan() {
               these are the dishes that define Jordanian food: what&apos;s in them, how to
               eat them, and where to find them in Amman.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Zowar · Amman, Jordan</span>
               <span>·</span>
               <span>12 min read</span>
@@ -354,7 +354,7 @@ export default function WhatToEatInJordan() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Tabbouleh, the sharp, fresh counterweight on every Jordanian table</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Tabbouleh, the sharp, fresh counterweight on every Jordanian table</figcaption>
           </figure>
 
           {/* Intro */}
@@ -393,7 +393,7 @@ export default function WhatToEatInJordan() {
 
           {/* Quick nav */}
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">The 15 dishes</p>
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">The 15 dishes</p>
             <div className="grid gap-5 sm:grid-cols-3">
               {sections.map((section) => (
                 <div key={section.id}>
@@ -422,7 +422,7 @@ export default function WhatToEatInJordan() {
                 {si > 0 && (
                   <div className="my-16 flex items-center gap-4">
                     <div className="h-px flex-1 bg-black/8" />
-                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">{section.title}</span>
+                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-600">{section.title}</span>
                     <div className="h-px flex-1 bg-black/8" />
                   </div>
                 )}
@@ -438,14 +438,14 @@ export default function WhatToEatInJordan() {
                         sizes="(max-width: 768px) 100vw, 768px"
                       />
                     </div>
-                    <figcaption className="mt-2 text-center text-xs text-neutral-400">{image.caption}</figcaption>
+                    <figcaption className="mt-2 text-center text-xs text-neutral-600">{image.caption}</figcaption>
                   </figure>
                 )}
 
                 <div className={si === 0 ? "mt-14" : ""}>
                   <div className="mb-8">
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c8694a]">{section.label}</p>
-                    <h2 className="text-2xl font-semibold text-neutral-950">{section.title}</h2>
+                    <h2 className="text-2xl font-semibold text-neutral-950 text-balance">{section.title}</h2>
                     <p className="mt-1 text-sm text-neutral-500">{section.intro}</p>
                   </div>
                   <div className="space-y-16">
@@ -460,7 +460,7 @@ export default function WhatToEatInJordan() {
 
           {/* Drinks */}
           <section className="mt-16 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">And to drink</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">And to drink</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
                 ["Arabic coffee (qahwa sada).", "Bitter, cardamom-spiced and served in tiny handleless cups as a gesture of welcome. Your cup will keep being refilled. Gently shake it from side to side when you have had enough."],
@@ -480,7 +480,7 @@ export default function WhatToEatInJordan() {
 
           {/* Tips */}
           <section className="mt-10 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Tips for eating in Jordan</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Tips for eating in Jordan</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
                 ["Order to share.", "Jordanian meals are communal. Order several mezze for the table rather than one plate each."],
@@ -503,7 +503,7 @@ export default function WhatToEatInJordan() {
 
           {/* Related */}
           <section className="mt-10 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">More food guides</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">More food guides</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
               {[
                 ["Best breakfast in Amman", "/blog/best-breakfast-amman"],
@@ -524,7 +524,7 @@ export default function WhatToEatInJordan() {
           {/* CTA */}
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-z-orange-soft p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Taste Amman</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Eat your way through Rainbow Street with Zowar
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

@@ -41,7 +41,7 @@ function TestimonialCard({ t, locale }: { t: Testimonial; locale: Locale }) {
     <div className="flex flex-col rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
       <Stars count={t.rating} />
       <p className="mt-4 flex-1 text-sm leading-7 text-neutral-700">"{text}"</p>
-      <p className="mt-5 border-t border-black/[0.06] pt-4 text-[11px] font-medium text-neutral-400">
+      <p className="mt-5 border-t border-black/[0.06] pt-4 text-[11px] font-medium text-neutral-600">
         {attribution(t, locale)}
       </p>
     </div>

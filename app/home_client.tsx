@@ -5,6 +5,10 @@ import { content, Locale } from "./content";
 import Image from "next/image";
 import { Fredoka, Tajawal } from "next/font/google";
 import TestimonialsSection from "./components/TestimonialsSection";
+import { posts } from "./blog/posts";
+
+// The three newest guides, shown on the homepage.
+const featuredPosts = posts.slice(0, 3);
 
 type Currency = "USD" | "JOD";
 type AboutTabKey = "cultural" | "dietary" | "moments" | "booking";
@@ -115,9 +119,9 @@ export default function HomeClient() {
   /* -------------------- HERO BACKGROUND MEDIA -------------------- */
   const heroMedia = useMemo(
     () => [
-      { src: "/images/street-food.jpg", alt: { en: "Amman street food", ar: "طعام شارع في عمّان", es: "Comida callejera de Amán" } },
-      { src: "/images/spices.jpg", alt: { en: "Spices", ar: "بهارات", es: "Especias" } },
-      { src: "/images/desserts.jpg", alt: { en: "Desserts", ar: "حلويات", es: "Postres" } },
+      { src: "/images/hero-amman-skyline.jpg", alt: { en: "Amman skyline seen from Jabal Amman", ar: "أفق عمّان من جبل عمّان", es: "El horizonte de Amán visto desde Jabal Amman" } },
+      { src: "/images/hero-rainbow-street-door.jpg", alt: { en: "A door painted like a row of books on Rainbow Street", ar: "باب مرسوم على شكل صف من الكتب في شارع الرينبو", es: "Una puerta pintada como una fila de libros en Rainbow Street" } },
+      { src: "/images/hero-tabbouleh.jpg", alt: { en: "A plate of tabbouleh at a restaurant in Amman", ar: "طبق تبولة في مطعم في عمّان", es: "Un plato de tabulé en un restaurante de Amán" } },
     ],
     []
   );
@@ -698,11 +702,13 @@ export default function HomeClient() {
 
         <div className="mt-8 rounded-3xl border border-black/10 bg-white/80 backdrop-blur-xl p-8 md:p-10 shadow-[0_18px_60px_rgba(0,0,0,0.08)]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            <div className="rounded-3xl overflow-hidden bg-neutral-100">
-              <img
+            <div className="relative h-[280px] overflow-hidden rounded-3xl bg-neutral-100 md:h-[360px]">
+              <Image
                 src={activeAbout.imageSrc}
                 alt={tr(activeAbout.imageAlt.en, activeAbout.imageAlt.ar, activeAbout.imageAlt.es)}
-                className="w-full h-[280px] md:h-[360px] object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 600px"
+                className="object-cover"
               />
             </div>
 
@@ -747,6 +753,53 @@ export default function HomeClient() {
 
       {/* ==================== TESTIMONIALS ==================== */}
       <TestimonialsSection locale={locale as "en" | "ar" | "es"} />
+
+      {/* ==================== JOURNAL ==================== */}
+      <section className="py-10 sm:py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-center text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 text-balance">
+            {tr("Plan Your Trip With Our Guides", "خطّط رحلتك مع أدلّتنا", "Planifica tu viaje con nuestras guías")}
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-sm sm:text-base text-neutral-600">
+            {tr(
+              "Written by locals: where to eat, what to see, and how to get around Amman and Jordan.",
+              "كتبها سكان محليون: أين تأكل، ماذا ترى، وكيف تتنقّل في عمّان والأردن.",
+              "Escritas por locales: dónde comer, qué ver y cómo moverte por Amán y Jordania."
+            )}
+          </p>
+
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {featuredPosts.map((post) => (
+              <a
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="group block overflow-hidden rounded-3xl border border-black/5 bg-white/95 shadow-sm transition hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-z-orange focus-visible:ring-offset-2"
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
+                  <Image
+                    src={post.image}
+                    alt={post.imageAlt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 400px"
+                    className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                  />
+                </div>
+                <div className="p-5 text-left">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-[#c8694a]">{post.tag}</div>
+                  <h3 className="mt-2 font-bold leading-snug text-neutral-900 text-balance">{post.title}</h3>
+                  <div className="mt-3 text-xs text-neutral-600">{post.readTime}</div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-6 text-center">
+            <a href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-[#c8694a] hover:opacity-80 transition">
+              {tr("All guides →", "كل الأدلّة ←", "Todas las guías →")}
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* ==================== CONTACT ==================== */}
       <section id="contact" className="px-6 max-w-7xl mx-auto py-16">

@@ -127,7 +127,7 @@ const advisories = [
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} className="mt-14 scroll-mt-20">
-      <h2 className="text-2xl font-semibold text-neutral-950">{title}</h2>
+      <h2 className="text-2xl font-semibold text-neutral-950 text-balance">{title}</h2>
       <div className="mt-4 space-y-4 text-base leading-8 text-neutral-700">{children}</div>
     </section>
   );
@@ -192,7 +192,7 @@ export default function IsAmmanSafe() {
               the city looks like this year, and how to make the call for yourself —
               without the hype in either direction.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Abdallah Al-Qudsi</span>
               <span>·</span>
               <span>10 min read</span>
@@ -214,7 +214,7 @@ export default function IsAmmanSafe() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Amman, autumn 2026</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Amman, autumn 2026</figcaption>
           </figure>
 
           <section id="short-answer" className="scroll-mt-20 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -239,7 +239,7 @@ export default function IsAmmanSafe() {
           </aside>
 
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">In this guide</p>
+            <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">In this guide</p>
             <ol className="space-y-1.5 text-sm">
               {toc.map(([id, label], i) => (
                 <li key={id} className="flex items-center gap-2">
@@ -270,7 +270,7 @@ export default function IsAmmanSafe() {
                     <p className="text-sm font-semibold text-[#c8694a]">{a.level}</p>
                   </div>
                   <p className="mt-2 text-sm leading-6 text-neutral-600">{a.detail}</p>
-                  <p className="mt-2 text-xs font-medium text-neutral-400">Read the official advisory ↗</p>
+                  <p className="mt-2 text-xs font-medium text-neutral-600">Read the official advisory ↗</p>
                 </a>
               ))}
             </div>
@@ -337,7 +337,7 @@ export default function IsAmmanSafe() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Rainbow Street — open every day this year</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Rainbow Street — open every day this year</figcaption>
           </figure>
 
           <Section id="alerts" title="What to do if you hear a siren or get an alert">
@@ -450,7 +450,7 @@ export default function IsAmmanSafe() {
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-black/8 bg-white p-5">
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">You will probably be fine if</p>
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">You will probably be fine if</p>
                 <p className="text-sm leading-6 text-neutral-700">
                   You are comfortable following official alerts, your insurance covers
                   Jordan, you have some flexibility in your dates, and you are mainly
@@ -469,7 +469,7 @@ export default function IsAmmanSafe() {
           </Section>
 
           <section id="faq" className="mt-14 scroll-mt-20 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Frequently asked questions</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Frequently asked questions</h2>
             <div className="mt-5 space-y-6">
               {faqs.map(([q, a]) => (
                 <div key={q}>
@@ -481,7 +481,7 @@ export default function IsAmmanSafe() {
           </section>
 
           <section className="mt-10 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">About the author</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-600">About the author</p>
             <p className="mt-2 font-semibold text-neutral-950">Abdallah Al-Qudsi</p>
             <p className="mt-2 text-sm leading-6 text-neutral-600">
               Abdallah grew up in Jordan and has family in many different parts of the
@@ -493,7 +493,7 @@ export default function IsAmmanSafe() {
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-[#fef3ee] p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">If you are coming</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               See the Amman locals know — at your own pace
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

@@ -249,7 +249,7 @@ export default function TresDiasEnAman() {
               ciudad merece quedarse: la comida, la historia, los barrios y el país
               que la rodea.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>Por Zowar · Amán, Jordania</span>
               <span>·</span>
               <span>12 min de lectura</span>
@@ -273,11 +273,11 @@ export default function TresDiasEnAman() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Amán desde Jabal Amman: la ciudad se extiende sobre unas 20 colinas</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Amán desde Jabal Amman: la ciudad se extiende sobre unas 20 colinas</figcaption>
           </figure>
 
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-lg font-semibold text-neutral-950">Antes de empezar</h2>
+            <h2 className="text-lg font-semibold text-neutral-950 text-balance">Antes de empezar</h2>
             <div className="mt-4 space-y-4 text-sm leading-7 text-neutral-700">
               <p>
                 Amán es una de las ciudades más infravaloradas de Oriente Medio. Se suele
@@ -312,7 +312,7 @@ export default function TresDiasEnAman() {
           </section>
 
           <section className="mt-6 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-lg font-semibold text-neutral-950">Información práctica</h2>
+            <h2 className="text-lg font-semibold text-neutral-950 text-balance">Información práctica</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {[
                 ["Dónde alojarse", "Jabal Amman (zona de la Primera y Segunda Rotonda) es la mejor base: a pie de Rainbow Street y Weibdeh y con fácil acceso en taxi a todo lo demás. Abdoun es más tranquilo y algo más alejado de los principales lugares."],
@@ -321,7 +321,7 @@ export default function TresDiasEnAman() {
                 ["Moneda", "Dinar jordano (JOD). Muchos restaurantes y tiendas solo aceptan efectivo. Hay cajeros por todas partes. Las tarjetas se aceptan en hoteles y restaurantes grandes."],
               ].map(([title, body]) => (
                 <div key={title} className="rounded-2xl border border-black/8 p-4">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">{title}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">{title}</p>
                   <p className="mt-2 text-sm leading-6 text-neutral-700">{body}</p>
                 </div>
               ))}
@@ -338,7 +338,7 @@ export default function TresDiasEnAman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Las escaleras pintadas de Rainbow Street, uno de muchos detalles que se descubren paseando despacio</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Las escaleras pintadas de Rainbow Street, uno de muchos detalles que se descubren paseando despacio</figcaption>
           </figure>
 
           <div className="mt-10 space-y-12">
@@ -346,7 +346,7 @@ export default function TresDiasEnAman() {
               <section key={day.day}>
                 <div className={`rounded-3xl border p-6 sm:p-8 ${day.color}`}>
                   <p className={`text-xs font-bold uppercase tracking-[0.2em] ${day.labelColor}`}>{day.day}</p>
-                  <h2 className="mt-1 text-2xl font-semibold text-neutral-950">{day.title}</h2>
+                  <h2 className="mt-1 text-2xl font-semibold text-neutral-950 text-balance">{day.title}</h2>
                   <p className="mt-2 text-sm text-neutral-600">{day.subtitle}</p>
                 </div>
 
@@ -395,11 +395,11 @@ export default function TresDiasEnAman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Knafeh recién hecha en la calle, en el centro de Amán: imprescindible el día 2</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Knafeh recién hecha en la calle, en el centro de Amán: imprescindible el día 2</figcaption>
           </figure>
 
           <section className="mt-12 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Consejos para aprovechar Amán al máximo</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Consejos para aprovechar Amán al máximo</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
                 ["Madruga.", "Los sitios de desayuno más populares, la Ciudadela y Jerash son mucho mejores antes de las 10: más fresco, menos gente y mejor luz para las fotos."],
@@ -429,11 +429,11 @@ export default function TresDiasEnAman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">La vista desde la Ciudadela de Amán, habitada sin interrupción durante más de 7000 años</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">La vista desde la Ciudadela de Amán, habitada sin interrupción durante más de 7000 años</figcaption>
           </figure>
 
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Preguntas frecuentes</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Preguntas frecuentes</h2>
             <div className="mt-5 space-y-6">
               {faqs.map(([q, a]) => (
                 <div key={q} className="border-b border-black/5 pb-5 last:border-0 last:pb-0">
@@ -446,7 +446,7 @@ export default function TresDiasEnAman() {
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-z-orange-soft p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">El día 1, resuelto</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Empieza tu viaje a Amán con Zowar
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">
@@ -482,7 +482,7 @@ export default function TresDiasEnAman() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Alfombras kilim en una de las tiendas independientes de Rainbow Street: detalles que solo se ven a pie</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Alfombras kilim en una de las tiendas independientes de Rainbow Street: detalles que solo se ven a pie</figcaption>
           </figure>
 
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">

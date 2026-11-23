@@ -245,7 +245,7 @@ function PlaceCard({ place, index, accent }: { place: Place; index: number; acce
         <div>
           <h3 className="text-2xl font-semibold text-neutral-950">
             {place.name}
-            <span lang="en" className="ms-2 text-base font-normal text-neutral-400">{place.nameEn}</span>
+            <span lang="en" className="ms-2 text-base font-normal text-neutral-600">{place.nameEn}</span>
           </h3>
           <p className="mt-0.5 text-sm text-neutral-500">{place.neighborhood}</p>
         </div>
@@ -263,7 +263,7 @@ function PlaceCard({ place, index, accent }: { place: Place; index: number; acce
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <div className="rounded-2xl border border-black/8 bg-white p-4">
-          <p className="mb-1.5 text-xs font-bold text-neutral-400">شو تطلب</p>
+          <p className="mb-1.5 text-xs font-bold text-neutral-600">شو تطلب</p>
           <p className="text-sm leading-6 text-neutral-700">{place.order}</p>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
@@ -306,7 +306,7 @@ export default function BestBreakfastAmmanAr() {
               من أكشاك فلافل تُطعم المدينة منذ 1966 إلى تراسات تطل على جبل القلعة:
               دليل محلي للفطور في عمّان، مقسوم بين الشعبي الأصيل والحديث.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>بقلم فريق زوّار · عمّان</span>
               <span>·</span>
               <span>قراءة 12 دقيقة</span>
@@ -330,7 +330,7 @@ export default function BestBreakfastAmmanAr() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">مقهى في شارع الرينبو، حيث يطول الفطور قدر ما تريد</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">مقهى في شارع الرينبو، حيث يطول الفطور قدر ما تريد</figcaption>
           </figure>
 
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
@@ -346,7 +346,7 @@ export default function BestBreakfastAmmanAr() {
           </section>
 
           <nav className="mt-8 rounded-2xl border border-black/8 bg-white p-5">
-            <p className="mb-4 text-xs font-bold text-neutral-400">في هذا الدليل</p>
+            <p className="mb-4 text-xs font-bold text-neutral-600">في هذا الدليل</p>
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <p className="mb-2 text-xs font-bold text-neutral-700">فطور شعبي</p>
@@ -383,13 +383,13 @@ export default function BestBreakfastAmmanAr() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">صواني البقلاوة في وسط البلد: الحلو جزء من طقوس الصباح أيضًا</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">صواني البقلاوة في وسط البلد: الحلو جزء من طقوس الصباح أيضًا</figcaption>
           </figure>
 
           <div className="mt-14">
             <div className="mb-8">
               <p className="text-xs font-bold text-[#c8694a]">الجزء الأول</p>
-              <h2 className="text-2xl font-bold text-neutral-950">فطور شعبي</h2>
+              <h2 className="text-2xl font-bold text-neutral-950 text-balance">فطور شعبي</h2>
               <p className="mt-1 text-sm text-neutral-500">أماكن تفعل الشيء نفسه بالطريقة نفسها منذ عقود، واستحقت كل زبون دائم عندها.</p>
             </div>
             <div className="space-y-16">
@@ -411,12 +411,12 @@ export default function BestBreakfastAmmanAr() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">الشاي لا يتوقف على سفرة الفطور الأردني، والصبحية لا تنتهي حتى يفرغ الإبريق</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">الشاي لا يتوقف على سفرة الفطور الأردني، والصبحية لا تنتهي حتى يفرغ الإبريق</figcaption>
           </figure>
 
           <div className="my-16 flex items-center gap-4">
             <div className="h-px flex-1 bg-black/8" />
-            <span className="text-xs font-bold text-neutral-400">لمسة حديثة</span>
+            <span className="text-xs font-bold text-neutral-600">لمسة حديثة</span>
             <div className="h-px flex-1 bg-black/8" />
           </div>
 
@@ -430,13 +430,13 @@ export default function BestBreakfastAmmanAr() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">رمان كوليكتيف في شارع الرينبو، ومدخله على قدّ اسمه</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">رمان كوليكتيف في شارع الرينبو، ومدخله على قدّ اسمه</figcaption>
           </figure>
 
           <div>
             <div className="mb-8">
               <p className="text-xs font-bold text-[#c8694a]">الجزء الثاني</p>
-              <h2 className="text-2xl font-bold text-neutral-950">الفطور التقليدي بلمسة حديثة</h2>
+              <h2 className="text-2xl font-bold text-neutral-950 text-balance">الفطور التقليدي بلمسة حديثة</h2>
               <p className="mt-1 text-sm text-neutral-500">أماكن تنطلق من المكوّنات المحلية وثقافة الأكل الأردنية، وتأخذها إلى مكان مدروس.</p>
             </div>
             <div className="space-y-16">
@@ -449,7 +449,7 @@ export default function BestBreakfastAmmanAr() {
           </div>
 
           <section className="mt-16 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-bold text-neutral-950">نصائح للفطور في عمّان</h2>
+            <h2 className="text-xl font-bold text-neutral-950 text-balance">نصائح للفطور في عمّان</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
                 ["بكّر.", "معظم الأماكن الشعبية في ذروتها بين 7 و10 صباحًا. الأفضل دائمًا هو الأبكر: الفلافل بتخلص، والحمص بأطيب حالاته."],
@@ -470,7 +470,7 @@ export default function BestBreakfastAmmanAr() {
           </section>
 
           <section className="mt-10 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-bold text-neutral-950">ما الذي يميّز الفطور الأردني؟</h2>
+            <h2 className="text-xl font-bold text-neutral-950 text-balance">ما الذي يميّز الفطور الأردني؟</h2>
             <p className="mt-4 text-sm leading-7 text-neutral-700">
               الفطور الأردني فرشة من أطباق صغيرة مشتركة، وليس صحنًا واحدًا. الأساسيات:
               حمص، فول، لبنة، فلافل، بيض حسب الطلب، زيتون، بندورة طازجة، وخبز سخن، ومعها
@@ -486,7 +486,7 @@ export default function BestBreakfastAmmanAr() {
 
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-z-orange-soft p-6 sm:p-8">
             <p className="text-xs font-bold text-[#c8694a]">جرّب شارع الرينبو بطريقة مختلفة</p>
-            <h2 className="mt-2 text-xl font-bold text-neutral-950">
+            <h2 className="mt-2 text-xl font-bold text-neutral-950 text-balance">
               اكتشف أكل عمّان مع زوّار
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

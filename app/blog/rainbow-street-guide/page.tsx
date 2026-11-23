@@ -155,7 +155,7 @@ export default function RainbowStreetGuide() {
               elite, was renamed after a cinema, and became the cultural heart of the
               city. Everything you need to know — and do — on Rainbow Street.
             </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-400">
+            <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span>By Zowar · Amman, Jordan</span>
               <span>·</span>
               <span>8 min read</span>
@@ -176,12 +176,12 @@ export default function RainbowStreetGuide() {
                 priority
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">The sign that gave the street its name — and the bougainvillea that frames almost every corner of it</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">The sign that gave the street its name — and the bougainvillea that frames almost every corner of it</figcaption>
           </figure>
 
           {/* History section */}
           <section className="rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">A brief history of Rainbow Street</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">A brief history of Rainbow Street</h2>
             <div className="mt-4 space-y-4 text-base leading-8 text-neutral-700">
               <p>
                 The street now known as Rainbow Street was not always called that. For much
@@ -207,7 +207,7 @@ export default function RainbowStreetGuide() {
 
           {/* Cinema section */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">The Rainbow Cinema, 1957</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">The Rainbow Cinema, 1957</h2>
             <div className="mt-4 space-y-4 text-base leading-8 text-neutral-700">
               <p>
                 In 1957, the Rainbow Cinema opened on Abu Bakr al-Siddiq Street and
@@ -247,12 +247,12 @@ export default function RainbowStreetGuide() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Iced coffee to go on Rainbow Street, the best way to walk it in summer</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Iced coffee to go on Rainbow Street, the best way to walk it in summer</figcaption>
           </figure>
 
           {/* Architecture section */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Architecture and character</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Architecture and character</h2>
             <div className="mt-4 space-y-4 text-base leading-8 text-neutral-700">
               <p>
                 One of the most striking things about Rainbow Street is how much of the
@@ -292,7 +292,7 @@ export default function RainbowStreetGuide() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">A side street off Rainbow Street — the old residential villas still carry the character of early-20th-century Amman</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">A side street off Rainbow Street — the old residential villas still carry the character of early-20th-century Amman</figcaption>
           </figure>
 
           {/* Painted door image */}
@@ -306,12 +306,12 @@ export default function RainbowStreetGuide() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Street art and painted doors are part of Rainbow Street's everyday character</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Street art and painted doors are part of Rainbow Street's everyday character</figcaption>
           </figure>
 
           {/* What to do */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">What to do on Rainbow Street today</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">What to do on Rainbow Street today</h2>
             <p className="mt-3 text-sm leading-7 text-neutral-600">
               The street is most active from late morning through to midnight. Early morning is quieter — ideal for a walk before the day heats up.
             </p>
@@ -339,12 +339,12 @@ export default function RainbowStreetGuide() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs text-neutral-400">Murals like this appear throughout the Rainbow Street and Weibdeh area</figcaption>
+            <figcaption className="mt-2 text-center text-xs text-neutral-600">Murals like this appear throughout the Rainbow Street and Weibdeh area</figcaption>
           </figure>
 
           {/* Practical info */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Practical information</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Practical information</h2>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               {[
                 ["Getting there", "Rainbow Street begins at First Circle. Taxis from downtown take 5–10 minutes. Most visitors arrive by car — park at First Circle and walk."],
@@ -353,7 +353,7 @@ export default function RainbowStreetGuide() {
                 ["Getting around", "Rainbow Street is fully walkable. Comfortable shoes are recommended as parts of Jabal Amman are hilly. The side streets leading to Weibdeh are worth exploring on foot."],
               ].map(([title, body]) => (
                 <div key={title} className="rounded-2xl border border-black/8 p-4">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-400">{title}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">{title}</p>
                   <p className="mt-2 text-sm leading-6 text-neutral-700">{body}</p>
                 </div>
               ))}
@@ -362,7 +362,7 @@ export default function RainbowStreetGuide() {
 
           {/* FAQ */}
           <section className="mt-8 rounded-3xl border border-black/8 bg-white p-6 sm:p-8">
-            <h2 className="text-xl font-semibold text-neutral-950">Frequently asked questions</h2>
+            <h2 className="text-xl font-semibold text-neutral-950 text-balance">Frequently asked questions</h2>
             <div className="mt-5 space-y-6">
               {[
                 ["Why is it called Rainbow Street?", "The street was renamed after the Rainbow Cinema, which opened in 1957. Before that it was known as Abu Bakr al-Siddiq Street. The cinema became such a landmark that people started calling the whole street by its name."],
@@ -381,7 +381,7 @@ export default function RainbowStreetGuide() {
           {/* CTA */}
           <section className="mt-10 rounded-3xl border border-[#c8694a]/20 bg-z-orange-soft p-6 sm:p-8">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c8694a]">Experience it yourself</p>
-            <h2 className="mt-2 text-xl font-semibold text-neutral-950">
+            <h2 className="mt-2 text-xl font-semibold text-neutral-950 text-balance">
               Explore Rainbow Street with Zowar
             </h2>
             <p className="mt-3 text-sm leading-7 text-neutral-700">

@@ -110,7 +110,7 @@ const days = [
       {
         time: "7:30",
         heading: "Desayuno en Rainbow Street",
-        body: "Empieza el día en Al-Quds Falafel, un pequeño mostrador que lleva en Rainbow Street desde 1966. Solo para llevar: falafel en pan francés, y se acaba pronto. Si prefieres algo más tranquilo, Shams Al Balad está a dos minutos calle abajo, con una terraza frente a la Ciudadela y una carta de platos jordanos de temporada hechos con ingredientes locales ecológicos. Aparece en la lista World's 50 Best Discovery y merece la pena sentarse un rato más.",
+        body: "Empieza el día en Al-Quds Falafel, un pequeño mostrador que lleva en Rainbow Street desde 1966. Solo para llevar: falafel en pan francés, y se acaba pronto. Si prefieres algo más tranquilo, Shams El Balad está a dos minutos calle abajo, con una terraza frente a la Ciudadela y una carta de platos jordanos de temporada hechos con ingredientes locales ecológicos. Aparece en la lista World's 50 Best Discovery y merece la pena sentarse un rato más.",
         link: { text: "Guía de desayunos (en inglés) →", href: "/blog/best-breakfast-amman" },
       },
       {
@@ -177,7 +177,7 @@ const days = [
       {
         time: "17:00",
         heading: "Atardecer desde un mirador",
-        body: "Amán se construyó sobre siete colinas (hoy son casi veinte) y ver el atardecer desde un punto alto es una de sus mejores experiencias. El borde de la Ciudadela es el sitio más espectacular. Otra opción es la terraza de Shams Al Balad en Rainbow Street, que mira directamente a la Ciudadela y al Palacio Omeya, iluminados al anochecer.",
+        body: "Amán se construyó sobre siete colinas (hoy son casi veinte) y ver el atardecer desde un punto alto es una de sus mejores experiencias. El borde de la Ciudadela es el sitio más espectacular. Otra opción es la terraza de Shams El Balad en Rainbow Street, que mira directamente a la Ciudadela y al Palacio Omeya, iluminados al anochecer.",
       },
       {
         time: "19:30",

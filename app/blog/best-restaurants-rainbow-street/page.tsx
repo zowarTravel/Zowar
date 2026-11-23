@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "best restaurants Rainbow Street Amman",
     "where to eat Rainbow Street",
     "Sufra restaurant Amman",
-    "Shams Al Balad Amman",
+    "Shams El Balad Amman",
     "Rumman Collective",
     "Maisa Space Amman",
     "Namliyeh Amman",
@@ -47,7 +47,7 @@ const articleSchema = {
       "@type": "Article",
       headline: "Best Restaurants on Rainbow Street, Amman",
       description:
-        "A local guide to eating on Rainbow Street — from Sufra and Shams Al Balad to Namliyeh, Maisa Space, Books@Café, Wild Jordan Café, and Al-Quds Falafel.",
+        "A local guide to eating on Rainbow Street — from Sufra and Shams El Balad to Namliyeh, Maisa Space, Books@Café, Wild Jordan Café, and Al-Quds Falafel.",
       url: "https://zowar.net/blog/best-restaurants-rainbow-street",
       datePublished: "2026-09-01",
       dateModified: "2026-09-01",
@@ -84,7 +84,7 @@ const articleSchema = {
           position: 2,
           item: {
             "@type": "Restaurant",
-            name: "Shams Al Balad",
+            name: "Shams El Balad",
             description: "Breakfast and lunch restaurant on Rainbow Street with a terrace overlooking the Citadel. Organic local ingredients. World's 50 Best Discovery.",
             address: { "@type": "PostalAddress", streetAddress: "Rainbow Street", addressLocality: "Jabal Amman", addressCountry: "JO" },
             servesCuisine: "Jordanian, Mediterranean",
@@ -193,15 +193,15 @@ The villa setting — stone arches, a shaded courtyard, tiled floors — adds to
     tip: "Book ahead for Friday lunch — the courtyard fills completely. Mains from around 10 JOD per person.",
   },
   {
-    name: "Shams Al Balad",
+    name: "Shams El Balad",
     nameAr: "شمس البلد",
     neighborhood: "Rainbow Street, Jabal Amman",
     highlight: "From a flower shop to one of Amman's most celebrated breakfast spots — with a Citadel view",
-    description: `Shams Al Balad started as a flower shop and became, over a decade, one of the most recognised restaurants on Rainbow Street — listed on the World's 50 Best Discovery and consistently recommended as the place to have breakfast with a view. The shift from flowers to food was driven by a kitchen doing something genuinely different: traditional Jordanian home dishes made with organic, locally sourced ingredients at a time when very few restaurants in the city were taking that approach.
+    description: `Shams El Balad started as a flower shop and became, over a decade, one of the most recognised restaurants on Rainbow Street — listed on the World's 50 Best Discovery and consistently recommended as the place to have breakfast with a view. The shift from flowers to food was driven by a kitchen doing something genuinely different: traditional Jordanian home dishes made with organic, locally sourced ingredients at a time when very few restaurants in the city were taking that approach.
 
 The menu changes with the season. The staples are things like parsley ljjeh — a frittata of parsley, onion, and sumac — labneh kurat rolled in herbs and olive oil, makdous, taboun bread baked in-house, and Yemeni coffee sourced directly from origin. It is traditional in its ingredients but careful and intentional in its execution.
 
-The terrace, which overlooks the Citadel and the Umayyad Palace across the valley, is one of the best breakfast settings in the city. It fills up fast on Friday and Saturday mornings. Shams Al Balad is open for breakfast and lunch, which makes it an ideal starting point for a day on Rainbow Street — you eat, you drink coffee slowly, and then you are already exactly where you need to be.`,
+The terrace, which overlooks the Citadel and the Umayyad Palace across the valley, is one of the best breakfast settings in the city. It fills up fast on Friday and Saturday mornings. Shams El Balad is open for breakfast and lunch, which makes it an ideal starting point for a day on Rainbow Street — you eat, you drink coffee slowly, and then you are already exactly where you need to be.`,
     order: "The parsley ljjeh, labneh kurat, and the Yemeni coffee. Sit on the terrace if you can get it.",
     tip: "Book ahead for weekends. Weekday mornings before 9am are reliably quieter and the terrace is yours.",
   },
@@ -445,7 +445,7 @@ export default function BestRestaurantsRainbowStreet() {
             <h2 className="text-xl font-semibold text-neutral-950">Tips for eating on Rainbow Street</h2>
             <ul className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
               {[
-                ["Book ahead at Sufra and Shams Al Balad.", "Both are popular enough that Friday and Saturday lunches fill up. A quick call or online reservation saves the walk of shame."],
+                ["Book ahead at Sufra and Shams El Balad.", "Both are popular enough that Friday and Saturday lunches fill up. A quick call or online reservation saves the walk of shame."],
                 ["Start early for falafel.", "Al-Quds Falafel sells out before midday. If you want it fresh from the fryer, aim for 8–9am."],
                 ["Rumman and Maisa Space are weekday gems.", "Both are quieter during the week and offer a more relaxed version of the Rainbow Street experience."],
                 ["Walk between Rainbow Street and Weibdeh.", "Most of these restaurants are within 15 minutes of each other on foot. Breakfast at one end, lunch at the other, is a good day."],

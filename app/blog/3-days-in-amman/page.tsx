@@ -126,7 +126,7 @@ const days = [
       {
         time: "7:30 AM",
         heading: "Breakfast on Rainbow Street",
-        body: "Start the day at Al-Quds Falafel — a small counter that has been on Rainbow Street since 1966. Takeout only, falafel in French bread, and it sells out fast. If you want something more leisurely, Shams Al Balad is two minutes further down the street, with a terrace overlooking the Citadel and a menu of seasonal Jordanian dishes made with organic local ingredients. It is listed on the World's 50 Best Discovery and worth the slightly longer sit.",
+        body: "Start the day at Al-Quds Falafel — a small counter that has been on Rainbow Street since 1966. Takeout only, falafel in French bread, and it sells out fast. If you want something more leisurely, Shams El Balad is two minutes further down the street, with a terrace overlooking the Citadel and a menu of seasonal Jordanian dishes made with organic local ingredients. It is listed on the World's 50 Best Discovery and worth the slightly longer sit.",
         link: { text: "Full breakfast guide →", href: "/blog/best-breakfast-amman" },
       },
       {
@@ -193,7 +193,7 @@ const days = [
       {
         time: "5:00 PM",
         heading: "Sunset from a viewpoint",
-        body: "Amman is built across seven hills — originally seven, now closer to twenty — and sunset from a high point in the city is one of its better experiences. The edge of the Citadel is the most dramatic. Alternatively, the terrace at Shams Al Balad on Rainbow Street faces directly toward the Citadel and Umayyad Palace, which are lit at dusk.",
+        body: "Amman is built across seven hills — originally seven, now closer to twenty — and sunset from a high point in the city is one of its better experiences. The edge of the Citadel is the most dramatic. Alternatively, the terrace at Shams El Balad on Rainbow Street faces directly toward the Citadel and Umayyad Palace, which are lit at dusk.",
       },
       {
         time: "7:30 PM",

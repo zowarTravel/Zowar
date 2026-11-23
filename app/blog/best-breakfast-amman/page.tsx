@@ -6,7 +6,7 @@ import BlogTranslations from "@/app/components/blog-translations";
 export const metadata: Metadata = {
   title: "Best Breakfast Places in Amman, Jordan – Local Guide 2026",
   description:
-    "The complete guide to breakfast in Amman — traditional spots like Al-Quds Falafel, Abu Jbara and Khashoka, plus modern takes at Shams Al Balad, Rumman Collective, Rumi Café and Blue Fig.",
+    "The complete guide to breakfast in Amman — traditional spots like Al-Quds Falafel, Abu Jbara and Khashoka, plus modern takes at Shams El Balad, Rumman Collective, Rumi Café and Blue Fig.",
   alternates: {
     canonical: "https://zowar.net/blog/best-breakfast-amman",
     languages: {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "Abu Jbara Amman",
     "Khashoka Amman",
     "Hashem Restaurant Amman",
-    "Shams Al Balad Amman",
+    "Shams El Balad Amman",
     "Blue Fig Amman",
     "Rumi Cafe Amman",
     "Rumman Collective",
@@ -50,7 +50,7 @@ const articleSchema = {
       "@type": "Article",
       headline: "Best Breakfast Places in Amman, Jordan",
       description:
-        "A local guide to breakfast in Amman — from traditional institutions like Al-Quds Falafel and Khashoka to modern takes at Shams Al Balad, Rumi Café, and Blue Fig.",
+        "A local guide to breakfast in Amman — from traditional institutions like Al-Quds Falafel and Khashoka to modern takes at Shams El Balad, Rumi Café, and Blue Fig.",
       url: "https://zowar.net/blog/best-breakfast-amman",
       datePublished: "2026-08-30",
       dateModified: "2026-08-30",
@@ -63,7 +63,7 @@ const articleSchema = {
       },
       inLanguage: "en",
       keywords:
-        "best breakfast Amman, breakfast Jordan, Al-Quds Falafel, Abu Jbara, Khashoka, Shams Al Balad, Blue Fig, Rumi Cafe, falafel Rainbow Street, traditional Jordanian breakfast",
+        "best breakfast Amman, breakfast Jordan, Al-Quds Falafel, Abu Jbara, Khashoka, Shams El Balad, Blue Fig, Rumi Cafe, falafel Rainbow Street, traditional Jordanian breakfast",
       about: [
         { "@type": "City", name: "Amman" },
         { "@type": "Country", name: "Jordan" },
@@ -159,7 +159,7 @@ const articleSchema = {
           position: 1,
           item: {
             "@type": "Restaurant",
-            name: "Shams Al Balad",
+            name: "Shams El Balad",
             description: "A Rainbow Street institution that started as a flower shop and became one of Amman's most celebrated breakfast spots — featured on the World's 50 Best Discovery list.",
             url: "https://www.theworlds50best.com/discovery/Establishments/Jordan/Amman/Shams-El-Balad.html",
             address: { "@type": "PostalAddress", streetAddress: "Rainbow Street", addressLocality: "Amman", addressCountry: "JO" },
@@ -303,11 +303,11 @@ The crowd at Hashem has always been indifferent to status. Jordanian royals have
 
 const modern: Place[] = [
   {
-    name: "Shams Al Balad",
+    name: "Shams El Balad",
     nameAr: "شمس البلد",
     neighborhood: "Rainbow Street, Jabal Amman",
     highlight: "From a flower shop to one of Amman's most celebrated breakfast spots",
-    description: `Shams Al Balad began as a small flower shop with a focus on design and sustainability. It evolved gradually — first into a café, then into a full-service restaurant — driven by a kitchen that was doing something genuinely different: serving breakfast dishes that had rarely been seen outside Jordanian home kitchens, made with organic, seasonal ingredients sourced directly from local producers.
+    description: `Shams El Balad began as a small flower shop with a focus on design and sustainability. It evolved gradually — first into a café, then into a full-service restaurant — driven by a kitchen that was doing something genuinely different: serving breakfast dishes that had rarely been seen outside Jordanian home kitchens, made with organic, seasonal ingredients sourced directly from local producers.
 
 Today it is one of the most recognisable names in Amman's food scene, listed on the World's 50 Best Discovery — a distinction that places it alongside the most interesting independent restaurants in the world. The terrace, which overlooks the Citadel and the Umayyad Palace across the valley, is one of the finest breakfast settings in the city.
 
@@ -608,7 +608,7 @@ export default function BestBreakfastAmman() {
                 ["Go early.", "Most traditional spots peak between 7 and 10 AM. The best experience is always the early one — falafel sells out, hummus is freshest."],
                 ["Bring cash.", "Many traditional breakfast spots in Amman are cash-only. Prices are low — rarely more than a few dinars per person for a full spread."],
                 ["Order more than you think you need.", "A Jordanian breakfast is communal. Extra dishes are inexpensive and the table is better when it is full."],
-                ["Book ahead at Shams Al Balad.", "It is one of the few breakfast spots in Amman where weekend reservations are genuinely worth making."],
+                ["Book ahead at Shams El Balad.", "It is one of the few breakfast spots in Amman where weekend reservations are genuinely worth making."],
                 ["Combine breakfast with a walk.", "Most of the traditional spots and several of the modern ones sit along or near Rainbow Street and Weibdeh — a morning walk through both neighbourhoods pairs naturally with any of them."],
               ].map(([title, body]) => (
                 <li key={title} className="flex gap-3">
